@@ -265,7 +265,13 @@ class CategoryController extends Controller
 
         //  dd($draw);
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        if($columnName_arr[$columnIndex]['data'] == 'model_number'){
+            $columnName_arr[$columnIndex]['data'] = 'title';
+        }else if($columnName_arr[$columnIndex]['data'] == 'brand'){
+            $columnName_arr[$columnIndex]['data'] = 'brand_id';
+        }
+
+        $columnName = $columnName_arr[$columnIndex]['data'];
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 

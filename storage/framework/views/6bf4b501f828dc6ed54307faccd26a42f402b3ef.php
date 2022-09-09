@@ -1,57 +1,85 @@
-@extends('backend.layouts.master')
-@section('title', 'Edit Shipping ')
-@section('main-content')
+<?php $__env->startSection('title', 'Edit Shipping '); ?>
+<?php $__env->startSection('main-content'); ?>
 
     <div class="card">
         <h5 class="card-header">Edit Shipping</h5>
         <div class="card-body">
-            <form method="post" action="{{ route('shipping.update', $shipping->id) }}">
-                @csrf
-                @method('PATCH')
+            <form method="post" action="<?php echo e(route('shipping.update', $shipping->id)); ?>">
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PATCH'); ?>
                 <div class="form-group">
                     <label for="inputTitle" class="col-form-label">Type <span class="text-danger">*</span></label>
                     <input id="inputTitle" type="text" name="type" placeholder="Enter type"
-                        value="{{ $shipping->type }}" class="form-control">
-                    @error('title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        value="<?php echo e($shipping->type); ?>" class="form-control">
+                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="form-group">
                     <label for="inputTitle" class="col-form-label">Countries <span class="text-danger">*</span></label>
                     <select class="select2 form-control " id="countries" name="countries[]" style="width: 100%; height:36px;">
 
-                        @foreach ($countries as $user)
-                            <option value="{{ $user->shortname }}">
-                                {{ $user->name }}
+                        <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($user->shortname); ?>">
+                                <?php echo e($user->name); ?>
+
                             </option>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="inputTitle" class="col-form-label">Transit Days<span class="text-danger">*</span></label>
-                    <input  type="text" name="transit" placeholder="5-10"  value="{{ $shipping->transit }}" class="form-control">
-                    @error('type')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <input  type="text" name="transit" placeholder="5-10"  value="<?php echo e($shipping->transit); ?>" class="form-control">
+                    <?php $__errorArgs = ['type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="form-group">
                     <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
                     <input id="price" type="number" name="price" placeholder="Enter price"
-                        value="{{ $shipping->price }}" class="form-control">
-                    @error('price')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        value="<?php echo e($shipping->price); ?>" class="form-control">
+                    <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="form-group">
                     <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
                     <select name="status" class="form-control">
-                        <option value="active" {{ $shipping->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ $shipping->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        <option value="active" <?php echo e($shipping->status == 'active' ? 'selected' : ''); ?>>Active</option>
+                        <option value="inactive" <?php echo e($shipping->status == 'inactive' ? 'selected' : ''); ?>>Inactive</option>
                     </select>
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <div class="form-group mb-3">
                     <button class="btn btn-success" type="submit">Update</button>
@@ -60,10 +88,10 @@
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('backend/summernote/summernote.min.css') }}">
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('backend/summernote/summernote.min.css')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.css" integrity="sha512-3uVpgbpX33N/XhyD3eWlOgFVAraGn3AfpxywfOTEQeBDByJ/J7HkLvl4mJE1fvArGh4ye1EiPfSBnJo2fgfZmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style type="text/css">
@@ -115,12 +143,12 @@
         }
 
     </style>
-@endpush
-@push('scripts')
+<?php $__env->stopPush(); ?>
+<?php $__env->startPush('scripts'); ?>
     <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="{{ asset('backend/summernote/summernote.min.js') }}"></script>
+    <script src="<?php echo e(asset('backend/summernote/summernote.min.js')); ?>"></script>
     <script>
         $('#lfm').filemanager('image');
 
@@ -133,6 +161,8 @@
         });
 
         $("#countries").select2({ multiple: true });
-        $('#countries').val(@json($shipping->countries)).trigger('change');
+        $('#countries').val(<?php echo json_encode($shipping->countries, 15, 512) ?>).trigger('change');
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('backend.layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\eyewear\resources\views/backend/shipping/edit.blade.php ENDPATH**/ ?>

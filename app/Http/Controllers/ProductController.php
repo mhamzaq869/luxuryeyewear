@@ -288,15 +288,15 @@ class ProductController extends Controller
      $columnName_arr = $request->get('columns');
      $columnIndex = $columnIndex_arr[0]['column']; // Column index
 
-    if($columnName_arr[$columnIndex]['data'] == 'color_code'){
-        $columnName_arr[$columnIndex]['data'] = 'color';
-    }else if($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code'){
-        $columnName_arr[$columnIndex]['data'] = 'product_ean_code';
-    }else if($columnName_arr[$columnIndex]['data'] == 'brand'){
-        $columnName_arr[$columnIndex]['data'] = 'brand_id';
-    }else if($columnName_arr[$columnIndex]['data'] == 'category'){
-        $columnName_arr[$columnIndex]['data'] = 'cat_id';
-    }
+        if($columnName_arr[$columnIndex]['data'] == 'color_code'){
+            $columnName_arr[$columnIndex]['data'] = 'color';
+        }else if($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code'){
+            $columnName_arr[$columnIndex]['data'] = 'product_ean_code';
+        }else if($columnName_arr[$columnIndex]['data'] == 'brand'){
+            $columnName_arr[$columnIndex]['data'] = 'brand_id';
+        }else if($columnName_arr[$columnIndex]['data'] == 'category'){
+            $columnName_arr[$columnIndex]['data'] = 'cat_id';
+        }
 
      $columnName = $columnName_arr[$columnIndex]['data']; // Column name
      $columnSortOrder = $order_arr[0]['dir']; // asc or desc

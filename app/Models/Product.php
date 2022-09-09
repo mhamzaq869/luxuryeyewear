@@ -5,6 +5,7 @@ use App\ColorImage;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
 use Dompdf\Css\Color;
+use Stevebauman\Location\Facades\Location;
 
 class Product extends Model
 {
@@ -32,7 +33,23 @@ class Product extends Model
     }
 
     public static function getProductBySlug($slug){
-        return Product::with(['cat_info','rel_prods','getReview','get_lens'])->where('slug',$slug)->first();
+        $product = Product::with(['cat_info','rel_prods','getReview','get_lens'])->where('slug',$slug)->first();
+
+
+        $location = Location::get(request()->ip());
+
+        if($location){
+            $countryCode = $location->countryCode;
+            $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
+            if($shipping != null){
+                $product->shipping_cost = $shipping->price ?? 0;
+                $product->transit = $shipping->transit ?? 0;
+            }else{
+                $product->shipping_cost = 0;
+                $product->transit = 0;
+            }
+        }
+        return $product;
     }
 
     public static function countActiveProduct(){

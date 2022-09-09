@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shipping;
 use App\Models\Coupon;
+use Illuminate\Support\Facades\DB;
 
 class ShippingController extends Controller
 {
@@ -26,7 +27,8 @@ class ShippingController extends Controller
      */
     public function create()
     {
-        return view('backend.shipping.create');
+        $countries = DB::table('countries')->get();
+        return view('backend.shipping.create',get_defined_vars());
     }
 
     /**
@@ -43,8 +45,8 @@ class ShippingController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        // return $data;
-        $status=Shipping::create($data);
+        $data['countries'] = implode(',',$data['countries']);
+        $status= Shipping::create($data);
         if($status){
             request()->session()->flash('success','Shipping successfully created');
         }
@@ -77,7 +79,9 @@ class ShippingController extends Controller
         if(!$shipping){
             request()->session()->flash('error','Shipping not found');
         }
-        return view('backend.shipping.edit')->with('shipping',$shipping);
+        $countries = DB::table('countries')->get();
+        $shipping->countries = explode(',',$shipping->countries);
+        return view('backend.shipping.edit',get_defined_vars());
     }
 
     /**
@@ -96,7 +100,7 @@ class ShippingController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        // return $data;
+        $data['countries'] = implode(',',$data['countries']);
         $status=$shipping->fill($data)->save();
         if($status){
             request()->session()->flash('success','Shipping successfully updated');

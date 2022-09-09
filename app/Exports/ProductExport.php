@@ -46,13 +46,16 @@ class ProductExport implements FromCollection, WithHeadings
                 $data[$i]['total_width'] = $product->product_total_width;
                 $data[$i]['region'] = $product->country_of_origin;
                 $data[$i]['dispatch'] = $product->dispatch_from;
-                $data[$i]['img1'] = request()->getSchemeAndHttpHost().$product->p_f;
-                $data[$i]['img2'] = request()->getSchemeAndHttpHost().$product->p_b;
+                $data[$i]['img1'] = !isValidUrl($product->p_f) ? request()->getSchemeAndHttpHost().$product->p_f : $product->p_f ;
+                $data[$i]['img2'] = !isValidUrl($product->p_b) ? request()->getSchemeAndHttpHost().$product->p_b : $product->p_b ;
+                $data[$i]['img3'] = !isValidUrl($product->g_image_1) ? request()->getSchemeAndHttpHost().$product->g_image_1 : $product->g_image_1;
+                $data[$i]['img4'] = !isValidUrl($product->g_image_2) ? request()->getSchemeAndHttpHost().$product->g_image_1 : $product->g_image_1;
+                $data[$i]['img5'] = !isValidUrl($product->g_image_3) ? request()->getSchemeAndHttpHost().$product->g_image_1 : $product->g_image_1;
 
-                $imgs = json_decode($product->g_image);
-                foreach($imgs as $j => $img){
-                    $data[$i]['img'. 2+$j] = request()->getSchemeAndHttpHost().$img;
-                }
+                // $imgs = json_decode($product->g_image);
+                // foreach($imgs as $j => $img){
+                //     $data[$i]['img'. 2+$j] = request()->getSchemeAndHttpHost().$img;
+                // }
             }
         endif;
        return collect($data);

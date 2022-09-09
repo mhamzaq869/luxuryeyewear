@@ -25,7 +25,7 @@ class ExportCategory implements FromCollection, WithHeadings
         $data = [];
         if($this->type == null):
             foreach(Category::all() as $i=> $cat){
-                $data[$i]['brand'] = $cat->brand->count() != 0 ? $cat->brand->title : '';
+                $data[$i]['brand'] = ($cat->brand != null && $cat->brand->count() != 0) ? $cat->brand->title : '';
                 $data[$i]['model'] = $cat->title ?? '';
 
                 $size = json_decode($cat->size);

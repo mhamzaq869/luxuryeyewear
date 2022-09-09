@@ -1,8 +1,8 @@
 @extends('frontend.layouts.master')
-@section('title', ' Eyeglass')
+@section('title', ' Search')
 
-@section('description', 'Eyeglass Description ')
-@section('keywords', ' Eyeglass Keywords')
+@section('description', 'Search Description ')
+@section('keywords', ' Search Keywords')
 @section('robots', 'index, follow')
 @section('revisit-after', 'content="3 days')
 
@@ -97,10 +97,17 @@
                                                     <li>
                                                         <a href="javascript:void(0)"
                                                             onclick="changeProDetail({{ $active->id }},'eyelass_',{{ $product->id }})">
+                                                            @if (!isValidUrl($active->photo))
                                                             <img src="{{ asset(insertAtPosition($active->photo)) }}" alt=""
                                                                 class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
                                                                 id="href_eyelass_{{ $product->id }}_{{ $active->id }}"
                                                                 onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})">
+                                                            @else
+                                                            <img src="{{ $active->photo }}" alt=""
+                                                                class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
+                                                                id="href_eyelass_{{ $product->id }}_{{ $active->id }}"
+                                                                onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})">
+                                                            @endif
                                                         </a>
                                                     </li>
                                                 @endif
@@ -111,9 +118,15 @@
                                                             <a href="javascript:void(0)"
                                                                 onclick="changeProDetail({{ $variant->id }},'eyelass_',{{ $product->id }})"
                                                                 onmouseover="changeProDetail({{ $variant->id }},'eyelass_',{{ $product->id }})">
+                                                                @if (!isValidUrl($variant->photo))
                                                                 <img src="{{ asset(insertAtPosition($variant->photo)) }}"
                                                                     class="p-2 hover-product last-product-{{ $product->id }}"
                                                                     id="href_eyelass_{{ $product->id }}_{{ $variant->id }}">
+                                                                @else
+                                                                <img src="{{ $variant->photo }}"
+                                                                        class="p-2 hover-product last-product-{{ $product->id }}"
+                                                                        id="href_eyelass_{{ $product->id }}_{{ $variant->id }}">
+                                                                @endif
                                                             </a>
                                                         </li>
                                                     @endif
@@ -123,7 +136,9 @@
                                                     <li>
                                                         <a href="{{ route('product-detail', [$product->slug]) }}"
                                                             class="text-danger m-2">
+                                                            @if (count($product_variant->where('product_for', $product->product_for)) - 4 > 0)
                                                             +{{ count($product_variant->where('product_for', $product->product_for)) - 4 }}
+                                                            @endif
                                                         </a>
                                                     </li>
                                                 @endif
@@ -209,7 +224,11 @@
                 if (data.id != id) {
                     $("#href_" + type + parent_id + "_" + current_prod_id).removeClass('active-product')
                 }
-                $("#" + type + "pro_img_" + parent_id).attr('src', root + insertAtPosition(data.photo,'med'))
+                if(!isValidURL(data.photo)){
+                    $("#" + type + "pro_img_" + parent_id).attr('src', root + insertAtPosition(data.photo,'med'))
+                }else{
+                    $("#" + type + "pro_img_" + parent_id).attr('src', data.photo)
+                }
                 $("#" + type + "brand_name_" + parent_id).html(data.brand_name)
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
@@ -228,7 +247,7 @@
                 if (processing) return false;
                 var position = $(window).scrollTop();
                 var bottom = $(document).height() - $(window).height();
-                var bottom1 = bottom-1300;
+                var bottom1 = bottom-4900;
                 if(position > bottom1){
                     processing = true;
                     if(current_product > 0){
@@ -242,7 +261,7 @@
 
         function loadMoreData(page){
             $.ajax({
-                url: "{{ url('load_more_eyeglasses') }}"+window.location.pathname+'?page=' + page,
+                url: "{{ url('load_more_products') }}"+'/{{$search}}?page=' + page,
                 method: "get",
                 dataType: "json",
                 success: function(res){
@@ -255,7 +274,6 @@
                             $(".ajax-load-show-message").html('No More Products Found!');
                             $(".ajax-load-show-message").css('display','block');
                             $(".ajax-load").css('display','none');
-
                             processing = true;
                         }
                     }else{

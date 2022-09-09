@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\ProductNotify;
+use App\Models\Shipping;
 use App\User;
 use Auth;
 use Session;
@@ -36,13 +37,13 @@ class FrontendController extends Controller
     protected $ip_country;
     protected $admin_data;
 
-    public function __construct(){
-        $ip = \Request::ip();
-        // $ip = '1.32.239.255';
-        $location = Location::get('111.119.187.50');
-        $this->ip_country=$location->countryCode;
-        //$this->ip_country="India";
-    }
+    // public function __construct(){
+    //     $ip = \Request::ip();
+    //     // $ip = '1.32.239.255';
+    //     $location = Location::get('111.119.187.50');
+    //     $this->ip_country = $location->countryCode;
+    //     //$this->ip_country="India";
+    // }
 
 
     public function index(Request $request)
@@ -110,15 +111,7 @@ class FrontendController extends Controller
     }
 
 
-
-
-
-
-
     // eyeglasses
-
-
-
     public function frontend_eyeglass($type=null,$for=null)
     {
         $eyeglasses = Product::join('categories','products.cat_id','=','categories.id')
@@ -752,6 +745,7 @@ class FrontendController extends Controller
             $detail->all_imgs = $imgs;
         }
 
+
         return view('frontend.pages.product_detail', get_defined_vars());
     }
 
@@ -1058,17 +1052,11 @@ class FrontendController extends Controller
 
         if($request->search != null){
             $products = Product::orwhere('title', 'like', '%' . $request->search . '%')
-
             ->orwhere('slug', 'like', '%' . $request->search . '%')
-
             ->orwhere('description', 'like', '%' . $request->search . '%')
-
             ->orwhere('summary', 'like', '%' . $request->search . '%')
-
             ->orwhere('price', 'like', '%' . $request->search . '%')
-
             ->orderBy('id', 'DESC')
-
             ->get();
 
         }else{
@@ -1077,15 +1065,36 @@ class FrontendController extends Controller
 
         $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
-        return view('frontend.pages.product-grids')
-                ->with('products', $products)
+        return view('frontend.pages.product_for')
+                ->with('data', $products)
                 ->with('recent_products', $recent_products)
-                ->with('search', $request->search )
+                ->with('search', $request->search)
+                ->with('product_for', '')
                 ->with('product_variant', $product_variant);
     }
 
 
+    public function load_more_products($search)
+    {
+        // dd($request->all(),$search);
+        $products = Product::orwhere('title', 'like', '%' . $search . '%')
+                    ->orwhere('slug', 'like', '%' . $search . '%')
+                    ->orwhere('description', 'like', '%' . $search . '%')
+                    ->orwhere('summary', 'like', '%' . $search . '%')
+                    ->orwhere('price', 'like', '%' . $search . '%')
+                    ->orderBy('id', 'DESC')
+                    ->paginate(20);
 
+        // dd($products);
+        $ip_country = $this->ip_country ?? '';
+        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $data['products'] = $products;
+        $data['product_variant'] = $product_variant;
+        $data['ip_country'] = $ip_country;
+
+        $view = view('frontend.pages.section.load_more_products',$data)->render();
+        return response()->json(['status'=>1, 'more_data'=>$products->count(), 'html'=>$view]);
+    }
 
 
     public function productCat(Request $request)

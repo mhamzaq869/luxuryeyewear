@@ -91,6 +91,7 @@ Route::get('product-detail/{slug}','FrontendController@productDetail')->name('pr
 Route::post('/notify-email','FrontendController@notifyEmail')->name('notify-email');
 Route::get('/getProduct/{id}','FrontendController@getProduct')->name('get-product');
 Route::get('/product/search','FrontendController@productSearch')->name('product.search');
+Route::get('/load_more_products/{search}','FrontendController@load_more_products')->name('load.more.products');
 Route::post('/deleteImage','ProductController@deleteImage')->name('product.delete.image');
 Route::get('/product-cron','ProductController@productCronJob')->name('product.cron.job');
 Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product-cat');

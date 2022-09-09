@@ -229,7 +229,14 @@
                                 <div class="col-12">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                            <span class="productPrice">${{ ceil($product_detail->price) }}</span>
+                                             <span class="productPrice">${{ ceil($product_detail->price) }}</span> <br>
+                                            @if ($product_detail->shipping_cost > 0)
+                                             <span class="productPrice">${{ $product_detail->shipping_cost }}</span> <br>
+                                            @endif
+
+                                            @if ($product_detail->transit)
+                                             <span class="productPrice">${{ $product_detail->transit }}</span>
+                                            @endif
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">
                                             <div class="product_quantity">
@@ -1036,6 +1043,7 @@
                     swiper = ``;
                 for (var i = 0; i < imgs.length; i++) {
                     if (imgs[i] != null) {
+
                         if(!isValidURL(imgs[i])){
                             gallery += `<li id="` + (i + 1) + `" class="swiper-slide" data-swiper-autoplay="1000000"  itemprop="associatedMedia" itemscope
                                 itemtype="http://schema.org/ImageObject" style="width: 636px; margin-right: 10px;">
