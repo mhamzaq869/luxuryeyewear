@@ -746,6 +746,21 @@ class FrontendController extends Controller
         }
 
 
+
+        $location = Location::get(request()->ip());
+
+        if($location){
+            $countryCode = $location->countryCode;
+            $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
+            if($shipping != null && $shipping->count() > 0){
+                $product_detail->shipping_cost = $shipping->price ?? 0;
+                $product_detail->transit = $shipping->transit ?? 0;
+            }else{
+                $product_detail->shipping_cost = 0;
+                $product_detail->transit = 0;
+            }
+        }
+
         return view('frontend.pages.product_detail', get_defined_vars());
     }
 

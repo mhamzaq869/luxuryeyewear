@@ -34,21 +34,6 @@ class Product extends Model
 
     public static function getProductBySlug($slug){
         $product = Product::with(['cat_info','rel_prods','getReview','get_lens'])->where('slug',$slug)->first();
-
-
-        $location = Location::get(request()->ip());
-
-        if($location){
-            $countryCode = $location->countryCode;
-            $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
-            if($shipping != null && $shipping->count() > 0){
-                $product->shipping_cost = $shipping->price ?? 0;
-                $product->transit = $shipping->transit ?? 0;
-            }else{
-                $product->shipping_cost = 0;
-                $product->transit = 0;
-            }
-        }
         return $product;
     }
 
