@@ -106,7 +106,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'size' => $row['size'],
                 'color_description' => $row['colour_description'],
                 'unit_price' => str_replace('$','', $row['unit_price']),
-                'price' => str_replace('$','', $row['mrp']),
+                'price' => $row['mrp'] != null ? str_replace('$','', $row['mrp']) : 0.00,
                 'stock' => $row['qty'],
                 'shape' => $shape->id,
                 'product_for' => $productFor->id,

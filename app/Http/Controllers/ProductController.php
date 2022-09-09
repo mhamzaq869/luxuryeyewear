@@ -371,7 +371,7 @@ class ProductController extends Controller
             "item_code" => $record->product_ean_code ?? '',
             "discount" => '%'.$record->discount ?? '',
             "stock" => $record->stock ?? '',
-            "price" => '$'. $record->price != '' ? ceil($record->price) : 0.00,
+            "price" => '$'. $record->price ?? '',
             "status" => $status,
             "action" => '<a href="'.url("/admin/product/").'/'.$record->id.'/edit" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <a href="'.url("/admin/product/").'/'.$record->id.'/delete" class="btn btn-danger btn-sm dltBtn" data-id="'.$record->id.'" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></a>',
