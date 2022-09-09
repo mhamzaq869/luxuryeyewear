@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <!-- Required meta tags -->
+    @include('frontend.layouts.head')
+
+    <style>
+        /* ===== Scrollbar CSS ===== */
+        /* Firefox */
+        .brands_list {
+            scrollbar-width: auto;
+            scrollbar-color: #e5c580 #ffffff;
+        }
+
+        /* Chrome, Edge, and Safari */
+        .brands_list::-webkit-scrollbar {
+            width: 10px;
+            height: 10px
+        }
+
+        .brands_list::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        .brands_list::-webkit-scrollbar-thumb {
+            background-color: #e5c580;
+            border-radius: 10px;
+            border: 3px solid #ffffff;
+        }
+
+        .hover-product:hover {
+            border: 1px solid rgba(255, 166, 0, 0.521);
+        }
+
+        .active-product {
+            border: 1px solid orange;
+        }
+
+        .color_builts ul li a img {
+            max-width: 60px !important;
+        }
+
+        .active-product-link img {
+            border: 1px solid orange;
+        }
+
+        .notfiyMail {
+            height: 45px;
+            border: 1px solid black;
+        }
+
+        .notfiyMail:focus {
+            border-color: #9a9a9b;
+            box-shadow: 0 0 0 0.25rem rgb(16 16 16 / 25%)
+        }
+
+        .link-primary:hover {
+            color: #4285F4 !important
+        }
+
+        .text-end {
+            text-align: end !important
+        }
+
+
+        .thumbnail_images ul {
+            list-style: none;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-top: 10px
+        }
+
+        .thumbnail_images ul li {
+            margin: 5px;
+            padding: 10px;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.5s
+        }
+
+        .thumbnail_images ul li:hover {
+            border: 2px solid #000
+        }
+
+        .zoom_in {
+            margin: 100px;
+            transition: transform 0.25s ease;
+            cursor: zoom-in;
+            top:15%;
+            left:20%;
+        }
+
+        .zoom_out {
+            transform: scale(3);
+            transition: transform 0.25s ease;
+            left: 30%;
+            top: 30%;
+            cursor: zoom-out;
+        }
+
+        .w-25{
+            width: 25% !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+</head>
+
+<body>
+    {{-- header  start --}}
+    @include('frontend.layouts.header')
+    {{-- header  end --}}
+    @yield('main-content')
+
+    <!-- <section>
+    <div class="section_space">
+      <div class="container">
+        <div class="maxWdTitle pb-3">
+          <h4 class="lgTitle pb-3">What People Say About Us</h4>
+          <p>SvaLove Mindspace provides the best professionals across all sectors for the mental wellbeing of the users. Take a look at what People Say About Us. </p>
+        </div>
+        <div class="swiper testimonialSlider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <div class="testimonialImgCol">
+                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
+                    <span class="testimonialUserImg">
+                      <img src="images/testimonial-img.jpg" alt="...">
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="testimonialContent">
+                    <figure>
+                      <blockquote class="blockquote">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer">
+                        <span>Tom cruise</span> <cite title="Source Title">Information on its origins</cite>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <div class="testimonialImgCol">
+                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
+                    <span class="testimonialUserImg">
+                      <img src="images/testimonial-img2.jpg" alt="...">
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="testimonialContent">
+                    <figure>
+                      <blockquote class="blockquote">
+                        <p>Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.  </p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer">
+                        <span>Fan Bingbing</span> <cite title="Source Title">Information on its origins</cite>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <div class="testimonialImgCol">
+                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
+                    <span class="testimonialUserImg">
+                      <img src="images/testimonial-img3.jpg" alt="...">
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="testimonialContent">
+                    <figure>
+                      <blockquote class="blockquote">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer">
+                        <span>Katherine Langford</span> <cite title="Source Title">Information on its origins</cite>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <div class="testimonialImgCol">
+                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
+                    <span class="testimonialUserImg">
+                      <img src="images/testimonial-img2.jpg" alt="...">
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="testimonialContent">
+                    <figure>
+                      <blockquote class="blockquote">
+                        <p>Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.  </p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer">
+                        <span>Fan Bingbing</span> <cite title="Source Title">Information on its origins</cite>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+    {{-- Footer --}}
+    @include('frontend.layouts.footer')
+    {{-- footer --}}
+
+
+    <div class="backDrop"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+
+    <!--new js-->
+
+
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/proSlider.js') }}"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe-ui-default.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+
+    @stack('scripts')
+    <!--new js end -->
+
+    <script>
+        var swiper = new Swiper(".logoSwiper", {
+            autoplay: {
+                delay: 2400,
+                disableOnInteraction: false,
+            },
+            slidesPerView: 1,
+            spaceBetween: 5,
+            loop: true,
+            loopFillGroupWithBlank: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                375: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                480: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                },
+                1200: {
+                    slidesPerView: 5,
+                    spaceBetween: 10,
+                },
+            },
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+
+
+            if ($('.bbb_viewed_slider').length) {
+                var viewedSlider = $('.bbb_viewed_slider');
+
+                viewedSlider.owlCarousel({
+                    loop: true,
+                    margin: 30,
+                    autoplay: true,
+                    autoplayTimeout: 6000,
+                    nav: false,
+                    dots: false,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        575: {
+                            items: 2
+                        },
+                        768: {
+                            items: 3
+                        },
+                        991: {
+                            items: 4
+                        },
+                        1199: {
+                            items: 6
+                        }
+                    }
+                });
+
+                if ($('.bbb_viewed_prev').length) {
+                    var prev = $('.bbb_viewed_prev');
+                    prev.on('click', function() {
+                        viewedSlider.trigger('prev.owl.carousel');
+                    });
+                }
+
+                if ($('.bbb_viewed_next').length) {
+                    var next = $('.bbb_viewed_next');
+                    next.on('click', function() {
+                        viewedSlider.trigger('next.owl.carousel');
+                    });
+                }
+            }
+
+
+        });
+
+        var swiper = new Swiper(".testimonialSlider", {
+            spaceBetween: 30,
+            effect: "fade",
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+        var swiper = new Swiper(".bannerSlider", {
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+        function redirect(url){
+            window.location.href = url
+        }
+
+        function insertAtPosition($string,$med=null) {
+            $stringArr = $string.split('/');
+            $stringArr[5] = $stringArr[4];
+            if($med == null){
+                $stringArr[4] = 'compress';
+            }else{
+                $stringArr[4] = $med+'-compress';
+            }
+            return $stringArr.join('/');
+        }
+
+
+        $("#share").jsSocials({
+            shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon", "whatsapp"]
+        });
+
+
+
+        function filter(filter_type){
+            var min_price = $('#min_price').val();
+            var max_price = $('#max_price').val();
+            var search_product = $('#search_product').val();
+            $('.min_price').val(min_price);
+            $('.max_price').val(max_price);
+            $('.search_product').val(search_product);
+
+        var gender = document.getElementsByName('genders[]');
+            var gender_array = "";
+            for (var i=0, n=gender.length;i<n;i++)
+            { if (gender[i].checked){
+            gender_array += ","+gender[i].value;}}
+            if (gender_array) gender_array = gender_array.substring(1);
+            $('.genders').val(gender_array);
+
+            var shape = document.getElementsByName('shapes[]');
+            var shape_array = "";
+            for (var i=0, n=shape.length;i<n;i++)
+            { if (shape[i].checked){
+            shape_array += ","+shape[i].value;}}
+            if (shape_array) shape_array = shape_array.substring(1);
+            $('.shapes').val(shape_array);
+
+            var frame = document.getElementsByName('frames[]');
+            var frame_array = "";
+            for (var i=0, n=frame.length;i<n;i++)
+            { if (frame[i].checked){
+            frame_array += ","+frame[i].value;}}
+            if (frame_array) frame_array = frame_array.substring(1);
+            $('.frames').val(frame_array);
+
+            var material = document.getElementsByName('materials[]');
+            var material_array = "";
+            for (var i=0, n=material.length;i<n;i++)
+            { if (material[i].checked){
+            material_array += ","+material[i].value;}}
+            if (material_array) material_array = material_array.substring(1);
+            $('.materials').val(material_array);
+
+            var color = document.getElementsByName('colors[]');
+            var color_array = "";
+            for (var i=0, n=color.length;i<n;i++)
+            { if (color[i].checked){
+            color_array += ","+color[i].value;}}
+            if (color_array) color_array = color_array.substring(1);
+            $('.colors').val(color_array);
+
+        $('.filter-form').submit();
+
+        }
+
+        /* Function for Product For(Man,Woman,Junior) */
+
+        function filter_product_for(filter_type) {
+            var min_price = $('#min_price').val();
+            var max_price = $('#max_price').val();
+            var search_product = $('#search_product').val();
+            $('.min_price').val(min_price);
+            $('.max_price').val(max_price);
+            $('.search_product').val(search_product);
+
+            var brand = document.getElementsByName('brands[]');
+            var brand_array = "";
+            for (var i = 0, n = brand.length; i < n; i++) {
+                if (brand[i].checked) {
+                    brand_array += "," + brand[i].value;
+                }
+            }
+            if (brand_array) brand_array = brand_array.substring(1);
+            $('.brands').val(brand_array);
+
+            var gender = document.getElementsByName('genders[]');
+            var gender_array = "";
+            for (var i = 0, n = gender.length; i < n; i++) {
+                if (gender[i].checked) {
+                    gender_array += "," + gender[i].value;
+                }
+            }
+            if (gender_array) gender_array = gender_array.substring(1);
+            $('.genders').val(gender_array);
+            console.log(gender_array)
+
+            var shape = document.getElementsByName('shapes[]');
+            var shape_array = "";
+            for (var i = 0, n = shape.length; i < n; i++) {
+                if (shape[i].checked) {
+                    shape_array += "," + shape[i].value;
+                }
+            }
+            if (shape_array) shape_array = shape_array.substring(1);
+            $('.shapes').val(shape_array);
+
+            var frame = document.getElementsByName('frames[]');
+            var frame_array = "";
+            for (var i = 0, n = frame.length; i < n; i++) {
+                if (frame[i].checked) {
+                    frame_array += "," + frame[i].value;
+                }
+            }
+            if (frame_array) frame_array = frame_array.substring(1);
+            $('.frames').val(frame_array);
+
+            var material = document.getElementsByName('materials[]');
+            var material_array = "";
+            for (var i = 0, n = material.length; i < n; i++) {
+                if (material[i].checked) {
+                    material_array += "," + material[i].value;
+                }
+            }
+            if (material_array) material_array = material_array.substring(1);
+            $('.materials').val(material_array);
+
+            // var color = document.getElementsByName('colors[]');
+            // var color_array = "";
+            // for (var i=0, n=color.length;i<n;i++)
+            // { if (color[i].checked){
+            // color_array += ","+color[i].value;}}
+            // if (color_array) color_array = color_array.substring(1);
+            // $('.colors').val(color_array);
+
+            $('.filter-form-product-for').submit();
+
+        }
+
+
+        function reset_filter_product_for() {
+            $('.min_price').val('');
+            $('.max_price').val('');
+            $('.search_product').val('');
+            $('.brands').val('');
+            $('.genders').val('');
+            $('.shapes').val('');
+            $('.frames').val('');
+            $('.materials').val('');
+            $('.colors').val('');
+            $('.filter-form-product-for').submit();
+        }
+
+        function reset_filter() {
+            $('.min_price').val('');
+            $('.max_price').val('');
+            $('.search_product').val('');
+            $('.genders').val('');
+            $('.shapes').val('');
+            $('.frames').val('');
+            $('.materials').val('');
+            $('.colors').val('');
+            $('.filter-form').submit();
+        }
+
+        // remove d-none class from brands navbar
+        window.onload = function() {
+            if (window.jQuery) {
+                $(".brands_navbar").removeClass('d-none')
+            }
+        }
+
+        function isValidURL(string) {
+            var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+            return (res !== null)
+        };
+
+    </script>
+</body>
+
+</html>

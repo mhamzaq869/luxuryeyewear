@@ -1,0 +1,156 @@
+<?php
+namespace App\Models;
+
+use App\ColorImage;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Cart;
+use Dompdf\Css\Color;
+
+class Product extends Model
+{
+    protected $guarded=[];
+
+    public function cat_info(){
+        return $this->hasOne('App\Models\Category','id','cat_id');
+
+    }
+
+    public function sub_cat_info(){
+        return $this->hasOne('App\Models\Category','id','child_cat_id');
+
+    }
+    public static function getAllProduct(){
+        return Product::with(['cat_info','sub_cat_info'])->orderBy('id','ASC')->get();
+    }
+
+    public function rel_prods(){
+        return $this->hasMany('App\Models\Product','cat_id','cat_id')->where('status','active')->orderBy('id','DESC')->limit(8);
+    }
+
+    public function getReview(){
+        return $this->hasMany('App\Models\ProductReview','product_id','id')->with('user_info')->where('status','active')->orderBy('id','DESC');
+    }
+
+    public static function getProductBySlug($slug){
+        return Product::with(['cat_info','rel_prods','getReview','get_lens'])->where('slug',$slug)->first();
+    }
+
+    public static function countActiveProduct(){
+        $data=Product::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+
+    public function carts(){
+        return $this->hasMany(Cart::class)->whereNotNull('order_id');
+    }
+
+
+    public function colorImages(){
+        return $this->hasMany(ColorImage::class);
+    }
+
+    public function wishlists(){
+        return $this->hasMany(Wishlist::class)->whereNotNull('cart_id');
+    }
+
+
+
+    public function brand(){
+        return $this->hasOne(Brand::class,'id','brand_id');
+    }
+
+
+
+
+    public function type_name(){
+        return $this->hasOne(Attribute::class,'id','type');
+    }
+
+      public function frametype(){
+        return $this->hasOne(Attribute::class,'id','frame_type');
+    }
+
+
+    public function get_gender(){
+        return $this->hasOne(Attribute::class,'id','product_for');
+    }
+    public function get_shape(){
+        return $this->hasOne(Attribute::class,'id','shape');
+    }
+    public function get_lens(){
+        return $this->hasOne(Attribute::class,'id','lense_type');
+    }
+
+    public function get_product_material(){
+        return $this->hasOne(Attribute::class,'id','product_material');
+    }
+    public function attribute(){
+        return $this->belongsTo(Attribute::class,'product_for','id');
+    }
+
+    public function color(){
+        return $this->belongsTo(ProductColor::class,'type','id');
+    }
+    public static function femaleEyeglasses(){
+        $products = Product::join('categories','products.cat_id','=','categories.id')->select('products.*','categories.frame_type')->where('products.status','active')->where('categories.frame_type',32)->whereIn('products.product_for', [28,30])->where('products.is_featured',1)->limit(6)->get();
+        foreach($products as $product){
+            $product->variant = Product::where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+        }
+        return $products;
+    }
+    public static function maleEyeglasses(){
+        $products = Product::join('categories','products.cat_id','=','categories.id')->select('products.*','categories.frame_type')->where('products.status','active')
+                    ->where('categories.frame_type',32)->whereIn('products.product_for', [27,30])->where('products.is_featured',1)->limit(6)->get();
+
+         foreach($products as $product){
+            $product->variant = Product::where('status','active')->where('id','!=',$product->id)->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+        }
+        return $products;
+    }
+    public static function femaleSunglasses(){
+        $products = Product::join('categories','products.cat_id','=','categories.id')->select('products.*','categories.frame_type')->where('products.status','active')
+                    ->where('categories.frame_type',31)->whereIn('products.product_for', [28,30])->where('products.is_featured',1)->limit(6)->get();
+
+        foreach($products as $product){
+            $product->variant = Product::where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+        }
+        return $products;
+    }
+    public static function maleSunglasses(){
+        $products = Product::join('categories','products.cat_id','=','categories.id')->select('products.*','categories.frame_type')->where('products.status','active')
+                    ->where('categories.frame_type',31)->whereIn('products.product_for', [27,30])->where('products.is_featured',1)->limit(6)->get();
+
+        foreach($products as $product){
+            $product->variant = Product::where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+        }
+        return $products;
+    }
+
+    public static function Variant($id, array $gender){
+        $products = Product::where('cat_id',$id)->where('status','active')->where('frame_type',31)->whereIn('product_for', $gender)->get();
+        foreach($products as $detail){
+            $detail->frame_type_name = $detail->frametype->name ?? '';
+            $detail->shape_name = $detail->get_shape != null ? $detail->get_shape->name : '';
+            $detail->material_name = Attribute::find($detail->product_material)->name ?? '';
+            $detail->typename = $detail->type_name != null ? $detail->type_name->name : '';
+            $detail->gender_name = $detail->get_gender != null ? $detail->get_gender->name : '';
+            $detail->brand_name = Brand::find($detail->brand_id)->title ?? '';
+            $detail->cat_name = Category::find($detail->cat_id)->title ?? '';
+
+            $imgs = [];
+            $imgs = array_merge($imgs, array($detail->p_f));
+            $imgs = array_merge($imgs, array($detail->p_b));
+            $imgs = array_merge($imgs, array($detail->g_image_1));
+            $imgs = array_merge($imgs, array($detail->g_image_2));
+            $imgs = array_merge($imgs, array($detail->g_image_3));
+
+
+            $detail->all_imgs = $imgs;
+        }
+        return $products;
+    }
+}
+
