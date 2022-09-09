@@ -757,11 +757,60 @@
         .cke_inner {
                 width: 100%;
             }
+
+            .bootstrap-tagsinput{
+            width: 100%;
+        }
+        .label-info{
+            background-color: #17a2b8;
+
+        }
+        .label {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,
+            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+            padding-left: 20px !important;
+            color:white
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+            background-color: #0750bd00;
+            border: none;
+            border-right: 1px solid #aaa0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            padding: 0 4px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #4e73df;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            display: inline-block;
+            margin-left: 5px;
+            margin-top: 5px;
+            padding: 0;
+        }
+
         </style>
     @endpush
     @push('scripts')
         {{-- <script src="https://dl.dropboxusercontent.com/s/hb9vf8r4vz7imyy/ckeditor.js"></script> --}}
         <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
             jQuery('#brand_id').change(function() {
@@ -780,6 +829,11 @@
                 resize_dir: 'both',
                 removeButtons: 'PasteFromWord'
             } );
+
+
+            $("#dispatch").select2({ multiple: true });
+            $('#dispatch').val(@json($product->countries)).trigger('change');
+
 
             $("#cke_description").attr('width',' ')
 

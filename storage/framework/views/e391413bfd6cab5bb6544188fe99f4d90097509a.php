@@ -230,11 +230,11 @@
                                         <div class="col-auto">
                                              <span class="productPrice">$<?php echo e(ceil($product_detail->price)); ?></span> <br>
                                             <?php if($product_detail->shipping_cost > 0): ?>
-                                             <span class="productPrice">$<?php echo e($product_detail->shipping_cost); ?></span> <br>
+                                             <span class="productPrice">Shipping Cost: $<?php echo e($product_detail->shipping_cost); ?></span> <br>
                                             <?php endif; ?>
 
                                             <?php if($product_detail->transit): ?>
-                                             <span class="productPrice">$<?php echo e($product_detail->transit); ?></span>
+                                             <span class="productPrice">Ship in: <?php echo e($product_detail->transit); ?></span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end <?php if($product_detail->stock == 0): ?> d-none <?php endif; ?>">
@@ -968,7 +968,7 @@
                     swiper = ``;
                 for (var i = 0; i < imgs.length; i++) {
                     if (imgs[i] != null) {
-                        console.log(isValidURL(imgs[i]),imgs[i])
+
                         if(!isValidURL(imgs[i])){
                             gallery += `<li id="` + (i + 1) + `" class="swiper-slide" data-swiper-autoplay="1000000"  itemprop="associatedMedia" itemscope
                                 itemtype="http://schema.org/ImageObject" style="width: 636px; margin-right: 10px;">

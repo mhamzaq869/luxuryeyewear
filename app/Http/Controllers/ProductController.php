@@ -432,7 +432,7 @@ class ProductController extends Controller
         $edit_data['rightcylinders'] = PrescriptionData::where('cyl_right','!=','')->get();
         // $edit_data['frame_types']=Attribute::where('attribute_type', 'frame_type')->get();
         $edit_data['countries']= DB::table('countries')->get();
-
+        $product->countries = explode(',',$product->countries);
         // return $items;
 
         return view('backend.product.edit',$edit_data)->with('product',$product)

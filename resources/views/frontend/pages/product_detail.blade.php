@@ -231,11 +231,11 @@
                                         <div class="col-auto">
                                              <span class="productPrice">${{ ceil($product_detail->price) }}</span> <br>
                                             @if ($product_detail->shipping_cost > 0)
-                                             <span class="productPrice">${{ $product_detail->shipping_cost }}</span> <br>
+                                             <span class="productPrice">Shipping Cost: ${{ $product_detail->shipping_cost }}</span> <br>
                                             @endif
 
                                             @if ($product_detail->transit)
-                                             <span class="productPrice">${{ $product_detail->transit }}</span>
+                                             <span class="productPrice">Ship in: {{ $product_detail->transit }}</span>
                                             @endif
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">

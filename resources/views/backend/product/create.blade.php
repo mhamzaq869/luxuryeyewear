@@ -374,7 +374,6 @@
                         <div class="form-group">
                             <label for="brand_id">Dispatch From <span class="text-danger">*</span></label>
                             <select name="dispatch_from" id="dispatch" class="form-control select2">
-                                <option value="">--Select Country--</option>
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->shortname }}">
                                         {{ $country->name ?? '' }}
@@ -588,6 +587,52 @@
                 .modal-lg {
                     max-width: 1000px !important;
                 }
+                .bootstrap-tagsinput{
+            width: 100%;
+        }
+        .label-info{
+            background-color: #17a2b8;
+
+        }
+        .label {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,
+            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+            padding-left: 20px !important;
+            color:white
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+            background-color: #0750bd00;
+            border: none;
+            border-right: 1px solid #aaa0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            padding: 0 4px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #4e73df;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            display: inline-block;
+            margin-left: 5px;
+            margin-top: 5px;
+            padding: 0;
+        }
 
 
             </style>
@@ -595,6 +640,7 @@
         @push('scripts')
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
             <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             <script>
 
@@ -603,13 +649,13 @@
 					removeButtons: 'PasteFromWord',
 				} );
 
+                $("#dispatch").select2({ multiple: true });
+                $('#dispatch').val(@json(['IN'])).trigger('change');
 
                 $("#cke_description").attr('width',' ')
 
                 // $('select').selectpicker();
-            </script>
 
-            <script>
                 jQuery('#brand_id').change(function() {
                     var selectedVal = jQuery(this).val();
                     var option = jQuery('#cat_id').find('option');
