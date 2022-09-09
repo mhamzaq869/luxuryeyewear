@@ -752,10 +752,15 @@ class FrontendController extends Controller
         if($location){
             $countryCode = $location->countryCode;
             // $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
-            $shipping = Shipping::where('countries','LIKE',"%{$product_detail->dispatch_from}%")->where('status','active')->first();
+            $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
             if($shipping != null && $shipping->count() > 0){
-                $product_detail->shipping_cost = $shipping->price ?? 0;
-                $product_detail->transit = $shipping->transit ?? 0;
+                if(in_array($countryCode,explode(',',$product_detail->dispatch_from))){
+                    $product_detail->shipping_cost = $shipping->price ?? 0;
+                    $product_detail->transit = $shipping->transit ?? 0;
+                }else{
+                    $product_detail->shipping_cost = 0;
+                    $product_detail->transit = 0;
+                }
             }else{
                 $product_detail->shipping_cost = 0;
                 $product_detail->transit = 0;
