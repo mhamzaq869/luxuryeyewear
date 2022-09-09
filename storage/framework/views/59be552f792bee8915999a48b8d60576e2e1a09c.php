@@ -209,7 +209,7 @@
                     { "orderable": false, "targets": [1] },
                 ],
                 lengthMenu: [
-                    [25, 50, 100, 150, 250, -1],
+                    [25, 50, 100, 150, 250, <?php echo e(count($cats)); ?>],
                     [25, 50, 100, 150, 250, 'All'],
                 ],
                 'ajax': {
