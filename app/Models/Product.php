@@ -41,7 +41,7 @@ class Product extends Model
         if($location){
             $countryCode = $location->countryCode;
             $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
-            if($shipping != null){
+            if($shipping != null && $shipping->count() > 0){
                 $product->shipping_cost = $shipping->price ?? 0;
                 $product->transit = $shipping->transit ?? 0;
             }else{
