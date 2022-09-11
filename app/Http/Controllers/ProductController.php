@@ -766,7 +766,7 @@ class ProductController extends Controller
                 $product = Product::findOrFail($id);
                 $new_data = $product->replicate();
                 $new_data->created_at = now();
-                $new_data->slug = $product->slug.'-'.date("d-m-Y h:i");;
+                $new_data->slug = $product->slug.'-'.date("H-i-s-Y-m-d");;
                 $new_data->save();
             }
 

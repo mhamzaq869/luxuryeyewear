@@ -12,8 +12,7 @@ class Product extends Model
     protected $guarded=[];
 
     public function cat_info(){
-        return $this->hasOne('App\Models\Category','id','cat_id');
-
+        return $this->belongsTo('App\Models\Category','cat_id');
     }
 
     public function sub_cat_info(){

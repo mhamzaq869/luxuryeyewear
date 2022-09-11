@@ -39,7 +39,7 @@
                     <div class="row g-2">
                         @foreach ($brand_img as $brand)
                             <div class="col-md-3 col-12">
-                                <div class="card" style="height: 140px">
+                                <div class="card"  >
                                     <a href="{{ route('product-brand',[$brand->slug]) }}" target="_blank" title="{{ $brand->title }}">
                                         <img class="card-img-top p-5" src="{{ asset($brand->brand_image) }}"
                                             alt="Card image cap">

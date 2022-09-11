@@ -89,7 +89,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
 
             Product::insertOrIgnore([
                 'title' => $title,
-                'slug' =>  $slug.'-'.$i.'-'.date('Y-m-d-H-i-s'),
+                'slug' =>  $slug.'-'.$i.'-'.date('H-i-s-Y-m-d'),
                 'product_uan_code' => $row['item_code'],
                 'product_ean_code' => $row['ean_code'],
                 // 'frame_type' => $frameType->id,
