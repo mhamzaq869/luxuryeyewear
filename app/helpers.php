@@ -6,6 +6,8 @@ function uploadImage ($file, $path = null) {
         $compressfolderMedPath = public_path('upload/product/crop/med-compress/');
     }else{
         $folderPath = public_path($path);
+        $compressfolderPath = public_path('upload/product/crop/compress/');
+        $compressfolderMedPath = public_path('upload/product/crop/med-compress/');
     }
 	$image_parts = explode(";base64,", $file);
 
