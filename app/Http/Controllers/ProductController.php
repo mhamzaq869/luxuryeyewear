@@ -12,6 +12,7 @@ use App\Models\ProductColor;
 use App\Models\PrescriptionData;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportProduct;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -235,19 +236,25 @@ class ProductController extends Controller
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
 
-        $status=Product::create($data);
+
 
         // foreach($upload_colr_img as $i => $img){
         //     ColorImage::create(['product_id' => $status->id, 'path' => $img]);
         // }
 
-
-        if($status){
+        try{
+            $status = Product::create($data);
             request()->session()->flash('success','Product Successfully added');
+        }catch(Exception $e){
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == '1062'){
+                request()->session()->flash('error','Duplicated Product EAN Code');
+            }
+            else{
+                request()->session()->flash('error',$e->getMessage());
+            }
         }
-        else{
-            request()->session()->flash('error','Please try again!!');
-        }
+
         return redirect()->route('product.index');
     }
 
@@ -652,18 +659,17 @@ class ProductController extends Controller
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
 
-        $status = $product->fill($data)->save();
-
-        if($status){
-
+        try{
+            $status = $product->fill($data)->save();
             request()->session()->flash('success','Product Successfully updated');
-
-        }
-
-        else{
-
-            request()->session()->flash('error','Please try again!!');
-
+        }catch(Exception $e){
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == '1062'){
+                request()->session()->flash('error','Duplicated Product EAN Code');
+            }
+            else{
+                request()->session()->flash('error',$e->getMessage());
+            }
         }
 
         return redirect()->route('product.index');
@@ -763,17 +769,33 @@ class ProductController extends Controller
         }
 
         if($request->type == 'dublicate') {
-            foreach($request->data as $id){
-                $product = Product::findOrFail($id);
-                $new_data = $product->replicate();
-                $new_data->created_at = now();
-                $new_data->slug = $product->slug.'-'.date("H-i-s-Y-m-d");;
-                $new_data->save();
-            }
 
-            $response['status'] = 200;
-            $response['message'] = 'Product Dublicate Successfully';
-            return response($response);
+            // try{
+                foreach($request->data as $id){
+                    $product = Product::findOrFail($id);
+                    $new_data = $product->replicate();
+                    $new_data->created_at = now();
+                    $new_data->slug = $product->slug.'-'.date("H-i-s-Y-m-d");;
+                    $new_data->save();
+                }
+
+                $response['status'] = 200;
+                $response['message'] = 'Product Dublicate Successfully';
+                return response($response);
+
+            // }catch(Exception $e){
+            //         $errorCode = $e->errorInfo[1];
+            //         if($errorCode == '1062'){
+            //             $response['message'] = 'Duplicated Product EAN Code';
+            //         }
+            //         else{
+            //             $response['message'] =  $e->getMessage();
+            //         }
+
+            //         $response['status'] = 500;
+            //         return response($response);
+            // }
+
         }
 
 
