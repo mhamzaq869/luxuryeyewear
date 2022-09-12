@@ -258,7 +258,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
-                            <input id="price" type="number" name="price" placeholder="Enter price"
+                            <input id="price" type="price" name="price" placeholder="Enter price"
                                 value="{{ old('price') }}" class="form-control">
                             @error('price')
                                 <span class="text-danger">{{ $message }}</span>
@@ -362,6 +362,7 @@
                             <select name="status" class="form-control">
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
+                                <option value="Outofstock">Out of stock</option>
                             </select>
                             @error('status')
                                 <span class="text-danger">{{ $message }}</span>

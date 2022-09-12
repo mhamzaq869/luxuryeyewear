@@ -118,13 +118,13 @@ class FrontendController extends Controller
                         ->select('products.*','categories.frame_type')
                         ->where('products.status', 'active')->where('categories.frame_type', 32);
         if($type == 'women'){
-            $eyeglasses->where('products.product_for', 28);
+            $eyeglasses->whereIn('products.product_for', [28,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
-            $eyeglasses->where('products.product_for', 27);
+            $eyeglasses->whereIn('products.product_for', [27,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
@@ -163,13 +163,13 @@ class FrontendController extends Controller
 
 
         if($type == 'women'){
-            $products->where('products.product_for', 28);
+            $products->whereIn('products.product_for', [28,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
-            $products->where('products.product_for', 27);
+            $products->whereIn('products.product_for', [27,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
@@ -196,14 +196,14 @@ class FrontendController extends Controller
                         ->where('products.status', 'active')->where('categories.frame_type', 31);
 
         if($type == 'women'){
-            $sunglasses->where('products.product_for', 28);
+            $sunglasses->whereIn('products.product_for', [28,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $sunglasses->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
 
-            $sunglasses->where('products.product_for', 27);
+            $sunglasses->whereIn('products.product_for', [27,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
 
@@ -234,14 +234,14 @@ class FrontendController extends Controller
                     ->where('products.status', 'active')->where('categories.frame_type', 31);
 
         if($type == 'women'){
-            $products->where('products.product_for', 28);
+            $products->whereIn('products.product_for', [28,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
 
-            $products->where('products.product_for', 27);
+            $products->whereIn('products.product_for', [27,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
 

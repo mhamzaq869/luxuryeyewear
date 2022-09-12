@@ -1014,7 +1014,7 @@
                     $("#" + type + "pro_img_" + parent_id).attr('src', data.photo)
                 }
                 $("#" + type + "brand_name_" + parent_id).html(data.brand_name)
-                $("#" + type + "pro_model_" + parent_id).html(data.color_description)
+                $("#" + type + "pro_model_" + parent_id).html(data.size+' '+data.color_description)
                 $("#" + type + "pro_price_" + parent_id).html("$" + Math.ceil(data.price))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }

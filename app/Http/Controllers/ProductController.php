@@ -350,6 +350,8 @@ class ProductController extends Controller
 
         if($record->status == 'active'){
             $status = '<span class="badge badge-success">'.$record->status.'</span>';
+        }else if($record->status == 'Outofstock'){
+            $status = '<span class="badge badge-danger">'.$record->status.'</span>';
         }else{
             $status = '<span class="badge badge-warning">'.$record->status.'</span>';
         }
@@ -361,7 +363,6 @@ class ProductController extends Controller
                                       <label class="custom-control-label" for="check'.$record->id.'"></label>
                                   </div>',
 
-            "status" => $record->status ?? '',
             "photo" => $photo,
             "frame_type" => $record->frameTypeName ?? '',
             "title" => "<a target='_blank' href=".url('product-detail/'.$record->slug).">".$record->title ?? '',

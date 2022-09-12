@@ -302,7 +302,7 @@ class CategoryController extends Controller
             $data_arr[] = array(
                 "id" => $i + 1 ?? '',
                 "checkbox" => '<div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input cust-checkbox" id="check' . $record->id . '" value="' . $record->id . '" name="checked[]">
+                        <input type="checkbox" class="custom-control-input cust-checkbox" onclick="singleCheck('.$record->id.')" id="check' . $record->id . '" value="' . $record->id . '" name="checked[]">
                                     <label class="custom-control-label" for="check' . $record->id . '"></label>
                                 </div>',
 

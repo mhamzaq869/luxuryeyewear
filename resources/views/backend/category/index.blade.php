@@ -277,6 +277,16 @@
                 jQuery('.custom-section').hide()
             }
         });
+
+        function singleCheck(id){
+
+            if ($('#check'+id+':checked').length > 0) {
+                $('.custom-section').show()
+            } else {
+                $('.custom-section').hide()
+            }
+        }
+
         jQuery('.cust-checkbox').click(function() {
             if (jQuery('.cust-checkbox').length == jQuery('.cust-checkbox:checked').length) {
                 jQuery("#mainCheck").prop('checked', true);

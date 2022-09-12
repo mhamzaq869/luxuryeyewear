@@ -36,7 +36,7 @@
                                         @if (!isValidUrl($variant->photo))
                                         <img src="{{ asset(insertAtPosition($variant->photo)) }}" class="p-2 hover-product last-product-{{$product->id}}" id="href_men_eyeglass_{{$product->id}}_{{ $variant->id }}">
                                         @else
-                                        <img src="{{ asset(insertAtPosition($variant->photo)) }}" class="p-2 hover-product last-product-{{$product->id}}" id="href_men_eyeglass_{{$product->id}}_{{ $variant->id }}">
+                                        <img src="{{ $variant->photo }}" class="p-2 hover-product last-product-{{$product->id}}" id="href_men_eyeglass_{{$product->id}}_{{ $variant->id }}">
                                         @endif
                                     </a>
                                 </li>

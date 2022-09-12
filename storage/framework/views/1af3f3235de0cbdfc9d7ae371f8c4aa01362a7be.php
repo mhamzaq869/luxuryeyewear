@@ -362,7 +362,7 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
-                            <input id="price" type="number" name="price" placeholder="Enter price"
+                            <input id="price" type="price" name="price" placeholder="Enter price"
                                 value="<?php echo e($product->price); ?>" class="form-control">
                             <?php $__errorArgs = ['price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -435,6 +435,7 @@ unset($__errorArgs, $__bag); ?>
                             <select name="status" class="form-control">
                                 <option value="active" <?php echo e($product->status == 'active' ? 'selected' : ''); ?>>Active</option>
                                 <option value="inactive" <?php echo e($product->status == 'inactive' ? 'selected' : ''); ?>>Inactive</option>
+                                <option value="Outofstock" <?php echo e($product->status == 'Outofstock' ? 'selected' : ''); ?>>Out of stock</option>
                             </select>
                             <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

@@ -36,7 +36,7 @@
                                         <?php if(!isValidUrl($variant->photo)): ?>
                                         <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>" class="p-2 hover-product last-product-<?php echo e($product->id); ?>" id="href_men_eyeglass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
                                         <?php else: ?>
-                                        <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>" class="p-2 hover-product last-product-<?php echo e($product->id); ?>" id="href_men_eyeglass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
+                                        <img src="<?php echo e($variant->photo); ?>" class="p-2 hover-product last-product-<?php echo e($product->id); ?>" id="href_men_eyeglass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
                                         <?php endif; ?>
                                     </a>
                                 </li>

@@ -201,7 +201,6 @@
 
 
         function singleCheck(id){
-            console.log(id)
 
             if ($('#check'+id+':checked').length > 0) {
                 $('.custom-section').show()

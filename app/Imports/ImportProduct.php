@@ -27,7 +27,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
     //   print_r($row[12]); die;
 
         // dd($rows);
-
+        $arr=[];
         foreach($rows as $i => $row){
 
             $frameType = Attribute::where('name',$row['category'])->first();
@@ -36,7 +36,8 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $material = Attribute::where('name',$row['material'])->first();
             $productFor = Attribute::where('name',$row['gender'])->first();
             $brand = Brand::where('title',$row['brands'])->first();
-            $model = Category::where('title',$row['model'])->first();
+            $model = Category::where('title',trim($row['model']))->first();
+
 
             if($row['image1'] == null){
                 $photo = "/upload/product/full/no_image.jpg";
@@ -54,8 +55,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 ]);
             }
 
-
-            if($model == null){
+            if($model === null){
                 $model = Category::create([
                         'title' => $row['model'],
                         'slug' => Str::slug($row['model'],'-').'-'.$i.'-'.date('Y-m-d-H-i-s'),
@@ -87,6 +87,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $title .= ' '.$row['colour'];
             $slug = Str::slug($title,'-');
 
+
             Product::insertOrIgnore([
                 'title' => $title,
                 'slug' =>  $slug.'-'.$i.'-'.date('H-i-s-Y-m-d'),
@@ -108,10 +109,10 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'unit_price' => str_replace('$','', $row['unit_price']),
                 'price' => $row['mrp'] != null ? str_replace('$','', $row['mrp']) : 0.00,
                 'stock' => $row['qty'],
-                'shape' => $shape->id,
-                'product_for' => $productFor->id,
-                'type' => $productType->id,
-                'product_material' => $material->id,
+                'shape' => $shape->id ?? 0,
+                'product_for' => $productFor->id ?? 0,
+                'type' => $productType->id ?? 0,
+                'product_material' => $material->id ?? 0,
                 'product_lens_width' => $row['width'],
                 'product_bridge' => $row['brigde'],
                 'product_arm_length' => $row['arm_length'],
@@ -120,7 +121,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'country_of_origin' => $row['country_of_region'],
                 'dispatch_from' => $row['dispatch_from'],
                 'is_featured' => 0,
-                'status' => 'inactive',
+                'status' => ($row['qty'] == 0) ? 'out-of-stock' : 'inactive',
 
 
             ]);

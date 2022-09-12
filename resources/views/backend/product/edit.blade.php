@@ -332,7 +332,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
-                            <input id="price" type="number" name="price" placeholder="Enter price"
+                            <input id="price" type="price" name="price" placeholder="Enter price"
                                 value="{{ $product->price }}" class="form-control">
                             @error('price')
                                 <span class="text-danger">{{ $message }}</span>
@@ -415,6 +415,7 @@
                             <select name="status" class="form-control">
                                 <option value="active" {{$product->status == 'active' ? 'selected' : ''}}>Active</option>
                                 <option value="inactive" {{$product->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
+                                <option value="Outofstock" {{$product->status == 'Outofstock' ? 'selected' : ''}}>Out of stock</option>
                             </select>
                             @error('status')
                                 <span class="text-danger">{{ $message }}</span>
