@@ -268,9 +268,9 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="price">Shipping Cost <span class="text-danger">*</span></label>
-                            <input id="price" type="number" name="shipping_cost" placeholder="Enter Shipping Cost"
-                                value="{{ old('price') }}" class="form-control">
+                            <label for="price">Extra <span class="text-danger">*</span></label>
+                            <input id="price" type="number" name="extra" placeholder="Enter Extra Price"
+                                value="{{ old('extra') }}" class="form-control">
                             @error('price')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -374,7 +374,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="brand_id">Dispatch From <span class="text-danger">*</span></label>
-                            <select name="dispatch_from" id="dispatch" class="form-control select2">
+                            <select name="dispatch_from[]" id="dispatch" class="form-control select2">
                                 @foreach ($countries as $country)
                                     <option value="{{ $country->shortname }}">
                                         {{ $country->name ?? '' }}

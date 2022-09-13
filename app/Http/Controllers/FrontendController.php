@@ -748,6 +748,7 @@ class FrontendController extends Controller
 
 
         $location = Location::get(request()->ip());
+        // $location = Location::get('111.119.187.50');
 
         if($location){
             $countryCode = $location->countryCode;
@@ -1078,7 +1079,7 @@ class FrontendController extends Controller
             ->orwhere('summary', 'like', '%' . $request->search . '%')
             ->orwhere('price', 'like', '%' . $request->search . '%')
             ->orderBy('id', 'DESC')
-            ->get();
+            ->paginate(20);
 
         }else{
             $products = [];

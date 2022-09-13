@@ -117,39 +117,7 @@
                 </ul>
             </div>
         </div>
-        <!--================================ our Colors ============================-->
-        {{-- <h5 class="smTitle">colors</h5>
-        @if(isset($color_array) && !empty($color_array))
-            @php
-            $color_key = 'color_array';
-            $url = Request::fullURL();
-            $filteredURL = preg_replace('~(\?|&)'.$color_key.'=[^&]*~', '$1', $url);
-            @endphp
-            <span style="float:right">
-                <a href="{{url($filteredURL)}}" title="Remove Filter">
-                    <i class="fa fa-times-circle"></i>
-                </a>
-            </span>
-        @endif
-        <div class="filterChekCol">
-            <ul>
-                @php
-                if(isset($color_array)){
-                    $check_color = explode(',',$color_array);
-                }
-                @endphp
-                @foreach($frame_colors as $k=>$color)
-                    <li>
-                        <span class="filterChek">
-                            <input class="btn-check" type="checkbox" name="colors[]" id="colors_{{$k}}" value="{{$color->id}}" onclick="filter_product_for('color_filter')" @if(isset($color_array)) @if(in_array($color->id,$check_color)) checked @endif @endisset>
-                            <label class="btn colorBtn" for="colors_{{$k}}">
-                                <img src="{{asset('uploaded_files/color_image/'.$color->color_image_name)}}" alt="...">
-                            </label>
-                        </span>
-                    </li>
-                @endforeach
-            </ul>
-        </div> --}}
+
 
         <h5 class="smTitle">SHAPES</h5>
         @if(isset($shape_array) && !empty($shape_array))

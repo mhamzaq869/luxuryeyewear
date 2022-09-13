@@ -34,6 +34,12 @@
                 </div>
             </div>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('admin.pages')}}"><i class="fas fa-folder"></i>
+                <span>Pages</span></a>
+        </li>
+
         <hr class="sidebar-divider" />
         <div class="sidebar-heading">Shop</div>
         <li class="nav-item">

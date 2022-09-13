@@ -55,17 +55,16 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 ]);
             }
 
-            if($model === null){
-                $model = Category::create([
-                        'title' => $row['model'],
-                        'slug' => Str::slug($row['model'],'-').'-'.$i.'-'.date('Y-m-d-H-i-s'),
-                        'is_parent' => 1,
-                        'brand_id' => ($brand != null) ? $brand->id : null,
-                        'frame_type' => ($frameType != null) ? $frameType->id : null,
-                        'status' => 'active',
-                ]);
-            }
-
+            // if($model === null){
+            $model = Category::updateOrCreate(['slug' => Str::slug($row['model'],'-')],[
+                    'title' => $row['model'],
+                    'slug' => Str::slug($row['model'],'-'),
+                    'is_parent' => 1,
+                    'brand_id' => ($brand != null) ? $brand->id : null,
+                    'frame_type' => ($frameType != null) ? $frameType->id : null,
+                    'status' => 'active',
+            ]);
+            // }
 
             $array = [];
             $array['width'] = $row['width'] ?? '';
@@ -80,7 +79,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 $title .= $brand->title;
             }
 
-            if(!empty($model) && $model!= null){
+            if(!empty($model) && $model !== null){
                 $title .= ' '.$model->title;
             }
 
@@ -122,8 +121,6 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'dispatch_from' => $row['dispatch_from'],
                 'is_featured' => 0,
                 'status' => ($row['qty'] == 0) ? 'out-of-stock' : 'inactive',
-
-
             ]);
         }
 

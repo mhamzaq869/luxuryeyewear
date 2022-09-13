@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Banner;
+use App\Models\Page;
 use Illuminate\Support\Str;
 class BannerController extends Controller
 {
@@ -152,5 +153,28 @@ class BannerController extends Controller
             request()->session()->flash('error','Error occurred while deleting banner');
         }
         return redirect()->route('banner.index');
+    }
+
+    public function pages()
+    {
+        $pages = Page::all();
+        return view('backend.pages.index',get_defined_vars());
+    }
+
+
+    public function pageEdit($id)
+    {
+        $page = Page::find($id);
+        return view('backend.pages.edit',get_defined_vars());
+    }
+
+
+    public function pageUpdate(Request $request,$id)
+    {
+        $page = Page::where('id',$id)->update([
+            'content' => $request->content
+        ]);
+
+        return redirect()->route('admin.pages');
     }
 }

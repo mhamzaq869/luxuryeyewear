@@ -5,11 +5,13 @@ use App\ColorImage;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
 use Dompdf\Css\Color;
+use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 
 class Product extends Model
 {
     protected $guarded=[];
+    protected $append=['admin_product_price'];
 
     public function cat_info(){
         return $this->belongsTo('App\Models\Category','cat_id');
@@ -152,6 +154,30 @@ class Product extends Model
             $detail->all_imgs = $imgs;
         }
         return $products;
+    }
+
+    public function getAdminProductPriceAttribute()
+    {
+        return DB::table('products')->where('id',$this->id)->first()->price;
+    }
+
+
+    public function getPriceAttribute($price)
+    {
+        // dd($this,$price);
+        $location = Location::get(request()->ip());
+        // $location = Location::get('111.119.187.50');
+        if($location){
+            if(str_contains($this->dispatch_from,$location->countryCode)){
+                return $price + ($this->extra != null ? $this->extra : 0);
+            }else{
+                return $price;
+            }
+        }else{
+            return $price;
+        }
+
+
     }
 }
 

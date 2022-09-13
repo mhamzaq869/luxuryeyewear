@@ -4,10 +4,10 @@
     @php $g_image = isset($product->g_image) ? json_decode($product->g_image) : []; @endphp
 
     @php
-    $sub_cat_info = DB::table('categories')
-        ->select('title')
-        ->where('id', $product->child_cat_id)
-        ->get();
+        $sub_cat_info = DB::table('categories')
+            ->select('title')
+            ->where('id', $product->child_cat_id)
+            ->get();
     @endphp
     <div class="card">
         <h5 class="card-header">Edit Product</h5>
@@ -27,16 +27,17 @@
                             <label for="inputPhoto" class="col-form-label">Product Front Image <span
                                     class="text-danger"></span></label>
 
-                                @if (isset($product->p_f) && $product->p_f != '')
+                            @if (isset($product->p_f) && $product->p_f != '')
                                 <div class="image-area" id="preview_p_f">
                                     @if (!isValidUrl($product->p_f))
-                                    <img src="{{ asset($product->p_f) }}"   class="img-responsive" />
+                                        <img src="{{ asset($product->p_f) }}" class="img-responsive" />
                                     @else
-                                    <img src="{{ $product->p_f }}"   class="img-responsive" />
+                                        <img src="{{ $product->p_f }}" class="img-responsive" />
                                     @endif
-                                    <a class="remove-image" href="javascript:deleteImage('p_f')" style="display: inline;">&#215;</a>
+                                    <a class="remove-image" href="javascript:deleteImage('p_f')"
+                                        style="display: inline;">&#215;</a>
                                 </div>
-                                @endif
+                            @endif
 
                             <input class="form-control" type="file" name="before_crop_image[front_image]"
                                 id="front_image">
@@ -51,14 +52,15 @@
                             <label for="inputPhoto" class="col-form-label">Product Back Image <span
                                     class="text-danger"></span></label>
                             @if (isset($product->p_b) && $product->p_b != '')
-                            <div class="image-area" id="preview_p_b">
-                                @if (!isValidUrl($product->p_b))
-                                <img src="{{ asset($product->p_b) }}" class="img-responsive"  />
-                                @else
-                                <img src="{{ $product->p_b }}" class="img-responsive"  />
-                                @endif
-                                <a class="remove-image" href="javascript:deleteImage('p_b')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_p_b">
+                                    @if (!isValidUrl($product->p_b))
+                                        <img src="{{ asset($product->p_b) }}" class="img-responsive" />
+                                    @else
+                                        <img src="{{ $product->p_b }}" class="img-responsive" />
+                                    @endif
+                                    <a class="remove-image" href="javascript:deleteImage('p_b')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             @endif
                             <input class="form-control" type="file" name="before_crop_image[back_image]" id="back_image">
                             @error('p_b')
@@ -71,14 +73,16 @@
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger"></span></label>
                             @if (isset($product->g_image_1) && $product->g_image_1 != '')
-                            <div class="image-area" id="preview_g_image_1">
-                                @if (!isValidUrl($product->g_image_1))
-                                <img src="{{ asset($product->g_image_1) }}"  class="img-responsive" id="preview_p_f" />
-                                @else
-                                <img src="{{ $product->g_image_1 }}"  class="img-responsive" id="preview_p_f" />
-                                @endif
-                                <a class="remove-image"  href="javascript:deleteImage('g_image_1')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_1">
+                                    @if (!isValidUrl($product->g_image_1))
+                                        <img src="{{ asset($product->g_image_1) }}" class="img-responsive"
+                                            id="preview_p_f" />
+                                    @else
+                                        <img src="{{ $product->g_image_1 }}" class="img-responsive" id="preview_p_f" />
+                                    @endif
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_1')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             @endif
                             <input class="form-control" type="file" name="before_crop_image[g_image_1]" id="g_image_1">
                         </div>
@@ -88,14 +92,15 @@
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger"></span></label>
                             @if (isset($product->g_image_2) && $product->g_image_2 != '')
-                            <div class="image-area" id="preview_g_image_2" >
-                                @if (!isValidUrl($product->g_image_2))
-                                <img src="{{ asset($product->g_image_2) }}" class="img-responsive" />
-                                @else
-                                <img src="{{ $product->g_image_2 }}" class="img-responsive" />
-                                @endif
-                                <a class="remove-image" href="javascript:deleteImage('g_image_2')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_2">
+                                    @if (!isValidUrl($product->g_image_2))
+                                        <img src="{{ asset($product->g_image_2) }}" class="img-responsive" />
+                                    @else
+                                        <img src="{{ $product->g_image_2 }}" class="img-responsive" />
+                                    @endif
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_2')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             @endif
 
                             <input class="form-control" type="file" name="before_crop_image[g_image_2]" id="g_image_2">
@@ -111,16 +116,20 @@
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger">*</span></label>
                             @if (isset($product->g_image_3) && $product->g_image_3 != '')
-                            <div class="image-area"  id="preview_g_image_3">
-                                @if (!isValidUrl($product->g_image_3))
-                                <img src="{{ asset($product->g_image_3) }}" id="preview_g_image_3" class="img-responsive" />
-                                @else
-                                <img src="{{ $product->g_image_3 }}" id="preview_g_image_3" class="img-responsive" />
-                                @endif
-                                <a class="remove-image" href="javascript:deleteImage('g_image_3')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_3">
+                                    @if (!isValidUrl($product->g_image_3))
+                                        <img src="{{ asset($product->g_image_3) }}" id="preview_g_image_3"
+                                            class="img-responsive" />
+                                    @else
+                                        <img src="{{ $product->g_image_3 }}" id="preview_g_image_3"
+                                            class="img-responsive" />
+                                    @endif
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_3')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             @endif
-                            <input class="form-control " type="file" name="before_crop_image[g_image_3]" id="g_image_3">
+                            <input class="form-control " type="file" name="before_crop_image[g_image_3]"
+                                id="g_image_3">
 
                             @error('photo')
                                 <span class="text-danger">{{ $message }}</span>
@@ -150,7 +159,8 @@
                             <select name="brand_id" id="brand_id" class="form-control select2">
                                 <option value="">--Select Brand--</option>
                                 @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}" @if ($brand->id == $product->brand_id) selected @endif>
+                                    <option value="{{ $brand->id }}"
+                                        @if ($brand->id == $product->brand_id) selected @endif>
                                         {{ $brand->title }}</option>
                                 @endforeach
                             </select>
@@ -163,16 +173,18 @@
                             <select name="cat_id" id="cat_id" class="form-control select2">
                                 <option value="">--Select any Category--</option>
                                 @if ($product->cat_id != null)
-                                    @foreach ($categories->where('brand_id',$product->brand_id) as $key => $cat_data)
-                                    <option value='{{ $cat_data->id }}' data-size="{{ $cat_data->size }}" data-brand="{{ $cat_data->brand_id }}"
-                                        @if ($product->cat_id == $cat_data->id) selected @endif>{{ $cat_data->title }}
-                                    </option>
+                                    @foreach ($categories->where('brand_id', $product->brand_id) as $key => $cat_data)
+                                        <option value='{{ $cat_data->id }}' data-size="{{ $cat_data->size }}"
+                                            data-brand="{{ $cat_data->brand_id }}"
+                                            @if ($product->cat_id == $cat_data->id) selected @endif>{{ $cat_data->title }}
+                                        </option>
                                     @endforeach
                                 @else
                                     @foreach ($categories as $key => $cat_data)
-                                    <option value='{{ $cat_data->id }}' data-size="{{ $cat_data->size }}" data-brand="{{ $cat_data->brand_id }}"
-                                        @if ($product->cat_id == $cat_data->id) selected @endif>{{ $cat_data->title }}
-                                    </option>
+                                        <option value='{{ $cat_data->id }}' data-size="{{ $cat_data->size }}"
+                                            data-brand="{{ $cat_data->brand_id }}"
+                                            @if ($product->cat_id == $cat_data->id) selected @endif>{{ $cat_data->title }}
+                                        </option>
                                     @endforeach
                                 @endif
 
@@ -195,7 +207,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="status" class="col-form-label">Size: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="{{ $product->size }}" name="size" placeholder="Size">
+                            <input type="text" class="form-control" value="{{ $product->size }}" name="size"
+                                placeholder="Size">
                             {{-- <select name="size" id="size" class="form-control">
                                 <option value="">-- Select frame type --</option>
                                 @foreach ($frame_types as $key => $frame_type)
@@ -260,7 +273,8 @@
                             <select name="shape" id="shape" class="form-control">
                                 <option value="">--Select any Shape--</option>
                                 @foreach ($shapes as $key => $shape)
-                                    <option value='{{ $shape->id }}' @if ($shape->id == $product->shape) selected @endif>
+                                    <option value='{{ $shape->id }}'
+                                        @if ($shape->id == $product->shape) selected @endif>
                                         {{ $shape->name }}</option>
                                 @endforeach
                             </select>
@@ -272,7 +286,8 @@
                             <select name="product_material" id="product_material" class="form-control">
                                 <option value="">--Select any Material--</option>
                                 @foreach ($materials as $key => $material)
-                                    <option value='{{ $material->id }}' @if ($material->id == $product->product_material) selected @endif>
+                                    <option value='{{ $material->id }}'
+                                        @if ($material->id == $product->product_material) selected @endif>
                                         {{ $material->name }}</option>
                                 @endforeach
                             </select>
@@ -297,7 +312,8 @@
 
                             <select name="product_for" id="category_for" class="form-control ">
                                 @foreach ($product_for as $key => $pro_for)
-                                    <option value='{{ $pro_for->id }}' @if ($product->product_for == $pro_for->id) selected @endif>
+                                    <option value='{{ $pro_for->id }}'
+                                        @if ($product->product_for == $pro_for->id) selected @endif>
                                         {{ $pro_for->name }}</option>
                                 @endforeach
                             </select>
@@ -333,7 +349,7 @@
                         <div class="form-group">
                             <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
                             <input id="price" type="price" name="price" placeholder="Enter price"
-                                value="{{ $product->price }}" class="form-control">
+                                value="{{ $product->admin_product_price }}" class="form-control">
                             @error('price')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -342,9 +358,9 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="shipping_cost">Shipping Cost <span class="text-danger">*</span></label>
-                            <input id="shipping_cost" type="number" name="shipping_cost" placeholder="Enter Shipping Cost"
-                                value="{{ $product->shipping_cost ?? '' }}" class="form-control">
+                            <label for="shipping_cost">Extra <span class="text-danger">*</span></label>
+                            <input id="shipping_cost" type="number" name="extra" placeholder="Enter Extra Price"
+                                value="{{ $product->extra ?? 0 }}" class="form-control">
                             @error('shipping_cost')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -413,9 +429,12 @@
                             <label for="status" class="col-form-label">Status <span
                                     class="text-danger">*</span></label>
                             <select name="status" class="form-control">
-                                <option value="active" {{$product->status == 'active' ? 'selected' : ''}}>Active</option>
-                                <option value="inactive" {{$product->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
-                                <option value="Outofstock" {{$product->status == 'Outofstock' ? 'selected' : ''}}>Out of stock</option>
+                                <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                                <option value="Outofstock" {{ $product->status == 'Outofstock' ? 'selected' : '' }}>Out of
+                                    stock</option>
                             </select>
                             @error('status')
                                 <span class="text-danger">{{ $message }}</span>
@@ -492,10 +511,10 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="brand_id">Dispatch From <span class="text-danger">*</span></label>
-                            <select name="dispatch_from" id="dispatch" class="form-control select2">
+                            <select name="dispatch_from[]" id="dispatch" class="form-control select2">
                                 <option value="">--Select Country--</option>
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country->shortname }}" @if ($country->shortname == $product->dispatch_from) selected @endif>
+                                    <option value="{{ $country->shortname }}">
                                         {{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -506,8 +525,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="stock">Country Of Region <span class="text-danger">*</span></label>
-                            <input id="country_of_region" type="text" value="{{ $product->country_of_origin }}" name="country_of_origin"
-                                placeholder="Enter Country Of Region"  class="form-control">
+                            <input id="country_of_region" type="text" value="{{ $product->country_of_origin }}"
+                                name="country_of_origin" placeholder="Enter Country Of Region" class="form-control">
                             @error('country_of_origin')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -685,9 +704,12 @@
             </div>
 
         </div>
+
+        {{-- {{dd( json_encode( explode(',', $product->dispatch_from)) ) }} --}}
     @endsection
     @push('styles')
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
         <style type="text/css">
             img {
                 display: block;
@@ -755,63 +777,68 @@
             }
 
 
-        .cke_inner {
+            .cke_inner {
                 width: 100%;
             }
 
-            .bootstrap-tagsinput{
-            width: 100%;
-        }
-        .label-info{
-            background-color: #17a2b8;
+            .bootstrap-tagsinput {
+                width: 100%;
+            }
 
-        }
-        .label {
-            display: inline-block;
-            padding: .25em .4em;
-            font-size: 75%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: .25rem;
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,
-            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
-            padding-left: 20px !important;
-            color:white
-        }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
-            background-color: #0750bd00;
-            border: none;
-            border-right: 1px solid #aaa0;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            color: rgb(255, 255, 255);
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            padding: 0 4px;
-        }
+            .label-info {
+                background-color: #17a2b8;
 
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #4e73df;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-            display: inline-block;
-            margin-left: 5px;
-            margin-top: 5px;
-            padding: 0;
-        }
+            }
 
+            .label {
+                display: inline-block;
+                padding: .25em .4em;
+                font-size: 75%;
+                font-weight: 700;
+                line-height: 1;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: baseline;
+                border-radius: .25rem;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out,
+                    border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+                padding-left: 20px !important;
+                color: white
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+                background-color: #0750bd00;
+                border: none;
+                border-right: 1px solid #aaa0;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                color: rgb(255, 255, 255);
+                cursor: pointer;
+                font-size: 1em;
+                font-weight: bold;
+                padding: 0 4px;
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                background-color: #4e73df;
+                border: 1px solid #aaa;
+                border-radius: 4px;
+                display: inline-block;
+                margin-left: 5px;
+                margin-top: 5px;
+                padding: 0;
+            }
         </style>
     @endpush
     @push('scripts')
         {{-- <script src="https://dl.dropboxusercontent.com/s/hb9vf8r4vz7imyy/ckeditor.js"></script> --}}
         <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js"
+            integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
             jQuery('#brand_id').change(function() {
@@ -826,17 +853,19 @@
                 })
             })
 
-            CKEDITOR.replace( 'description', {
+            CKEDITOR.replace('description', {
                 resize_dir: 'both',
                 removeButtons: 'PasteFromWord'
-            } );
+            });
 
 
-            $("#dispatch").select2({ multiple: true });
-            $('#dispatch').val(@json($product->countries)).trigger('change');
+            $("#dispatch").select2({
+                tags: true,
+                multiple: true
+            });
+            $('#dispatch').val(@json($product->dispatch_from)).trigger('change');
 
-
-            $("#cke_description").attr('width',' ')
+            $("#cke_description").attr('width', ' ')
 
             $('#brand_id').change(function() {
                 var brand_id = $(this).val();
@@ -845,7 +874,7 @@
 
                     // ajax call
                     $.ajax({
-                        url: "{{url('/admin/category')}}/" + brand_id + "/brand",
+                        url: "{{ url('/admin/category') }}/" + brand_id + "/brand",
                         type: "POST",
                         data: {
                             _token: "{{ csrf_token() }}"
@@ -858,7 +887,8 @@
                                 if (response.data) {
                                     $.each(data, function(i) {
 
-                                        html_option += "<option value='" + data[i].id + "'>" +data[i].title + "</option>";
+                                        html_option += "<option value='" + data[i].id + "'>" + data[
+                                            i].title + "</option>";
                                     });
                                 } else {
                                     console.log('no response data');
@@ -1005,13 +1035,13 @@
                     url: "{{ url('/deleteImage') }}",
                     type: "POSt",
                     data: {
-                        _token:"{{csrf_token()}}",
-                        id:"{{$product->id}}",
-                        col:col,
-                        data:null,
+                        _token: "{{ csrf_token() }}",
+                        id: "{{ $product->id }}",
+                        col: col,
+                        data: null,
                     },
                     success: function(data) {
-                        if(data.status == 200){
+                        if (data.status == 200) {
                             swal({
                                 title: "Good job!",
                                 text: data.message,
@@ -1019,7 +1049,7 @@
                                 buttons: true,
                             })
 
-                            $("#"+"preview_"+col).remove();
+                            $("#" + "preview_" + col).remove();
                         }
                     }
                 });
@@ -1055,7 +1085,7 @@
 
                     // ajax call
                     $.ajax({
-                        url: "{{url('/admin/category')}}/" + cat_id + "/child",
+                        url: "{{ url('/admin/category') }}/" + cat_id + "/child",
                         type: "POST",
                         data: {
                             _token: "{{ csrf_token() }}"
@@ -1086,6 +1116,5 @@
                 } else {}
 
             });
-
         </script>
     @endpush

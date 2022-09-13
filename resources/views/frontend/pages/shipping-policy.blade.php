@@ -3,7 +3,9 @@
 @section('title', 'Shipping Policy')
 
 @section('main-content')
-
+    @php
+        $page = \App\Models\Page::find(2);
+    @endphp
     <!-- Breadcrumbs -->
     <section>
         <div class="brand_banner">
@@ -30,37 +32,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <b>
-                        <h1>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-                        </h1>
-
-                        <p>&nbsp;</p>
-
-                        <ul>
-                            <li>
-                                <p>We offer Free worldwide shipping</p>
-                            </li>
-                            <li>
-                                <p>All orders are insured through DHL, UPS, Or&nbsp;FedEx.</p>
-                            </li>
-                            <li>
-                                <p>You will receive a tracking number from DHL, UPS, Or&nbsp;FedEx. once your order has been
-                                    shipped.</p>
-                            </li>
-                        </ul>
-
-                        <ul>
-                            <li>
-                                <p><strong>INTERNATIONAL ORDERS:</strong>&nbsp;Please note that a large part of our customer
-                                    base is international. To accommodate our customers, we do everything we can to expedite
-                                    your shipment through customs and reduce the chance of any import fees being incurred.
-                                    Depending on your country's policies you may incur shipping delays and/or import
-                                    duties/fees. This is not regulated by us and Luxuryeyewear is not responsible for any
-                                    additional import fees that are applied by your country. Please do your research with
-                                    your country's import policies to see if this even applies to you.</p>
-                            </li>
-                        </ul>
-                    </b>
+                    {!! $page->content ?? '' !!}
                 </div>
             </div>
         </div>

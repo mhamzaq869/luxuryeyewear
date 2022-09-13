@@ -24,10 +24,10 @@
                           <?php if($active = $product): ?>
                               <li>
                                   <a href="javascript:void(0)" onclick="changeProDetail(<?php echo e($active->id); ?>,'female_eyeglass_',<?php echo e($product->id); ?>)" onmouseover="changeProDetail(<?php echo e($active->id); ?>,'female_eyeglass_',<?php echo e($product->id); ?>)">
-                                    <?php if(!isValidUrl($variant->photo)): ?>
-                                      <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>" class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>" id="href_female_eyeglass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>">
+                                    <?php if(!isValidUrl($active->photo)): ?>
+                                      <img src="<?php echo e(asset(insertAtPosition($active->photo))); ?>" class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>" id="href_female_eyeglass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>">
                                       <?php else: ?>
-                                      <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>" class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>" id="href_female_eyeglass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>">
+                                      <img src="<?php echo e($active->photo); ?>" class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>" id="href_female_eyeglass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>">
                                     <?php endif; ?>
                                   </a>
                               </li>

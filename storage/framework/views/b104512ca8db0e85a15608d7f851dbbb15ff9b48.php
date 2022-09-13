@@ -67,132 +67,136 @@
                         </div>
                     </div>
                     <div class="productColMain">
-                        <div class="row g-4 productsList" id="productsList">
 
-
-                            <?php $__currentLoopData = $eyeglasses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <div class="col-md-6 col-xl-4">
-
-
-                                <div class="cardStyle1">
-
-                                    
-
-                                    <div class="productImg">
-                                        <a href="<?php echo e(route('product-detail', $product->slug)); ?>">
-                                            <div class="imgCol">
-                                                <?php if(!isValidUrl($product->photo)): ?>
-                                                <img src="<?php echo e(asset(insertAtPosition($product->photo,'med'))); ?>"
-                                                    id="eyelass_pro_img_<?php echo e($product->id); ?>" alt="Product ">
-
-                                                <?php else: ?>
-                                                <img src="<?php echo e($product->photo); ?>"
-                                                    id="eyelass_pro_img_<?php echo e($product->id); ?>" alt="Product ">
-                                                <?php endif; ?>
-                                            </div>
-                                        </a>
-
-                                        <div class="color_builts">
-                                            <ul>
-                                                <?php if($active = $product): ?>
-                                                    <li>
-                                                        <a href="javascript:void(0)"
-                                                            onclick="changeProDetail(<?php echo e($active->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
-                                                            <?php if(!isValidUrl($active->photo)): ?>
-                                                            <img src="<?php echo e(asset(insertAtPosition($active->photo))); ?>" alt=""
-                                                                class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>"
-                                                                id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>"
-                                                                onmouseover="changeProDetail(<?php echo e($product->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
-                                                            <?php else: ?>
-                                                            <img src="<?php echo e($active->photo); ?>" alt=""
-                                                            class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>"
-                                                            id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>"
-                                                            onmouseover="changeProDetail(<?php echo e($product->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
-                                                            <?php endif; ?>
-                                                        </a>
-                                                    </li>
-                                                <?php endif; ?>
-                                                
-                                                <?php $__currentLoopData = $product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $variant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <?php if($i <= 2): ?>
-                                                        <li>
-                                                            <a href="javascript:void(0)"
-                                                                onclick="changeProDetail(<?php echo e($variant->id); ?>,'eyelass_',<?php echo e($product->id); ?>)"
-                                                                onmouseover="changeProDetail(<?php echo e($variant->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
-                                                                <?php if(!isValidUrl($variant->photo)): ?>
-                                                                <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>"
-                                                                    class="p-2 hover-product last-product-<?php echo e($product->id); ?>"
-                                                                    id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
-                                                                <?php else: ?>
-                                                                <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>"
-                                                                    class="p-2 hover-product last-product-<?php echo e($product->id); ?>"
-                                                                    id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
-                                                                <?php endif; ?>
-                                                            </a>
-                                                        </li>
-                                                    <?php endif; ?>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                                <?php if(isset($i) && $i >= 2): ?>
-                                                    <li>
-                                                        <a href="<?php echo e(route('product-detail', [$product->slug])); ?>"
-                                                            class="text-danger m-2">
-                                                            <?php if(count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0 ): ?>
-                                                            +<?php echo e(count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4); ?>
-
-                                                            <?php endif; ?>
-                                                        </a>
-                                                    </li>
-                                                <?php endif; ?>
-
-                                            </ul>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="contentCol">
-
-                                        <h4 class="brandCol" id="eyelass_brand_name_<?php echo e($product->id); ?>">
-                                            <?php echo e($product->brand->title); ?> </h4>
-                                        <a href="<?php echo e(route('product-detail', $product->slug)); ?>" target="_blank"
-                                            class="text-dark">
-                                            <p id="eyelass_pro_model_<?php echo e($product->id); ?>"
-                                                class="text-dark link-primary"><?php echo e($product->title); ?></p>
-                                        </a>
-                                        <span class="priceCol" id="eyelass_pro_price_<?php echo e($product->id); ?>"">
-                                            $<?php echo e($product->price); ?></span>
-
-
-                                        <div class="row gx-2">
-
-                                            <div class="col-auto">
-
-                                                <a href="<?php echo e(route('single-add-to-cart', $product->slug)); ?>"
-                                                    class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
-
-                                            </div>
-
-                                            <div class="col">
-
-                                                <a href="<?php echo e(route('add-to-wishlist', $product->slug)); ?>"
-                                                    class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
+                        <div class="row g-4">
+                            <div class="col-md-6 col-xl-2">
+                                <?php echo $__env->make('frontend.layouts.product_filter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <div class="col-md-6 col-xl-10">
+                                <div class="row g-4" id="productsList">
+                                    <?php $__currentLoopData = $eyeglasses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <div class="col-md-6 col-xl-4">
 
 
+                                            <div class="cardStyle1">
+
+                                                
+
+                                                <div class="productImg">
+                                                    <a href="<?php echo e(route('product-detail', $product->slug)); ?>">
+                                                        <div class="imgCol">
+                                                            <?php if(!isValidUrl($product->photo)): ?>
+                                                            <img src="<?php echo e(asset(insertAtPosition($product->photo,'med'))); ?>"
+                                                                id="eyelass_pro_img_<?php echo e($product->id); ?>" alt="Product ">
+
+                                                            <?php else: ?>
+                                                            <img src="<?php echo e($product->photo); ?>"
+                                                                id="eyelass_pro_img_<?php echo e($product->id); ?>" alt="Product ">
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </a>
+
+                                                    <div class="color_builts">
+                                                        <ul>
+                                                            <?php if($active = $product): ?>
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        onclick="changeProDetail(<?php echo e($active->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
+                                                                        <?php if(!isValidUrl($active->photo)): ?>
+                                                                        <img src="<?php echo e(asset(insertAtPosition($active->photo))); ?>" alt=""
+                                                                            class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>"
+                                                                            id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>"
+                                                                            onmouseover="changeProDetail(<?php echo e($product->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
+                                                                        <?php else: ?>
+                                                                        <img src="<?php echo e($active->photo); ?>" alt=""
+                                                                        class="p-2 hover-product active-product last-product last-product-<?php echo e($product->id); ?>"
+                                                                        id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($active->id); ?>"
+                                                                        onmouseover="changeProDetail(<?php echo e($product->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
+                                                                        <?php endif; ?>
+                                                                    </a>
+                                                                </li>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php $__currentLoopData = $product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $variant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <?php if($i <= 2): ?>
+                                                                    <li>
+                                                                        <a href="javascript:void(0)"
+                                                                            onclick="changeProDetail(<?php echo e($variant->id); ?>,'eyelass_',<?php echo e($product->id); ?>)"
+                                                                            onmouseover="changeProDetail(<?php echo e($variant->id); ?>,'eyelass_',<?php echo e($product->id); ?>)">
+                                                                            <?php if(!isValidUrl($variant->photo)): ?>
+                                                                            <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>"
+                                                                                class="p-2 hover-product last-product-<?php echo e($product->id); ?>"
+                                                                                id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
+                                                                            <?php else: ?>
+                                                                            <img src="<?php echo e(asset(insertAtPosition($variant->photo))); ?>"
+                                                                                class="p-2 hover-product last-product-<?php echo e($product->id); ?>"
+                                                                                id="href_eyelass_<?php echo e($product->id); ?>_<?php echo e($variant->id); ?>">
+                                                                            <?php endif; ?>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                                            <?php if(isset($i) && $i >= 2): ?>
+                                                                <li>
+                                                                    <a href="<?php echo e(route('product-detail', [$product->slug])); ?>"
+                                                                        class="text-danger m-2">
+                                                                        <?php if(count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0 ): ?>
+                                                                        +<?php echo e(count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4); ?>
+
+                                                                        <?php endif; ?>
+                                                                    </a>
+                                                                </li>
+                                                            <?php endif; ?>
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="contentCol">
+
+                                                    <h4 class="brandCol" id="eyelass_brand_name_<?php echo e($product->id); ?>">
+                                                        <?php echo e($product->brand->title); ?> </h4>
+                                                    <a href="<?php echo e(route('product-detail', $product->slug)); ?>" target="_blank"
+                                                        class="text-dark">
+                                                        <p id="eyelass_pro_model_<?php echo e($product->id); ?>"
+                                                            class="text-dark link-primary"><?php echo e($product->title); ?></p>
+                                                    </a>
+                                                    <span class="priceCol" id="eyelass_pro_price_<?php echo e($product->id); ?>"">
+                                                        $<?php echo e($product->price); ?></span>
+
+
+                                                    <div class="row gx-2">
+
+                                                        <div class="col-auto">
+
+                                                            <a href="<?php echo e(route('single-add-to-cart', $product->slug)); ?>"
+                                                                class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
+
+                                                        </div>
+
+                                                        <div class="col">
+
+                                                            <a href="<?php echo e(route('add-to-wishlist', $product->slug)); ?>"
+                                                                class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
+                            </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -204,7 +208,7 @@
     </div>
     <div class="ajax-load-show-message text-center my-3" style="display:none"></div>
 
-    <?php echo $__env->make('frontend.layouts.product_filter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 
 <?php $__env->stopSection(); ?>
 

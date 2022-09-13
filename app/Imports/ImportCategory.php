@@ -30,9 +30,9 @@ class ImportCategory implements ToModel,WithStartRow
     }
 
     public function model(array $row)
-    {   	
+    {
     	$size = [];
-        $slug=Str::slug($row[0]);
+        $slug=Str::slug($row[0]).'-'.rand(0,1000).'-'.date('H-i-s-Y-m-d');
         $brand=Brand::where('slug',$slug)->first();
         $attribute = Attribute::where('name',$row[7])->where('attribute_type', 'frame_type')->first();
         $size['width'] = $row[2];
@@ -48,7 +48,7 @@ class ImportCategory implements ToModel,WithStartRow
            $brand->brand_image = 'No Image';
 
           $brand->save();
-    
+
         }
 
         $slug1=Str::slug($row[1]);
@@ -69,4 +69,3 @@ class ImportCategory implements ToModel,WithStartRow
 
 }
 
-    

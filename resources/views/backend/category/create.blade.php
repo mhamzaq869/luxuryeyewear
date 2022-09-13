@@ -14,7 +14,7 @@
          <div class="form-group">
 
           <label for="inputTitle" class="col-form-label">Brand <span class="text-danger">*</span></label>
-          <select name="brand_id" class="form-control select-search">
+          <select name="brand_id" class="form-control select2">
             <option disabled="disabled">--Select Brand--</option>
             @foreach($brands as $brand)
             <option value="{{$brand->id}}">{{$brand->title}}</option>
@@ -103,7 +103,7 @@
 
         </div> --}}
 
-        
+
 
         <div class="form-group">
 
@@ -158,7 +158,7 @@
                    <input type="text" id="lens_height" class="form-control" name="size[lens_height]">
                 </div>
               </div>
-           
+
 
               <div class="col-md-2">
                  <div class="form-group">

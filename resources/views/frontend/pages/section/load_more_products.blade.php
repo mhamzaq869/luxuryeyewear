@@ -24,16 +24,16 @@
                           @if ($active = $product)
                               <li>
                                   <a href="javascript:void(0)" onclick="changeProDetail({{ $active->id }},'female_eyeglass_',{{ $product->id }})" onmouseover="changeProDetail({{ $active->id }},'female_eyeglass_',{{ $product->id }})">
-                                    @if (!isValidUrl($variant->photo))
-                                      <img src="{{ asset(insertAtPosition($variant->photo)) }}" class="p-2 hover-product active-product last-product last-product-{{$product->id}}" id="href_female_eyeglass_{{$product->id}}_{{ $active->id }}">
+                                    @if (!isValidUrl($active->photo))
+                                      <img src="{{ asset(insertAtPosition($active->photo)) }}" class="p-2 hover-product active-product last-product last-product-{{$product->id}}" id="href_female_eyeglass_{{$product->id}}_{{ $active->id }}">
                                       @else
-                                      <img src="{{ $variant->photo }}" class="p-2 hover-product active-product last-product last-product-{{$product->id}}" id="href_female_eyeglass_{{$product->id}}_{{ $active->id }}">
+                                      <img src="{{ $active->photo }}" class="p-2 hover-product active-product last-product last-product-{{$product->id}}" id="href_female_eyeglass_{{$product->id}}_{{ $active->id }}">
                                     @endif
                                   </a>
                               </li>
                           @endif
 
-                          @foreach ($product_variant->where('id','!=',$product->id)->where('cat_id',$product->cat_id)->whereIn('product_for',[$product->product_for,30])->flatten() as $i => $variant)
+                          @foreach ( $product_variant->where('id','!=',$product->id)->where('cat_id',$product->cat_id)->whereIn('product_for',[$product->product_for,30])->flatten() as $i => $variant)
                               {{-- @if ($variant->id != $product->id) --}}
 
                                   @if ($i <= 2)

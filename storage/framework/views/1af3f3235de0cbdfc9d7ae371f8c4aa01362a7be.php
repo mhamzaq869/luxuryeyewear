@@ -3,10 +3,10 @@
     <?php $g_image = isset($product->g_image) ? json_decode($product->g_image) : []; ?>
 
     <?php
-    $sub_cat_info = DB::table('categories')
-        ->select('title')
-        ->where('id', $product->child_cat_id)
-        ->get();
+        $sub_cat_info = DB::table('categories')
+            ->select('title')
+            ->where('id', $product->child_cat_id)
+            ->get();
     ?>
     <div class="card">
         <h5 class="card-header">Edit Product</h5>
@@ -26,16 +26,17 @@
                             <label for="inputPhoto" class="col-form-label">Product Front Image <span
                                     class="text-danger"></span></label>
 
-                                <?php if(isset($product->p_f) && $product->p_f != ''): ?>
+                            <?php if(isset($product->p_f) && $product->p_f != ''): ?>
                                 <div class="image-area" id="preview_p_f">
                                     <?php if(!isValidUrl($product->p_f)): ?>
-                                    <img src="<?php echo e(asset($product->p_f)); ?>"   class="img-responsive" />
+                                        <img src="<?php echo e(asset($product->p_f)); ?>" class="img-responsive" />
                                     <?php else: ?>
-                                    <img src="<?php echo e($product->p_f); ?>"   class="img-responsive" />
+                                        <img src="<?php echo e($product->p_f); ?>" class="img-responsive" />
                                     <?php endif; ?>
-                                    <a class="remove-image" href="javascript:deleteImage('p_f')" style="display: inline;">&#215;</a>
+                                    <a class="remove-image" href="javascript:deleteImage('p_f')"
+                                        style="display: inline;">&#215;</a>
                                 </div>
-                                <?php endif; ?>
+                            <?php endif; ?>
 
                             <input class="form-control" type="file" name="before_crop_image[front_image]"
                                 id="front_image">
@@ -57,14 +58,15 @@ unset($__errorArgs, $__bag); ?>
                             <label for="inputPhoto" class="col-form-label">Product Back Image <span
                                     class="text-danger"></span></label>
                             <?php if(isset($product->p_b) && $product->p_b != ''): ?>
-                            <div class="image-area" id="preview_p_b">
-                                <?php if(!isValidUrl($product->p_b)): ?>
-                                <img src="<?php echo e(asset($product->p_b)); ?>" class="img-responsive"  />
-                                <?php else: ?>
-                                <img src="<?php echo e($product->p_b); ?>" class="img-responsive"  />
-                                <?php endif; ?>
-                                <a class="remove-image" href="javascript:deleteImage('p_b')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_p_b">
+                                    <?php if(!isValidUrl($product->p_b)): ?>
+                                        <img src="<?php echo e(asset($product->p_b)); ?>" class="img-responsive" />
+                                    <?php else: ?>
+                                        <img src="<?php echo e($product->p_b); ?>" class="img-responsive" />
+                                    <?php endif; ?>
+                                    <a class="remove-image" href="javascript:deleteImage('p_b')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             <?php endif; ?>
                             <input class="form-control" type="file" name="before_crop_image[back_image]" id="back_image">
                             <?php $__errorArgs = ['p_b'];
@@ -84,14 +86,16 @@ unset($__errorArgs, $__bag); ?>
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger"></span></label>
                             <?php if(isset($product->g_image_1) && $product->g_image_1 != ''): ?>
-                            <div class="image-area" id="preview_g_image_1">
-                                <?php if(!isValidUrl($product->g_image_1)): ?>
-                                <img src="<?php echo e(asset($product->g_image_1)); ?>"  class="img-responsive" id="preview_p_f" />
-                                <?php else: ?>
-                                <img src="<?php echo e($product->g_image_1); ?>"  class="img-responsive" id="preview_p_f" />
-                                <?php endif; ?>
-                                <a class="remove-image"  href="javascript:deleteImage('g_image_1')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_1">
+                                    <?php if(!isValidUrl($product->g_image_1)): ?>
+                                        <img src="<?php echo e(asset($product->g_image_1)); ?>" class="img-responsive"
+                                            id="preview_p_f" />
+                                    <?php else: ?>
+                                        <img src="<?php echo e($product->g_image_1); ?>" class="img-responsive" id="preview_p_f" />
+                                    <?php endif; ?>
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_1')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             <?php endif; ?>
                             <input class="form-control" type="file" name="before_crop_image[g_image_1]" id="g_image_1">
                         </div>
@@ -101,14 +105,15 @@ unset($__errorArgs, $__bag); ?>
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger"></span></label>
                             <?php if(isset($product->g_image_2) && $product->g_image_2 != ''): ?>
-                            <div class="image-area" id="preview_g_image_2" >
-                                <?php if(!isValidUrl($product->g_image_2)): ?>
-                                <img src="<?php echo e(asset($product->g_image_2)); ?>" class="img-responsive" />
-                                <?php else: ?>
-                                <img src="<?php echo e($product->g_image_2); ?>" class="img-responsive" />
-                                <?php endif; ?>
-                                <a class="remove-image" href="javascript:deleteImage('g_image_2')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_2">
+                                    <?php if(!isValidUrl($product->g_image_2)): ?>
+                                        <img src="<?php echo e(asset($product->g_image_2)); ?>" class="img-responsive" />
+                                    <?php else: ?>
+                                        <img src="<?php echo e($product->g_image_2); ?>" class="img-responsive" />
+                                    <?php endif; ?>
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_2')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             <?php endif; ?>
 
                             <input class="form-control" type="file" name="before_crop_image[g_image_2]" id="g_image_2">
@@ -131,16 +136,20 @@ unset($__errorArgs, $__bag); ?>
                             <label for="inputPhoto" class="col-form-label">Product Other Images <span
                                     class="text-danger">*</span></label>
                             <?php if(isset($product->g_image_3) && $product->g_image_3 != ''): ?>
-                            <div class="image-area"  id="preview_g_image_3">
-                                <?php if(!isValidUrl($product->g_image_3)): ?>
-                                <img src="<?php echo e(asset($product->g_image_3)); ?>" id="preview_g_image_3" class="img-responsive" />
-                                <?php else: ?>
-                                <img src="<?php echo e($product->g_image_3); ?>" id="preview_g_image_3" class="img-responsive" />
-                                <?php endif; ?>
-                                <a class="remove-image" href="javascript:deleteImage('g_image_3')" style="display: inline;">&#215;</a>
-                            </div>
+                                <div class="image-area" id="preview_g_image_3">
+                                    <?php if(!isValidUrl($product->g_image_3)): ?>
+                                        <img src="<?php echo e(asset($product->g_image_3)); ?>" id="preview_g_image_3"
+                                            class="img-responsive" />
+                                    <?php else: ?>
+                                        <img src="<?php echo e($product->g_image_3); ?>" id="preview_g_image_3"
+                                            class="img-responsive" />
+                                    <?php endif; ?>
+                                    <a class="remove-image" href="javascript:deleteImage('g_image_3')"
+                                        style="display: inline;">&#215;</a>
+                                </div>
                             <?php endif; ?>
-                            <input class="form-control " type="file" name="before_crop_image[g_image_3]" id="g_image_3">
+                            <input class="form-control " type="file" name="before_crop_image[g_image_3]"
+                                id="g_image_3">
 
                             <?php $__errorArgs = ['photo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -184,7 +193,8 @@ unset($__errorArgs, $__bag); ?>
                             <select name="brand_id" id="brand_id" class="form-control select2">
                                 <option value="">--Select Brand--</option>
                                 <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($brand->id); ?>" <?php if($brand->id == $product->brand_id): ?> selected <?php endif; ?>>
+                                    <option value="<?php echo e($brand->id); ?>"
+                                        <?php if($brand->id == $product->brand_id): ?> selected <?php endif; ?>>
                                         <?php echo e($brand->title); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
@@ -197,18 +207,20 @@ unset($__errorArgs, $__bag); ?>
                             <select name="cat_id" id="cat_id" class="form-control select2">
                                 <option value="">--Select any Category--</option>
                                 <?php if($product->cat_id != null): ?>
-                                    <?php $__currentLoopData = $categories->where('brand_id',$product->brand_id); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $cat_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value='<?php echo e($cat_data->id); ?>' data-size="<?php echo e($cat_data->size); ?>" data-brand="<?php echo e($cat_data->brand_id); ?>"
-                                        <?php if($product->cat_id == $cat_data->id): ?> selected <?php endif; ?>><?php echo e($cat_data->title); ?>
+                                    <?php $__currentLoopData = $categories->where('brand_id', $product->brand_id); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $cat_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value='<?php echo e($cat_data->id); ?>' data-size="<?php echo e($cat_data->size); ?>"
+                                            data-brand="<?php echo e($cat_data->brand_id); ?>"
+                                            <?php if($product->cat_id == $cat_data->id): ?> selected <?php endif; ?>><?php echo e($cat_data->title); ?>
 
-                                    </option>
+                                        </option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php else: ?>
                                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $cat_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value='<?php echo e($cat_data->id); ?>' data-size="<?php echo e($cat_data->size); ?>" data-brand="<?php echo e($cat_data->brand_id); ?>"
-                                        <?php if($product->cat_id == $cat_data->id): ?> selected <?php endif; ?>><?php echo e($cat_data->title); ?>
+                                        <option value='<?php echo e($cat_data->id); ?>' data-size="<?php echo e($cat_data->size); ?>"
+                                            data-brand="<?php echo e($cat_data->brand_id); ?>"
+                                            <?php if($product->cat_id == $cat_data->id): ?> selected <?php endif; ?>><?php echo e($cat_data->title); ?>
 
-                                    </option>
+                                        </option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php endif; ?>
 
@@ -231,7 +243,8 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="status" class="col-form-label">Size: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="<?php echo e($product->size); ?>" name="size" placeholder="Size">
+                            <input type="text" class="form-control" value="<?php echo e($product->size); ?>" name="size"
+                                placeholder="Size">
                             
                         </div>
                     </div>
@@ -283,7 +296,8 @@ unset($__errorArgs, $__bag); ?>
                             <select name="shape" id="shape" class="form-control">
                                 <option value="">--Select any Shape--</option>
                                 <?php $__currentLoopData = $shapes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $shape): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value='<?php echo e($shape->id); ?>' <?php if($shape->id == $product->shape): ?> selected <?php endif; ?>>
+                                    <option value='<?php echo e($shape->id); ?>'
+                                        <?php if($shape->id == $product->shape): ?> selected <?php endif; ?>>
                                         <?php echo e($shape->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
@@ -295,7 +309,8 @@ unset($__errorArgs, $__bag); ?>
                             <select name="product_material" id="product_material" class="form-control">
                                 <option value="">--Select any Material--</option>
                                 <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value='<?php echo e($material->id); ?>' <?php if($material->id == $product->product_material): ?> selected <?php endif; ?>>
+                                    <option value='<?php echo e($material->id); ?>'
+                                        <?php if($material->id == $product->product_material): ?> selected <?php endif; ?>>
                                         <?php echo e($material->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
@@ -320,7 +335,8 @@ unset($__errorArgs, $__bag); ?>
 
                             <select name="product_for" id="category_for" class="form-control ">
                                 <?php $__currentLoopData = $product_for; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $pro_for): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value='<?php echo e($pro_for->id); ?>' <?php if($product->product_for == $pro_for->id): ?> selected <?php endif; ?>>
+                                    <option value='<?php echo e($pro_for->id); ?>'
+                                        <?php if($product->product_for == $pro_for->id): ?> selected <?php endif; ?>>
                                         <?php echo e($pro_for->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
@@ -363,7 +379,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="form-group">
                             <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
                             <input id="price" type="price" name="price" placeholder="Enter price"
-                                value="<?php echo e($product->price); ?>" class="form-control">
+                                value="<?php echo e($product->admin_product_price); ?>" class="form-control">
                             <?php $__errorArgs = ['price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -379,9 +395,9 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="shipping_cost">Shipping Cost <span class="text-danger">*</span></label>
-                            <input id="shipping_cost" type="number" name="shipping_cost" placeholder="Enter Shipping Cost"
-                                value="<?php echo e($product->shipping_cost ?? ''); ?>" class="form-control">
+                            <label for="shipping_cost">Extra <span class="text-danger">*</span></label>
+                            <input id="shipping_cost" type="number" name="extra" placeholder="Enter Extra Price"
+                                value="<?php echo e($product->extra ?? 0); ?>" class="form-control">
                             <?php $__errorArgs = ['shipping_cost'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -433,9 +449,12 @@ unset($__errorArgs, $__bag); ?>
                             <label for="status" class="col-form-label">Status <span
                                     class="text-danger">*</span></label>
                             <select name="status" class="form-control">
-                                <option value="active" <?php echo e($product->status == 'active' ? 'selected' : ''); ?>>Active</option>
-                                <option value="inactive" <?php echo e($product->status == 'inactive' ? 'selected' : ''); ?>>Inactive</option>
-                                <option value="Outofstock" <?php echo e($product->status == 'Outofstock' ? 'selected' : ''); ?>>Out of stock</option>
+                                <option value="active" <?php echo e($product->status == 'active' ? 'selected' : ''); ?>>Active
+                                </option>
+                                <option value="inactive" <?php echo e($product->status == 'inactive' ? 'selected' : ''); ?>>Inactive
+                                </option>
+                                <option value="Outofstock" <?php echo e($product->status == 'Outofstock' ? 'selected' : ''); ?>>Out of
+                                    stock</option>
                             </select>
                             <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -478,10 +497,10 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="brand_id">Dispatch From <span class="text-danger">*</span></label>
-                            <select name="dispatch_from" id="dispatch" class="form-control select2">
+                            <select name="dispatch_from[]" id="dispatch" class="form-control select2">
                                 <option value="">--Select Country--</option>
                                 <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($country->shortname); ?>" <?php if($country->shortname == $product->dispatch_from): ?> selected <?php endif; ?>>
+                                    <option value="<?php echo e($country->shortname); ?>">
                                         <?php echo e($country->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
@@ -492,8 +511,8 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="stock">Country Of Region <span class="text-danger">*</span></label>
-                            <input id="country_of_region" type="text" value="<?php echo e($product->country_of_origin); ?>" name="country_of_origin"
-                                placeholder="Enter Country Of Region"  class="form-control">
+                            <input id="country_of_region" type="text" value="<?php echo e($product->country_of_origin); ?>"
+                                name="country_of_origin" placeholder="Enter Country Of Region" class="form-control">
                             <?php $__errorArgs = ['country_of_origin'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -626,9 +645,12 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
         </div>
+
+        
     <?php $__env->stopSection(); ?>
     <?php $__env->startPush('styles'); ?>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
         <style type="text/css">
             img {
                 display: block;
@@ -696,63 +718,68 @@ unset($__errorArgs, $__bag); ?>
             }
 
 
-        .cke_inner {
+            .cke_inner {
                 width: 100%;
             }
 
-            .bootstrap-tagsinput{
-            width: 100%;
-        }
-        .label-info{
-            background-color: #17a2b8;
+            .bootstrap-tagsinput {
+                width: 100%;
+            }
 
-        }
-        .label {
-            display: inline-block;
-            padding: .25em .4em;
-            font-size: 75%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: .25rem;
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,
-            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
-            padding-left: 20px !important;
-            color:white
-        }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
-            background-color: #0750bd00;
-            border: none;
-            border-right: 1px solid #aaa0;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            color: rgb(255, 255, 255);
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            padding: 0 4px;
-        }
+            .label-info {
+                background-color: #17a2b8;
 
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #4e73df;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-            display: inline-block;
-            margin-left: 5px;
-            margin-top: 5px;
-            padding: 0;
-        }
+            }
 
+            .label {
+                display: inline-block;
+                padding: .25em .4em;
+                font-size: 75%;
+                font-weight: 700;
+                line-height: 1;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: baseline;
+                border-radius: .25rem;
+                transition: color .15s ease-in-out, background-color .15s ease-in-out,
+                    border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+                padding-left: 20px !important;
+                color: white
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+                background-color: #0750bd00;
+                border: none;
+                border-right: 1px solid #aaa0;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                color: rgb(255, 255, 255);
+                cursor: pointer;
+                font-size: 1em;
+                font-weight: bold;
+                padding: 0 4px;
+            }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                background-color: #4e73df;
+                border: 1px solid #aaa;
+                border-radius: 4px;
+                display: inline-block;
+                margin-left: 5px;
+                margin-top: 5px;
+                padding: 0;
+            }
         </style>
     <?php $__env->stopPush(); ?>
     <?php $__env->startPush('scripts'); ?>
         
         <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js" integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.6.0/bootstrap-tagsinput.min.js"
+            integrity="sha512-SXJkO2QQrKk2amHckjns/RYjUIBCI34edl9yh0dzgw3scKu0q4Bo/dUr+sGHMUha0j9Q1Y7fJXJMaBi4xtyfDw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
             jQuery('#brand_id').change(function() {
@@ -767,17 +794,19 @@ unset($__errorArgs, $__bag); ?>
                 })
             })
 
-            CKEDITOR.replace( 'description', {
+            CKEDITOR.replace('description', {
                 resize_dir: 'both',
                 removeButtons: 'PasteFromWord'
-            } );
+            });
 
 
-            $("#dispatch").select2({ multiple: true });
-            $('#dispatch').val(<?php echo json_encode($product->countries, 15, 512) ?>).trigger('change');
+            $("#dispatch").select2({
+                tags: true,
+                multiple: true
+            });
+            $('#dispatch').val(<?php echo json_encode($product->dispatch_from, 15, 512) ?>).trigger('change');
 
-
-            $("#cke_description").attr('width',' ')
+            $("#cke_description").attr('width', ' ')
 
             $('#brand_id').change(function() {
                 var brand_id = $(this).val();
@@ -799,7 +828,8 @@ unset($__errorArgs, $__bag); ?>
                                 if (response.data) {
                                     $.each(data, function(i) {
 
-                                        html_option += "<option value='" + data[i].id + "'>" +data[i].title + "</option>";
+                                        html_option += "<option value='" + data[i].id + "'>" + data[
+                                            i].title + "</option>";
                                     });
                                 } else {
                                     console.log('no response data');
@@ -946,13 +976,13 @@ unset($__errorArgs, $__bag); ?>
                     url: "<?php echo e(url('/deleteImage')); ?>",
                     type: "POSt",
                     data: {
-                        _token:"<?php echo e(csrf_token()); ?>",
-                        id:"<?php echo e($product->id); ?>",
-                        col:col,
-                        data:null,
+                        _token: "<?php echo e(csrf_token()); ?>",
+                        id: "<?php echo e($product->id); ?>",
+                        col: col,
+                        data: null,
                     },
                     success: function(data) {
-                        if(data.status == 200){
+                        if (data.status == 200) {
                             swal({
                                 title: "Good job!",
                                 text: data.message,
@@ -960,7 +990,7 @@ unset($__errorArgs, $__bag); ?>
                                 buttons: true,
                             })
 
-                            $("#"+"preview_"+col).remove();
+                            $("#" + "preview_" + col).remove();
                         }
                     }
                 });
@@ -1027,7 +1057,6 @@ unset($__errorArgs, $__bag); ?>
                 } else {}
 
             });
-
         </script>
     <?php $__env->stopPush(); ?>
 

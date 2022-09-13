@@ -211,28 +211,21 @@ class CategoryController extends Controller
     public function destroy($id)
 
     {
-
         $category = Category::findOrFail($id);
+        if($category->products->count() > 0){
+            request()->session()->flash('error', 'Please remove related products first!');
+        }else{
+            $child_cat_id = Category::where('parent_id', $id)->pluck('id');
+            $status = $category->delete();
 
-        $child_cat_id = Category::where('parent_id', $id)->pluck('id');
-
-        // return $child_cat_id;
-
-        $status = $category->delete();
-
-
-
-        if ($status) {
-
-            if (count($child_cat_id) > 0) {
-
-                Category::shiftChild($child_cat_id);
+            if ($status) {
+                if (count($child_cat_id) > 0) {
+                    Category::shiftChild($child_cat_id);
+                }
+                request()->session()->flash('success', 'Category successfully deleted');
+            } else {
+                request()->session()->flash('error', 'Error while deleting category');
             }
-
-            request()->session()->flash('success', 'Category successfully deleted');
-        } else {
-
-            request()->session()->flash('error', 'Error while deleting category');
         }
 
         return redirect()->route('category.index');
@@ -387,13 +380,23 @@ class CategoryController extends Controller
 
     public function categoriesDelete(Request $request)
     {
+
         if (isset($request->single_check)) {
             $category = Category::findOrFail($request->single_check);
-            $category->delete();
-            request()->session()->flash('success', 'Category successfully deleted');
+            if($category->products->count() > 0){
+                request()->session()->flash('error', 'Please remove related products first!');
+            }else{
+                $category->delete();
+                request()->session()->flash('success', 'Category successfully deleted');
+            }
         } else {
-            Category::whereIn('id', $request->checked)->delete();
-            request()->session()->flash('success', 'Category successfully deleted');
+            $category =  Category::whereIn('id', $request->checked);
+            if($category->products->count() > 0){
+                request()->session()->flash('error', 'Please remove related products first!');
+            }else{
+                $category->delete();
+                request()->session()->flash('success', 'Category successfully deleted');
+            }
         }
 
         return redirect()->route('category.index');

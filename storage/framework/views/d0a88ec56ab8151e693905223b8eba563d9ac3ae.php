@@ -117,8 +117,7 @@
                 </ul>
             </div>
         </div>
-        <!--================================ our Colors ============================-->
-        
+
 
         <h5 class="smTitle">SHAPES</h5>
         <?php if(isset($shape_array) && !empty($shape_array)): ?>

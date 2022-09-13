@@ -71,9 +71,9 @@ Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name(
 
 Route::get('/','FrontendController@home')->name('home');
 Route::get('/filter-product-for','FrontendController@filter_product_for')->name('filter.product');
-Route::get('/eyeglass/{type?}/{for?}','FrontendController@frontend_eyeglass')->name('front.eyeglass.page');
+Route::get('/eyeglasses/{type?}/{for?}','FrontendController@frontend_eyeglass')->name('front.eyeglass.page');
 Route::get('/load_more_eyeglasses/{frametype?}/{type?}/{for?}','FrontendController@load_more_eyeglasses')->name('eyeglasses.load_more_eyeglasses');
-Route::get('/sunglass/{type?}/{for?}','FrontendController@frontend_sunglass')->name('front.sunglass.page');
+Route::get('/sunglasses/{type?}/{for?}','FrontendController@frontend_sunglass')->name('front.sunglass.page');
 Route::get('/load_more_sunglass/{frametype?}/{type?}/{for?}','FrontendController@load_more_sunglass')->name('sunglass.load_more_sunglass');
 Route::get('/brands','FrontendController@frontend_brands')->name('front.brands.page');
 Route::get('/load_more_brands/{brand}/brand','FrontendController@load_more_brands')->name('load_more_brands');
@@ -169,6 +169,9 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('/user/updatepermission','UsersController@updatePermission')->name('users.update.permissions');
     // Banner
     Route::resource('banner','BannerController');
+    Route::get('pages','BannerController@pages')->name('admin.pages');
+    Route::get('page/{id}/edit','BannerController@pageEdit')->name('admin.page.edit');
+    Route::post('page/{id}/update','BannerController@pageUpdate')->name('admin.page.update');
     // Brand
     Route::resource('brand','BrandController');
     // Profile

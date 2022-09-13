@@ -232,6 +232,7 @@ class ProductController extends Controller
         unset($data['front_image']);
         unset($data['back_image']);
         unset($data['before_crop_image']);
+        $data['dispatch_from'] = implode(',',$data['dispatch_from']);
 
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
@@ -379,7 +380,7 @@ class ProductController extends Controller
             "item_code" => $record->product_ean_code ?? '',
             "discount" => '%'.$record->discount ?? '',
             "stock" => $record->stock ?? '',
-            "price" => '$'. $record->price ?? '',
+            "price" => '$'. $record->admin_product_price ?? '',
             "status" => $status,
             "action" => '<a href="'.url("/admin/product/").'/'.$record->id.'/edit" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <a href="'.url("/admin/product/").'/'.$record->id.'/delete" class="btn btn-danger btn-sm dltBtn" data-id="'.$record->id.'" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></a>',
@@ -441,6 +442,7 @@ class ProductController extends Controller
         // $edit_data['frame_types']=Attribute::where('attribute_type', 'frame_type')->get();
         $edit_data['countries']= DB::table('countries')->get();
         $product->countries = explode(',',$product->countries);
+        $product->dispatch_from = explode(',',$product->dispatch_from);
         // return $items;
 
         return view('backend.product.edit',$edit_data)->with('product',$product)
@@ -468,7 +470,6 @@ class ProductController extends Controller
      */
 
     public function update(Request $request, $id)
-
     {
 
         $product = Product::findOrFail($id);
@@ -656,6 +657,7 @@ class ProductController extends Controller
         unset($data['images']);
         unset($data['before_crop_image']);
 
+        $data['dispatch_from'] = implode(',',$data['dispatch_from']);
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
 
