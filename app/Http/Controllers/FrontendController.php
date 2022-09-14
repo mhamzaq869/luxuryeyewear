@@ -812,8 +812,6 @@ class FrontendController extends Controller
         return response($product_detail);
     }
 
-
-
     public function productGrids()
     {
 

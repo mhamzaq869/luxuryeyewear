@@ -426,7 +426,7 @@ class ProductController extends Controller
 
         $category=Category::where('is_parent',1)->orderBy('title')->get();
 
-        $items=Product::where('id',$id)->get();
+        $items = Product::where('id',$id)->get();
 
 
         $edit_data['types']=Attribute::where('attribute_type', 'type')->get();

@@ -67,7 +67,7 @@ class Category extends Model
 
     public function products(){
 
-        return $this->hasMany('App\Models\Product','cat_id');
+        return $this->hasMany('App\Models\Product','cat_id','id');
 
     }
 

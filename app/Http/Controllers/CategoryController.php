@@ -383,6 +383,7 @@ class CategoryController extends Controller
 
         if (isset($request->single_check)) {
             $category = Category::findOrFail($request->single_check);
+
             if($category->products->count() > 0){
                 request()->session()->flash('error', 'Please remove related products first!');
             }else{
@@ -391,11 +392,14 @@ class CategoryController extends Controller
             }
         } else {
             $category =  Category::whereIn('id', $request->checked);
-            if($category->products->count() > 0){
-                request()->session()->flash('error', 'Please remove related products first!');
-            }else{
-                $category->delete();
-                request()->session()->flash('success', 'Category successfully deleted');
+
+            foreach($category->get() as $category){
+                if($category->products->count() > 0){
+                    request()->session()->flash('error', 'Please remove related products first!');
+                }else{
+                    $category->delete();
+                    request()->session()->flash('success', 'Category successfully deleted');
+                }
             }
         }
 

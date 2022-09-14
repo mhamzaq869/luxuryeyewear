@@ -42,7 +42,7 @@
 
                                                         @foreach (Helper::getAllProductFromCart() as $key => $cart)
                                                             <tr>
-
+                                                                {{-- {{dd($cart)}} --}}
                                                                 @php $photo = explode(',', $cart->product['photo']); @endphp
 
                                                                 <td class="image" data-title="No">
@@ -171,7 +171,16 @@
                                 {{-- ============ --}}
 
 
+                                @php
+                                    $carts = Helper::getAllProductFromCart();
 
+                                    $total_amount = Helper::totalCartPrice();
+
+                                    if (session()->has('coupon')) {
+                                        $total_amount = $total_amount + $carts->total_shipping - Session::get('coupon')['value'];
+                                    }
+
+                                @endphp
                                 {{-- Cart Totals --}}
                                 <div class="col-lg-6 col-md-6">
                                     {{-- right --}}
@@ -181,9 +190,13 @@
 
                                         <ul style="line-height:2">
 
-                                            <li class="order_subtotal" data-price="{{ Helper::totalCartPrice() }}">Cart
-                                                Subtotal <span>${{ number_format(Helper::totalCartPrice(), 2) }}</span></li>
+                                            <li class="order_shipping" data-price="{{ Helper::totalCartPrice() }}">
+                                                Cart Shipping  <span>${{ number_format($carts->total_shipping, 2) }}</span>
+                                             </li>
 
+                                            <li class="order_subtotal" data-price="{{ Helper::totalCartPrice() }}">
+                                                Cart Subtotal <span>${{ number_format(Helper::totalCartPrice(), 2) }}</span>
+                                            </li>
 
 
                                             @if (session()->has('coupon'))
@@ -193,22 +206,14 @@
                                                 </li>
                                             @endif
 
-                                            @php
 
-                                                $total_amount = Helper::totalCartPrice();
-
-                                                if (session()->has('coupon')) {
-                                                    $total_amount = $total_amount - Session::get('coupon')['value'];
-                                                }
-
-                                            @endphp
 
                                             @if (session()->has('coupon'))
                                                 <li class="last" id="order_total_price">You
-                                                    Pay <span>${{ number_format($total_amount, 2) }}</span></li>
+                                                    Pay <span>${{ number_format($total_amount + $carts->total_shipping, 2) }}</span></li>
                                             @else
                                                 <li class="last" id="order_total_price">You
-                                                    Pay <span>${{ number_format($total_amount, 2) }}</span></li>
+                                                    Pay <span>${{ number_format($total_amount + $carts->total_shipping, 2) }}</span></li>
                                             @endif
 
                                         </ul>
@@ -226,7 +231,7 @@
                                                 </div>
 
                                                 @if ($paypal->type == 'live')
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
                                                 @else
                                                 <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
                                                 @endif
@@ -244,7 +249,7 @@
 
                                                       createOrder: function(data, actions) {
                                                         return actions.order.create({
-                                                          purchase_units: [{"amount":{"currency_code":"USD","value":110,"breakdown":{"item_total":{"currency_code":"USD","value":100},"shipping":{"currency_code":"USD","value":10},"tax_total":{"currency_code":"USD","value":0}}}}]
+                                                          purchase_units: [{"amount":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }},"breakdown":{"item_total":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }}},"shipping":{"currency_code":"USD","value":10},"tax_total":{"currency_code":"USD","value":0}}}}]
                                                         });
                                                       },
 

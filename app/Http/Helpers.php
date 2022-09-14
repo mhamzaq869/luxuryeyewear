@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\Shipping;
 use App\Models\Cart;
+use Stevebauman\Location\Facades\Location;
+
 // use Auth;
 class Helper{
     public static function messageList()
@@ -99,7 +101,59 @@ class Helper{
     public static function getAllProductFromCart($user_id=''){
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+            $carts = Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+
+            // $location = Location::get(request()->ip());
+            $location = Location::get('111.119.187.50');
+            foreach($carts as $cart){
+                if($location){
+                    $countryCode = $location->countryCode;
+                    $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
+
+                    if($shipping != null && $shipping->count() > 0){
+                        if(in_array($countryCode,explode(',',$cart->dispatch_from))){
+                            $carts->shipping_cost = $shipping->price ?? 0;
+                            $carts->transit = $shipping->transit ?? 0;
+                        }else{
+                            $carts->shipping_cost = 0;
+                            $carts->transit = 0;
+                        }
+                    }else{
+                        $carts->shipping_cost = 0;
+                        $carts->transit = 0;
+                    }
+
+                }else{
+                    $carts->shipping_cost = 10;
+                    $carts->transit = 0;
+                }
+            }
+
+
+            // if($location){
+            //     $countryCode = $location->countryCode;
+            //     $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
+
+            //     if($shipping != null && $shipping->count() > 0){
+            //         if(in_array($countryCode,explode(',',$carts->dispatch_from))){
+            //             $carts->shipping_cost = $shipping->price ?? 0;
+            //             $carts->transit = $shipping->transit ?? 0;
+            //         }else{
+            //             $carts->shipping_cost = 10;
+            //             $carts->transit = 0;
+            //         }
+            //     }else{
+            //         $carts->shipping_cost = 10;
+            //         $carts->transit = 0;
+            //     }
+
+            // }else{
+            //     $carts->shipping_cost = 10;
+            //     $carts->transit = 0;
+            // }
+
+            $carts->total_shipping = $carts->shipping_cost;
+            return $carts;
         }
         else{
             return 0;

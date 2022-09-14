@@ -14,7 +14,7 @@ class Product extends Model
     protected $append=['admin_product_price'];
 
     public function cat_info(){
-        return $this->belongsTo('App\Models\Category','cat_id');
+        return $this->belongsTo('App\Models\Category','cat_id','id');
     }
 
     public function sub_cat_info(){
