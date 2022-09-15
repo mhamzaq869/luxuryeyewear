@@ -26,7 +26,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
     {
     //   print_r($row[12]); die;
 
-        // dd($rows);
+        // dd($rows[435]['shape']);
         $arr=[];
         foreach($rows as $i => $row){
 
@@ -38,6 +38,8 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $brand = Brand::where('title',$row['brands'])->first();
             $model = Category::where('title',trim($row['model']))->first();
 
+            // dump($i,$productFor);
+
 
             if($row['image1'] == null){
                 $photo = "/upload/product/full/no_image.jpg";
@@ -46,15 +48,13 @@ class ImportProduct implements ToCollection,WithHeadingRow
             }
 
 
-            // if($brand == null){
+
             $brand = Brand::updateOrCreate(['slug' => Str::slug($row['brands'],'-')],[
                     'title' => $row['brands'],
                     'slug' => Str::slug($row['brands'],'-'),
                     'url' => '',
             ]);
-            // }
 
-            // if($model === null){
             $model = Category::updateOrCreate(['slug' => Str::slug($row['model'],'-')],[
                     'title' => $row['model'],
                     'slug' => Str::slug($row['model'],'-'),
@@ -63,7 +63,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                     'frame_type' => ($frameType != null) ? $frameType->id : null,
                     'status' => 'active',
             ]);
-            // }
+
 
             $array = [];
             $array['width'] = $row['width'] ?? '';
@@ -86,11 +86,11 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $slug = Str::slug($title,'-');
 
 
-            Product::insertOrIgnore([
+            Product::updateOrCreate(['slug' => $slug],[
                 'title' => $title,
-                'slug' =>  $slug.'-'.$i.'-'.date('H-i-s-Y-m-d'),
+                'slug' =>  $slug,
                 'product_uan_code' => $row['item_code'],
-                'product_ean_code' => $row['ean_code'],
+                'product_ean_code' => ($row['ean_code'] != null && $row['ean_code'] != '') ? $row['ean_code'] : null ,
                 // 'frame_type' => $frameType->id,
                 'brand_id' => $brand->id,
                 'cat_id' => $model->id,
@@ -122,7 +122,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'status' => ($row['qty'] == 0) ? 'out-of-stock' : 'inactive',
             ]);
         }
-
+        // dd('d');
     }
 
 }

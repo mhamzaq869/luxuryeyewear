@@ -33,6 +33,22 @@
             border: 1px solid black;
             border-radius: 0 !important;
         }
+
+
+        @media only screen and (max-width: 600px){
+            .card-img-top {
+                width: 100%;
+                height: 30vw;
+                /* object-fit: scale-down; */
+            }
+        }
+        @media only screen and (max-width: 425px){
+            .card-img-top {
+                width: 100%;
+                height: 30vw;
+                /* object-fit: scale-down; */
+            }
+        }
     </style>
     <section>
 

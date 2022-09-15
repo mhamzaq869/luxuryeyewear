@@ -234,7 +234,7 @@
                                             <?php endif; ?>
 
                                             <?php if($product_detail->transit): ?>
-                                             <span class="productPrice">Ship in: <?php echo e($product_detail->transit); ?></span>
+                                             <span class="productPrice">delivery <?php echo e($product_detail->transit); ?></span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end <?php if($product_detail->stock == 0): ?> d-none <?php endif; ?>">

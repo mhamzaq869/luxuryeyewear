@@ -75,7 +75,7 @@ class CartController extends Controller
             return back();
         }
 
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)->first();
+        $already_cart = Cart::where('user_id', request()->ip())->where('order_id',null)->where('product_id', $product->id)->first();
 
         // return $already_cart;
 
@@ -90,7 +90,7 @@ class CartController extends Controller
         }else{
 
             $cart = new Cart;
-            $cart->user_id = auth()->user()->id;
+            $cart->user_id = request()->ip();
             $cart->product_id = $product->id;
             $cart->price = ($product->price-($product->price*$product->discount)/100);
             $cart->quantity = $quant;

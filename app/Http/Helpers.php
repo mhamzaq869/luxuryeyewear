@@ -100,8 +100,8 @@ class Helper{
 
     public static function getAllProductFromCart($user_id=''){
         if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            $carts = Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+            if($user_id=="") $user_id=request()->ip();
+            $carts = Cart::with('product')->where('user_id',request()->ip())->where('order_id',null)->get();
 
             $location = Location::get(request()->ip());
             // $location = Location::get('111.119.187.50');
@@ -112,18 +112,22 @@ class Helper{
 
                     if($shipping != null && $shipping->count() > 0){
                         if(in_array($countryCode,explode(',',$cart->dispatch_from))){
+                            $carts->shipping_id = $shipping->id;
                             $carts->shipping_cost = $shipping->price ?? 0;
                             $carts->transit = $shipping->transit ?? 0;
                         }else{
+                            $carts->shipping_id = null;
                             $carts->shipping_cost = 0;
                             $carts->transit = 0;
                         }
                     }else{
+                        $carts->shipping_id = null;
                         $carts->shipping_cost = 0;
                         $carts->transit = 0;
                     }
 
                 }else{
+                    $carts->shipping_id = null;
                     $carts->shipping_cost = 0;
                     $carts->transit = 0;
                 }

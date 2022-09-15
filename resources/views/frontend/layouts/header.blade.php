@@ -197,7 +197,7 @@
                        alt="Image Not Found"></a>
 
                        @auth
-                       {{DB::table('wishlists')->where('user_id',Auth::user()->id)->count()}}
+                       {{DB::table('wishlists')->where('user_id',request()->ip())->count()}}
                        @else
                        0
                        @endauth
@@ -206,7 +206,7 @@
                     <a href="{{route('cart')}}"><img src="{{asset('assets/./images/cart-icon.svg')}}"
                        alt="Image Not Found"></a>
                        @auth
-                       {{DB::table('carts')->where('user_id',Auth::user()->id)->count()}}
+                       {{DB::table('carts')->where('user_id',request()->ip())->count()}}
                        @else
                        0
                        @endauth

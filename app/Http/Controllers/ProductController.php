@@ -749,9 +749,21 @@ class ProductController extends Controller
 
     public function saveProductImport(Request $request)
     {
-        Excel::import(new ImportProduct, $request->file('file')->store('files'));
-        request()->session()->flash('success','Product Import Successfully!');
+        try{
+            Excel::import(new ImportProduct, $request->file('file')->store('files'));
+            request()->session()->flash('success','Product Import Successfully!');
+        }catch(Exception $e){
+            dd($e->errorInfo[2]);
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == '1062'){
+                request()->session()->flash('error','Duplicated Product EAN Code');
+            }
+            else{
+                request()->session()->flash('error',$e->getMessage());
+            }
+        }
         return redirect()->route('product.index');
+
 
     }
 

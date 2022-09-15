@@ -236,7 +236,7 @@
 
                                                 @if ($paypal->type == 'live')
                                                 {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
                                                 @else
                                                 {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
                                                 <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
@@ -265,13 +265,14 @@
                                                         // pass in any options from the v2 orders create call:
                                                         // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
                                                         const createOrderPayload = {
-                                                        purchase_units: [
-                                                            {
-                                                                amount: {
-                                                                    value: {{ number_format($total_amount + $carts->total_shipping, 2) }},
+                                                            purchase_units: [
+                                                                {
+                                                                    amount: {
+                                                                        value: {{ number_format($total_amount + $carts->total_shipping, 2) }},
+                                                                    },
+
                                                                 },
-                                                            },
-                                                        ],
+                                                            ],
                                                         }
 
                                                         return actions.order.create(createOrderPayload)
@@ -281,7 +282,42 @@
                                                     onApprove: (data, actions) => {
                                                         const captureOrderHandler = (details) => {
                                                         const payerName = details.payer.name.given_name
-                                                        console.log('Transaction completed!')
+                                                            console.log(details)
+
+                                                            $.ajax({
+                                                                url: "{{route('cart.order')}}",
+                                                                dataType: "json",
+                                                                type: "Post",
+                                                                async: true,
+                                                                data: {
+                                                                    _token: "{{csrf_token()}}",
+                                                                    user_id: "{{request()->ip()}}",
+                                                                    shipping: "{{$carts->shipping_id}}",
+                                                                    payment_method: 'paypal'
+                                                                },
+                                                                success: function (data) {
+
+                                                                },
+                                                                error: function (xhr, exception) {
+                                                                    var msg = "";
+                                                                    if (xhr.status === 0) {
+                                                                        msg = "Not connect.\n Verify Network." + xhr.responseText;
+                                                                    } else if (xhr.status == 404) {
+                                                                        msg = "Requested page not found. [404]" + xhr.responseText;
+                                                                    } else if (xhr.status == 500) {
+                                                                        msg = "Internal Server Error [500]." +  xhr.responseText;
+                                                                    } else if (exception === "parsererror") {
+                                                                        msg = "Requested JSON parse failed.";
+                                                                    } else if (exception === "timeout") {
+                                                                        msg = "Time out error." + xhr.responseText;
+                                                                    } else if (exception === "abort") {
+                                                                        msg = "Ajax request aborted.";
+                                                                    } else {
+                                                                        msg = "Error:" + xhr.status + " " + xhr.responseText;
+                                                                    }
+
+                                                                }
+                                                            });
                                                         }
 
                                                         return actions.order.capture().then(captureOrderHandler)

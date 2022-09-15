@@ -8,10 +8,10 @@ use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
 use PDF;
-use Notification;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -44,19 +44,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'first_name'=>'string|required',
-            'last_name'=>'string|required',
-            'address1'=>'string|required',
-            'address2'=>'string|nullable',
-            'coupon'=>'nullable|numeric',
-            'phone'=>'numeric|required',
-            'post_code'=>'string|nullable',
-            'email'=>'string|required'
-        ]);
+        // $this->validate($request,[
+        //     'first_name'=>'string|required',
+        //     'last_name'=>'string|required',
+        //     'address1'=>'string|required',
+        //     'address2'=>'string|nullable',
+        //     'coupon'=>'nullable|numeric',
+        //     'phone'=>'numeric|required',
+        //     'post_code'=>'string|nullable',
+        //     'email'=>'string|required'
+        // ]);
         // return $request->all();
 
-        if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
+        if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
             request()->session()->flash('error','Cart is Empty !');
             return back();
         }
@@ -91,9 +91,9 @@ class OrderController extends Controller
         $order=new Order();
         $order_data=$request->all();
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
-        $order_data['user_id']=$request->user()->id;
+        $order_data['user_id']= request()->ip();
         $order_data['shipping_id']=$request->shipping;
-        $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
+        $shipping = $request->shipping;
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();
         $order_data['quantity']=Helper::cartCount();
@@ -102,15 +102,15 @@ class OrderController extends Controller
         }
         if($request->shipping){
             if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
+                $order_data['total_amount']= Helper::totalCartPrice()+$shipping->session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0];
+                $order_data['total_amount']= Helper::totalCartPrice()+$shipping;
             }
         }
         else{
             if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
+                $order_data['total_amount']=Helper::totalCartPrice()->session('coupon')['value'];
             }
             else{
                 $order_data['total_amount']=Helper::totalCartPrice();
@@ -145,7 +145,7 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('coupon');
         }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
+        Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id]);
 
         // dd($users);
         request()->session()->flash('success','Your product successfully placed in order');
@@ -160,7 +160,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order=Order::find($id);
+        $order = Order::find($id);
         // return $order;
         return view('backend.order.show')->with('order',$order);
     }
