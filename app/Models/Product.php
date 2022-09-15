@@ -7,9 +7,12 @@ use App\Models\Cart;
 use Dompdf\Css\Color;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
+use Cviebrock\EloquentSluggable\Sluggable;
+
 
 class Product extends Model
 {
+
     protected $guarded=[];
     protected $append=['admin_product_price'];
 
@@ -131,6 +134,31 @@ class Product extends Model
         }
         return $products;
     }
+
+    // public function setSlugAttribute($value) {
+
+    //     if (static::whereSlug($slug = \Str::slug($value))->exists()) {
+
+    //         $slug = $this->incrementSlug($slug);
+    //     }
+
+    //     $this->attributes['slug'] = $slug;
+    // }
+
+     /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+
 
     public static function Variant($id, array $gender){
         $products = Product::where('cat_id',$id)->where('status','active')->where('frame_type',31)->whereIn('product_for', $gender)->get();

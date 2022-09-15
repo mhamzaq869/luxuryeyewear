@@ -83,10 +83,10 @@ class ImportProduct implements ToCollection,WithHeadingRow
             }
 
             $title .= ' '.$row['colour'];
-            $slug = Str::slug($title,'-');
+            $slug = Str::slug($title,'-').'-'. rand(0,1010) .'-'. date('Y-m-d-H-i-s-u');
 
 
-            Product::updateOrCreate(['slug' => $slug],[
+            Product::create([
                 'title' => $title,
                 'slug' =>  $slug,
                 'product_uan_code' => $row['item_code'],
