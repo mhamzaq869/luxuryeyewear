@@ -453,7 +453,7 @@ unset($__errorArgs, $__bag); ?>
                                 </option>
                                 <option value="inactive" <?php echo e($product->status == 'inactive' ? 'selected' : ''); ?>>Inactive
                                 </option>
-                                <option value="Outofstock" <?php echo e($product->status == 'Outofstock' ? 'selected' : ''); ?>>Out of
+                                <option value="Outofstock" <?php echo e($product->status == 'outofstock' ? 'selected' : ''); ?>>Out of
                                     stock</option>
                             </select>
                             <?php $__errorArgs = ['status'];

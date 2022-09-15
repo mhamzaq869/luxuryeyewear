@@ -362,7 +362,7 @@
                             <select name="status" class="form-control">
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
-                                <option value="Outofstock">Out of stock</option>
+                                <option value="outofstock">Out of stock</option>
                             </select>
                             @error('status')
                                 <span class="text-danger">{{ $message }}</span>

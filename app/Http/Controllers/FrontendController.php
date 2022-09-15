@@ -1068,14 +1068,16 @@ class FrontendController extends Controller
     public function productSearch(Request $request)
     {
 
-        $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+        $recent_products = Product::whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
 
         if($request->search != null){
             $products = Product::orwhere('title', 'like', '%' . $request->search . '%')
+            ->whereIn('status', ['active','outofstock'])
             ->orwhere('slug', 'like', '%' . $request->search . '%')
             ->orwhere('description', 'like', '%' . $request->search . '%')
             ->orwhere('summary', 'like', '%' . $request->search . '%')
             ->orwhere('price', 'like', '%' . $request->search . '%')
+
             ->orderBy('id', 'DESC')
             ->paginate(20);
 
@@ -1083,7 +1085,7 @@ class FrontendController extends Controller
             $products = [];
         }
 
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+        $product_variant = Product::whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
         return view('frontend.pages.product_for')
                 ->with('data', $products)

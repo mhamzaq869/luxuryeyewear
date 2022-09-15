@@ -361,8 +361,8 @@ class ProductController extends Controller
 
         if($record->status == 'active'){
             $status = '<span class="badge badge-success">'.$record->status.'</span>';
-        }else if($record->status == 'Outofstock'){
-            $status = '<span class="badge badge-danger">'.$record->status.'</span>';
+        }else if($record->status == 'outofstock'){
+            $status = '<span class="badge badge-danger">'.ucfirst($record->status).'</span>';
         }else{
             $status = '<span class="badge badge-warning">'.$record->status.'</span>';
         }

@@ -433,7 +433,7 @@
                                 </option>
                                 <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Inactive
                                 </option>
-                                <option value="Outofstock" {{ $product->status == 'Outofstock' ? 'selected' : '' }}>Out of
+                                <option value="Outofstock" {{ $product->status == 'outofstock' ? 'selected' : '' }}>Out of
                                     stock</option>
                             </select>
                             @error('status')
