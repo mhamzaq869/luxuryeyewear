@@ -220,10 +220,13 @@
 
                                         <div class="button5 mt-2 p-5 text-center">
 
+                                            <div class="row">
+
+
                                             {{-- <a href="{{ route('checkout') }}" class="btn btn-warning">Checkout</a> --}}
-                                            <div class="col-md-4"> </div>
+                                            <div class="col-md-2"> </div>
                                             @if ($availablePaymnMethod)
-                                            <div class="col-md-4">
+                                            <div class="col-md-8">
                                                 @if ($paypal = $availablePaymnMethod->where('method','paypal')->first())
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
@@ -232,19 +235,85 @@
                                                 </div>
 
                                                 @if ($paypal->type == 'live')
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
                                                 @else
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
                                                 @endif
 
+
                                                 <script>
+                                                const fundingSources = [
+                                                    paypal.FUNDING.PAYPAL,
+                                                    paypal.FUNDING.CARD
+                                                    ]
+
+                                                for (const fundingSource of fundingSources) {
+                                                    const paypalButtonsComponent = paypal.Buttons({
+                                                    fundingSource: fundingSource,
+
+                                                    // optional styling for buttons
+                                                    // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
+                                                    style: {
+                                                        shape: 'rect',
+                                                        height: 40,
+                                                    },
+
+                                                    // set up the transaction
+                                                    createOrder: (data, actions) => {
+                                                        // pass in any options from the v2 orders create call:
+                                                        // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+                                                        const createOrderPayload = {
+                                                        purchase_units: [
+                                                            {
+                                                                amount: {
+                                                                    value: {{ number_format($total_amount + $carts->total_shipping, 2) }},
+                                                                },
+                                                            },
+                                                        ],
+                                                        }
+
+                                                        return actions.order.create(createOrderPayload)
+                                                    },
+
+                                                    // finalize the transaction
+                                                    onApprove: (data, actions) => {
+                                                        const captureOrderHandler = (details) => {
+                                                        const payerName = details.payer.name.given_name
+                                                        console.log('Transaction completed!')
+                                                        }
+
+                                                        return actions.order.capture().then(captureOrderHandler)
+                                                    },
+
+                                                    // handle unrecoverable errors
+                                                    onError: (err) => {
+                                                        console.error(
+                                                        'An error prevented the buyer from checking out with PayPal',
+                                                        )
+                                                    },
+                                                    })
+
+                                                    if (paypalButtonsComponent.isEligible()) {
+                                                    paypalButtonsComponent
+                                                        .render('#paypal-button-container')
+                                                        .catch((err) => {
+                                                        console.error('PayPal Buttons failed to render')
+                                                        })
+                                                    } else {
+                                                    console.log('The funding source is ineligible')
+                                                    }
+                                                }
+                                                </script>
+                                                {{-- <script>
                                                   function initPayPalButton() {
                                                     paypal.Buttons({
                                                       style: {
                                                         shape: 'rect',
                                                         color: 'gold',
-                                                        layout: 'horizontal',
-                                                        label: 'checkout',
+                                                        layout: 'vertical',
+                                                        // label: 'checkout',
                                                       },
 
                                                       createOrder: function(data, actions) {
@@ -275,17 +344,17 @@
                                                     }).render('#paypal-button-container');
                                                   }
                                                   initPayPalButton();
-                                                </script>
+                                                </script> --}}
                                                 @endif
 
-
+                                                <a href="{{ route('product-lists') }}" class="btn btn-warning w-100 py-2">Continue
+                                                    shopping</a>
                                             </div>
-                                            <a href="{{ route('product-lists') }}" class="btn btn-warning">Continue
-                                                shopping</a>
+
                                             @endif
 
-
-
+                                            <div class="col-md-2"> </div>
+                                        </div>
 
                                         </div>
 
