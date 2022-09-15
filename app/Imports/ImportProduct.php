@@ -50,7 +50,6 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $brand = Brand::updateOrCreate(['slug' => Str::slug($row['brands'],'-')],[
                     'title' => $row['brands'],
                     'slug' => Str::slug($row['brands'],'-'),
-                    'brand_image' => $photo,
                     'url' => '',
             ]);
             // }
