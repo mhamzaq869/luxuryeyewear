@@ -235,7 +235,7 @@
                                             @endif
 
                                             @if ($product_detail->transit)
-                                             <span class="productPrice">Ship in: {{ $product_detail->transit }}</span>
+                                             <span class="productPrice">delivery {{ $product_detail->transit }}</span>
                                             @endif
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">

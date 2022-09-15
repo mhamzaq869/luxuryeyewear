@@ -721,7 +721,7 @@ class FrontendController extends Controller
             $product_detail->product_total_width = '';
         }
 
-        $product_variant = Product::where('cat_id', $product_detail->cat_id)->get();
+        $product_variant = Product::where('cat_id', $product_detail->cat_id)->where('status','active')->get();
         foreach($product_variant as $detail){
             $detail->frame_type_name = Attribute::find($detail->cat_info->frame_type)->name ?? '';
             $detail->shape_name = Attribute::find($detail->shape)->name ?? '';

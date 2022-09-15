@@ -46,14 +46,14 @@ class ImportProduct implements ToCollection,WithHeadingRow
             }
 
 
-            if($brand == null){
-                $brand = Brand::create([
-                        'title' => $row['brands'],
-                        'slug' => Str::slug($row['brands'],'-').'-'.$i.'-'.date('Y-m-d-H-i-s'),
-                        'brand_image' => $photo,
-                        'url' => '',
-                ]);
-            }
+            // if($brand == null){
+            $brand = Brand::updateOrCreate(['slug' => Str::slug($row['brands'],'-')],[
+                    'title' => $row['brands'],
+                    'slug' => Str::slug($row['brands'],'-'),
+                    'brand_image' => $photo,
+                    'url' => '',
+            ]);
+            // }
 
             // if($model === null){
             $model = Category::updateOrCreate(['slug' => Str::slug($row['model'],'-')],[

@@ -218,11 +218,12 @@
 
                                         </ul>
 
-                                        <div class="button5 mt-2 p-5">
+                                        <div class="button5 mt-2 p-5 text-center">
 
                                             {{-- <a href="{{ route('checkout') }}" class="btn btn-warning">Checkout</a> --}}
+                                            <div class="col-md-4"> </div>
                                             @if ($availablePaymnMethod)
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 @if ($paypal = $availablePaymnMethod->where('method','paypal')->first())
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
@@ -244,12 +245,11 @@
                                                         color: 'gold',
                                                         layout: 'horizontal',
                                                         label: 'checkout',
-
                                                       },
 
                                                       createOrder: function(data, actions) {
                                                         return actions.order.create({
-                                                          purchase_units: [{"amount":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }},"breakdown":{"item_total":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }}},"shipping":{"currency_code":"USD","value":10},"tax_total":{"currency_code":"USD","value":0}}}}]
+                                                          purchase_units: [{"amount":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }},"breakdown":{"item_total":{"currency_code":"USD","value":{{ number_format($total_amount, 2) }}},"shipping":{"currency_code":"USD","value":{{$carts->total_shipping}}},"tax_total":{"currency_code":"USD","value":0}}}}]
                                                         });
                                                       },
 
@@ -277,13 +277,15 @@
                                                   initPayPalButton();
                                                 </script>
                                                 @endif
-                                            </div>
 
+
+                                            </div>
+                                            <a href="{{ route('product-lists') }}" class="btn btn-warning">Continue
+                                                shopping</a>
                                             @endif
 
 
-                                            <a href="{{ route('product-lists') }}" class="btn btn-warning">Continue
-                                                shopping</a>
+
 
                                         </div>
 

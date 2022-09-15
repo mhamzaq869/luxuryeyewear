@@ -232,7 +232,10 @@ class ProductController extends Controller
         unset($data['front_image']);
         unset($data['back_image']);
         unset($data['before_crop_image']);
-        $data['dispatch_from'] = implode(',',$data['dispatch_from']);
+
+        if(!empty($data['dispatch_from'])){
+            $data['dispatch_from'] = implode(',',$data['dispatch_from']);
+        }
 
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
@@ -657,7 +660,9 @@ class ProductController extends Controller
         unset($data['images']);
         unset($data['before_crop_image']);
 
-        $data['dispatch_from'] = implode(',',$data['dispatch_from']);
+        if(!empty($data['dispatch_from'])){
+            $data['dispatch_from'] = implode(',',$data['dispatch_from']);
+        }
         $cat_frame_type = Category::find($data['cat_id'])->frame_type;
         // $data['frame_type'] = $cat_frame_type;
 
