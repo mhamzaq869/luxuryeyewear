@@ -83,11 +83,13 @@
 
                 <div class="table-responsive">
 
+                    @php
+                        $i = 1000;
+                        $cats = \App\Models\Category::with(['brand', 'frame_type'])->get();
+                    @endphp
+
+
                     @if (count($data['categories']) > 0)
-                        @php
-                            $i = 1000;
-                            $cats = \App\Models\Category::with(['brand', 'frame_type'])->get();
-                        @endphp
 
 
 
