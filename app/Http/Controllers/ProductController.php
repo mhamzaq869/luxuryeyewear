@@ -753,10 +753,9 @@ class ProductController extends Controller
             Excel::import(new ImportProduct, $request->file('file')->store('files'));
             request()->session()->flash('success','Product Import Successfully!');
         }catch(Exception $e){
-            dd($e->errorInfo[2]);
             $errorCode = $e->errorInfo[1];
             if($errorCode == '1062'){
-                request()->session()->flash('error','Duplicated Product EAN Code');
+                request()->session()->flash('error',$e->errorInfo[2]);
             }
             else{
                 request()->session()->flash('error',$e->getMessage());
