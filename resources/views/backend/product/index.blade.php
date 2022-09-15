@@ -221,7 +221,6 @@
             });
 
             $('#product').DataTable({
-
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
