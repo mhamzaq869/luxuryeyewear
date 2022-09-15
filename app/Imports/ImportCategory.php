@@ -40,16 +40,24 @@ class ImportCategory implements ToModel,WithStartRow
         $size['arm_length'] = $row[4];
         $size['lens_height'] = $row[5];
         $size['total_width'] = $row[6];
-        if(!$brand){
-           $brand=New Brand;
-           $brand->title = $row[0];
-           $brand->slug = $slug;
-           $brand->url = 'https://example.com/';
-           $brand->brand_image = 'No Image';
 
-          $brand->save();
+        // if(!$brand){
+        //    $brand=New Brand;
+        //    $brand->title = $row[0];
+        //    $brand->slug = $slug;
+        //    $brand->url = 'https://example.com/';
+        //    $brand->brand_image = 'No Image';
 
-        }
+        //   $brand->save();
+
+
+        // }
+
+        $brand = Brand::updateOrCreate(['slug' => $slug],[
+                'title' => $row[0],
+                'slug' => $brand->slug,
+                'url' => '',
+        ]);
 
         $slug1=Str::slug($row[1]);
 

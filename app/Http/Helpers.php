@@ -103,8 +103,8 @@ class Helper{
             if($user_id=="") $user_id=auth()->user()->id;
             $carts = Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
 
-            // $location = Location::get(request()->ip());
-            $location = Location::get('111.119.187.50');
+            $location = Location::get(request()->ip());
+            // $location = Location::get('111.119.187.50');
             foreach($carts as $cart){
                 if($location){
                     $countryCode = $location->countryCode;
@@ -124,7 +124,7 @@ class Helper{
                     }
 
                 }else{
-                    $carts->shipping_cost = 10;
+                    $carts->shipping_cost = 0;
                     $carts->transit = 0;
                 }
             }

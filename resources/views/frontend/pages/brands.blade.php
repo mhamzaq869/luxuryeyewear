@@ -25,8 +25,13 @@
     <style>
         .card-img-top {
             width: 100%;
-            height: 11vw;
-            object-fit: scale-down;
+            height: 8vw;
+            /* object-fit: scale-down; */
+        }
+
+        .border-black{
+            border: 1px solid black;
+            border-radius: 0 !important;
         }
     </style>
     <section>
@@ -39,9 +44,9 @@
                     <div class="row g-2">
                         @foreach ($brand_img as $brand)
                             <div class="col-md-3 col-12">
-                                <div class="card"  >
+                                <div class="card border-black">
                                     <a href="{{ route('product-brand',[$brand->slug]) }}" target="_blank" title="{{ $brand->title }}">
-                                        <img class="card-img-top p-5" src="{{ asset($brand->brand_image) }}"
+                                        <img class="card-img-top p-2" src="{{ asset($brand->brand_image) }}"
                                             alt="Card image cap">
                                     </a>
 
