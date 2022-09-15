@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('payment_integrations', function (Blueprint $table) {
             $table->id();
             $table->string('method')->nullable();
-            $table->type('type')->nullable();
+            $table->string('type')->nullable();
             $table->text('secret_key')->nullable();
             $table->text('public_key')->nullable();
             $table->timestamps();
