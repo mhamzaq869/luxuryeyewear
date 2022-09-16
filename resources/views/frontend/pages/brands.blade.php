@@ -25,7 +25,7 @@
     <style>
         .card-img-top {
             width: 100%;
-            height: 8vw;
+            height: 150px;
             /* object-fit: scale-down; */
         }
 
@@ -57,15 +57,20 @@
             <div class="container">
                 <b> Total Brand:<span class="">{{ count($brand_img) }}</span></b>
                 <div class="brand_logo_list">
-                    <div class="row g-2">
+                    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-2 justify-content-center">
                         @foreach ($brand_img as $brand)
-                            <div class="col-md-3 col-12">
-                                <div class="card border-black">
+                            <div class="col">
+                                {{-- <div class="card border-black">
                                     <a href="{{ route('product-brand',[$brand->slug]) }}" target="_blank" title="{{ $brand->title }}">
-                                        <img class="card-img-top p-2" src="{{ asset($brand->brand_image) }}"
+                                        <img class="card-img-top px-5 py-4" src="{{ asset($brand->brand_image) }}"
                                             alt="Card image cap">
                                     </a>
 
+                                </div> --}}
+
+                                <div class="brand_logo_link">
+                                    <a href="{{ route('product-brand',[$brand->slug]) }}" target="_blank" title="{{ $brand->title }}" class="blankLink"></a>
+                                    <img src="{{ asset($brand->brand_image) }}" alt="...">
                                 </div>
                             </div>
                         @endforeach
