@@ -99,7 +99,7 @@ class Helper{
     }
 
     public static function getAllProductFromCart($user_id=''){
-        if(Auth::check()){
+        // if(Auth::check()){
             if($user_id=="") $user_id=request()->ip();
             $carts = Cart::with('product')->where('user_id',request()->ip())->where('order_id',null)->get();
 
@@ -158,10 +158,10 @@ class Helper{
 
             $carts->total_shipping = $carts->shipping_cost;
             return $carts;
-        }
-        else{
-            return 0;
-        }
+        // }
+        // else{
+        //     return 0;
+        // }
     }
     // Total amount cart
     public static function totalCartPrice($user_id=''){

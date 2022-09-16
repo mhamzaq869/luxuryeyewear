@@ -191,12 +191,10 @@
                   <li>
                     <a href="<?php echo e(route('cart')); ?>"><img src="<?php echo e(asset('assets/./images/cart-icon.svg')); ?>"
                        alt="Image Not Found"></a>
-                       <?php if(auth()->guard()->check()): ?>
+                       
                        <?php echo e(DB::table('carts')->where('user_id',request()->ip())->count()); ?>
 
-                       <?php else: ?>
-                       0
-                       <?php endif; ?>
+                       
 
                   </li>
                   <li class="d-lg-none">

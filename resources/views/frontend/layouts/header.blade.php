@@ -205,11 +205,11 @@
                   <li>
                     <a href="{{route('cart')}}"><img src="{{asset('assets/./images/cart-icon.svg')}}"
                        alt="Image Not Found"></a>
-                       @auth
+                       {{-- @auth --}}
                        {{DB::table('carts')->where('user_id',request()->ip())->count()}}
-                       @else
+                       {{-- @else
                        0
-                       @endauth
+                       @endauth --}}
 
                   </li>
                   <li class="d-lg-none">

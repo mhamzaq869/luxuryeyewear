@@ -119,7 +119,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'country_of_origin' => $row['country_of_region'],
                 'dispatch_from' => $row['dispatch_from'],
                 'is_featured' => 0,
-                'status' => ($row['qty'] == 0) ? 'out-of-stock' : 'inactive',
+                'status' => ($row['qty'] == 0) ? 'outofstock' : 'inactive',
             ]);
         }
         // dd('d');

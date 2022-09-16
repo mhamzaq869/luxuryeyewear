@@ -235,10 +235,9 @@
                                                 </div>
 
                                                 @if ($paypal->type == 'live')
-                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
+                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=venmo&currency=USD" data-sdk-integration-source="integrationbuilder"></script> --}}
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
                                                 @else
-                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&disable-funding=credit,card,venmo&currency=USD" data-sdk-integration-source="button-factory"></script> --}}
                                                 <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
                                                 @endif
 
