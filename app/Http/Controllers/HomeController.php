@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\Order;
 use App\Models\ProductReview;
 use App\Models\PostComment;
+use App\Models\State;
 use App\Rules\MatchOldPassword;
 use Hash;
 
@@ -34,12 +36,44 @@ class HomeController extends Controller
     }
 
     public function profile(){
-        $profile=Auth()->user();
-        // return $profile;
-        return view('user.users.profile')->with('profile',$profile);
+
+        $countries = Country::all();
+        $states = State::all();
+
+        return view('user.users.profile',get_defined_vars());
     }
 
     public function profileUpdate(Request $request,$id){
+
+        $user=User::findOrFail($id);
+        $data=$request->all();
+        $status = $user->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Successfully updated your profile');
+        }
+        else{
+            request()->session()->flash('error','Please try again!');
+        }
+        return redirect()->back();
+    }
+
+    public function address(){
+        return view('user.address.index');
+    }
+
+    public function addressCreate(){
+        return view('user.address.create');
+    }
+
+    public function addressSave(){
+
+    }
+
+    public function addressEdit($id){
+        return view('user.address.edit');
+    }
+
+    public function addressUpdate(Request $request,$id){
         // return $request->all();
         $user=User::findOrFail($id);
         $data=$request->all();
@@ -211,7 +245,7 @@ class HomeController extends Controller
     }
 
     public function changePassword(){
-        return view('user.layouts.userPasswordChange');
+        return view('user.users.change-password');
     }
     public function changPasswordStore(Request $request)
     {
@@ -220,11 +254,11 @@ class HomeController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-   
+
         return redirect()->route('user')->with('success','Password successfully changed');
     }
 
-    
+
 }

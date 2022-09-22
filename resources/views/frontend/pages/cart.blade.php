@@ -127,7 +127,6 @@
                                                                     style="color:blue;">Continue shopping</a>
 
 
-
                                                             </td>
 
                                                         </tr>
@@ -223,124 +222,10 @@
                                             <div class="row">
 
 
-                                            {{-- <a href="{{ route('checkout') }}" class="btn btn-warning">Checkout</a> --}}
                                             <div class="col-md-2"> </div>
-                                            @if ($availablePaymnMethod)
+
                                             <div class="col-md-8">
-                                                @if ($paypal = $availablePaymnMethod->where('method','paypal')->first())
-                                                <div id="smart-button-container">
-                                                    <div style="text-align: center;">
-                                                        <div id="paypal-button-container"></div>
-                                                    </div>
-                                                </div>
 
-                                                @if ($paypal->type == 'live')
-                                                {{-- <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=venmo&currency=USD" data-sdk-integration-source="integrationbuilder"></script> --}}
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
-                                                @else
-                                                <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? 'sb'}}&currency=USD&intent=capture" data-sdk-integration-source="integrationbuilder"></script>
-                                                @endif
-
-
-                                                <script>
-                                                const fundingSources = [
-                                                    paypal.FUNDING.PAYPAL,
-                                                    paypal.FUNDING.CARD
-                                                    ]
-
-                                                for (const fundingSource of fundingSources) {
-                                                    const paypalButtonsComponent = paypal.Buttons({
-                                                    fundingSource: fundingSource,
-
-                                                    // optional styling for buttons
-                                                    // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
-                                                    style: {
-                                                        shape: 'rect',
-                                                        height: 40,
-                                                    },
-
-                                                    // set up the transaction
-                                                    createOrder: (data, actions) => {
-                                                        // pass in any options from the v2 orders create call:
-                                                        // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
-                                                        const createOrderPayload = {
-                                                            purchase_units: [
-                                                                {
-                                                                    amount: {
-                                                                        value: {{ number_format($total_amount + $carts->total_shipping, 2) }},
-                                                                    },
-
-                                                                },
-                                                            ],
-                                                        }
-
-                                                        return actions.order.create(createOrderPayload)
-                                                    },
-
-                                                    // finalize the transaction
-                                                    onApprove: (data, actions) => {
-                                                        const captureOrderHandler = (details) => {
-                                                        const payerName = details.payer.name.given_name
-                                                            console.log(details)
-
-                                                            $.ajax({
-                                                                url: "{{route('cart.order')}}",
-                                                                dataType: "json",
-                                                                type: "Post",
-                                                                async: true,
-                                                                data: {
-                                                                    _token: "{{csrf_token()}}",
-                                                                    user_id: "{{request()->ip()}}",
-                                                                    shipping: "{{$carts->shipping_id}}",
-                                                                    payment_method: 'paypal'
-                                                                },
-                                                                success: function (data) {
-
-                                                                },
-                                                                error: function (xhr, exception) {
-                                                                    var msg = "";
-                                                                    if (xhr.status === 0) {
-                                                                        msg = "Not connect.\n Verify Network." + xhr.responseText;
-                                                                    } else if (xhr.status == 404) {
-                                                                        msg = "Requested page not found. [404]" + xhr.responseText;
-                                                                    } else if (xhr.status == 500) {
-                                                                        msg = "Internal Server Error [500]." +  xhr.responseText;
-                                                                    } else if (exception === "parsererror") {
-                                                                        msg = "Requested JSON parse failed.";
-                                                                    } else if (exception === "timeout") {
-                                                                        msg = "Time out error." + xhr.responseText;
-                                                                    } else if (exception === "abort") {
-                                                                        msg = "Ajax request aborted.";
-                                                                    } else {
-                                                                        msg = "Error:" + xhr.status + " " + xhr.responseText;
-                                                                    }
-
-                                                                }
-                                                            });
-                                                        }
-
-                                                        return actions.order.capture().then(captureOrderHandler)
-                                                    },
-
-                                                    // handle unrecoverable errors
-                                                    onError: (err) => {
-                                                        console.error(
-                                                        'An error prevented the buyer from checking out with PayPal',
-                                                        )
-                                                    },
-                                                    })
-
-                                                    if (paypalButtonsComponent.isEligible()) {
-                                                    paypalButtonsComponent
-                                                        .render('#paypal-button-container')
-                                                        .catch((err) => {
-                                                        console.error('PayPal Buttons failed to render')
-                                                        })
-                                                    } else {
-                                                    console.log('The funding source is ineligible')
-                                                    }
-                                                }
-                                                </script>
                                                 {{-- <script>
                                                   function initPayPalButton() {
                                                     paypal.Buttons({
@@ -380,13 +265,12 @@
                                                   }
                                                   initPayPalButton();
                                                 </script> --}}
-                                                @endif
 
-                                                <a href="{{ route('product-lists') }}" class="btn btn-warning w-100 py-2">Continue
-                                                    shopping</a>
+                                                <a href="{{ route('checkout') }}" class="btn btn-dark w-100 py-2 my-2">Checkout</a>
+
+                                                <a href="{{ route('product-lists') }}" class="btn btn-warning w-100 py-2">Continue shopping</a>
                                             </div>
 
-                                            @endif
 
                                             <div class="col-md-2"> </div>
                                         </div>

@@ -103,6 +103,26 @@
         .w-25{
             width: 25% !important;
         }
+
+        .form-control:focus{
+            color: #212529;
+            background-color: #fff;
+            border-color: #000000;
+            outline: 0;
+            box-shadow:none;
+        }
+
+        .has-search .form-control-feedback{
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #080808 !important;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
@@ -114,117 +134,8 @@
     {{-- header  end --}}
     @yield('main-content')
 
-    <!-- <section>
-    <div class="section_space">
-      <div class="container">
-        <div class="maxWdTitle pb-3">
-          <h4 class="lgTitle pb-3">What People Say About Us</h4>
-          <p>SvaLove Mindspace provides the best professionals across all sectors for the mental wellbeing of the users. Take a look at what People Say About Us. </p>
-        </div>
-        <div class="swiper testimonialSlider">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="row align-items-center">
-                <div class="col-lg-6">
-                  <div class="testimonialImgCol">
-                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
-                    <span class="testimonialUserImg">
-                      <img src="images/testimonial-img.jpg" alt="...">
-                    </span>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="testimonialContent">
-                    <figure>
-                      <blockquote class="blockquote">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                      </blockquote>
-                      <figcaption class="blockquote-footer">
-                        <span>Tom cruise</span> <cite title="Source Title">Information on its origins</cite>
-                      </figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="row align-items-center">
-                <div class="col-lg-6">
-                  <div class="testimonialImgCol">
-                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
-                    <span class="testimonialUserImg">
-                      <img src="images/testimonial-img2.jpg" alt="...">
-                    </span>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="testimonialContent">
-                    <figure>
-                      <blockquote class="blockquote">
-                        <p>Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.  </p>
-                      </blockquote>
-                      <figcaption class="blockquote-footer">
-                        <span>Fan Bingbing</span> <cite title="Source Title">Information on its origins</cite>
-                      </figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="row align-items-center">
-                <div class="col-lg-6">
-                  <div class="testimonialImgCol">
-                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
-                    <span class="testimonialUserImg">
-                      <img src="images/testimonial-img3.jpg" alt="...">
-                    </span>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="testimonialContent">
-                    <figure>
-                      <blockquote class="blockquote">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                      </blockquote>
-                      <figcaption class="blockquote-footer">
-                        <span>Katherine Langford</span> <cite title="Source Title">Information on its origins</cite>
-                      </figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="row align-items-center">
-                <div class="col-lg-6">
-                  <div class="testimonialImgCol">
-                    <img src="images/lg-dots.svg" alt="..." class="testimonialDotsImg">
-                    <span class="testimonialUserImg">
-                      <img src="images/testimonial-img2.jpg" alt="...">
-                    </span>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="testimonialContent">
-                    <figure>
-                      <blockquote class="blockquote">
-                        <p>Lorem Ipsum has been the industry's standard dummy text ever since Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.  </p>
-                      </blockquote>
-                      <figcaption class="blockquote-footer">
-                        <span>Fan Bingbing</span> <cite title="Source Title">Information on its origins</cite>
-                      </figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-    </div>
-  </section> -->
+
+
     {{-- Footer --}}
     @include('frontend.layouts.footer')
     {{-- footer --}}
@@ -343,29 +254,7 @@
 
         });
 
-        var swiper = new Swiper(".testimonialSlider", {
-            spaceBetween: 30,
-            effect: "fade",
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-        });
 
-        var swiper = new Swiper(".bannerSlider", {
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-        });
 
         function redirect(url){
             window.location.href = url
@@ -388,65 +277,33 @@
         });
 
 
+        $("#min_price,#max_price").keypress(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                filter_product_for('search_filter')
+            }
+        })
 
-        function filter(filter_type){
-            var min_price = $('#min_price').val();
-            var max_price = $('#max_price').val();
-            var search_product = $('#search_product').val();
-            $('.min_price').val(min_price);
-            $('.max_price').val(max_price);
-            $('.search_product').val(search_product);
-
-        var gender = document.getElementsByName('genders[]');
-            var gender_array = "";
-            for (var i=0, n=gender.length;i<n;i++)
-            { if (gender[i].checked){
-            gender_array += ","+gender[i].value;}}
-            if (gender_array) gender_array = gender_array.substring(1);
-            $('.genders').val(gender_array);
-
-            var shape = document.getElementsByName('shapes[]');
-            var shape_array = "";
-            for (var i=0, n=shape.length;i<n;i++)
-            { if (shape[i].checked){
-            shape_array += ","+shape[i].value;}}
-            if (shape_array) shape_array = shape_array.substring(1);
-            $('.shapes').val(shape_array);
-
-            var frame = document.getElementsByName('frames[]');
-            var frame_array = "";
-            for (var i=0, n=frame.length;i<n;i++)
-            { if (frame[i].checked){
-            frame_array += ","+frame[i].value;}}
-            if (frame_array) frame_array = frame_array.substring(1);
-            $('.frames').val(frame_array);
-
-            var material = document.getElementsByName('materials[]');
-            var material_array = "";
-            for (var i=0, n=material.length;i<n;i++)
-            { if (material[i].checked){
-            material_array += ","+material[i].value;}}
-            if (material_array) material_array = material_array.substring(1);
-            $('.materials').val(material_array);
-
-            var color = document.getElementsByName('colors[]');
-            var color_array = "";
-            for (var i=0, n=color.length;i<n;i++)
-            { if (color[i].checked){
-            color_array += ","+color[i].value;}}
-            if (color_array) color_array = color_array.substring(1);
-            $('.colors').val(color_array);
-
-        $('.filter-form').submit();
-
-        }
-
+        $("#search").keypress(function(){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                filter_product_for('search_filter')
+            }
+        })
         /* Function for Product For(Man,Woman,Junior) */
-
-        function filter_product_for(filter_type) {
+        function filter_product_for(filter_type,price=null) {
             var min_price = $('#min_price').val();
             var max_price = $('#max_price').val();
-            var search_product = $('#search_product').val();
+            var search_product = $('#search').val();
+
+            if(min_price != null || max_price != null){
+                if(price != null){
+                    var maxmin = price.split('-')
+                    min_price = maxmin[0]
+                    max_price = maxmin[1]
+                }
+            }
+            // console.log($(this).val())
             $('.min_price').val(min_price);
             $('.max_price').val(max_price);
             $('.search_product').val(search_product);
@@ -501,8 +358,7 @@
             }
             if (material_array) material_array = material_array.substring(1);
             $('.materials').val(material_array);
-
-            // var color = document.getElementsByName('colors[]');
+             // var color = document.getElementsByName('colors[]');
             // var color_array = "";
             // for (var i=0, n=color.length;i<n;i++)
             // { if (color[i].checked){
@@ -513,7 +369,6 @@
             $('.filter-form-product-for').submit();
 
         }
-
 
         function reset_filter_product_for() {
             $('.min_price').val('');
@@ -540,6 +395,14 @@
             $('.filter-form').submit();
         }
 
+        $("#show_more_brands").click(function(){
+            $("#all_brands").toggle('slow');
+
+            $(this).text(function(i, text){
+                return text === "Show less" ? "Show More" : "Show less";
+            })
+        })
+
         // remove d-none class from brands navbar
         window.onload = function() {
             if (window.jQuery) {
@@ -556,6 +419,39 @@
             }
         };
 
+        var swiper2 = new Swiper(".testimonialSlider", {
+            spaceBetween: 30,
+            effect: "fade",
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+        var swiper3 = new Swiper(".bannerSlider", {
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+
+        $(document).ready(function(){
+            $("#brand_search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".brand_list li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
     </script>
 </body>
 

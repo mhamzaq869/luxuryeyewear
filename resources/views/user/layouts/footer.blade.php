@@ -1,65 +1,134 @@
+<footer>
+    <div class="footer_section" style="padding-left: 0% !important">
+        <div class="footer_fade"></div>
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <a href="https://github.com/Prajwal100" target="_blank">Prajwal R.</a> {{date('Y')}}</span>
-          </div>
+        <div class="bottom_footer darkBGColor">
+            <div class="container">
+                <div class="row gy-5">
+                    <div class="col-xl-auto col-lg-12 col-sm-12 ">
+                        <div class="foot_logo_content">
+                            <div class="footer_logo">
+                                <a href="index.html"><img src="{{ asset('assets/images/luxuryeyewear.png') }}"
+                                        alt="..."></a>
+                            </div>
+                            <p class="whiteColor">Luxuryeyewear ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                                tincidunt ornare viverra.</p>
+                            <ul class="foot_social_icon">
+                                <li><a href="javascript:void(0)"><img
+                                            src="{{ asset('assets/./images/foot_facebook_icon.svg') }}"
+                                            alt="..."></a></li>
+                                <li><a href="javascript:void(0)"><img
+                                            src="{{ asset('assets/./images/foot_twitter_icon.svg') }}"
+                                            alt="..."></a></li>
+                                <li><a href="javascript:void(0)"><img
+                                            src="{{ asset('assets/./images/foot_instagram_icon.svg') }}"
+                                            alt="..."></a></li>
+                                <li><a href="javascript:void(0)"><img
+                                            src="{{ asset('assets/./images/foot_linkedin_icon.svg') }}"
+                                            alt="..."></a></li>
+                                <li><a href="javascript:void(0)"><img
+                                            src="{{ asset('assets/./images/foot_youtube_icon.svg') }}"
+                                            alt="..."></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="footer_imp_links">
+                            <div class="row gy-5">
+                                <div class="col-sm col-lg">
+                                    <div class="imp_links_col">
+                                        <div class="imp_link_head">
+                                            <h3 class="foot_link_head_style">Quick Links</h3>
+                                        </div>
+                                        <ul class="foot_link_list">
+
+                                            <li><a href="{{ route('order.track') }}">Track Order</a></li>
+                                            <li><a href="{{ route('return.and.exchange') }}">Return & Exchange</a></li>
+                                            <li><a href="{{ route('shipping.policy') }}">Shipping Policy</a></li>
+                                            <li><a href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-lg">
+                                    <div class="imp_links_col">
+                                        <div class="imp_link_head">
+                                            <h3 class="foot_link_head_style">usefull links</h3>
+                                        </div>
+                                        <ul class="foot_link_list">
+                                            <li><a href="{{ route('home') }}">home</a></li>
+                                            <li><a href="{{ route('about-us') }}">about us</a></li>
+                                            <li><a href="{{ route('contact') }}">contact us</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-auto">
+                                    <div class="imp_links_col add_cont">
+                                        <div class="imp_link_head">
+                                            <h3 class="foot_link_head_style">Get In Touch</h3>
+                                        </div>
+                                        <ul class="foot_link_list contact">
+                                            <li><a href="javascript:void(0)">C-12 Paryavaran Complex Ignu Road New
+                                                    Delhi, Delhi - 110030, India</a></li>
+                                            <li><a href="javascript:void(0)"><img
+                                                        src="{{ asset('assets/./images/phone-icon.svg') }}"
+                                                        alt="...">9990360806</a></li>
+                                            <li><a href="javascript:void(0)"><img
+                                                        src="{{ asset('assets/./images/email_icon.svg') }}"
+                                                        alt="...">Support@Luxuryeyewear.In</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="copyright_col">
+                    <div class="row align-items-center gy-4">
+                        <div class="col-xl col-lg-12 ">
+                            <div class="courier_logo justify-content-center">
+                                <ul>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/dhl_icon.png') }}" alt="..."></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/fedex_icon.png') }}" alt="..."></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/ups_icon.png') }}" alt="..."></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/aramex_icon.png') }}"
+                                                alt="..."></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-auto col-lg-12">
+                            <div class="payment_method_logo">
+                                <ul>
+                                    <li><a href="javascript:void(0)"><img src="{{ asset('assets/./images/visa.png') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/mastercard.png') }}" alt="..."></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/american-express.png') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/paypal.png') }}" alt="..."></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-auto col-md-12 order-xl-first">
+                            <p class="mb-xl-0">Copyright © {{ date('Y') }} by luxuryeyewear. All Rights reserved
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </footer>
-      <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
-  <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="{{asset('backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="{{asset('backend/js/sb-admin-2.min.js')}}"></script>
-
-  <!-- Page level plugins -->
-  <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
-
-  <!-- Page level custom scripts -->
-  {{-- <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script> --}}
-  <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script>
-
-  @stack('scripts')
-
-  <script>
-    setTimeout(function(){
-      $('.alert').slideUp();
-    },4000);
-  </script>
+</footer>

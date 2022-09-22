@@ -133,45 +133,20 @@ class Helper{
                 }
             }
 
+            if($carts->count() > 0){
+                $carts->total_shipping = number_format($carts->shipping_cost,2);
+            }
 
-            // if($location){
-            //     $countryCode = $location->countryCode;
-            //     $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
-
-            //     if($shipping != null && $shipping->count() > 0){
-            //         if(in_array($countryCode,explode(',',$carts->dispatch_from))){
-            //             $carts->shipping_cost = $shipping->price ?? 0;
-            //             $carts->transit = $shipping->transit ?? 0;
-            //         }else{
-            //             $carts->shipping_cost = 10;
-            //             $carts->transit = 0;
-            //         }
-            //     }else{
-            //         $carts->shipping_cost = 10;
-            //         $carts->transit = 0;
-            //     }
-
-            // }else{
-            //     $carts->shipping_cost = 10;
-            //     $carts->transit = 0;
-            // }
-
-            $carts->total_shipping = $carts->shipping_cost;
             return $carts;
-        // }
-        // else{
-        //     return 0;
-        // }
+
     }
     // Total amount cart
-    public static function totalCartPrice($user_id=''){
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('price');
-        }
-        else{
-            return 0;
-        }
+    public static function totalCartPrice($user_id='')
+    {
+
+        if($user_id=="") $user_id= request()->ip();
+        return number_format(Cart::where('user_id',$user_id)->where('order_id',null)->sum('price'),2);
+
     }
     // Wishlist Count
     public static function wishlistCount($user_id=''){

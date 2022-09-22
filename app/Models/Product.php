@@ -186,7 +186,7 @@ class Product extends Model
 
     public function getAdminProductPriceAttribute()
     {
-        return DB::table('products')->where('id',$this->id)->first()->price;
+        return number_format(DB::table('products')->where('id',$this->id)->first()->price,2);
     }
 
 
@@ -197,12 +197,12 @@ class Product extends Model
         // $location = Location::get('111.119.187.50');
         if($location){
             if(str_contains($this->dispatch_from,$location->countryCode)){
-                return $price + ($this->extra != null ? $this->extra : 0);
+                return number_format($price + ($this->extra != null ? $this->extra : 0),2);
             }else{
-                return $price;
+                return number_format($price,2);
             }
         }else{
-            return $price;
+            return number_format($price,2);
         }
 
 

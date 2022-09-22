@@ -223,6 +223,20 @@ class FrontendController extends Controller
         $data['type'] = Attribute::where('attribute_type','type')->get();
 
 
+        $data['product_for'] = '';
+        $data['glass_type'] = '';
+        $data['frame_type'] = '';
+        $data['search_product'] = "";
+        $data['order_filter'] = "";
+        $data['min_price'] = "";
+        $data['max_price'] = "";
+        $data['gender_array'] = "";
+        $data['shape_array'] = "";
+        $data['frame_array'] = "";
+        $data['material_array'] = "";
+        $data['brand_array'] = "";
+        $data['color_array'] = "";
+
         return view('frontend.pages.sunglass', $data);
     }
 
@@ -277,6 +291,20 @@ class FrontendController extends Controller
         $data['materials'] = Attribute::where('attribute_type','material')->get();
         $data['type'] = Attribute::where('attribute_type','type')->get();
 
+        $data['product_for'] = '';
+        $data['glass_type'] = '';
+        $data['frame_type'] = '';
+        $data['search_product'] = "";
+        $data['order_filter'] = "";
+        $data['min_price'] = "";
+        $data['max_price'] = "";
+        $data['gender_array'] = "";
+        $data['shape_array'] = "";
+        $data['frame_array'] = "";
+        $data['material_array'] = "";
+        $data['brand_array'] = "";
+        $data['color_array'] = "";
+
         return view('frontend.pages.product-brand',$data);
     }
 
@@ -305,7 +333,7 @@ class FrontendController extends Controller
         $frame_type = $request->frame_type;
         $top_products = Category::where('status', 'Active')->get();
         $ip_country = $this->ip_country ?? '';
-        $search_product = "";
+        $search = "";
         $order_filter = "";
         $min_price = "";
         $max_price = "";
@@ -314,12 +342,14 @@ class FrontendController extends Controller
         $frame_array = "";
         $material_array = "";
         $brand_array = "";
-        $color_array = "";
-
 
         // DB::enableQueryLog();
-        $arr = Product::where('status', 'Active');
+        $arr = Product::where('products.status', 'Active')
+                        ->select('products.*','categories.frame_type')
+                        ->join('categories','products.cat_id','=','categories.id');
+                        // ->join('brands','products.brand_id','=','brands.id');
         $attribute = new Attribute();
+
 
 
         if (!empty($glass_type)) {
@@ -347,12 +377,13 @@ class FrontendController extends Controller
         if (!empty($request->min_price) && !empty($request->max_price)) {
             $min_price = $request->min_price;
             $max_price = $request->max_price;
-            $arr->whereBetween('price', [$min_price, $max_price]);
+            $arr->whereBetween('products.price', [$min_price, $max_price]);
         }
 
+
         if(!empty($request->search_product)) {
-            $search_product = $request->search_product;
-            $arr->where('title', 'LIKE', '%' . $search_product . '%');
+            $search = $request->search_product;
+            $arr->where('products.title', 'LIKE', '%' . $search . '%');
         }
 
 
@@ -364,18 +395,22 @@ class FrontendController extends Controller
             $this->gender_filter = "";
         }
 
+
         if (!empty($this->gender_filter)) {
             $arr->where(function ($q) use($attribute) {
-                $attribute_gender_first =  $attribute->where('name',$this->gender_filter[0])->first()->id ?? 0;
+                $attribute_gender_first =  $attribute->where('id',$this->gender_filter[0])->first()->id ?? 0;
                 $q->where('product_for', $attribute_gender_first);
                 $q->orWhere('product_for', 30);
-                for ($i = 1; $i < COUNT($this->gender_filter); $i++) {
-                    $attribute_gender_all =  $attribute->where('name',$this->gender_filter[$i])->first()->id ?? 0;
+
+
+                for ($i = 1; $i < count($this->gender_filter); $i++) {
+                    $attribute_gender_all =  $attribute->where('id',$this->gender_filter[$i])->first()->id ?? 0;
                     $q->orWhere('product_for', $attribute_gender_all);
                 }
+
             });
         }
-
+        // dd($arr->get(),$request->all(),!empty($this->gender_filter));
         // Condition for Shape Filter
         if (!empty($request->shape_array)) {
             $shape_array = $request->shape_array;
@@ -384,12 +419,14 @@ class FrontendController extends Controller
             $this->shape_filter = "";
         }
 
+        // dd($request->all(),$arr);
+
         if(!empty($this->shape_filter)){
             $arr->where(function ($q) use($attribute){
-                $attribute_shape_first =  $attribute->where('name',$this->shape_filter[0])->first()->id ?? 0;
+                $attribute_shape_first =  $attribute->where('id',$this->shape_filter[0])->first()->id ?? 0;
                 $q->where('shape', $attribute_shape_first);
                 for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
-                    $attribute_shape_all =  $attribute->where('name',$this->shape_filter[$i])->first()->id ?? 0;
+                    $attribute_shape_all =  $attribute->where('id',$this->shape_filter[$i])->first()->id ?? 0;
                     $q->orWhere('shape', $attribute_shape_all);
                 }
             });
@@ -407,10 +444,10 @@ class FrontendController extends Controller
 
         if (!empty($this->frame_filter)) {
             $arr->where(function ($q) use($attribute) {
-                $frame_first =  $attribute->where('name',$this->frame_filter[0])->first()->id ?? 0;
+                $frame_first =  $attribute->where('id',$this->frame_filter[0])->first()->id ?? 0;
                 $q->where('type', $frame_first);
                 for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
-                    $frame_all =  $attribute->where('name',$this->frame_filter[$i])->first()->id ?? 0;
+                    $frame_all =  $attribute->where('id',$this->frame_filter[$i])->first()->id ?? 0;
                     $q->orWhere('type', $frame_all);
                 }
             });
@@ -427,11 +464,11 @@ class FrontendController extends Controller
 
         if(!empty($this->material_filter)) {
             $arr->where(function ($q) use($attribute) {
-                $material_first =  $attribute->where('name',$this->material_filter[0])->first()->id ?? 0;
-                $q->where('material', $material_first);
+                $material_first =  $attribute->where('id',$this->material_filter[0])->first()->id ?? 0;
+                $q->where('product_material', $material_first);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $material_all =  $attribute->where('name',$this->material_filter[$i])->first()->id ?? 0;
-                    $q->orWhere('material', $material_all);
+                    $material_all =  $attribute->where('id',$this->material_filter[$i])->first()->id ?? 0;
+                    $q->orWhere('product_material', $material_all);
                 }
             });
         }
@@ -448,21 +485,20 @@ class FrontendController extends Controller
 
         if (!empty($this->brand_filter)) {
             $arr->where(function ($q) use($attribute) {
-                $brand_first = Brand::where('title',$this->brand_filter[0])-first()->id ?? '';
-                $q->where('brand_id', $brand_first);
+                $brand_first = Brand::where('id',$this->brand_filter[0])->first()->id ?? '';
+                $q->where('products.brand_id', $brand_first);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $brand_all = Brand::where('title',$this->brand_filter[$i])-first()->id ?? '';
-                    $q->orWhere('brand_id', $brand_all);
+                    $brand_all = Brand::where('id',$this->brand_filter[$i])->first()->id ?? '';
+                    $q->orWhere('products.brand_id', $brand_all);
                 }
             });
         }
 
 
 
-        dd($arr);
+        // dd($arr->get(),$request->all());
 
-        $arr = $arr->paginate(20);
-
+        $arr = $arr->where('products.status','active')->paginate(20);
 
         $data = $arr;
         $arr = json_encode($arr);
@@ -470,7 +506,11 @@ class FrontendController extends Controller
 
 
         //Get Frmae Type Filter
-        $query1 = DB::table('attributes')->leftJoin('products','products.frame_type', '=','attributes.id');
+        // $query1 = DB::table('attributes')->leftJoin('products','products.product_for', '=','attributes.id');
+        $query1 = Attribute::select('products.*','categories.frame_type')
+                    ->join('products','products.product_for', '=','attributes.id')
+                    ->join('categories','products.cat_id','=','categories.id');
+
         if(!empty($product_for)){
                 $all_product = $attribute->where('name',$product_for)->pluck('id') ?? '';
                 $cat_for = array_merge([[30], $all_product]);
@@ -490,29 +530,31 @@ class FrontendController extends Controller
         }
         if(!empty($this->material_filter)) {
             $query1->where(function ($q) use($attribute) {
-                $q->where('products.material', $this->material_filter[0]);
+                $q->where('products.product_material', $this->material_filter[0]);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $q->orWhere('products.material', $this->material_filter[$i]);
+                    $q->orWhere('products.product_material', $this->material_filter[$i]);
                 }
             });
         }
         if (!empty($this->brand_filter)) {
             $query1->where(function ($q) use($attribute) {
-                $q->where('products.parent_id', $this->brand_filter[0]);
+                $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $q->orWhere('products.parent_id', $this->brand_filter[$i]);
+                    $q->orWhere('products.brand_id', $this->brand_filter[$i]);
                 }
             });
         }
 
 
         $glass_type_id = $attribute->where('name',$glass_type)->first()->id ?? 0;
-        $frame_types = $query1->where('products.status','Active')->where('products.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
-
+        $frame_types = $query1->where('products.status','active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
 
         //Get Frmae Shape Filter
-        $query2 = DB::table('attributes')->leftJoin('products','products.shape', '=','attributes.id');
+        $query2 = Attribute::select('products.*','categories.frame_type')
+                ->join('products','products.product_for', '=','attributes.id')
+                ->join('categories','products.cat_id','=','categories.id');
+
         if(!empty($product_for)){
                 $all_product = $attribute->where('name',$product_for)->pluck('id') ?? '';
                 $cat_for = array_merge([[30], $all_product]);
@@ -532,33 +574,29 @@ class FrontendController extends Controller
         }
         if(!empty($this->material_filter)) {
             $query2->where(function ($q) use($attribute) {
-                $q->where('products.material', $this->material_filter[0]);
+                $q->where('products.product_material', $this->material_filter[0]);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $q->orWhere('products.material', $this->material_filter[$i]);
+                    $q->orWhere('products.product_material', $this->material_filter[$i]);
                 }
             });
         }
         if (!empty($this->brand_filter)) {
             $query2->where(function ($q) use($attribute) {
-                $q->where('products.parent_id', $this->brand_filter[0]);
+                $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $q->orWhere('products.parent_id', $this->brand_filter[$i]);
-                }
-            });
-        }
-        if (!empty($this->color_filter)) {
-            $query2->where(function ($q) use($attribute) {
-                $q->where('products.category_color', $this->color_filter[0]);
-                for ($i = 1; $i < COUNT($this->color_filter); $i++) {
-                    $q->orWhere('products.category_color', $this->color_filter[$i]);
+                    $q->orWhere('products.brand_id', $this->brand_filter[$i]);
                 }
             });
         }
 
-        $frame_shapes = $query2->where('products.status','Active')->where('products.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
+
+        $frame_shapes = $query2->where('products.status','Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
         // Get Frame Material Filter
-        $query3 = DB::table('attributes')->leftJoin('products','products.product_material', '=','attributes.id');
+        $query3 = Attribute::select('products.*','categories.frame_type')
+                ->join('products','products.product_for', '=','attributes.id')
+                ->join('categories','products.cat_id','=','categories.id');
+
         if(!empty($product_for)){
                  $cat_for = ['Unisex', $product_for];
                  $query3->whereIn('products.category_for', $cat_for);
@@ -585,13 +623,13 @@ class FrontendController extends Controller
         }
         if (!empty($this->brand_filter)) {
             $query3->where(function ($q) use($attribute) {
-                $q->where('products.parent_id', $this->brand_filter[0]);
+                $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $q->orWhere('products.parent_id', $this->brand_filter[$i]);
+                    $q->orWhere('products.brand_id', $this->brand_filter[$i]);
                 }
             });
         }
-        $frame_materials = $query3->where('products.status','Active')->where('products.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
+        $frame_materials = $query3->where('products.status','Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
 
         // Get Brands Filter
@@ -618,9 +656,9 @@ class FrontendController extends Controller
             $addWhere .= ') ';
         }
         if(!empty($this->material_filter)) {
-            $addWhere .= ' and ( b.material = "'.$this->material_filter[0].'"';
+            $addWhere .= ' and ( b.product_material = "'.$this->material_filter[0].'"';
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $addWhere .= ' or b.material = "'.$this->material_filter[$i].'"';
+                    $addWhere .= ' or b.product_material = "'.$this->material_filter[$i].'"';
                 }
             $addWhere .= ') ';
         }
@@ -632,26 +670,28 @@ class FrontendController extends Controller
             $addWhere .= ') ';
         }
 
-        $all_brands = DB::select("
-            SELECT a.* FROM `categories` a
-            where parent_id = 0
-            and status = 'Active'
-            and (
-                SELECT count(b.parent_id) from categories b
-                where a.id = b.parent_id
-                and b.status = 'Active'
-                and b.frame_type = '".$glass_type."'
-                ".$addWhere." ) > 0" );
+        // dd($addWhere);
+        // $all_brands = DB::select("
+        //     SELECT a.* FROM `categories` a
+        //     where parent_id = 0
+        //     and status = 'Active'
+        //     and (
+        //         SELECT count(b.parent_id) from categories b
+        //         where a.id = b.parent_id
+        //         and b.status = 'Active'
+        //         and b.frame_type = '".$glass_type."'
+        //         ".$addWhere." ) > 0" );
 
+        $all_brands = [];
         $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
         if ($request->ajax()) {
             $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'top_products', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();
-            return response()->json(['status' => 1, 'more_data'=>$more_data->count(), 'html' => $view]);
+            return response()->json(['status' => 1, 'more_data'=> $more_data->count(), 'html' => $view]);
         }
 
 
-        return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'top_products', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'));
+        return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'top_products', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'));
 
     }
 
@@ -1074,10 +1114,8 @@ class FrontendController extends Controller
             $products = Product::orwhere('title', 'like', '%' . $request->search . '%')
             ->whereIn('status', ['active','outofstock'])
             ->orwhere('slug', 'like', '%' . $request->search . '%')
-            ->orwhere('description', 'like', '%' . $request->search . '%')
-            ->orwhere('summary', 'like', '%' . $request->search . '%')
+            ->orwhere('product_ean_code', 'like', '%' . $request->search . '%')
             ->orwhere('price', 'like', '%' . $request->search . '%')
-
             ->orderBy('id', 'DESC')
             ->paginate(20);
 

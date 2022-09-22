@@ -22,7 +22,7 @@ class ProductExport implements FromCollection, WithHeadings
     {
         $data = [];
         if($this->type == null):
-            foreach(Product::all() as $i => $product){
+            foreach(Product::take(10)->get() as $i => $product){
                 $data[$i]['id'] = $product->id;
                 $data[$i]['ean'] = $product->product_ean_code;
                 $data[$i]['category'] = $product->cat_info != null ? $product->cat_info->title : '';

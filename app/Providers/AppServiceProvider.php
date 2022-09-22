@@ -40,22 +40,20 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer(['frontend.layouts.product_filter'], function($view) use($permissions){
 
-            $data['brand'] = Brand::take(10)->latest()->get();
+            $data['brand'] = Brand::all();
             $data['shapes'] = Attribute::where('attribute_type','shape')->get();
             $data['materials'] = Attribute::where('attribute_type','material')->get();
             $data['type'] = Attribute::where('attribute_type','type')->get();
+            $data['gender'] = Attribute::where('attribute_type','product_for')->whereNotIn('name',['Junior','Unisex'])->get();
 
             $view->with('brands',$data['brand']);
             $view->with('shapes',$data['shapes']);
             $view->with('materials',$data['materials']);
             $view->with('types',$data['type']);
-
-
-
-
+            $view->with('genders',$data['gender']);
         });
 
-        View::composer(['frontend.pages.cart'], function($view) use($permissions){
+        View::composer(['frontend.pages.checkout'], function($view) use($permissions){
             $view->with('availablePaymnMethod', PaymentIntegration::all());
         });
 

@@ -13,7 +13,7 @@
     </section>
     <section>
         <div class="product_detail section_space pb-0">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="product_deatail_list">
                     <div class="product_deatail_list_text">
                         <div class="lineTitleCol">
@@ -28,31 +28,28 @@
                     <div class="filterColMain pt-3">
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
-                                <div class="col"><a class="btn btnDark w-100 filterBtn" data-bs-toggle="offcanvas"
+                                <div class="col">
+                                    {{-- <a class="btn btnDark w-100 filterBtn" data-bs-toggle="offcanvas"
                                         href="#filterCanvas" role="button" aria-controls="filterCanvas"><span
                                             class="filterIcon">
                                             <img src="{{ asset('assets/images/filter-icon.svg') }}" alt="..."></span>
-                                        <span>Filter</span></a></div>
+                                        <span>Filter</span></a> --}}
+                                </div>
                                 <div class="col">
-                                    {{-- <select class="form-select selectStyle" aria-label="Default select example">
-                                        <option selected>Sort by</option>
-                                        <option value="1">Sort by Name</option>
-                                        <option value="2">Sort by Name</option>
-                                    </select> --}}
 
                                     <form class="filter-form-product-for" action="{{route('filter.product')}}">
 
                                         @csrf
                                         @method('GET')
 
-                                        <input type="hidden" class="form-control" name="search_product" class="search_product" @isset($search_product) value="{{$search_product}}" @endisset>
-                                        <input type="hidden" class="form-control" name="glass_type" class="glass_type" value="eyeglasses">
-                                        <input type="hidden" class="form-control" name="color_array" class="colors" @isset($color_array) value="{{$color_array}}" @endisset>
-                                        <input type="hidden" class="form-control" name="brand_array" class="brands" @isset($brand_array) value="{{$brand_array}}" @endisset>
-                                        <input type="hidden" class="form-control" name="gender_array" class="genders" @isset($gender_array) value="{{$gender_array}}" @endisset>
-                                        <input type="hidden" class="form-control" name="shape_array" class="shapes" @isset($shape_array) value="{{$shape_array}}" @endisset>
-                                        <input type="hidden" class="form-control" name="frame_array" class="frames" @isset($frame_array) value="{{$frame_array}}" @endisset>
-                                        <input type="hidden" class="form-control" name="material_array" class="materials" @isset($material_array) value="{{$material_array}}" @endisset>
+                                        <input type="hidden" name="search_product" class="search_product" @isset($search_product) value="{{$search_product}}" @endisset>
+                                        <input type="hidden" name="glass_type" class="glass_type" value="eyeglasses">
+                                        <input type="hidden" name="color_array" class="colors" @isset($color_array) value="{{$color_array}}" @endisset>
+                                        <input type="hidden" name="brand_array" class="brands" @isset($brand_array) value="{{$brand_array}}" @endisset>
+                                        <input type="hidden" name="gender_array" class="genders" @isset($gender_array) value="{{$gender_array}}" @endisset>
+                                        <input type="hidden" name="shape_array" class="shapes" @isset($shape_array) value="{{$shape_array}}" @endisset>
+                                        <input type="hidden" name="frame_array" class="frames" @isset($frame_array) value="{{$frame_array}}" @endisset>
+                                        <input type="hidden" name="material_array" class="materials" @isset($material_array) value="{{$material_array}}" @endisset>
                                         <input type="hidden" name="min_price" class="min_price" @isset($min_price) value="{{$min_price}}" @endisset>
                                         <input type="hidden" name="max_price" class="max_price" @isset($max_price) value="{{$max_price}}" @endisset>
                                         <input type="hidden" name="product_for" id="product_for" value="{{$product_for}}">
@@ -111,17 +108,23 @@
                                                                         <img src="{{ asset(insertAtPosition($active->photo)) }}" alt=""
                                                                             class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
                                                                             id="href_eyelass_{{ $product->id }}_{{ $active->id }}"
-                                                                            onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})">
+                                                                            onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})"
+                                                                            @if ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->count() === 0)
+                                                                                style="margin-left:-20px"
+                                                                            @endif >
                                                                         @else
                                                                         <img src="{{ $active->photo }}" alt=""
-                                                                        class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
-                                                                        id="href_eyelass_{{ $product->id }}_{{ $active->id }}"
-                                                                        onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})">
+                                                                            class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
+                                                                            id="href_eyelass_{{ $product->id }}_{{ $active->id }}"
+                                                                            onmouseover="changeProDetail({{ $product->id }},'eyelass_',{{ $product->id }})"
+                                                                                @if ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->count() === 0)
+                                                                                    style="margin-left:-20px"
+                                                                                @endif >
                                                                         @endif
                                                                     </a>
                                                                 </li>
                                                             @endif
-                                                            {{-- {{dd($product_variant->where('id', '!=', $product->id)->first(),$product->cat_id)}} --}}
+
                                                             @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
@@ -242,7 +245,7 @@
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html("$" + Math.ceil(data.price))
+                $("#" + type + "pro_price_" + parent_id).html("$" + data.price)
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 

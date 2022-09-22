@@ -18,6 +18,7 @@
   <!-- Bootstrap CSS -->
   <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+  <link rel="stylesheet" href="{{asset('frontend/css/themify-icons.css')}}">
 
   <!--new css-->
 

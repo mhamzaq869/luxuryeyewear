@@ -18,6 +18,7 @@
   <!-- Bootstrap CSS -->
   <link href="<?php echo e(asset('assets/css/bootstrap.min.css')); ?>" rel="stylesheet">
   <link href="<?php echo e(asset('assets/css/style.css')); ?>" rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo e(asset('frontend/css/themify-icons.css')); ?>">
 
   <!--new css-->
 

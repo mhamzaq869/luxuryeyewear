@@ -71,7 +71,7 @@
                       <a href="{{ route('product-detail', $product->slug) }}" class="text-dark" target="_blank" >
                         <p id="female_sunglass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
                       </a>
-                      <span class="priceCol" id="female_sunglass_pro_price_{{ $product->id }}""> ${{ ceil($product->price) }}</span>
+                      <span class="priceCol" id="female_sunglass_pro_price_{{ $product->id }}""> ${{ $product->price }}</span>
 
 
                       <div class="row gx-2">
