@@ -287,10 +287,6 @@ class FrontendController extends Controller
         $product_variant = \DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
-        // $data['brand'] = Brand::take(10)->latest()->get();
-        // $data['shapes'] = Attribute::where('attribute_type','shape')->get();
-        // $data['materials'] = Attribute::where('attribute_type','material')->get();
-        // $data['type'] = Attribute::where('attribute_type','type')->get();
 
         $data['product_for'] = '';
         $data['glass_type'] = '';
@@ -332,7 +328,7 @@ class FrontendController extends Controller
         $product_for = $request->product_for;
         $glass_type = $request->glass_type;
         $frame_type = $request->frame_type;
-        $top_products = Category::where('status', 'Active')->get();
+        // $top_products = DB::table('categories')->where('status', 'Active')->get();
         $ip_country = $this->ip_country ?? '';
         $search = "";
         $order_filter = "";
@@ -345,10 +341,10 @@ class FrontendController extends Controller
         $brand_array = "";
 
         // DB::enableQueryLog();
-        $arr = Product::where('products.status', 'Active')
-                        ->select('products.*','categories.frame_type')
-                        ->join('categories','products.cat_id','=','categories.id');
-                        // ->join('brands','products.brand_id','=','brands.id');
+        $arr = DB::table('products')->where('products.status', 'Active')
+                        ->select('products.*','categories.frame_type','brands.title as brandName')
+                        ->join('categories','products.cat_id','=','categories.id')
+                        ->join('brands','products.brand_id','=','brands.id');
         $attribute = new Attribute();
 
 
@@ -486,10 +482,12 @@ class FrontendController extends Controller
 
         if (!empty($this->brand_filter)) {
             $arr->where(function ($q) use($attribute) {
-                $brand_first = Brand::where('id',$this->brand_filter[0])->first()->id ?? '';
+                $brands = DB::table('brands')->get();
+                $brand_first = $brands->where('id',$this->brand_filter[0])->first()->id ?? '';
+
                 $q->where('products.brand_id', $brand_first);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $brand_all = Brand::where('id',$this->brand_filter[$i])->first()->id ?? '';
+                    $brand_all = $brands->where('id',$this->brand_filter[$i])->first()->id ?? '';
                     $q->orWhere('products.brand_id', $brand_all);
                 }
             });
@@ -499,7 +497,7 @@ class FrontendController extends Controller
 
         // dd($arr->get(),$request->all());
 
-        $arr = $arr->where('products.status','active')->paginate(20);
+        $arr = $arr->paginate(20);
 
         $data = $arr;
         $arr = json_encode($arr);
@@ -687,12 +685,12 @@ class FrontendController extends Controller
         $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
         if ($request->ajax()) {
-            $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'top_products', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();
+            $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();
             return response()->json(['status' => 1, 'more_data'=> $more_data->count(), 'html' => $view]);
         }
 
 
-        return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'top_products', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'));
+        return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'));
 
     }
 

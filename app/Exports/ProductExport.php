@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Attribute;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -21,23 +22,28 @@ class ProductExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = [];
+        $attributes = DB::table('attributes')->get();
+        $products = DB::table('products')->get();
+        $category = DB::table('categories')->where('status','active')->get();
+        $brands = DB::table('brands')->where('status','active')->get();
+
         if($this->type == null):
-            foreach(Product::all() as $i => $product){
+            foreach($products as $i => $product){
                 $data[$i]['id'] = $product->id;
                 $data[$i]['ean'] = $product->product_ean_code;
-                $data[$i]['category'] = $product->cat_info != null ? $product->cat_info->title : '';
-                $data[$i]['brand'] = $product->brand != null ? $product->brand->name : '';
+                $data[$i]['category'] = $category->where('id',$product->cat_id)->first()->title ?? '';
+                $data[$i]['brand'] = $brands->where('id',$product->brand_id)->first()->title ?? '';
                 $data[$i]['model'] = $product->title;
                 $data[$i]['color'] = $product->color;
                 $data[$i]['color_description'] = $product->color_description;
                 $data[$i]['size'] = $product->size;
-                $data[$i]['unit_price'] = $product->unit_price;
-                $data[$i]['price'] = $product->price;
-                $data[$i]['stock'] = $product->stock;
-                $data[$i]['shape'] = $product->get_shape != null ? $product->get_shape->name : '';
-                $data[$i]['type'] = Attribute::find($product->frame_type)->name ?? '';
-                $data[$i]['material'] = Attribute::find($product->product_material)->name ?? '';
-                $data[$i]['gender'] = Attribute::find($product->frame_type)->name ?? '';
+                $data[$i]['unit_price'] = $product->unit_price ?? 0;
+                $data[$i]['price'] = $product->price != null ? $product->price : 0;
+                $data[$i]['stock'] = $product->stock ?? 0;
+                $data[$i]['shape'] = $attributes->where('id',$product->shape)->first()->name ?? '';
+                $data[$i]['type'] = $attributes->where('id',$category->where('id',$product->cat_id)->first()->frame_type)->first()->name ?? '';
+                $data[$i]['material'] = $attributes->where('id',$product->product_material)->first()->name?? '';
+                $data[$i]['gender'] = $attributes->where('id',$product->product_for)->first()->name ?? '';
                 $data[$i]['width'] = $product->product_total_width;
                 $data[$i]['bridge'] = $product->product_bridge;
                 $data[$i]['arm_length'] = $product->product_arm_length;
