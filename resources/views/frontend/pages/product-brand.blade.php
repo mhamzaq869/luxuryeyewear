@@ -20,7 +20,7 @@
                         </div>
                         <h2 class="product_detail_head lgTitle darkColor">Most Loved Frames</h2>
                     </div>
-                    <p style="text-align: center;">We found {{ $products_count }} products available for you all page</p>
+                    <p style="text-align: center;">We found {{ count($products) }} products available for you all page</p>
                     <div class="filterColMain pt-3">
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
@@ -41,7 +41,7 @@
                                         <input type="hidden" name="search_product" class="search_product" @isset($search_product) value="{{$search_product}}" @endisset>
                                         <input type="hidden" name="glass_type" class="glass_type"  @isset($glass_type) value="{{$glass_type}}" @endisset>
                                         <input type="hidden" name="color_array" class="colors" @isset($color_array) value="{{$color_array}}" @endisset>
-                                        <input type="hidden" name="brand_array" class="brands" @isset($products) value="{{$products[0]->brand_id}}" @endisset>
+                                        <input type="hidden" name="brand_array" class="brands" @isset($products) value="{{$brand_id}}" @endisset>
                                         <input type="hidden" name="gender_array" class="genders" @isset($gender_array) value="{{$gender_array}}" @endisset>
                                         <input type="hidden" name="shape_array" class="shapes" @isset($shape_array) value="{{$shape_array}}" @endisset>
                                         <input type="hidden" name="frame_array" class="frames" @isset($frame_array) value="{{$frame_array}}" @endisset>
@@ -153,7 +153,7 @@
                                             <div class="contentCol">
 
                                                 <h4 class="brandCol" id="sunglass_brand_name_{{ $product->id }}">
-                                                    {{ $product->brand->title }} </h4>
+                                                    {{ $product->brandName }} </h4>
                                                 <a href="{{ route('product-detail', $product->slug) }}" target="_blank"
                                                     class="text-dark">
                                                     <p id="sunglass_pro_model_{{ $product->id }}"

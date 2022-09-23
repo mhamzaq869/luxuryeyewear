@@ -67,17 +67,14 @@
                             <div class="row gy-2">
 
                                 <div class="col-12">
+                                    @if (Session::has('error'))
+                                        <span class="text-danger" role="alert">
+                                            <strong>{{Session::get('error')}}</strong>
+                                        </span>
+                                    @endif
 
                                     <input id="email" name="email" type="email" placeholder="Email"
                                         class="form-control" required />
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-
-                                            <strong>{{ $message }}</strong>
-
-                                        </span>
-                                    @enderror
 
                                 </div>
 
@@ -85,16 +82,6 @@
 
                                     <input name="password" id="password" type="password" placeholder="Password"
                                         class="form-control" required />
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-
-                                            <strong>{{ $message }}</strong>
-
-                                        </span>
-                                    @enderror
-
-
 
                                 </div>
 

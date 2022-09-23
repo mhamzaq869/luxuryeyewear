@@ -18,6 +18,11 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->string('title')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('company')->nullable();
+            $table->string('zipcode')->nullable();
             $table->integer('state_id')->nullable();
             $table->integer('country_id')->nullable();
             $table->text('address_1')->nullable();

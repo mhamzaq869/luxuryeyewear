@@ -769,6 +769,9 @@ class ProductController extends Controller
 
     public function ProductExport($type=null)
     {
+        ini_set('max_execution_time', 0);
+        ini_set("memory_limit",-1);
+
         return Excel::download(new ProductExport($type), 'product.xlsx');
     }
 

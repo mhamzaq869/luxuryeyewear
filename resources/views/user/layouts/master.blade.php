@@ -27,7 +27,7 @@
                     <li><a class="ls-link {{request()->path() == 'user/address' ? 'active' : ''}}" href="{{route('user.address')}}"> <i class="fa fas fa-shipping-fast"> </i><span> Shipping Address</span></a></li>
                     <li><a class="ls-link {{request()->path() == 'user/order' ? 'active' : ''}}" href="{{route('user.order.index')}}"> <i class="fa fas fa-shopping-cart"> </i><span> My Orders </span></a></li>
                     <li><a class="ls-link {{request()->path() == 'user/changePassword' ? 'active' : ''}}" href="{{route('user.change.password.form')}}"> <i class="fa fas fa-lock"></i> <span> Change Password </span></a></li>
-                    <li><a class="ls-link" href="#"><i class="fa fa-sign-out-alt"></i> <span>Logout </span></a>
+                    <li><a class="ls-link" href="{{route('user.logout',['user'])}}"><i class="fa fa-sign-out-alt"></i> <span>Logout </span></a>
                     </li>
                 </ul>
                 </div>

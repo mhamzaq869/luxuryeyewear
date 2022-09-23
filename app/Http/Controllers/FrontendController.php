@@ -14,14 +14,13 @@ use App\Models\Attribute;
 use App\Models\ProductNotify;
 use App\Models\Shipping;
 use App\User;
-use Auth;
-use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Newsletter;
 use DB;
-use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash as FacadesHash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Stevebauman\Location\Facades\Location;
 
@@ -278,18 +277,20 @@ class FrontendController extends Controller
     public function productBrand(Request $request)
     {
 
-        $brand_id = Brand::where('slug',$request->slug)->first()->id ?? 0;
-        $products = Product::where('brand_id',$brand_id)->where('status', 'active');
+        $brand_id = \DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
+        $products = \DB::table('products')->join('brands','products.brand_id','=','brands.id')
+        ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
+        ->where('products.status', 'active')->where('products.brand_id', $brand_id)->limit(20)->get();
 
-        $data['products_count'] = $products->count();
-        $data['products'] = $products->paginate(20);
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $data['products_count'] = 0;
+        $data['products'] = $products;
+        $product_variant = \DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
-        $data['brand'] = Brand::take(10)->latest()->get();
-        $data['shapes'] = Attribute::where('attribute_type','shape')->get();
-        $data['materials'] = Attribute::where('attribute_type','material')->get();
-        $data['type'] = Attribute::where('attribute_type','type')->get();
+        // $data['brand'] = Brand::take(10)->latest()->get();
+        // $data['shapes'] = Attribute::where('attribute_type','shape')->get();
+        // $data['materials'] = Attribute::where('attribute_type','material')->get();
+        // $data['type'] = Attribute::where('attribute_type','type')->get();
 
         $data['product_for'] = '';
         $data['glass_type'] = '';
@@ -1380,12 +1381,6 @@ class FrontendController extends Controller
     public function login()
     {
 
-        $user = User::find('1');
-
-        $user->password = Hash::make('1111');
-
-        $user->save();
-
         return view('frontend.pages.login');
     }
 
@@ -1393,12 +1388,11 @@ class FrontendController extends Controller
     {
 
         $data = $request->all();
-        $user = User::where('email',$data['email'])->where('status','active')->first();
+        $user = User::where('email',$data['email'])->where('role','user')->where('status','active')->first();
 
         if($user){
-            if(FacadesHash::check($data['password'], $user->password)){
+            if(Hash::check($data['password'], $user->password)){
                 Auth::login($user);
-
                 return redirect()->route('user_dashboard');
             }else{
                 return redirect()->back()->with('error', 'Invalid Password pleas try again!');
@@ -1411,16 +1405,23 @@ class FrontendController extends Controller
 
 
 
-    public function logout()
+    public function logout($type=null)
     {
 
-        Session::forget('user');
+        if($type == null){
+            Session::forget('user');
+            Auth::logout();
 
-        Auth::logout();
+            request()->session()->flash('success', 'Logout successfully');
 
-        request()->session()->flash('success', 'Logout successfully');
+            return back();
+        }else{
+            Session::forget('user');
+            Auth::logout();
 
-        return back();
+            request()->session()->flash('success', 'Logout successfully');
+            return redirect()->route('login.form');
+        }
     }
 
 

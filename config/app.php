@@ -184,7 +184,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
-
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -244,7 +244,7 @@ return [
         //Excel or csv
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
-
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];

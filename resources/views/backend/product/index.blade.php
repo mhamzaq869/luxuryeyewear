@@ -209,6 +209,7 @@
     <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 
     <script>
 
@@ -221,6 +222,13 @@
             });
 
             $('#product').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',

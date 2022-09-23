@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use App\User;
@@ -10,7 +11,9 @@ use App\Models\ProductReview;
 use App\Models\PostComment;
 use App\Models\State;
 use App\Rules\MatchOldPassword;
+use Exception;
 use Hash;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -58,33 +61,52 @@ class HomeController extends Controller
     }
 
     public function address(){
-        return view('user.address.index');
+        $address = Address::where('user_id',Auth::id())->get();
+        return view('user.address.index',get_defined_vars());
     }
 
     public function addressCreate(){
-        return view('user.address.create');
+        $countries = Country::all();
+        $states = State::all();
+        return view('user.address.create',get_defined_vars());
     }
 
-    public function addressSave(){
+    public function addressSave(Request $request)
+    {
 
+        try{
+            $data = $request->all();
+            $data['user_id'] = Auth::id();
+
+            Address::create($data);
+            request()->session()->flash('success','Address Successfully Added');
+        }catch(Exception $e){
+            request()->session()->flash('error',$e->getMessage());
+        }
+
+        return redirect()->route('user.address');
     }
 
     public function addressEdit($id){
-        return view('user.address.edit');
+        $address = Address::find($id);
+        $countries = Country::all();
+        $states = State::all();
+
+        return view('user.address.edit',get_defined_vars());
     }
 
     public function addressUpdate(Request $request,$id){
         // return $request->all();
-        $user=User::findOrFail($id);
-        $data=$request->all();
-        $status=$user->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Successfully updated your profile');
+        try{
+            $user = Address::findOrFail($id);
+            $data = $request->all();
+            $data['user_id'] = Auth::id();
+            $status = $user->fill($data)->save();
+            request()->session()->flash('success','Address Successfully Updated');
+        }catch(Exception $e){
+            request()->session()->flash('error',$e->getMessage());
         }
-        else{
-            request()->session()->flash('error','Please try again!');
-        }
-        return redirect()->back();
+        return redirect()->route('user.address');
     }
 
     // Order

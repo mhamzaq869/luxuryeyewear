@@ -26,7 +26,7 @@
 
                 <div class="col-12 col-lg-6">
                   <label class="label">Mobile</label>
-                  <input type="tel" name="mobile" value="{{Auth::user()->phone}}" id="mobile" placeholder="Enter your mobile" class="form-control form-field " value="">
+                  <input type="tel" name="phone" value="{{Auth::user()->phone}}" id="mobile" placeholder="Enter your mobile" class="form-control form-field " value="">
                 </div>
               </div>
 
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-12 col-lg-6">
                   <label class="label">Pincode</label>
-                  <input type="text" name="pincode" value="{{Auth::user()->zipcode}}" id="pincode" required="" placeholder="Enter your pincode" class="form-control form-field" value="">
+                  <input type="text" name="zipcode" value="{{Auth::user()->zipcode}}" id="pincode" required="" placeholder="Enter your pincode" class="form-control form-field" value="">
                 </div>
               </div>
 
@@ -45,7 +45,7 @@
                 <div class="col-12 col-lg-6">
                   <label class="label">Country</label>
                   <select class="form-control form-field country" name="country_id" id="country" required="">
-                    <option selected="">Select city</option>
+                    <option selected="">Select Coutry</option>
                     @foreach ($countries as $country)
                         <option value="{{$country->id}}" {{$country->id == Auth::user()->country_id ? 'selected' : ''}}>{{$country->name}}</option>
                     @endforeach
@@ -66,11 +66,11 @@
               <div class="row">
                 <div class="col-md-6">
                   <label class="label">Address line 1</label>
-                  <textarea type="text" class="form-control form-field" rows="3" name="address" id="address" placeholder="Enter your address detail here..."></textarea>
+                  <textarea type="text" class="form-control form-field" rows="3" name="address_1" id="address" placeholder="Enter your address detail here...">{{Auth::user()->address_1}}</textarea>
                 </div>
                 <div class="col-md-6">
                   <label class="label">Address line 2</label>
-                  <textarea type="text" class="form-control form-field" rows="3" name="address2" id="address2" placeholder="Enter your address detail here..."></textarea>
+                  <textarea type="text" class="form-control form-field" rows="3" name="address_2" id="address2" placeholder="Enter your address detail here...">{{Auth::user()->address_2}}</textarea>
                 </div>
               </div>
 

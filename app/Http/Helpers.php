@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\Shipping;
 use App\Models\Cart;
+use App\Models\Product;
 use Stevebauman\Location\Facades\Location;
 
 // use Auth;
@@ -206,7 +207,6 @@ class Helper{
     public static function shipping(){
         return Shipping::orderBy('id','DESC')->get();
     }
-
 
 
 }
