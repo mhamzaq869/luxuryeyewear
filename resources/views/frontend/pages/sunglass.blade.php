@@ -156,7 +156,7 @@
                                                 <div class="contentCol">
 
                                                     <h4 class="brandCol" id="sunglass_brand_name_{{ $product->id }}">
-                                                        {{ $product->brand->title }} </h4>
+                                                        {{ $product->brandName }} </h4>
                                                     <a href="{{ route('product-detail', $product->slug) }}" target="_blank"
                                                         class="text-dark">
                                                         <p id="sunglass_pro_model_{{ $product->id }}"

@@ -21,7 +21,7 @@
                                                 <div class="mDDContent brands_navbar d-none">
                                                     <h4 class="mDDTitle">Brands</h4>
                                                     <ul class="mDDList brands_list"
-                                                        style="height: 250px; overflow-y:scroll;">
+                                                        style="height: 450px; overflow-y:scroll;">
                                                         <?php
                                                             $brands = DB::table('brands')
                                                                 ->select('*')

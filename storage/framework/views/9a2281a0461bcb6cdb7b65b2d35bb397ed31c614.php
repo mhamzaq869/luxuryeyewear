@@ -15,7 +15,7 @@
 
         /* Chrome, Edge, and Safari */
         .brands_list::-webkit-scrollbar {
-            width: 10px;
+            width: 15px;
             height: 10px
         }
 

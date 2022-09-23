@@ -17,7 +17,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Newsletter;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -113,9 +113,13 @@ class FrontendController extends Controller
     // eyeglasses
     public function frontend_eyeglass($type=null,$for=null)
     {
-        $eyeglasses = Product::join('categories','products.cat_id','=','categories.id')
-                        ->select('products.*','categories.frame_type')
-                        ->where('products.status', 'active')->where('categories.frame_type', 32);
+        $eyeglasses = DB::table('products')->join('categories','products.cat_id','=','categories.id')
+                        ->join('brands','products.brand_id','=','brands.id')
+                        ->select('products.*','categories.frame_type','brands.title as brandName')
+                        ->where('products.status', 'active')
+                        ->where('categories.frame_type', 32)
+                        ->limit(20)->get();
+
         if($type == 'women'){
             $eyeglasses->whereIn('products.product_for', [28,30]);
             if($for != null){
@@ -131,8 +135,8 @@ class FrontendController extends Controller
         }
 
         $data['products_count'] = $eyeglasses->count();
-        $data['eyeglasses'] = $eyeglasses->paginate(20);
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $data['eyeglasses'] = $eyeglasses;
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
 
@@ -156,9 +160,12 @@ class FrontendController extends Controller
 
     //Load more eyeglass on scroll page
     public function load_more_eyeglasses($frame=null,$type=null,$for=null){
-        $products = Product::join('categories','products.cat_id','=','categories.id')
-        ->select('products.*','categories.frame_type')
-        ->where('products.status', 'active')->where('categories.frame_type', 32);
+        $products = DB::table('products')->join('categories','products.cat_id','=','categories.id')
+                    ->join('brands','products.brand_id','=','brands.id')
+                    ->select('products.*','categories.frame_type','brands.title as brandName')
+                    ->where('products.status', 'active')
+                    ->where('categories.frame_type', 32)
+                    ->limit(20)->get();
 
 
         if($type == 'women'){
@@ -177,7 +184,7 @@ class FrontendController extends Controller
 
         $products = $products->paginate(20);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','product_for']);
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
@@ -190,9 +197,12 @@ class FrontendController extends Controller
     // sunglasses
     public function frontend_sunglass($type=null,$for=null)
     {
-        $sunglasses = Product::join('categories','products.cat_id','=','categories.id')
-                        ->select('products.*','categories.frame_type')
-                        ->where('products.status', 'active')->where('categories.frame_type', 31);
+            $sunglasses = DB::table('products')->join('categories','products.cat_id','=','categories.id')
+            ->join('brands','products.brand_id','=','brands.id')
+            ->select('products.*','categories.frame_type','brands.title as brandName')
+            ->where('products.status', 'active')
+            ->where('categories.frame_type', 31)
+            ->limit(20)->get();
 
         if($type == 'women'){
             $sunglasses->whereIn('products.product_for', [28,30]);
@@ -211,15 +221,9 @@ class FrontendController extends Controller
         }
 
         $data['products_count'] = $sunglasses->count();
-        $data['sunglasses'] = $sunglasses->paginate(20);
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $data['sunglasses'] = $sunglasses;
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
-
-        $data['product_variant'] = $product_variant;
-        $data['brand'] = Brand::take(10)->latest()->get();
-        $data['shapes'] = Attribute::where('attribute_type','shape')->get();
-        $data['materials'] = Attribute::where('attribute_type','material')->get();
-        $data['type'] = Attribute::where('attribute_type','type')->get();
 
 
         $data['product_for'] = '';
@@ -242,9 +246,12 @@ class FrontendController extends Controller
 
     //Load more sunglass on scroll page
     public function load_more_sunglass($frame=null,$type=null,$for=null){
-        $products = Product::join('categories','products.cat_id','=','categories.id')
-                    ->select('products.*','categories.frame_type')
-                    ->where('products.status', 'active')->where('categories.frame_type', 31);
+        $products = DB::table('products')->join('categories','products.cat_id','=','categories.id')
+                    ->join('brands','products.brand_id','=','brands.id')
+                    ->select('products.*','categories.frame_type','brands.title as brandName')
+                    ->where('products.status', 'active')
+                    ->where('categories.frame_type', 31)
+                    ->limit(20)->get();
 
         if($type == 'women'){
             $products->whereIn('products.product_for', [28,30]);
@@ -277,14 +284,14 @@ class FrontendController extends Controller
     public function productBrand(Request $request)
     {
 
-        $brand_id = \DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
-        $products = \DB::table('products')->join('brands','products.brand_id','=','brands.id')
+        $brand_id = DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
+        $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
         ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
         ->where('products.status', 'active')->where('products.brand_id', $brand_id)->limit(20)->get();
 
         $data['products_count'] = 0;
         $data['products'] = $products;
-        $product_variant = \DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
 
@@ -308,10 +315,13 @@ class FrontendController extends Controller
      //Load more sunglass on scroll page
     public function load_more_brands($brand)
     {
-        $products = Product::where('brand_id',$brand)->where('status', 'active');
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','product_for']);
+        $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
+        ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
+        ->where('products.status', 'active')->where('products.brand_id', $brand)->limit(20)->get();
 
-        $products = $products->paginate(20);
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+
+        $products = $products;
         $ip_country = $this->ip_country ?? '';
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
@@ -550,7 +560,7 @@ class FrontendController extends Controller
 
 
         //Get Frmae Shape Filter
-        $query2 = Attribute::select('products.*','categories.frame_type')
+        $query2 = DB::table('attributes')->select('products.*','categories.frame_type')
                 ->join('products','products.product_for', '=','attributes.id')
                 ->join('categories','products.cat_id','=','categories.id');
 
