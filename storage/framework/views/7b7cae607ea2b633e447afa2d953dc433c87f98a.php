@@ -28,7 +28,7 @@
                                                                 ->get();
                                                         ?>
                                                         <ul class="mDDList brands_list"
-                                                            style="overflow:scroll; width:fit-content;  /*white-space: nowrap;*/">
+                                                            style="overflow:scroll; width:fit-content;  white-space: nowrap;">
                                                             <li><a href="javascript:void(0)">All Brands</a></li>
                                                             <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <li><a
