@@ -352,11 +352,15 @@ class FrontendController extends Controller
 
         // DB::enableQueryLog();
         $arr = DB::table('products')->where('products.status', 'Active')
-                        ->select('products.*','categories.frame_type','brands.title as brandName')
+                        ->select('products.id','products.slug','products.title','products.photo','products.price',
+                        'products.product_for','products.shape','products.type', 'products.product_material',
+                        'products.brand_id','products.cat_id','products.status',
+                        'categories.frame_type','brands.title as brandName')
                         ->join('categories','products.cat_id','=','categories.id')
                         ->join('brands','products.brand_id','=','brands.id');
-        $attribute = new Attribute();
 
+
+        $attribute = new Attribute();
 
 
         if (!empty($glass_type)) {
@@ -516,7 +520,7 @@ class FrontendController extends Controller
 
         //Get Frmae Type Filter
         // $query1 = DB::table('attributes')->leftJoin('products','products.product_for', '=','attributes.id');
-        $query1 = Attribute::select('products.*','categories.frame_type')
+        $query1 = DB::table('attributes')->select('products.*','categories.frame_type')
                     ->join('products','products.product_for', '=','attributes.id')
                     ->join('categories','products.cat_id','=','categories.id');
 
@@ -602,7 +606,7 @@ class FrontendController extends Controller
         $frame_shapes = $query2->where('products.status','Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
         // Get Frame Material Filter
-        $query3 = Attribute::select('products.*','categories.frame_type')
+        $query3 = DB::table('attributes')->select('products.*','categories.frame_type')
                 ->join('products','products.product_for', '=','attributes.id')
                 ->join('categories','products.cat_id','=','categories.id');
 
@@ -692,7 +696,7 @@ class FrontendController extends Controller
         //         ".$addWhere." ) > 0" );
 
         $all_brands = [];
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+        $product_variant = DB::table('products')->select('id','slug','price','title','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
         if ($request->ajax()) {
             $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();

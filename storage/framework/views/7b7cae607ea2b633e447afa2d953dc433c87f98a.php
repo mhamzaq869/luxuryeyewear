@@ -28,7 +28,7 @@
                                                                 ->get();
                                                         ?>
                                                         <ul class="mDDList brands_list"
-                                                            style="overflow:scroll; width:fit-content;  white-space: nowrap;">
+                                                            style="overflow:scroll; width:fit-content;  /*white-space: nowrap;*/">
                                                             <li><a href="javascript:void(0)">All Brands</a></li>
                                                             <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <li><a
@@ -121,7 +121,7 @@
                                                 <div class="mDDContent brands_navbar d-none ">
                                                     <h4 class="mDDTitle">Brands</h4>
                                                     <ul class="mDDList brands_list"
-                                                        style="height: 250px; overflow-y:scroll;">
+                                                        style="height: 450px; overflow-y:scroll;">
                                                         <?php
                                                             $brands = DB::table('brands')
                                                                 ->select('*')
