@@ -297,7 +297,7 @@
                                                         </a>
                                                     </div>
 
-                                                    @foreach ($product_variant->where('id', '!=', $product_detail->id)->flatten() as $i => $data)
+                                                    @foreach ($product_variant->where('id', '!=', $product_detail->id)->where('cat_id',$product_detail->cat_id)->flatten() as $i => $data)
                                                         {{-- @if ($i <= 4) --}}
                                                             <div
                                                                 class="col-3">
@@ -755,7 +755,7 @@
                                                         </li>
                                                     @endif
 
-                                                    @foreach ($like->where('id', '!=', $product_detail->id)->flatten() as $i => $variant)
+                                                    @foreach ($like->where('id', '!=', $product_detail->id)->where('cat_id',$product_detail->cat_id)->flatten() as $i => $variant)
                                                         @if ($i <= 2)
                                                             <li>
                                                                 <a href="javascript:void(0)"
