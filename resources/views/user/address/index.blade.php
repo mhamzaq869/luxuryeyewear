@@ -26,8 +26,8 @@
 
     <div class="row">
         @foreach ($address as $add)
-        <div class="col-md-4">
-            <div class="card">
+        <div class="col-md-6">
+            <div class="card shadow">
                 <div class="card-header border">
                     <div class="row">
                         <div class="col-md-10">
@@ -42,11 +42,14 @@
 
                 </div>
                 <div class="card-body">
-                    <div>State: {{$add->state->name}}</div>
-                    <div>Country: {{$add->country->name}}</div>
-                    <div>Pincode: {{$add->zipcode}}</div>
-                    <div>Address 1: {{$add->address_1}}</div>
-                    <div>Address 2: {{$add->address_2}}</div>
+                    <address>
+                    <div><b>State:</b> {{$add->state->name}}</div>
+                    <div><b>Country:</b> {{$add->country->name}}</div>
+                    <div><b>Pincode:</b> {{$add->zipcode}}</div>
+                    <div><b>Address 1:</b> {{$add->address_1}}</div>
+                    <div><b>Address 2:</b> {{$add->address_2}}</div>
+                    </address>
+
                 </div>
             </div>
         </div>

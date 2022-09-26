@@ -149,16 +149,18 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
-
+    
     <!--new js-->
-
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
 
     <script src="<?php echo e(asset('assets/js/bootstrap.bundle.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/proSlider.js')); ?>"></script>
+
     <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe-ui-default.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+    <script type="text/javascript" src="https://www.jqueryscript.net/demo/toast-notification-td-message/td-message.js"></script>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
     <!--new js end -->
@@ -200,10 +202,7 @@
                 },
             },
         });
-    </script>
 
-
-    <script>
         $(document).ready(function() {
 
 
@@ -451,6 +450,36 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+
+            $(".newsletter-inner").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if(data.status == true){
+                        $.message({
+                            type:'success',
+                            text:data.message,
+                            duration: 5000
+                        });
+                    }else{
+                        $.message({
+                            type:'error',
+                            text:data.message,
+                            duration: 5000
+                        });
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+                });
+            }));
         });
     </script>
 </body>

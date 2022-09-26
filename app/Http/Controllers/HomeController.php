@@ -35,7 +35,7 @@ class HomeController extends Controller
 
 
     public function index(){
-        return view('user.index');
+        return redirect()->route('user.order.index');
     }
 
     public function profile(){
@@ -140,8 +140,8 @@ class HomeController extends Controller
 
     public function orderShow($id)
     {
-        $order=Order::find($id);
-        // return $order;
+        $order=Order::with(['cart_info.product'])->where('id',$id)->first();
+
         return view('user.order.show')->with('order',$order);
     }
     // Product Review

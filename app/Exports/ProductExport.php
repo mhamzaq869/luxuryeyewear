@@ -29,9 +29,9 @@ class ProductExport implements FromCollection, WithHeadings
 
         if($this->type == null):
             foreach($products as $i => $product){
-                $data[$i]['id'] = $product->id;
+                $data[$i]['id'] = $product->product_uan_code;
                 $data[$i]['ean'] = $product->product_ean_code;
-                $data[$i]['category'] = $category->where('id',$product->cat_id)->first()->title ?? '';
+                $data[$i]['category'] = $attributes->where('id',$category->where('id',$product->cat_id)->first()->frame_type)->first()->name ?? '';
                 $data[$i]['brand'] = $brands->where('id',$product->brand_id)->first()->title ?? '';
                 $data[$i]['model'] = $product->title;
                 $data[$i]['color'] = $product->color;
@@ -41,7 +41,7 @@ class ProductExport implements FromCollection, WithHeadings
                 $data[$i]['price'] = $product->price != null ? $product->price : 0;
                 $data[$i]['stock'] = $product->stock ?? 0;
                 $data[$i]['shape'] = $attributes->where('id',$product->shape)->first()->name ?? '';
-                $data[$i]['type'] = $attributes->where('id',$category->where('id',$product->cat_id)->first()->frame_type)->first()->name ?? '';
+                $data[$i]['type'] = $product->product_type != null ? $attributes->where('id',$category->where('id',($product->product_type))->first()->id)->first()->name ?? '' : '';
                 $data[$i]['material'] = $attributes->where('id',$product->product_material)->first()->name?? '';
                 $data[$i]['gender'] = $attributes->where('id',$product->product_for)->first()->name ?? '';
                 $data[$i]['width'] = $product->product_total_width;

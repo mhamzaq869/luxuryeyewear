@@ -12,6 +12,7 @@ use App\Models\ProductColor;
 use App\Models\PrescriptionData;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportProduct;
+use App\Models\ProductNotify;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -277,7 +278,6 @@ class ProductController extends Controller
      */
 
     public function show($id)
-
     {
 
         //
@@ -404,8 +404,118 @@ class ProductController extends Controller
 
     }
 
+    public function outOfStock()
+    {
+       $products = ProductNotify::all();
+       return view('backend.product.outofstock', get_defined_vars());
+    }
+
+    public function showOutOfStockTable(Request $request)
+    {
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
 
 
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+        $columnName_arr = $request->get('columns');
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+
+        if($columnName_arr[$columnIndex]['data'] == 'color_code'){
+            $columnName_arr[$columnIndex]['data'] = 'color';
+        }else if($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code'){
+            $columnName_arr[$columnIndex]['data'] = 'product_ean_code';
+        }else if($columnName_arr[$columnIndex]['data'] == 'brand'){
+            $columnName_arr[$columnIndex]['data'] = 'brand_id';
+        }else if($columnName_arr[$columnIndex]['data'] == 'category'){
+            $columnName_arr[$columnIndex]['data'] = 'cat_id';
+        }
+
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+
+
+        // Total records
+        $totalRecords = ProductNotify::select('count(*) as allcount')->count();
+        $totalRecordswithFilter = ProductNotify::select('count(*) as allcount')
+        ->join('products', 'product_notifies.product_id','=','products.id')
+        ->select('products.*','product_notifies.product_id','product_notifies.email')
+        ->where('title', 'like', '%' .$searchValue . '%')
+        ->count();
+
+        // Fetch records
+        $records = ProductNotify::orderBy($columnName,$columnSortOrder)
+            ->join('products', 'product_notifies.product_id','=','products.id')
+            ->where('products.title', 'like', '%' .$searchValue . '%')
+            ->orWhere('products.price', 'like', '%' .$searchValue . '%')
+            ->orWhere('products.status', 'like', '%' .$searchValue . '%')
+            ->orWhere('product_notifies.email', 'like', '%' .$searchValue . '%')
+            ->select('products.*','product_notifies.product_id','product_notifies.email')
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+
+            // dd($records);
+            // dd( $records);
+        $data_arr = array();
+
+        foreach($records as $i => $record){
+            if($record->is_featured == 1){
+                $badge = '<div class="text-center mt-2"><span class="badge badge-pill badge-warning text-danger">Top</span></div>';
+            }else{
+                $badge = '';
+            }
+
+
+            if(!isValidUrl($record->photo)){
+                if($record->photo != null){
+                    $photo = '<img src="'.asset(insertAtPosition($record->photo)).'" class="img-fluid " style="max-width:80px"  alt="'.$record->photo.'">'.$badge ?? '';
+                }else{
+                    $photo = '<img src="'. asset("/images/no_image.jpg") .'" class="img-fluid " style="max-width:80px"  alt="">'.$badge ?? '';
+                }
+            }else{
+                $photo = '<img src="'. $record->photo .'" class="img-fluid " style="max-width:80px"  alt="">'.$badge ?? '';
+            }
+
+            if($record->status == 'active'){
+                $status = '<span class="badge badge-success">'.$record->status.'</span>';
+            }else if($record->status == 'outofstock'){
+                $status = '<span class="badge badge-danger">'.ucfirst($record->status).'</span>';
+            }else{
+                $status = '<span class="badge badge-warning">'.$record->status.'</span>';
+            }
+            // dd($record);
+            $data_arr[] = array(
+                "id" => $i+1 ?? '',
+                "photo" => $photo,
+                "title" => "<a target='_blank' href=".url('product-detail/'.$record->slug).">".$record->title ?? '',
+                "stock" => $record->stock ?? '',
+                "price" => '$'. $record->price ?? '',
+                "status" => $status,
+                "email" => $record->email,
+                "action" => '<a href="'.url("/admin/product-request").'/'.$record->product_id.'/delete" class="btn btn-danger btn-sm dltBtn" data-id="'.$record->id.'" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></a>',
+
+            );
+        }
+
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
+        );
+
+        return response($response);
+
+
+    }
     /**
 
      * Show the form for editing the specified resource.
@@ -716,6 +826,28 @@ class ProductController extends Controller
         }
 
         return redirect()->route('product.index');
+
+    }
+
+    public function destroyRequest($id)
+    {
+
+        $product = ProductNotify::findOrFail($id);
+        $status = $product->delete();
+
+        if($status){
+
+            request()->session()->flash('success','Request successfully deleted');
+
+        }
+
+        else{
+
+            request()->session()->flash('error','Error while deleting product');
+
+        }
+
+        return redirect()->route('product.out.of.stock');
 
     }
 

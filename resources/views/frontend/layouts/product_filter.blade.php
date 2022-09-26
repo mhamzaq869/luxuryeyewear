@@ -264,7 +264,7 @@
     }
 
     .cardStyle1 {
-        margin-bottom: 20px;
+        margin-bottom: -10px;
     }
 </style>
 <div class="left-side">

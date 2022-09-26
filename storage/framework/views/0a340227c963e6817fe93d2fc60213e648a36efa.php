@@ -25,6 +25,11 @@
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.css'>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.min.css'>
 
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
+
   <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6307344bf4696f0019bda34f&product=inline-share-buttons" async="async"></script>
   <!--new css end -->
+  
+  <link rel='stylesheet' href='https://www.jqueryscript.net/demo/toast-notification-td-message/td-msessage.css'>
 <?php /**PATH C:\laragon\www\eyewear\resources\views/frontend/layouts/head.blade.php ENDPATH**/ ?>

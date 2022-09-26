@@ -12,7 +12,7 @@
 
                         <input name="email" placeholder="Your email address" required="" type="email"
                             class="sub_input_style">
-                        <button class="sub_btn_style" type="button" type="submit">SUBSCRIBE US</button>
+                        <button class="sub_btn_style" type="submit">SUBSCRIBE US</button>
                     </form>
                 </div>
             </div>

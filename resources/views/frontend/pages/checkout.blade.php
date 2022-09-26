@@ -994,7 +994,6 @@
         </div>
     </section>
     <!-- End Shop Services -->
-
     <div class="modal fade" id="thankyou" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

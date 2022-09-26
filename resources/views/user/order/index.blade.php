@@ -1,14 +1,26 @@
 @extends('user.layouts.master')
 
 @section('main-content')
-    <!-- DataTales Example -->
+    <div class="container-fluid">
+    {{-- @include('user.layouts.notification') --}}
+    <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Order Lists</h1>
+        <h1 class="h3 mb-0 text-gray-800">Orders</h1>
     </div>
 
-    {{-- <div class="table-responsive"> --}}
-        @if (count($orders) > 0)
-            <table class="table table-bordered" width="100%" cellspacing="0">
+
+
+    <!-- Content Row -->
+
+    <div class="row">
+        @php
+            $orders = DB::table('orders')
+                ->where('user_id', auth()->user()->id)
+                ->paginate(10);
+        @endphp
+        <!-- Order -->
+        <div class="col-xl-12 col-lg-12 px-0">
+            <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>S.N.</th>
@@ -16,56 +28,62 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Quantity</th>
-                        <th>Charge</th>
                         <th>Total Amount</th>
                         <th>Status</th>
-                        {{-- <th>Action</th> --}}
+                        <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach ($orders as $order)
-                        <tr>
-                            <td>{{ $order->id }}</td>
-                            <td>{{ $order->order_number }}</td>
-                            <td>{{ $order->first_name }} {{ $order->last_name }}</td>
-                            <td>{{ $order->email }}</td>
-                            <td>{{ $order->quantity }}</td>
-                            <td>${{ $order->shipping->price ?? 0 }}</td>
-                            <td>${{ number_format($order->total_amount, 2) }}</td>
-                            <td>
-                                @if ($order->status == 'new')
-                                    <span class="badge badge-primary">{{ $order->status }}</span>
-                                @elseif($order->status == 'process')
-                                    <span class="badge badge-warning">{{ $order->status }}</span>
-                                @elseif($order->status == 'delivered')
-                                    <span class="badge badge-success">{{ $order->status }}</span>
-                                @else
-                                    <span class="badge badge-danger">{{ $order->status }}</span>
-                                @endif
-                            </td>
-                            {{-- <td>
-                                <a href="{{ route('user.order.show', $order->id) }}"
-                                    class="btn btn-warning btn-sm float-left mr-1"
-                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                    title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                                <form method="POST" action="{{ route('user.order.delete', [$order->id]) }}">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm dltBtn" data-id={{ $order->id }}
-                                        style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                        data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                                </form>
-                            </td> --}}
-                        </tr>
-                    @endforeach
+                    @if (count($orders) > 0)
+                        @foreach ($orders as $i => $order)
+                            <tr>
+                                <td>{{ $i+1 }}</td>
+                                <td>{{ $order->order_number }}</td>
+                                <td>{{ $order->first_name }} {{ $order->last_name }}</td>
+                                <td>{{ $order->email }}</td>
+                                <td>{{ $order->quantity }}</td>
+                                <td>${{ number_format($order->total_amount, 2) }}</td>
+                                <td>
+                                    @if ($order->status == 'new')
+                                        <span class="badge badge-primary">{{ $order->status }}</span>
+                                    @elseif($order->status == 'process')
+                                        <span class="badge badge-warning">{{ $order->status }}</span>
+                                    @elseif($order->status == 'delivered')
+                                        <span class="badge badge-success">{{ $order->status }}</span>
+                                    @else
+                                        <span class="badge badge-danger">{{ $order->status }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('user.order.show', $order->id) }}"
+                                        class=" btn-info btn-sm float-left mr-1"
+                                        style="height:30px; border-radius:50%" data-toggle="tooltip"
+                                        title="view" data-placement="bottom"><i class="fas fa-eye mb-4"></i></a>
+                                    <form method="POST" action="{{ route('user.order.delete', [$order->id]) }}">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn-danger btn-sm dltBtn" data-id={{ $order->id }}
+                                            style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                            data-placement="bottom" title="Delete"><i
+                                                class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <td colspan="8" class="text-center">
+                            <h4 class="my-4">You have no order yet!! Please order some products</h4>
+                        </td>
+                    @endif
                 </tbody>
             </table>
-            <span style="float:right">{{ $orders->links() }}</span>
-        @else
-            <h6 class="text-center">No orders found!!! Please order some products</h6>
-        @endif
-    {{-- </div> --}}
+
+            {{ $orders->links() }}
+        </div>
+    </div>
+
+</div>
 
 @endsection
 

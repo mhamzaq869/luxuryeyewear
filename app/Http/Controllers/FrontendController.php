@@ -16,12 +16,12 @@ use App\Models\Shipping;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Newsletter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Newsletter;
 use Stevebauman\Location\Facades\Location;
 
 class FrontendController extends Controller
@@ -164,8 +164,7 @@ class FrontendController extends Controller
                     ->join('brands','products.brand_id','=','brands.id')
                     ->select('products.*','categories.frame_type','brands.title as brandName')
                     ->where('products.status', 'active')
-                    ->where('categories.frame_type', 32)
-                    ->limit(20)->get();
+                    ->where('categories.frame_type', 32);
 
 
         if($type == 'women'){
@@ -182,7 +181,7 @@ class FrontendController extends Controller
             }
         }
 
-        $products = $products->paginate(20);
+        $products = $products->simplePaginate(20);
         $ip_country = $this->ip_country ?? '';
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
@@ -201,8 +200,7 @@ class FrontendController extends Controller
             ->join('brands','products.brand_id','=','brands.id')
             ->select('products.*','categories.frame_type','brands.title as brandName')
             ->where('products.status', 'active')
-            ->where('categories.frame_type', 31)
-            ->limit(20)->get();
+            ->where('categories.frame_type', 31);
 
         if($type == 'women'){
             $sunglasses->whereIn('products.product_for', [28,30]);
@@ -221,7 +219,7 @@ class FrontendController extends Controller
         }
 
         $data['products_count'] = $sunglasses->count();
-        $data['sunglasses'] = $sunglasses;
+        $data['sunglasses'] = $sunglasses->simplePaginate(20);
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
@@ -250,8 +248,7 @@ class FrontendController extends Controller
                     ->join('brands','products.brand_id','=','brands.id')
                     ->select('products.*','categories.frame_type','brands.title as brandName')
                     ->where('products.status', 'active')
-                    ->where('categories.frame_type', 31)
-                    ->limit(20)->get();
+                    ->where('categories.frame_type', 31);
 
         if($type == 'women'){
             $products->whereIn('products.product_for', [28,30]);
@@ -269,9 +266,9 @@ class FrontendController extends Controller
             }
         }
 
-        $products = $products->paginate(20);
+        $products = $products->simplePaginate(20);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
@@ -287,7 +284,7 @@ class FrontendController extends Controller
         $brand_id = DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
         $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
         ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
-        ->where('products.status', 'active')->where('products.brand_id', $brand_id)->limit(20)->get();
+        ->where('products.status', 'active')->where('products.brand_id', $brand_id)->simplePaginate(20);
 
         $data['products_count'] = 0;
         $data['products'] = $products;
@@ -317,7 +314,7 @@ class FrontendController extends Controller
     {
         $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
         ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
-        ->where('products.status', 'active')->where('products.brand_id', $brand)->limit(20)->get();
+        ->where('products.status', 'active')->where('products.brand_id', $brand)->simplePaginate(20);
 
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
@@ -1509,26 +1506,37 @@ class FrontendController extends Controller
     public function subscribe(Request $request)
     {
 
-        if (!Newsletter::isSubscribed($request->email)) {
+        if (! Newsletter::isSubscribed($request->email)) {
 
             Newsletter::subscribePending($request->email);
 
             if (Newsletter::lastActionSucceeded()) {
 
-                request()->session()->flash('success', 'Subscribed! Please check your email');
+                $response['status'] = true;
+                $response['status_code'] = 200;
+                $response['type'] = 'success';
+                $response['message'] = 'Subscribed! Please check your email';
 
-                return redirect()->route('home');
+                return response($response);
             } else {
 
                 Newsletter::getLastError();
 
-                return back()->with('error', 'Something went wrong! please try again');
+                $response['status'] = false;
+                $response['status_code'] = 500;
+                $response['type'] = 'error';
+                $response['message'] = 'Something went wrong! please try again';
+
+                return response($response);
             }
         } else {
 
-            request()->session()->flash('error', 'Already Subscribed');
+            $response['status'] = true;
+            $response['status_code'] = 200;
+            $response['type'] = 'success';
+            $response['message'] = 'Already Subscribed';
 
-            return back();
+            return response($response);
         }
     }
 }

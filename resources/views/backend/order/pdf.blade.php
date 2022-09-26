@@ -84,6 +84,7 @@
   <div class="invoice-description">
     <div class="invoice-left-top float-left">
       <h6>Invoice to</h6>
+
        <h3>{{$order->first_name}} {{$order->last_name}}</h3>
        <div class="address">
         <p>
@@ -119,9 +120,10 @@
       </thead>
       <tbody>
       @foreach($order->cart_info as $cart)
-      @php 
+      @php
         $product=DB::table('products')->select('title')->where('id',$cart->product_id)->get();
       @endphp
+
         <tr>
           <td><span>
               @foreach($product as $pro)
@@ -151,8 +153,8 @@
           @php
             $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
           @endphp
-          <th scope="col" class="text-right ">Shipping:</th>
-          <th><span>${{number_format($shipping_charge[0],2)}}</span></th>
+          {{-- <th scope="col" class="text-right ">Shipping:</th>
+          <th><span>${{number_format($shipping_charge[0],2)}}</span></th> --}}
         </tr>
         <tr>
           <th scope="col" class="empty"></th>

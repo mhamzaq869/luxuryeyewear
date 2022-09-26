@@ -202,7 +202,10 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('product/export/{id?}','ProductController@ProductExport')->name('product.export.get');
     Route::post('product/update/oncheck','ProductController@productUpdate')->name('product.update.on.check');
     Route::post('product/ajax','ProductController@showDatatableData')->name('product.show.ajax.data');
+    Route::get('product/outofstock','ProductController@outOfStock')->name('product.out.of.stock');
+    Route::post('product/ajax/outofstock','ProductController@showOutOfStockTable')->name('product.out.stock.show.ajax.data');
     Route::get('product/{id}/delete','ProductController@destroy')->name('product.delete');
+    Route::get('product-request/{id}/delete','ProductController@destroyRequest');
     Route::resource('/product','ProductController');
     // Ajax for sub category
 
