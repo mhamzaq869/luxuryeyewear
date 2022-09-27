@@ -47,8 +47,8 @@
 
                             @if (isset($i) && $i >= 2)
                                 @if((count($product_variant->whereIn('product_for',[27,30])) - 4) != 0)
-                                <li>
-                                    <a href="{{route('product-detail',[$product->slug])}}" target="_blank" class="text-danger m-2">
+                                <li style="padding: 0px">
+                                    <a href="{{route('product-detail',[$product->slug])}}" target="_blank" style="padding: 14px" class="text-danger m-2">
                                         +{{count($product_variant->whereIn('product_for',[27,30])) - 4}}
                                     </a>
                                 </li>
@@ -66,7 +66,7 @@
                     <a href="{{ route('product-detail', $product->slug) }}" target="_blank">
                         <p id="men_sunglass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
                     </a>
-                    <span class="priceCol" id="men_sunglass_pro_price_{{ $product->id }}"> ${{ $product->price }}</span>
+                    <span class="priceCol" id="men_sunglass_pro_price_{{ $product->id }}"> ${{ number_format($product->price,2) }}</span>
 
 
                     <div class="row gx-2">

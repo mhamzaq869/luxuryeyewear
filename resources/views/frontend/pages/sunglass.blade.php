@@ -135,10 +135,10 @@
                                                                 @endif
                                                             @endforeach
 
-                                                            @if (isset($i) && $i >= 2)
-                                                                <li>
+                                                            @if (isset($i) && $i > 2)
+                                                                <li style="padding: 0">
                                                                     <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                        class="text-danger m-2">
+                                                                        class="text-danger m-2" style="padding: 14px">
                                                                         @if (count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0)
 
                                                                         +{{ count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 }}
@@ -163,7 +163,7 @@
                                                             class="text-dark link-primary">{{ $product->title }}</p>
                                                     </a>
                                                     <span class="priceCol" id="sunglass_pro_price_{{ $product->id }}"">
-                                                        ${{ $product->price }}</span>
+                                                        ${{ number_format($product->price,2) }}</span>
 
 
                                                     <div class="row gx-2">
@@ -235,7 +235,7 @@
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html("$" + data.price)
+                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 

@@ -93,7 +93,7 @@
                                                 </a>
 
                                                 <div class="color_builts">
-                                                    <ul>
+                                                    <ul class="list-inline mx-auto justify-content-center">
                                                         @if ($active = $product)
                                                             <li>
                                                                 <a href="javascript:void(0)"
@@ -102,12 +102,14 @@
                                                                     <img src="{{ asset(insertAtPosition($active->photo)) }}" alt=""
                                                                         class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
                                                                         id="href_sunglass_{{ $product->id }}_{{ $active->id }}"
-                                                                        onmouseover="changeProDetail({{ $product->id }},'sunglass_',{{ $product->id }})">
+                                                                        onmouseover="changeProDetail({{ $product->id }},'sunglass_',{{ $product->id }})"
+                                                                        >
                                                                     @else
                                                                     <img src="{{ $active->photo }}" alt=""
                                                                         class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
                                                                         id="href_sunglass_{{ $product->id }}_{{ $active->id }}"
-                                                                        onmouseover="changeProDetail({{ $product->id }},'sunglass_',{{ $product->id }})">
+                                                                        onmouseover="changeProDetail({{ $product->id }},'sunglass_',{{ $product->id }})"
+                                                                        >
                                                                     @endif
                                                                 </a>
                                                             </li>
@@ -133,10 +135,10 @@
                                                             @endif
                                                         @endforeach
 
-                                                        @if (isset($i) && $i >= 2)
-                                                            <li>
+                                                        @if (isset($i) && $i > 2)
+                                                            <li style="padding: 0">
                                                                 <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                    class="text-danger m-2">
+                                                                    class="text-danger text-right" style="padding: 20px">
                                                                     @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
                                                                     +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}
                                                                     @endif
@@ -160,7 +162,7 @@
                                                         class="text-dark link-primary">{{ $product->title }}</p>
                                                 </a>
                                                 <span class="priceCol" id="sunglass_pro_price_{{ $product->id }}"">
-                                                    ${{ $product->price }}</span>
+                                                    ${{ number_format($product->price,2) }}</span>
 
 
                                                 <div class="row gx-2">
@@ -235,7 +237,7 @@
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
                 // $("#" + type + "pro_price_" + parent_id).html("$" + Math.ceil(data.price))
-                $("#" + type + "pro_price_" + parent_id).html("$" + data.price)
+                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 

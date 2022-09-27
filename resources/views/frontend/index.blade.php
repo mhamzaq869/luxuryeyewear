@@ -263,7 +263,7 @@
             }
             $("#"+type+"brand_name_"+parent_id).html(data.brand_name)
             $("#"+type+"pro_model_"+parent_id).html("<a class='text-dark link-primary' href='{{url('product-detail')}}/"+data.slug+"'>"+data.title+"</a>")
-            $("#"+type+"pro_price_"+parent_id).html("$"+data.price)
+            $("#"+type+"pro_price_"+parent_id).html("$"+parseInt(data.price).toFixed(2))
             $("#"+type+"pro_discount_"+parent_id).html("%"+data.discount)
         }
 
