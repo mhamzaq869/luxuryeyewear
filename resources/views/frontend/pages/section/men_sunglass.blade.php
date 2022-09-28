@@ -62,7 +62,7 @@
 
                 <div class="contentCol">
 
-                    <h4 class="brandCol" id="men_sunglass_brand_name_{{ $product->id }}">{{ $product->brand->title }} </h4>
+                    <h4 class="brandCol" id="men_sunglass_brand_name_{{ $product->id }}">{{ $product->brandName }} </h4>
                     <a href="{{ route('product-detail', $product->slug) }}" target="_blank">
                         <p id="men_sunglass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
                     </a>

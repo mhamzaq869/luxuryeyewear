@@ -52,36 +52,36 @@ class FrontendController extends Controller
 
     public function home()
     {
-        $productWithColor = Product::where('products.status', 'active')
-            ->leftJoin('categories', function ($join) {
-                $join->on('categories.id', '=', 'products.cat_id');
-            })->leftJoin('brands', function ($join) {
-                $join->on('brands.id', 'products.brand_id');
-            })->get();
+        // $productWithColor = Product::where('products.status', 'active')
+        //     ->leftJoin('categories', function ($join) {
+        //         $join->on('categories.id', '=', 'products.cat_id');
+        //     })->leftJoin('brands', function ($join) {
+        //         $join->on('brands.id', 'products.brand_id');
+        //     })->get();
 
             // dd( Product::variant(1,[27,30]));
-        $attribute = Attribute::get();
+        // $attribute = Attribute::get();
         $data['female_eyeglasses'] = Product::femaleEyeglasses();
         $data['male_sunglasses'] = Product::maleSunglasses();
         $data['female_sunglasses'] = Product::femaleSunglasses();
         $data['male_eyeglasses'] = Product::maleEyeglasses();
 
-        $data['featured'] = Product::where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
+        $data['featured'] = DB::table('products')->where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
 
-        $data['posts'] = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+        $data['posts'] = DB::table('posts')->where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
-        $data['banners'] = Banner::where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
+        $data['banners'] = DB::table('banners')->where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
 
         // return $banner;
 
-        $data['products'] = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
+        $data['products'] = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
 
-        $data['category'] = Category::where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
+        $data['category'] = DB::table('categories')->where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
 
         // return $category;
-        $data['brand_img'] =  Brand::where('status', 'active')->orderBy('title')->get();
+        $data['brand_img'] =  DB::table('brands')->where('status', 'active')->orderBy('title')->get();
 
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
 
         // foreach($product_variant as $detail){
@@ -351,7 +351,7 @@ class FrontendController extends Controller
         $arr = DB::table('products')->where('products.status', 'Active')
                         ->select('products.id','products.slug','products.title','products.photo','products.price',
                         'products.product_for','products.shape','products.type', 'products.product_material',
-                        'products.brand_id','products.cat_id','products.status',
+                        'products.brand_id','products.cat_id','products.status','products.created_at',
                         'categories.frame_type','brands.title as brandName')
                         ->join('categories','products.cat_id','=','categories.id')
                         ->join('brands','products.brand_id','=','brands.id');
@@ -1118,22 +1118,33 @@ class FrontendController extends Controller
     public function productSearch(Request $request)
     {
 
-        $recent_products = Product::whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
+        $recent_products = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
 
         if($request->search != null){
-            $products = Product::orwhere('title', 'like', '%' . $request->search . '%')
-            ->whereIn('status', ['active','outofstock'])
-            ->orwhere('slug', 'like', '%' . $request->search . '%')
-            ->orwhere('product_ean_code', 'like', '%' . $request->search . '%')
-            ->orwhere('price', 'like', '%' . $request->search . '%')
-            ->orderBy('id', 'DESC')
-            ->paginate(20);
+            // $products = DB::table('products')->orwhere('title', 'like', '%' . $request->search . '%')
+            // ->whereIn('status', ['active','outofstock'])
+            // ->orwhere('slug', 'like', '%' . $request->search . '%')
+            // ->orwhere('product_ean_code', 'like', '%' . $request->search . '%')
+            // ->orwhere('price', 'like', '%' . $request->search . '%')
+            // ->orderBy('id', 'DESC')
+            // ->simplePaginate(20);
+
+            $products = DB::table('products')
+            ->join('brands','products.brand_id','=','brands.id')
+            ->select('products.*','brands.title as brandName')
+            // ->orwhere('products.slug', 'like', '%' . $request->search . '%')
+            ->orwhere('products.product_ean_code', 'like', '%' . $request->search . '%')
+            ->orwhere('products.price', 'like', '%' . $request->search . '%')
+            ->orWhereNot('products.status', 'inactive')
+            ->orderBy('products.id', 'DESC')
+            ->simplePaginate(20);
 
         }else{
             $products = [];
         }
 
-        $product_variant = Product::whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+
+        $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
 
         return view('frontend.pages.product_for')
                 ->with('data', $products)
@@ -1147,13 +1158,15 @@ class FrontendController extends Controller
     public function load_more_products($search)
     {
         // dd($request->all(),$search);
-        $products = Product::orwhere('title', 'like', '%' . $search . '%')
-                    ->orwhere('slug', 'like', '%' . $search . '%')
-                    ->orwhere('description', 'like', '%' . $search . '%')
-                    ->orwhere('summary', 'like', '%' . $search . '%')
-                    ->orwhere('price', 'like', '%' . $search . '%')
-                    ->orderBy('id', 'DESC')
-                    ->paginate(20);
+        $products = DB::table('products')
+            ->join('brands','products.brand_id','=','brands.id')
+            ->select('products.*','brands.title as brandName')
+            // ->orwhere('products.slug', 'like', '%' . $search . '%')
+            ->orwhere('products.product_ean_code', 'like', '%' . $search . '%')
+            ->orwhere('products.price', 'like', '%' . $search . '%')
+            ->orWhereNot('products.status', 'inactive')
+            ->orderBy('products.id', 'DESC')
+            ->simplePaginate(20);
 
         // dd($products);
         $ip_country = $this->ip_country ?? '';
