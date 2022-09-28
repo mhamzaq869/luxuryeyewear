@@ -269,12 +269,10 @@
                                             src="<?php echo e(asset('assets/./images/like-icon.svg')); ?>"
                                             alt="Image Not Found"></a>
 
-                                    <?php if(auth()->guard()->check()): ?>
-                                        <?php echo e(DB::table('wishlists')->where('user_id', request()->ip())->count()); ?>
 
-                                    <?php else: ?>
-                                        0
-                                    <?php endif; ?>
+                                    <?php echo e(DB::table('wishlists')->where('user_id', request()->ip())->count()); ?>
+
+
                                 </li>
                                 <li>
                                     <a href="<?php echo e(route('cart')); ?>"><img

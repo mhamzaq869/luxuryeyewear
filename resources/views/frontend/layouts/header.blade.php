@@ -284,11 +284,9 @@
                                             src="{{ asset('assets/./images/like-icon.svg') }}"
                                             alt="Image Not Found"></a>
 
-                                    @auth
-                                        {{ DB::table('wishlists')->where('user_id', request()->ip())->count() }}
-                                    @else
-                                        0
-                                    @endauth
+
+                                    {{ DB::table('wishlists')->where('user_id', request()->ip())->count() }}
+
                                 </li>
                                 <li>
                                     <a href="{{ route('cart') }}"><img
