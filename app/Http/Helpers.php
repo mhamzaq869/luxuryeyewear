@@ -8,6 +8,7 @@ use App\Models\Wishlist;
 use App\Models\Shipping;
 use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 
 // use Auth;
@@ -102,14 +103,16 @@ class Helper{
     public static function getAllProductFromCart($user_id=''){
         // if(Auth::check()){
             if($user_id=="") $user_id=request()->ip();
-            $carts = Cart::with('product')->where('user_id',request()->ip())->where('order_id',null)->get();
+            $carts = DB::table('carts')->join('products','carts.product_id','=','products.id')
+            ->select('carts.*','products.price','products.photo','products.slug','products.title')
+            ->where('user_id',request()->ip())->where('order_id',null)->get();
 
             $location = Location::get(request()->ip());
             // $location = Location::get('111.119.187.50');
             foreach($carts as $cart){
                 if($location){
                     $countryCode = $location->countryCode;
-                    $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
+                    $shipping = DB::table('shippings')->whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
 
                     if($shipping != null && $shipping->count() > 0){
                         if(in_array($countryCode,explode(',',$cart->dispatch_from))){
@@ -146,7 +149,7 @@ class Helper{
     {
 
         if($user_id=="") $user_id= request()->ip();
-        return number_format(Cart::where('user_id',$user_id)->where('order_id',null)->sum('price'),2);
+        return number_format(DB::table('carts')->where('user_id',$user_id)->where('order_id',null)->sum('price'),2);
 
     }
     // Wishlist Count

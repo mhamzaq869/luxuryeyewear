@@ -38,12 +38,16 @@
 
                                                     @csrf
 
-                                                    @if (count(Helper::getAllProductFromCart()) != 0)
+                                                    @php
+                                                        $carts = Helper::getAllProductFromCart();
+                                                    @endphp
 
-                                                        @foreach (Helper::getAllProductFromCart() as $key => $cart)
+                                                    @if (count($carts) != 0)
+
+                                                        @foreach ($carts as $key => $cart)
                                                             <tr>
                                                                 {{-- {{dd($cart)}} --}}
-                                                                @php $photo = explode(',', $cart->product['photo']); @endphp
+                                                                @php $photo = explode(',', $cart->photo); @endphp
 
                                                                 <td class="image" data-title="No">
                                                                     <img src="{{ asset($photo[0]) }}"
@@ -53,18 +57,18 @@
                                                                 <td class="product-des" data-title="Description">
 
                                                                     <p class="product-name"><a
-                                                                            href="{{ route('product-detail', $cart->product['slug']) }}"
-                                                                            target="_blank">{{ $cart->product['title'] }}</a>
+                                                                            href="{{ route('product-detail', $cart->slug) }}"
+                                                                            target="_blank">{{ $cart->title }}</a>
                                                                     </p>
 
                                                                     <p class="product-des">
 
-                                                                        {!! $cart['summary'] !!}</p>
+                                                                        {{-- {!! $cart->summary !!}</p> --}}
 
                                                                 </td>
 
                                                                 <td class="price" data-title="Price">
-                                                                    <span>${{ number_format($cart->product->price, 2) }}</span>
+                                                                    <span>${{ number_format($cart->price, 2) }}</span>
                                                                 </td>
 
                                                                 <td class="qty" data-title="Qty">
@@ -86,7 +90,7 @@
 
                                                                 <td class="total-amount cart_single_price"
                                                                     data-title="Total"><span
-                                                                        class="money">${{ number_format($cart['price'], 2) }}</span>
+                                                                        class="money">${{ number_format($cart->price, 2) }}</span>
                                                                 </td>
 
 
@@ -171,7 +175,7 @@
 
 
                                 @php
-                                    $carts = Helper::getAllProductFromCart();
+
 
                                     $total_amount = Helper::totalCartPrice();
 
@@ -189,12 +193,12 @@
 
                                         <ul style="line-height:2">
 
-                                            <li class="order_shipping" data-price="{{ Helper::totalCartPrice() }}">
+                                            <li class="order_shipping" data-price="{{$total_amount }}">
                                                 Cart Shipping  <span>${{ number_format($carts->total_shipping, 2) }}</span>
                                              </li>
 
-                                            <li class="order_subtotal" data-price="{{ Helper::totalCartPrice() }}">
-                                                Cart Subtotal <span>${{ number_format(Helper::totalCartPrice(), 2) }}</span>
+                                            <li class="order_subtotal" data-price="{{$total_amount }}">
+                                                Cart Subtotal <span>${{ number_format($total_amount, 2) }}</span>
                                             </li>
 
 
