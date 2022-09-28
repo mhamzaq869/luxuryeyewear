@@ -11,7 +11,7 @@
                       <a href="{{ route('product-detail', $product->slug) }}">
                           <div class="imgCol">
                             @if (!isValidUrl($product->photo))
-                              <img src="{{ asset($product->photo) }}" id="female_sunglass_pro_img_{{ $product->id }}" alt="Product ">
+                              <img src="{{ asset(insertAtPosition($product->photo,'med')) }}" id="female_sunglass_pro_img_{{ $product->id }}" alt="Product ">
                             @else
                               <img src="{{ $product->photo }}" id="female_sunglass_pro_img_{{ $product->id }}" alt="Product ">
                             @endif

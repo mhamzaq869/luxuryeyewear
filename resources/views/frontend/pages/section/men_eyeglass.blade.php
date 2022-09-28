@@ -11,7 +11,7 @@
                 <div class="productImg">
                     <a href="{{ route('product-detail', $product->slug) }}">
                         <div class="imgCol">
-                            <img src="{{ asset($product->photo) }}" id="men_eyeglass_pro_img_{{ $product->id }}" alt="Product ">
+                            <img src="{{ asset(insertAtPosition($product->photo,'med')) }}" id="men_eyeglass_pro_img_{{ $product->id }}" alt="Product ">
                         </div>
                     </a>
 

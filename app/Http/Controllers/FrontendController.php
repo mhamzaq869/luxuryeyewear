@@ -81,7 +81,7 @@ class FrontendController extends Controller
         // return $category;
         $data['brand_img'] =  DB::table('brands')->where('status', 'active')->orderBy('title')->get();
 
-        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','product_for']);
 
 
         // foreach($product_variant as $detail){
