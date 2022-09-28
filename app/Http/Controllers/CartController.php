@@ -29,7 +29,7 @@ class CartController extends Controller
             return back();
         }
 
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)->first();
+        $already_cart = Cart::where('user_id', request()->ip())->where('order_id',null)->where('product_id', $product->id)->first();
 
         if($already_cart) {
 
@@ -43,7 +43,7 @@ class CartController extends Controller
         }else{
 
             $cart = new Cart;
-            $cart->user_id = auth()->user()->id;
+            $cart->user_id = request()->ip();
             $cart->product_id = $product->id;
             if($product->price != Null){
                 $cart->price = ($product->price-($product->price*$product->discount)/100);
@@ -51,7 +51,7 @@ class CartController extends Controller
                 $cart->price=$cart->price*$cart->quantity;
                 if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
                 $cart->save();
-                $wishlist= Wishlist::where('user_id',auth()->user()->id)->where('cart_id',null)->update(['cart_id'=>$cart->id]);
+                $wishlist= Wishlist::where('user_id',request()->ip())->where('cart_id',null)->update(['cart_id'=>$cart->id]);
             }
         }
         request()->session()->flash('success','Product successfully added to cart');

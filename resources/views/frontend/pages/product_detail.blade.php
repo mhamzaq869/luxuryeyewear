@@ -697,8 +697,7 @@
         </div>
     </section>
 
-
-
+    @if ($product_detail->rel_prods->count() > 1)
     <div class="product_detail pb-0">
         <div class="container">
             <div class="product_deatail_list">
@@ -735,9 +734,9 @@
                                             <div class="color_builts">
 
                                                 <ul>
-                                                    @php $like = \App\Models\Product::where('cat_id', $data->cat_id)->get();  @endphp
+                                                    @php $like = \DB::table('products')->where('cat_id', $data->cat_id)->get();  @endphp
 
-                                                    @if ($active = $like->where('id', $product_detail->id)->first())
+                                                    @if ($active = $like->where('id', $data->id)->first())
                                                         <li>
                                                             <a href="javascript:void(0)"
                                                                 onclick="changeProDetail({{ $active->id }},'men_sunglass_',{{ $data->id }})"
@@ -755,7 +754,7 @@
                                                         </li>
                                                     @endif
 
-                                                    @foreach ($like->where('id', '!=', $product_detail->id)->where('cat_id',$product_detail->cat_id)->flatten() as $i => $variant)
+                                                    @foreach ($like->where('id', '!=', $data->id)->flatten() as $i => $variant)
                                                         @if ($i <= 2)
                                                             <li>
                                                                 <a href="javascript:void(0)"
@@ -775,7 +774,7 @@
                                                         @endif
                                                     @endforeach
 
-                                                    @if ($i >= 2)
+                                                    @if ($i > 2)
                                                         @if((count($like) - 4 ) != 0)
                                                             <li>
                                                                 <a href="{{ route('product-detail', [$data->slug]) }}"
@@ -791,14 +790,14 @@
                                         </div>
                                         <div class="contentCol pt-5">
                                             <h4 class="brandCol" id="men_sunglass_brand_name_{{ $data->id }}">
-                                                {{ $data->title }} </h4>
+                                                {{ $data->brand->title }} </h4>
                                             <a href="{{ route('product-detail', $data->slug) }}" target="_blank"     class="text-dark">
 
                                                 <p id="men_sunglass_pro_model_{{ $data->id }}">
                                                     {{ $data->title }} </p>
                                             </a>
                                             <span class="priceCol"
-                                                id="men_sunglass_pro_price_{{ $data->id }}">${{ ceil($data->price) }}
+                                                id="men_sunglass_pro_price_{{ $data->id }}">${{ number_format($data->price,2) }}
                                             </span>
                                             <div class="row gx-2">
                                                 <div class="col-6">
@@ -824,6 +823,7 @@
             </div>
         </div>
     </div>
+    @endif
 
 
 
@@ -871,9 +871,9 @@
                 if(data.stock != 0){
                     var exist_qty = $("#quantity").val();
                     if (exist_qty == 1) {
-                        $(".productPrice").text("$" + Math.ceil(data.price))
+                        $(".productPrice").text("$" + parseInt(data.price).toFixed(2))
                     }
-                    $("#current_product_price").val(Math.ceil(data.price))
+                    $("#current_product_price").val(parseInt(data.price).toFixed(2))
                     changePriceQty(exist_qty)
                 }
 
@@ -1082,17 +1082,24 @@
         function changeProDetail(id, type, parent_id) {
             var data = product.find(item => item.id == id)
             if (data.length != 0) {
-                changeActive(data, id, type, parent_id)
+                $('.last-product-' + parent_id).removeClass('active-product last-product')
+                $("#href_" + type + parent_id + "_" + id).addClass('active-product last-product')
+                if (data.id != id) {
+                    $("#href_" + type + parent_id + "_" + current_prod_id).removeClass('active-product')
+                }
                 if(!isValidURL(data.photo)){
                     $("#" + type + "pro_img_" + parent_id).attr('src', root + insertAtPosition(data.photo,'med'))
                 }else{
                     $("#" + type + "pro_img_" + parent_id).attr('src', data.photo)
                 }
                 $("#" + type + "brand_name_" + parent_id).html(data.brand_name)
-                $("#" + type + "pro_model_" + parent_id).html(data.size+' '+data.color_description)
-                $("#" + type + "pro_price_" + parent_id).html("$" + Math.ceil(data.price))
+                $("#" + type + "pro_model_" + parent_id).html(
+                    "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
+                    .title + "</a>")
+                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
+
         }
 
         function hoverImage(id){

@@ -754,9 +754,14 @@ class FrontendController extends Controller
     public function productDetail($slug)
     {
 
+        // $product_detail = DB::table('products')->join('brands','products.brand_id','=','brands.id')
+        // ->join('categories','products.cat_id','=','categories.id')
+        // ->select('products.*','categories.size','brands.title as brandName')->where('products.slug', $slug)->first();
+
         $product_detail = Product::getProductBySlug($slug);
 
-        if($product_detail->cat_info != null && $product_detail->cat_info->size != null){
+
+        if($product_detail != null && $product_detail->cat_info->size != null){
             $lensDetail = json_decode($product_detail->cat_info->size);
             $product_detail->product_lens_width = $lensDetail->width;
             $product_detail->product_bridge = $lensDetail->bridge;
@@ -770,19 +775,22 @@ class FrontendController extends Controller
             $product_detail->product_lens_height = '';
             $product_detail->product_total_width = '';
         }
+        $attribute = Attribute::all();
+        $product_variant = DB::table('products')->join('brands','products.brand_id','=','brands.id')->join('categories','products.cat_id','=','categories.id')
+        ->select('products.*','categories.size as catSize','categories.title as catTitle','categories.frame_type','brands.title as brandName')->where('cat_id', $product_detail->cat_id)->where('products.status','active')->get();
 
-        $product_variant = Product::where('cat_id', $product_detail->cat_id)->where('status','active')->get();
         foreach($product_variant as $detail){
-            $detail->frame_type_name = Attribute::find($detail->cat_info->frame_type)->name ?? '';
-            $detail->shape_name = Attribute::find($detail->shape)->name ?? '';
-            $detail->material_name = Attribute::find($detail->product_material)->name ?? '';
-            $detail->lens_name = Attribute::find($detail->lense_type)->name ?? '';
-            $detail->typename = $detail->type_name != null ? $detail->type_name->name : '';
-            $detail->shapename = $detail->get_shape != null ? $detail->get_shape->name : '';
-            $detail->gender_name = $detail->get_gender != null ? $detail->get_gender->name : '';
-            $detail->brand_name = Brand::find($detail->brand_id)->title ?? '';
-            $detail->cat_name = Category::find($detail->cat_id)->title ?? '';
-            $detail->frame_fragment = json_decode(Category::find($detail->cat_id)->size) ?? '';
+
+            $detail->frame_type_name = $attribute->where('id',$detail->frame_type)->first() != null ? $attribute->where('id',$detail->frame_type)->first()->name : '';
+            $detail->shape_name = $attribute->where('id',$detail->shape)->first() != null ? $attribute->where('id',$detail->shape)->first()->name : '';
+            $detail->material_name = $attribute->where('id',$detail->product_material)->first() != null ? $attribute->where('id',$detail->product_material)->first()->name : '';
+            $detail->lens_name = $attribute->where('id',$detail->lense_type)->first() != null ? $attribute->where('id',$detail->lense_type)->first()->name : '';
+            // $detail->typename = $detail->type_name != null ? $detail->type_name->name : '';
+            // $detail->shapename = $detail->get_shape != null ? $detail->get_shape->name : '';
+            $detail->gender_name = $attribute->where('id',$detail->product_for)->first() != null ? $attribute->where('id',$detail->product_for)->first()->name : '';
+            $detail->brand_name = $detail->brandName ?? '';
+            $detail->cat_name = $detail->catTitle ?? '';
+            $detail->frame_fragment = json_decode($detail->catSize) ?? '';
 
             $imgs = [];
             $imgs = array_merge($imgs, array($detail->p_f));
