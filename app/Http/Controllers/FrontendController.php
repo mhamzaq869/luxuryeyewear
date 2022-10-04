@@ -83,7 +83,7 @@ class FrontendController extends Controller
 
         $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','product_for']);
 
-
+            // dd($data,$product_variant->where('cat_id',83668));
         // foreach($product_variant as $detail){
         //     $detail->frame_type_name = $detail->frametype->name ?? '';
         //     $detail->shape_name = $detail->get_shape != null ? $detail->get_shape->name : '';

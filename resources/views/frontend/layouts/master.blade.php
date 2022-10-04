@@ -123,7 +123,23 @@
             pointer-events: none;
             color: #080808 !important;
         }
+        .select2-container--default .select2-selection--single{
+            background-color: #F6F7FB !important;
+            border: 0px !important;
+        }
+        .select2-selection__rendered {
+            line-height: 46px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 46px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 46px !important;
+        }
     </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
 </head>
@@ -161,6 +177,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
     <script type="text/javascript" src="https://www.jqueryscript.net/demo/toast-notification-td-message/td-message.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     @stack('scripts')
     <!--new js end -->

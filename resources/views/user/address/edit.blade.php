@@ -37,7 +37,7 @@
 
             <div class="col-6 col-lg-6">
                 <label class="label">Country/region</label>
-                <select class="form-control form-field country" name="country_id" id="country" required="">
+                <select class="form-control form-field country " name="country_id" id="country" required="">
                     <option selected="">Select Coutry</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}"
@@ -130,3 +130,26 @@
     </form>
 
 @endsection
+
+
+@push('scripts')
+    <script>
+        var countries = @json($countries)
+
+        var states = @json($states)
+
+        $("#country").on('change', function(){
+            var country = countries.find(item => item.id == this.value);
+            var state = states.filter(item => item.country_id == country.id);
+            console.log(country)
+            var html = '';
+            $.each(state , function(index, val) {
+                html += '<option value="'+val.id+'">'+val.name+'</option>'
+            });
+
+
+            $("#state").html(html)
+            $("#state").trigger('change')
+        });
+    </script>
+@endpush

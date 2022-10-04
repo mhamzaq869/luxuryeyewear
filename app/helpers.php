@@ -48,7 +48,6 @@ function uploadImage ($file, $path = null) {
 
 }
 
-
 function fn_resize($image_resource_id, $width, $height,$qulaity)
 {
     $target_width = $width * $qulaity;
@@ -77,7 +76,6 @@ function compressImage($file,$imageFullPath,$imageDestinationPath,$qulaity){
     }
 }
 
-
 function insertAtPosition($string,$med=null) {
     if($string != null){
         $stringArr = explode('/',$string);
@@ -92,7 +90,6 @@ function insertAtPosition($string,$med=null) {
         return $string;
     }
 }
-
 
 function isValidUrl($url){
     if (!filter_var($url, FILTER_VALIDATE_URL) === false) {

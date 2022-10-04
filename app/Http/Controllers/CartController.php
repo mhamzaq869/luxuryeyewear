@@ -1,12 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Address;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use App\Models\Country;
+use App\Models\Shipping;
+use App\Models\State;
 use Illuminate\Support\Str;
 use Helper;
 class CartController extends Controller
@@ -239,7 +244,11 @@ class CartController extends Controller
             request()->session()->flash('error','Cart is Empty !');
             return redirect()->route('home');
         }else{
-            return view('frontend.pages.checkout');
+            $address = Address::with(['state','country'])->get();
+            $countries = Country::all();
+            $states = State::all();
+
+            return view('frontend.pages.checkout', get_defined_vars());
         }
     }
 }

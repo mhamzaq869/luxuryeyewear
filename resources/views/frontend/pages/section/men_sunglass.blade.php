@@ -30,7 +30,7 @@
                                 </li>
                             @endif
 
-                            @foreach ($product_variant->where('cat_id',$product->cat_id)->where('id','!=',$product->id)->whereIn('product_for',[27,30])->flatten() as $i => $variant)
+                            @foreach ($product->variant->where('id','!=',$product->id)->flatten() as $i => $variant)
                                     @if ($i <= 2)
                                         <li>
                                             <a href="javascript:void(0)" target="_blank" onclick="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $product->id }})"  onmouseover="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $product->id }})">
@@ -46,10 +46,10 @@
                             @endforeach
 
                             @if (isset($i) && $i >= 2)
-                                @if((count($product_variant->where('cat_id',$product->cat_id)->whereIn('product_for',[27,30])) - 4) != 0)
+                                @if((count($product->variant) - 4) != 0)
                                 <li style="padding: 0px">
                                     <a href="{{route('product-detail',[$product->slug])}}" target="_blank" style="padding: 14px" class="text-danger m-2">
-                                        +{{count($product_variant->where('cat_id',$product->cat_id)->whereIn('product_for',[27,30])) - 4}}
+                                        +{{count($product->variant) - 4}}
                                     </a>
                                 </li>
                                 @endif

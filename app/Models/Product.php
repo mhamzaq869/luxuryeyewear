@@ -104,7 +104,7 @@ class Product extends Model
         $products = DB::table('products')->join('categories','products.cat_id','=','categories.id')->join('brands','products.brand_id','=','brands.id')
         ->select('products.*','categories.frame_type','brands.title as brandName')->where('products.status','active')->where('categories.frame_type',32)->whereIn('products.product_for', [28,30])->where('products.is_featured',1)->limit(6)->get();
         foreach($products as $product){
-            $product->variant = DB::table('products')->where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+            $product->variant = DB::table('products')->where('cat_id', $product->cat_id)->where('status','active')->get(['id','title','slug','price','photo']);
         }
         return $products;
     }
@@ -114,8 +114,9 @@ class Product extends Model
                     ->where('categories.frame_type',32)->whereIn('products.product_for', [27,30])->where('products.is_featured',1)->limit(6)->get();
 
          foreach($products as $product){
-            $product->variant = DB::table('products')->where('status','active')->where('id','!=',$product->id)->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+            $product->variant = DB::table('products')->where('cat_id', $product->cat_id)->where('status','active')->get(['id','title','slug','price','photo']);
         }
+
         return $products;
     }
     public static function femaleSunglasses(){
@@ -124,7 +125,7 @@ class Product extends Model
                     ->where('categories.frame_type',31)->whereIn('products.product_for', [28,30])->where('products.is_featured',1)->limit(6)->get();
 
         foreach($products as $product){
-            $product->variant = DB::table('products')->where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+            $product->variant = DB::table('products')->where('cat_id', $product->cat_id)->where('status','active')->get(['id','title','slug','price','photo']);
         }
         return $products;
     }
@@ -134,7 +135,7 @@ class Product extends Model
                     ->where('categories.frame_type',31)->whereIn('products.product_for', [27,30])->where('products.is_featured',1)->limit(6)->get();
 
         foreach($products as $product){
-            $product->variant = DB::table('products')->where('status','active')->where('cat_id', $product->cat_id)->get(['id','title','slug','price','photo']);
+            $product->variant = DB::table('products')->where('cat_id', $product->cat_id)->where('status','active')->get(['id','title','slug','price','photo']);
         }
         return $products;
     }

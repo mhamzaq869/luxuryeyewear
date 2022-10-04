@@ -37,7 +37,7 @@
 
             <div class="col-6 col-lg-6">
                 <label class="label">Country/region</label>
-                <select class="form-control form-field country" name="country_id" id="country" required="">
+                <select class="form-control form-field country select2" name="country_id" id="country" required="">
                     <option selected="">Select Coutry</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}"
@@ -51,7 +51,7 @@
         <div class="row">
             <div class="col-12 col-lg-4">
                 <label class="label">State</label>
-                <select class="form-control form-field state" name="state_id" id="state" required="">
+                <select class="form-control form-field state select2" name="state_id" id="state" required="">
                     <option selected="">Select state</option>
                     @foreach ($states as $state)
                         <option value="{{$state->id}}" {{$state->id == Auth::user()->state_id ? 'selected' : ''}}>{{$state->name}}</option>
@@ -130,3 +130,25 @@
     </form>
 
 @endsection
+
+@push('scripts')
+    <script>
+        var countries = @json($countries)
+
+        var states = @json($states)
+
+        $("#country").on('change', function(){
+            var country = countries.find(item => item.id == this.value);
+            var state = states.filter(item => item.country_id == country.id);
+            console.log(country)
+            var html = '';
+            $.each(state , function(index, val) {
+                html += '<option value="'+val.id+'">'+val.name+'</option>'
+            });
+
+
+            $("#state").html(html)
+            $("#state").trigger('change')
+        });
+    </script>
+@endpush
