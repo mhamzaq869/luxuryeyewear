@@ -150,7 +150,8 @@ Route::post('post/{slug}/comment','PostCommentController@store')->name('post-com
 Route::resource('/comment','PostCommentController');
 // Coupon
 
-Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
+Route::get('/coupon/remove/discount','CouponController@removeCouponDiscount')->name('coupon.remove.discount');
+Route::post('/coupon_discount','CouponController@couponStore')->name('coupon.discount');
 // Payment
 
 Route::get('payment', 'PayPalController@payment')->name('payment');

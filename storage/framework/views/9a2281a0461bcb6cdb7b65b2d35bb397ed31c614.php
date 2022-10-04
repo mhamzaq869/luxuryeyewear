@@ -140,7 +140,6 @@
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
 </head>
@@ -472,30 +471,30 @@
             $(".newsletter-inner").on('submit', (function(e) {
                 e.preventDefault();
                 $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if(data.status == true){
-                        $.message({
-                            type:'success',
-                            text:data.message,
-                            duration: 5000
-                        });
-                    }else{
-                        $.message({
-                            type:'error',
-                            text:data.message,
-                            duration: 5000
-                        });
+                    url: $(this).attr('action'),
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        if(data.status == true){
+                            $.message({
+                                type:'success',
+                                text:data.message,
+                                duration: 5000
+                            });
+                        }else{
+                            $.message({
+                                type:'error',
+                                text:data.message,
+                                duration: 5000
+                            });
+                        }
+                    },
+                    error: function(e) {
+                        console.log(e);
                     }
-                },
-                error: function(e) {
-                    console.log(e);
-                }
                 });
             }));
         });

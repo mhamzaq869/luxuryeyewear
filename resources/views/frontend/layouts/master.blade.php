@@ -471,30 +471,30 @@
             $(".newsletter-inner").on('submit', (function(e) {
                 e.preventDefault();
                 $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if(data.status == true){
-                        $.message({
-                            type:'success',
-                            text:data.message,
-                            duration: 5000
-                        });
-                    }else{
-                        $.message({
-                            type:'error',
-                            text:data.message,
-                            duration: 5000
-                        });
+                    url: $(this).attr('action'),
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        if(data.status == true){
+                            $.message({
+                                type:'success',
+                                text:data.message,
+                                duration: 5000
+                            });
+                        }else{
+                            $.message({
+                                type:'error',
+                                text:data.message,
+                                duration: 5000
+                            });
+                        }
+                    },
+                    error: function(e) {
+                        console.log(e);
                     }
-                },
-                error: function(e) {
-                    console.log(e);
-                }
                 });
             }));
         });

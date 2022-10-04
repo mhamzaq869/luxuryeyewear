@@ -156,7 +156,7 @@
                                         <div class="coupon_inner">
                                             <p>Enter your coupon code if you have one.</p>
                                             <div class="row">
-                                                <form action="{{ route('coupon-store') }}" method="POST">
+                                                <form action="{{ route('coupon.discount') }}" method="POST" id="couponForm">
                                                     @csrf
                                                     <div class="col">
                                                         <input class="form-control" name="code"
@@ -194,18 +194,23 @@
                                         <ul style="line-height:2">
 
                                             <li class="order_shipping" data-price="{{$total_amount }}">
-                                                Cart Shipping  <span>${{ number_format($carts->total_shipping, 2) }}</span>
+                                                Shipping  <span>${{ number_format($carts->total_shipping, 2) }}</span>
                                              </li>
 
-                                            <li class="order_subtotal" data-price="{{$total_amount }}">
-                                                Cart Subtotal <span>${{ number_format($total_amount, 2) }}</span>
-                                            </li>
+
 
 
                                             @if (session()->has('coupon'))
+                                                <li class="order_subtotal" data-price="{{$total_amount }}">
+                                                    Subtotal <span>${{ number_format($total_amount + Session::get('coupon')['value'], 2) }}</span>
+                                                </li>
                                                 <li class="coupon_price"
                                                     data-price="{{ Session::get('coupon')['value'] }}">You
                                                     Save <span>${{ number_format(Session::get('coupon')['value'], 2) }}</span>
+                                                </li>
+                                            @else
+                                                <li class="order_subtotal" data-price="{{$total_amount }}">
+                                                    Subtotal <span>${{ number_format($total_amount, 2) }}</span>
                                                 </li>
                                             @endif
 
@@ -219,6 +224,15 @@
                                                     Pay <span>${{ number_format($total_amount + $carts->total_shipping, 2) }}</span></li>
                                             @endif
 
+                                            @if (session()->has('coupon'))
+
+                                                <li class="coupon_price" >Coupon
+                                                    <span class="badge badge-warning"> {{ Session::get('coupon')['code'] }}
+                                                        <a href="{{route('coupon.remove.discount')}}" class="text-dark ml-3" style="padding-left: 15px; border-left: 1px"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </span>
+
+                                                </li>
+                                            @endif
                                         </ul>
 
                                         <div class="button5 mt-2 p-5 text-center">
@@ -343,8 +357,16 @@
 
 
 @push('scripts')
+    <style>
+        .badge {
+            background-color: rgb(0, 102, 255);
+            color: white;
+            padding: 4px 8px;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </style>
     <script src="{{ asset('frontend/js/nice-select/js/jquery.nice-select.min.js') }}"></script>
-
     <script src="{{ asset('frontend/js/select2/js/select2.min.js') }}"></script>
 
     <script>
@@ -375,5 +397,35 @@
 
 
         });
+
+        // $("#couponForm").submit(function(e){
+        //     e.preventDefault();
+        //     $.ajax({
+        //         url: $(this).attr('action'),
+        //         type: "POST",
+        //         data: new FormData(this),
+        //         contentType: false,
+        //         cache: false,
+        //         processData: false,
+        //         success: function(data) {
+        //             if(data.status == true){
+        //                 $.message({
+        //                     type:'success',
+        //                     text:data.message,
+        //                     duration: 5000
+        //                 });
+        //             }else{
+        //                 $.message({
+        //                     type:'error',
+        //                     text:data.message,
+        //                     duration: 5000
+        //                 });
+        //             }
+        //         },
+        //         error: function(e) {
+        //             console.log(e);
+        //         }
+        //     });
+        // });
     </script>
 @endpush

@@ -97,7 +97,7 @@ class CouponController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        
+
         $status=$coupon->fill($data)->save();
         if($status){
             request()->session()->flash('success','Coupon Successfully updated');
@@ -106,7 +106,7 @@ class CouponController extends Controller
             request()->session()->flash('error','Please try again!!');
         }
         return redirect()->route('coupon.index');
-        
+
     }
 
     /**
@@ -135,23 +135,27 @@ class CouponController extends Controller
     }
 
     public function couponStore(Request $request){
-        // return $request->all();
-        $coupon=Coupon::where('code',$request->code)->first();
-        // dd($coupon);
+        $coupon = Coupon::where('code',$request->code)->first();
+
         if(!$coupon){
             request()->session()->flash('error','Invalid coupon code, Please try again');
             return back();
         }
         if($coupon){
-            $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
+            $total_price = Cart::where('user_id',request()->ip())->where('order_id',null)->sum('price');
             // dd($total_price);
             session()->put('coupon',[
-                'id'=>$coupon->id,
-                'code'=>$coupon->code,
-                'value'=>$coupon->discount($total_price)
+                'id'=> $coupon->id,
+                'code'=> $coupon->code,
+                'value'=> $coupon->discount($total_price)
             ]);
             request()->session()->flash('success','Coupon successfully applied');
             return redirect()->back();
         }
+    }
+
+    public function removeCouponDiscount(){
+        session()->forget('coupon');
+        return redirect()->back();
     }
 }
