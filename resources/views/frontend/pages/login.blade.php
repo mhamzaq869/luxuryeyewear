@@ -60,11 +60,11 @@
 
                             @csrf
 
-                            <h2 class="mdTitle pb-2">Sign In</h2>
+                            <h2 class="mdTitle pt-2">Sign In</h2>
 
 
 
-                            <div class="row gy-2">
+                            <div class="row gy-1">
 
                                 <div class="col-12">
                                     @if (Session::has('error'))
