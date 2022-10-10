@@ -229,13 +229,13 @@
                                 <div class="col-12">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                             <span class="productPrice">${{ ceil($product_detail->price) }}</span> <br>
+                                             <span class="productPrice">{!! currencySymbol() !!}{{ number_format(price($product_detail->price),2) }}</span> <br>
                                             @if ($product_detail->shipping_cost > 0)
-                                             <span class="productPrice">Shipping Cost: ${{ $product_detail->shipping_cost }}</span> <br>
+                                             <span>Shipping Cost: {!! currencySymbol() !!}{{ price($product_detail->shipping_cost) }}</span> <br>
                                             @endif
 
                                             @if ($product_detail->transit)
-                                             <span class="productPrice">delivery {{ $product_detail->transit }}</span>
+                                             <span>Delivery {{ $product_detail->transit }}</span>
                                             @endif
                                         </div>
                                         <div class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">
@@ -293,7 +293,7 @@
                                                             <img src="{{ $product_detail->photo }}" style="width:50px;" id="pro_pic_{{ $product_detail->id }}">
                                                             @endif
                                                             <small
-                                                                class="text-dark"><b>${{ ceil($product_detail->price) }}</b></small>
+                                                                class="text-dark"><b>{!! currencySymbol() !!}{{ number_format(price($product_detail->price),2)}}</b></small>
                                                         </a>
                                                     </div>
 
@@ -311,12 +311,9 @@
                                                                         id="pro_pic_{{ $data->id }}">
 
                                                                     @else
-                                                                    <img src="{{$data->photo}}"
-                                                                        style="width:50px;"
-                                                                        id="pro_pic_{{ $data->id }}">
+                                                                    <img src="{{$data->photo}}" style="width:50px;" id="pro_pic_{{ $data->id }}">
                                                                     @endif
-                                                                    <small
-                                                                        class="text-dark"><b>${{ ceil($data->price) }}</b></small>
+                                                                    <small class="text-dark"><b>{!! currencySymbol() !!}{{ number_format(price($data->price),2)}}</b></small>
                                                                 </a>
                                                             </div>
                                                         {{-- @endif --}}
@@ -797,7 +794,7 @@
                                                     {{ $data->title }} </p>
                                             </a>
                                             <span class="priceCol"
-                                                id="men_sunglass_pro_price_{{ $data->id }}">${{ number_format($data->price,2) }}
+                                                id="men_sunglass_pro_price_{{ $data->id }}">{!! currencySymbol() !!}{{ number_format(price($data->price),2) }}
                                             </span>
                                             <div class="row gx-2">
                                                 <div class="col-6">
@@ -871,9 +868,9 @@
                 if(data.stock != 0){
                     var exist_qty = $("#quantity").val();
                     if (exist_qty == 1) {
-                        $(".productPrice").text("$" + parseInt(data.price).toFixed(2))
+                        $(".productPrice").text(symbol + price(data.price).toFixed(2))
                     }
-                    $("#current_product_price").val(parseInt(data.price).toFixed(2))
+                    $("#current_product_price").val(price(data.price).toFixed(2))
                     changePriceQty(exist_qty)
                 }
 
@@ -1096,7 +1093,7 @@
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
+                $("#" + type + "pro_price_" + parent_id).html(symbol + price(data.price).toFixed(2))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 
@@ -1132,7 +1129,7 @@
                 $("#addToCart").attr('onsubmit', '')
             }
 
-            $(".productPrice").text("$" + total_price)
+            $(".productPrice").text(symbol + total_price)
             $("#product_price").val(total_price)
             $("#product_qty").val(qty)
         }

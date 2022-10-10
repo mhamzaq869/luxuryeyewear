@@ -8,6 +8,7 @@ use Dompdf\Css\Color;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 use Cviebrock\EloquentSluggable\Sluggable;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 
 class Product extends Model
@@ -165,7 +166,11 @@ class Product extends Model
     }
 
 
-    public static function Variant($id, array $gender){
+    public static function Variant($id, array $gender)
+    {
+        $location = Location::get(request()->ip());
+        $location = Location::get('111.119.187.50');
+
         $products = Product::where('cat_id',$id)->where('status','active')->where('frame_type',31)->whereIn('product_for', $gender)->get();
         foreach($products as $detail){
             $detail->frame_type_name = $detail->frametype->name ?? '';
@@ -185,6 +190,27 @@ class Product extends Model
 
 
             $detail->all_imgs = $imgs;
+
+
+            if($location){
+                $countryCode = $location->countryCode;
+
+                $extra = Extra::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
+                if($extra != null && $extra->count() > 0){
+                        $detail->extra_amount = $extra->price ?? 0;
+                }else{
+                    $detail->extra_amount = 0;
+                }
+
+
+                if(str_contains($detail->dispatch_from,$countryCode)){
+                    $detail->price = $detail->price + ($detail->extra != null ? $detail->extra : 0) + $detail->extra_amount;
+                }else{
+                    $detail->price = $detail->price + $detail->extra_amount;
+                }
+
+            }
+
         }
         return $products;
     }
@@ -195,22 +221,23 @@ class Product extends Model
     }
 
 
-    public function getPriceAttribute($price)
-    {
-        // dd($this,$price);
-        $location = Location::get(request()->ip());
-        // $location = Location::get('111.119.187.50');
-        if($location){
-            if(str_contains($this->dispatch_from,$location->countryCode)){
-                return number_format($price + ($this->extra != null ? $this->extra : 0),2);
-            }else{
-                return number_format($price,2);
-            }
-        }else{
-            return number_format($price,2);
-        }
+    // public function getPriceAttribute($price)
+    // {
+    //     // dd($this,$price);
+    //     $location = Location::get(request()->ip());
+    //     $location = Location::get('111.119.187.50');
 
+    //     if($location){
+    //         if(str_contains($this->dispatch_from,$location->countryCode)){
+    //             $total = $price + ($this->extra != null ? $this->extra : 0) + $product_detail->extra_cost;
+    //         }else{
+    //             $total = $price;
+    //         }
+    //     }else{
+    //         $total = $price;
+    //     }
 
-    }
+    //      return price($total);
+    // }
 }
 

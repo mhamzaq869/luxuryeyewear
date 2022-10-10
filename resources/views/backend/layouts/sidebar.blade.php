@@ -120,6 +120,19 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#extraCollapse"
+                aria-expanded="true" aria-controls="extraCollapse"><i
+                    class="fas fa-truck"></i><span>Extra</span></a>
+            <div id="extraCollapse" class="collapse" aria-labelledby="headingTwo"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Extra Options:</h6>
+                    <a class="collapse-item" href="{{ route('extra.index') }}">Extra</a><a
+                        class="collapse-item" href="{{ route('extra.create') }}">Add Extra</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('order.index') }}"><i
                     class="fas fa-hammer fa-chart-area"></i><span>Orders</span></a>
         </li>

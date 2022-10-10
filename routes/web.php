@@ -226,6 +226,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/order','OrderController');
     // Shipping
     Route::resource('/shipping','ShippingController');
+    // Extra
+    Route::resource('/extra','ExtraController');
     // Coupon
     Route::resource('/coupon','CouponController');
     // Settings

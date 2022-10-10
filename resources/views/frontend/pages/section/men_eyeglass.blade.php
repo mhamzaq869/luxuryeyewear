@@ -65,7 +65,7 @@
                     <a href="{{ route('product-detail', $product->slug) }}" target="_blank" class="text-dark">
                         <p id="men_eyeglass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
                     </a>
-                    <span class="priceCol" id="men_eyeglass_pro_price_{{ $product->id }}""> ${{ number_format($product->price,2) }}</span>
+                    <span class="priceCol" id="men_eyeglass_pro_price_{{ $product->id }}""> {!! currencySymbol() !!}{{ number_format($product->price,2) }}</span>
 
 
                     <div class="row gx-2">

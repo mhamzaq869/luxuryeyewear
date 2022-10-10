@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use AmrShawky\LaravelCurrency\Facade\Currency;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\PaymentIntegration;
 use App\Models\Permmission;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +34,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Config::set('currencyPrice.rate', Currency::convert()->from('USD')->to(current_currency())->get());
+        $location = locationVal();
+        if($location){
+            Config::set('currencyPrice.extra', DB::table('extras')->whereRaw('FIND_IN_SET(?, countries)', [$location->countryCode])->where('status','active')->first());
+        }
+
+
         $permissions = Permmission::where('role','superadmin')->get();
 
         View::composer('*', function($view) use($permissions){

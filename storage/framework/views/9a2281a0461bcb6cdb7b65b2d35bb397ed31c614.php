@@ -179,10 +179,13 @@
     <script type="text/javascript" src="https://www.jqueryscript.net/demo/toast-notification-td-message/td-message.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-    <?php echo $__env->yieldPushContent('scripts'); ?>
+
     <!--new js end -->
 
     <script>
+        var symbol = "<?php echo e(html_entity_decode(currencySymbol())); ?>";
+        var convertPriceVal = "";
+        var countryCode = "<?php echo e(locationVal()->countryCode); ?>";
         var swiper = new Swiper(".logoSwiper", {
             autoplay: {
                 delay: 2400,
@@ -498,7 +501,51 @@
                 });
             }));
         });
+
+
+        convertPrice()
+
+        function convertPrice()
+        {
+            var requestURL = 'https://api.exchangerate.host/convert?from=USD&to=<?php echo e(current_currency()); ?>';
+            var request = new XMLHttpRequest();
+            request.open('GET', requestURL);
+            request.responseType = 'json';
+            request.send();
+
+            request.onload = function() {
+                var response = request.response;
+                convertPriceVal = response.result
+            }
+        }
+
+        function price($details)
+        {
+            $total = Number((extraPrice($details) * convertPriceVal).toFixed(2)).toLocaleString('en');
+            return $total;
+        }
+
+        function extraPrice($details){
+            $extra = <?php echo json_encode(config('currencyPrice.extra'), 15, 512) ?>;
+            if($extra != null){
+                $extra_amount = $extra.price ?? 0;
+            }else{
+                $extra_amount = 0;
+            }
+
+            if($details.dispatch_from.includes(countryCode)){
+                $price = $details.price + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+            }else{
+                $price = $details.price + parseInt($extra_amount);
+            }
+
+            return $price;
+
+        }
     </script>
+
+
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 
 </html>

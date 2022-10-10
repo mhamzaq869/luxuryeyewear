@@ -122,11 +122,7 @@
                                                     <h4 class="mDDTitle">Brands</h4>
                                                     <ul class="mDDList brands_list"
                                                         style="height: 450px; overflow-y:scroll;">
-                                                        <?php
-                                                            $brands = DB::table('brands')
-                                                                ->select('*')
-                                                                ->get();
-                                                        ?>
+
                                                         <ul class="mDDList brands_list"
                                                             style="overflow-y:scroll;width:fit-content;  /*white-space: nowrap;*/">
                                                             <li><a href="javascript:void(0)">All Brands</a></li>
@@ -303,5 +299,4 @@
     text-align: left;
 }
 </style>
-
 <?php /**PATH C:\laragon\www\eyewear\resources\views/frontend/layouts/header.blade.php ENDPATH**/ ?>

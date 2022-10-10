@@ -79,7 +79,6 @@
                                     @foreach ($eyeglasses as $product)
                                         <div class="col-md-6 col-xl-4">
 
-
                                             <div class="cardStyle1">
 
                                                 {{-- <span class="discountCol" id="female_eyeglass_pro_discount_{{ $product->id }}">{{$product->discount}}% off</span> --}}
@@ -172,7 +171,7 @@
                                                             class="text-dark link-primary">{{ $product->title }}</p>
                                                     </a>
                                                     <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}"">
-                                                        ${{ number_format($product->price,2) }}</span>
+                                                        {!! currencySymbol() !!}{{ number_format(price(extraPrice($product)),2) }}</span>
 
 
                                                     <div class="row gx-2">
@@ -245,7 +244,7 @@
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
+                $("#" + type + "pro_price_" + parent_id).html(symbol + price(data))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 
@@ -297,5 +296,7 @@
                 }
             })
         }
+
+
     </script>
 @endpush

@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Attribute;
+use App\Models\Extra;
 use App\Models\ProductNotify;
 use App\Models\Shipping;
 use App\User;
@@ -136,7 +137,7 @@ class FrontendController extends Controller
 
         $data['products_count'] = $eyeglasses->count();
         $data['eyeglasses'] = $eyeglasses;
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
 
@@ -183,7 +184,7 @@ class FrontendController extends Controller
 
         $products = $products->simplePaginate(20);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
@@ -220,7 +221,7 @@ class FrontendController extends Controller
 
         $data['products_count'] = $sunglasses->count();
         $data['sunglasses'] = $sunglasses->simplePaginate(20);
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
 
@@ -268,7 +269,7 @@ class FrontendController extends Controller
 
         $products = $products->simplePaginate(20);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
@@ -288,7 +289,7 @@ class FrontendController extends Controller
 
         $data['products_count'] = 0;
         $data['products'] = $products;
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
 
@@ -316,7 +317,7 @@ class FrontendController extends Controller
         ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
         ->where('products.status', 'active')->where('products.brand_id', $brand)->simplePaginate(20);
 
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
         $products = $products;
         $ip_country = $this->ip_country ?? '';
@@ -693,7 +694,7 @@ class FrontendController extends Controller
         //         ".$addWhere." ) > 0" );
 
         $all_brands = [];
-        $product_variant = DB::table('products')->select('id','slug','price','title','photo','product_for')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id','slug','price','title','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
         if ($request->ajax()) {
             $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();
@@ -753,13 +754,10 @@ class FrontendController extends Controller
 
     public function productDetail($slug)
     {
-
-        // $product_detail = DB::table('products')->join('brands','products.brand_id','=','brands.id')
-        // ->join('categories','products.cat_id','=','categories.id')
-        // ->select('products.*','categories.size','brands.title as brandName')->where('products.slug', $slug)->first();
+        $location = locationVal();
 
         $product_detail = Product::getProductBySlug($slug);
-
+        $product_detail->price = extraPrice($product_detail);
 
         if($product_detail != null && $product_detail->cat_info->size != null){
             $lensDetail = json_decode($product_detail->cat_info->size);
@@ -801,16 +799,13 @@ class FrontendController extends Controller
 
 
             $detail->all_imgs = $imgs;
+
+            $detail->price = extraPrice($detail);
+
         }
-
-
-
-        $location = Location::get(request()->ip());
-        // $location = Location::get('111.119.187.50');
 
         if($location){
             $countryCode = $location->countryCode;
-            // $shipping = Shipping::where('countries','LIKE',"%{$countryCode}%")->where('status','active')->first();
             $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
             if($shipping != null && $shipping->count() > 0){
                 if(in_array($countryCode,explode(',',$product_detail->dispatch_from))){
@@ -825,6 +820,7 @@ class FrontendController extends Controller
                 $product_detail->transit = 0;
             }
         }
+
 
         return view('frontend.pages.product_detail', get_defined_vars());
     }
