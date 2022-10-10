@@ -31,5 +31,6 @@ class CreateExtrasTable extends Migration
     public function down()
     {
         Schema::dropIfExists('extras');
+
     }
 }
