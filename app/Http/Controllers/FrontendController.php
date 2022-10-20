@@ -337,7 +337,7 @@ class FrontendController extends Controller
         // DB::enableQueryLog();
         $arr = DB::table('products')->where('products.status', 'Active')
                         ->select('products.id','products.slug','products.title','products.photo','products.price',
-                        'products.product_for','products.shape','products.type', 'products.product_material',
+                        'products.product_for','products.shape','products.type', 'products.product_material','products.dispatch_from','products.extra',
                         'products.brand_id','products.cat_id','products.status','products.created_at',
                         'categories.frame_type','brands.title as brandName')
                         ->join('categories','products.cat_id','=','categories.id')
@@ -1160,7 +1160,7 @@ class FrontendController extends Controller
 
         // dd($products);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for']);
+        $product_variant = Product::where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','cat_id','photo','product_for','extra','dispatch_from']);
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;

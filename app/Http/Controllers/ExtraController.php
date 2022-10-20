@@ -17,7 +17,7 @@ class ExtraController extends Controller
     public function index()
     {
         $Extra = Extra::orderBy('id','DESC')->paginate(10);
-        return view('backend.Extra.index')->with('extras',$Extra);
+        return view('backend.extra.index')->with('extras',$Extra);
     }
 
     /**
@@ -28,7 +28,7 @@ class ExtraController extends Controller
     public function create()
     {
         $countries = DB::table('countries')->get();
-        return view('backend.Extra.create',get_defined_vars());
+        return view('backend.extra.create',get_defined_vars());
     }
 
     /**
