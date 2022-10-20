@@ -247,8 +247,16 @@
 @push('scripts')
 
 <script>
-     var root = "{{asset('')}}";
+
      var product = @json($product_variant)
+
+     female_eyeglass = @json($female_eyeglasses)
+
+     female_sunglasses = @json($female_sunglasses)
+
+     male_eyeglasses = @json($male_eyeglasses)
+
+     male_sunglasses = @json($male_sunglasses)
 
      function changeProDetail(id,type,parent_id) {
         var data = product.find(item => item.id == id)
@@ -263,7 +271,7 @@
             }
             $("#"+type+"brand_name_"+parent_id).html(data.brand_name)
             $("#"+type+"pro_model_"+parent_id).html("<a class='text-dark link-primary' href='{{url('product-detail')}}/"+data.slug+"'>"+data.title+"</a>")
-            $("#"+type+"pro_price_"+parent_id).html("$"+parseInt(data.price).toFixed(2))
+            $("#"+type+"pro_price_"+parent_id).html(price(data))
             $("#"+type+"pro_discount_"+parent_id).html("%"+data.discount)
         }
 

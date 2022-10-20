@@ -19,12 +19,12 @@
   .invoice-right-top h3 {
     padding-right: 20px;
     margin-top: 20px;
-    color: green;
+    color: #B9890F;
     font-size: 30px!important;
     font-family: serif;
   }
   .invoice-left-top {
-    border-left: 4px solid green;
+    border-left: 4px solid #B9890F;
     padding-left: 20px;
     padding-top: 20px;
   }
@@ -35,15 +35,15 @@
     margin-bottom: 3px;
   }
   thead {
-    background: green;
+    background: #B9890F;
     color: #FFF;
   }
   .authority h5 {
     margin-top: -10px;
-    color: green;
+    color: #B9890F;
   }
   .thanks h4 {
-    color: green;
+    color: #B9890F;
     font-size: 25px;
     font-weight: normal;
     font-family: serif;
@@ -71,13 +71,13 @@
 </style>
   <div class="invoice-header">
     <div class="float-left site-logo">
-      <img src="{{asset('backend/img/logo.png')}}" alt="">
+      <img src="{{ asset('assets/images/luxury_logo.png') }}" width="250px" alt="">
     </div>
     <div class="float-right site-address">
       <h4>{{env('APP_NAME')}}</h4>
       <p>{{env('APP_ADDRESS')}}</p>
-      <p>Phone: <a href="tel:{{env('APP_PHONE')}}">{{env('APP_PHONE')}}</a></p>
-      <p>Email: <a href="mailto:{{env('APP_EMAIL')}}">{{env('APP_EMAIL')}}</a></p>
+      <p>Phone: <a href="tel:{{$setting->phone}}">{{$setting->phone}}</a></p>
+      <p>Email: <a href="mailto:{{$setting->email}}">{{$setting->email}}</a></p>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -100,8 +100,8 @@
        </div>
     </div>
     <div class="invoice-right-top float-right" class="text-right">
-      <h3>Invoice #{{$order->order_number}}</h3>
-      <p>{{ $order->created_at->format('D d m Y') }}</p>
+      <h4>Invoice #{{$order->order_number}}</h4>
+      <p>{{ $order->created_at->format('D d-m-Y') }}</p>
       {{-- <img class="img-responsive" src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(150)->generate(route('admin.product.order.show', $order->id )))}}"> --}}
     </div>
     <div class="clearfix"></div>

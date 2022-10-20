@@ -94,7 +94,7 @@
                                     </span>
                                     @enderror
                                     @if (Route::has('password.request'))
-                                        <a class="lost-pass" href="{{ route('password.reset') }}" class="forgotPwd">
+                                        <a class="lost-pass" href="{{ route('password_reset') }}" class="forgotPwd">
 
                                             Lost your password?
 

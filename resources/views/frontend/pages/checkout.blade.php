@@ -464,9 +464,9 @@
                             <p>Please register in order to checkout more quickly</p>
                             <!-- Form -->
                             @php
-                                $carts = Helper::getAllProductFromCart();
+                                $carts = Helper::getAllProductFromCart() ;
 
-                                $total_amount = Helper::totalCartPrice();
+                                $total_amount = Helper::totalCartPrice() + $carts->total_shipping;
                                 if (session('coupon')) {
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
@@ -688,26 +688,24 @@
                                 <h2>CART TOTALS</h2>
                                 <div class="content">
                                     <ul>
-                                        <li class="order_subtotal" data-price="{{ Helper::totalCartPrice() }}">Cart
-                                            Subtotal<span>${{ number_format(Helper::totalCartPrice(), 2) }}</span></li>
+                                        <li data-price="{{ Helper::totalCartPrice() }}">
+                                            Cart Subtotal<span id="order_subtotal"></span></li>
                                         <li class="shipping">
-                                            Shipping Cost
-
-                                            <span>${{ $carts->total_shipping }}</span>
+                                            Shipping Cost <span id="cart_shipping"></span>
 
                                         </li>
 
-                                        @if (session('coupon'))
-                                            <li class="coupon_price" data-price="{{ session('coupon')['value'] }}">You
-                                                Save<span>${{ number_format(session('coupon')['value'], 2) }}</span></li>
+                                        @if (session()->has('coupon'))
+                                            <li class="coupon_price" >
+                                                You Save<span id="coupon_price">${{ number_format(Session::get('coupon')['value'], 2) }}</span></li>
                                         @endif
 
                                         @if (session('coupon'))
-                                            <li class="last" id="order_total_price">
-                                                Total<span>${{ number_format($total_amount, 2) }}</span></li>
+                                            <li class="last">
+                                                Total <span id="order_total_price"></span></li>
                                         @else
-                                            <li class="last" id="order_total_price">
-                                                Total<span>${{ number_format($total_amount, 2) }}</span></li>
+                                            <li class="last">
+                                                Total <span id="order_total_price"></span></li>
                                         @endif
                                     </ul>
                                 </div>
@@ -914,6 +912,16 @@
 
         var states = @json($states)
 
+        total_cart = {{ $total_amount }}
+        total_shipping = {{ $carts->total_shipping }}
+        cart_subtotal = {{ Helper::totalCartPrice() }}
+        session_coupon = {{ isset(Session::get('coupon')['value']) ? 1 : 0 }};
+        if (session_coupon) {
+            session_coupon_value = {{ isset(Session::get('coupon')['value']) ? Session::get('coupon')['value'] : 0 }}
+        } else {
+            session_coupon_value = 0
+        }
+
         $(document).ready(function() {
             $("select.select2").select2();
         });
@@ -981,7 +989,7 @@
                     const createOrderPayload = {
                         purchase_units: [{
                             amount: {
-                                value: {{ number_format($total_amount + $carts->total_shipping, 2) }},
+                                value: total_cart,
                             },
 
                         }, ],
@@ -1081,21 +1089,28 @@
         }
 
         $("#addresses").on('change', function(){
-            var address = addresses.find(item => item.id == this.value);
+            if(this.value == 0){
 
-            $("#country").val(address != null ? address.country.name : '')
-            $("#country").trigger('change')
-            $("input[name=first_name]").val(address != null ? address.first_name : '')
-            $("input[name=last_name]").val(address != null ? address.last_name : '')
-            $("input[name=company]").val(address != null ? address.company : '')
-            $("input[name=address1]").val(address != null ? address.address1 : '')
-            $("input[name=address2]").val(address != null ? address.address2 : '')
-            $("input[name=city]").val(address != null ? address.city : '')
-            $("#state").val(address != null ? address.state.name : '')
-            $("#state").trigger('change')
-            $("input[name=post_code]").val(address != null ? address.post_code : '')
-            $("input[name=email]").val(address != null ? address.email : '')
-            $("input[name=phone]").val(address != null ? address.phone : '')
+                $("#checkoutForm")[0].reset()
+
+            }else{
+
+                var address = addresses.find(item => item.id == this.value);
+
+                $("#country").val(address != null ? address.country.name : '')
+                $("#country").trigger('change')
+                $("input[name=first_name]").val(address != null ? address.first_name : '')
+                $("input[name=last_name]").val(address != null ? address.last_name : '')
+                $("input[name=company]").val(address != null ? address.company : '')
+                $("input[name=address1]").val(address != null ? address.address_1 : '')
+                $("input[name=address2]").val(address != null ? address.address_2 : '')
+                $("input[name=city]").val(address != null ? address.city : '')
+                $("#state").val(address != null ? address.state.id : '')
+                $("#state").trigger('change')
+                $("input[name=post_code]").val(address != null ? address.zipcode : '')
+                $("input[name=email]").val(address != null ? address.email : '')
+                $("input[name=phone]").val(address != null ? address.phone : '')
+            }
         });
 
 

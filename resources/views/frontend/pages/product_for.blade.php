@@ -187,8 +187,8 @@
                                                         <p id="eyelass_pro_model_{{ $product->id }}"
                                                             class="text-dark link-primary">{{ $product->title }}</p>
                                                     </a>
-                                                    <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}"">
-                                                        ${{ number_format($product->price,2) }}</span>
+                                                    <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}">
+                                                    </span>
 
 
                                                     <div class="row gx-2">
@@ -243,6 +243,10 @@
         var current_product = "{{ $data->count() }}"
         var product = @json($product_variant)
 
+        type = "eyelass_pro_price_"
+        allproducts = @json($data).data
+
+
         function changeProDetail(id, type, parent_id) {
             var data = product.find(item => item.id == id)
             if (data.length != 0) {
@@ -260,7 +264,7 @@
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html("$" + parseInt(data.price).toFixed(2))
+                $("#" + type + "pro_price_" + parent_id).html(price(data))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 

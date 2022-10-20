@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title', ' Sunglass')
+@section('title', 'Brand')
 
 @section('description', 'Sunglass Description ')
 @section('keywords', ' Sunglass Keywords')
@@ -162,7 +162,7 @@
                                                         class="text-dark link-primary">{{ $product->title }}</p>
                                                 </a>
                                                 <span class="priceCol" id="sunglass_pro_price_{{ $product->id }}"">
-                                                    {!! currencySymbol() !!}{{ number_format($product->price,2) }}</span>
+                                                </span>
 
 
                                                 <div class="row gx-2">
@@ -217,8 +217,11 @@
 @push('scripts')
     <script>
         var root = "{{ asset('') }}";
+        type = "{{$type}}"
         var current_product = "{{$products->count()}}"
         var product = @json($product_variant)
+
+        allproducts = @json($products).data
 
         function changeProDetail(id, type, parent_id) {
             var data = product.find(item => item.id == id)
@@ -237,7 +240,7 @@
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
                 // $("#" + type + "pro_price_" + parent_id).html("$" + Math.ceil(data.price))
-                $("#" + type + "pro_price_" + parent_id).html(symbol + price(data))
+                $("#" + type + "pro_price_" + parent_id).html(price(data))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 

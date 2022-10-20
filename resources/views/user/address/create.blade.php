@@ -4,7 +4,7 @@
 
 @section('main-content')
     <h1 class="side-title"> Create Address</h1>
-    <form action="{{route('user.address.create')}}" method="Post" class="form">
+    <form action="{{route('user.address.store')}}" method="Post" class="form">
         @csrf
         <div class="row">
             <div class="col-12 col-lg-12">

@@ -67,7 +67,7 @@ class FrontendController extends Controller
         $data['female_sunglasses'] = Product::femaleSunglasses();
         $data['male_eyeglasses'] = Product::maleEyeglasses();
 
-        $data['featured'] = DB::table('products')->where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
+        // $data['featured'] = DB::table('products')->where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
 
         $data['posts'] = DB::table('posts')->where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
@@ -75,35 +75,14 @@ class FrontendController extends Controller
 
         // return $banner;
 
-        $data['products'] = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
+        // $data['products'] = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
 
         $data['category'] = DB::table('categories')->where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
 
         // return $category;
         $data['brand_img'] =  DB::table('brands')->where('status', 'active')->orderBy('title')->get();
 
-        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','product_for']);
-
-            // dd($data,$product_variant->where('cat_id',83668));
-        // foreach($product_variant as $detail){
-        //     $detail->frame_type_name = $detail->frametype->name ?? '';
-        //     $detail->shape_name = $detail->get_shape != null ? $detail->get_shape->name : '';
-        //     $detail->material_name = Attribute::find($detail->product_material)->name ?? '';
-        //     $detail->typename = $detail->type_name != null ? $detail->type_name->name : '';
-        //     $detail->gender_name = $detail->get_gender != null ? $detail->get_gender->name : '';
-        //     $detail->brand_name = Brand::find($detail->brand_id)->title ?? '';
-        //     $detail->cat_name = Category::find($detail->cat_id)->title ?? '';
-
-        //     $imgs = [];
-        //     $imgs = array_merge($imgs, array($detail->p_f));
-        //     $imgs = array_merge($imgs, array($detail->p_b));
-        //     $imgs = array_merge($imgs, array($detail->g_image_1));
-        //     $imgs = array_merge($imgs, array($detail->g_image_2));
-        //     $imgs = array_merge($imgs, array($detail->g_image_3));
-
-
-        //     $detail->all_imgs = $imgs;
-        // }
+        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','dispatch_from','extra','product_for']);
 
         $data['product_variant'] = $product_variant;
 
@@ -118,8 +97,7 @@ class FrontendController extends Controller
                         ->join('brands','products.brand_id','=','brands.id')
                         ->select('products.*','categories.frame_type','brands.title as brandName')
                         ->where('products.status', 'active')
-                        ->where('categories.frame_type', 32)
-                        ->limit(20)->get();
+                        ->where('categories.frame_type', 32);
 
         if($type == 'women'){
             $eyeglasses->whereIn('products.product_for', [28,30]);
@@ -135,8 +113,15 @@ class FrontendController extends Controller
             }
         }
 
+        $data['eyeglasses'] = $eyeglasses->simplePaginate(20);
+        $data['type'] = 'eyelass_pro_price_';
+        // if($type == null ){
+        //     $data['type'] = 'eyelass_pro_price_';
+        // }elseif($type == 'women'){
+        //     $data['type'] = 'eyelass_pro_price_';
+        // }
         $data['products_count'] = $eyeglasses->count();
-        $data['eyeglasses'] = $eyeglasses;
+        $data['eyeglasses'] = $eyeglasses->simplePaginate(20);
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
@@ -223,7 +208,7 @@ class FrontendController extends Controller
         $data['sunglasses'] = $sunglasses->simplePaginate(20);
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
-
+        $data['type'] = 'sunglass_pro_price_';
 
         $data['product_for'] = '';
         $data['glass_type'] = '';
@@ -284,7 +269,7 @@ class FrontendController extends Controller
 
         $brand_id = DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
         $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
-        ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
+        ->select('products.id','products.slug','products.dispatch_from','products.extra','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
         ->where('products.status', 'active')->where('products.brand_id', $brand_id)->simplePaginate(20);
 
         $data['products_count'] = 0;
@@ -292,6 +277,7 @@ class FrontendController extends Controller
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
+        $data['type'] = 'sunglass_pro_price_';
 
         $data['product_for'] = '';
         $data['glass_type'] = '';
@@ -1148,7 +1134,7 @@ class FrontendController extends Controller
         }
 
 
-        $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','product_for']);
+        $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','dispatch_from','extra','product_for']);
 
         return view('frontend.pages.product_for')
                 ->with('data', $products)

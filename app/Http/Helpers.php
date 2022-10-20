@@ -104,7 +104,7 @@ class Helper{
         // if(Auth::check()){
             if($user_id=="") $user_id=request()->ip();
             $carts = DB::table('carts')->join('products','carts.product_id','=','products.id')
-            ->select('carts.*','products.price','products.photo','products.slug','products.title')
+            ->select('carts.*','products.price as productPrice','products.photo','products.slug','products.title','products.dispatch_from','products.extra')
             ->where('user_id',request()->ip())->where('order_id',null)->get();
 
             $location = Location::get(request()->ip());
@@ -139,6 +139,8 @@ class Helper{
 
             if($carts->count() > 0){
                 $carts->total_shipping = number_format($carts->shipping_cost,2);
+            }else{
+                $carts->total_shipping = number_format(0,2);
             }
 
             return $carts;

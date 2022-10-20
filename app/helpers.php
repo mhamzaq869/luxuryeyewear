@@ -111,13 +111,13 @@ function isValidUrl($url){
 
 function locationVal(){
     $location = Location::get(request()->ip());
-    // $location = Location::get('111.119.187.50');
+    $location = Location::get('111.119.187.50');
 
     return $location;
 }
 function current_currency()
 {
-    return geoip(locationVal()->ip)->currency;
+    return 'pk';
 }
 function currencySymbol()
 {

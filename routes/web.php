@@ -56,7 +56,7 @@ Route::get('user/logout/{type?}','FrontendController@logout')->name('user.logout
 Route::get('user/register','FrontendController@register')->name('register.form');
 Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
 // Reset password
-Route::get('password-reset', 'FrontendController@showResetForm')->name('password.reset');
+Route::get('password_reset', 'FrontendController@showResetForm')->name('password_reset');
 // Socialite
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
@@ -98,16 +98,14 @@ Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product
 Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 // Cart section
+Route::get('/cart','CartController@index')->name('cart');
 Route::post('/add-to-cart','CartController@addToCart')->name('add-to-cart');
 Route::get('/add-to-cart-single/{slug?}','CartController@singleAddToCart')->name('single-add-to-cart');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
 
-Route::get('/cart',function(){
-    return view('frontend.pages.cart');
-})->name('cart');
 
-Route::get('/checkout','CartController@checkout')->name('checkout');
+Route::get('/checkout','CartController@checkout')->name('checkout')->middleware(['auth','user']);
 // Wishlist
 Route::get('/wishlist',function(){
 
@@ -142,7 +140,7 @@ Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
 // Product Review
 
 Route::resource('/review','ProductReviewController');
-Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
+// Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
 
 // Post Comment
 
@@ -261,7 +259,7 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
      // Shipping Address
     Route::get('/address','HomeController@address')->name('user.address');
     Route::get('/address/create','HomeController@addressCreate')->name('user.address.create');
-    Route::post('/address/create','HomeController@addressSave')->name('user.address.create');
+    Route::post('/address/create','HomeController@addressSave')->name('user.address.store');
     Route::get('/address/{id}/edit','HomeController@addressEdit')->name('user.address.edit');
     Route::post('/address/{id}','HomeController@addressUpdate')->name('user.address.update');
 

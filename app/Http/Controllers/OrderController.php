@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Settings;
 use App\Models\Shipping;
 use App\User;
 use PDF;
@@ -256,10 +257,10 @@ class OrderController extends Controller
     // PDF generate
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
-        // return $order;
+        $setting = Settings::first();
         $file_name= $order->order_number.'-'.$order->first_name.'.pdf';
-        // return $file_name;
-        $pdf= PDF::loadview('backend.order.pdf',compact('order'));
+
+        $pdf= PDF::loadview('backend.order.pdf',compact('order','setting'));
 
         return $pdf->download($file_name);
     }

@@ -3,7 +3,41 @@
 
 <head>
     <!-- Required meta tags -->
-    @include('frontend.layouts.head')
+    <!-- Meta Tag -->
+@yield('meta')
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="images/favicon.png">
+
+    <title>@yield('title') - Luxury Eye Wear</title>
+    <meta charset="utf-8">
+        <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="@yield('description')">
+    <meta name="keywords" content="@yield('keywords')">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link href="{{ asset('backend/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS -->
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('frontend/css/themify-icons.css')}}">
+
+    <!--new css-->
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.min.css'>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
+
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6307344bf4696f0019bda34f&product=inline-share-buttons" async="async"></script>
+    <!--new css end -->
+    {{-- <link href="{{asset('assets/css/td-messages.css')}}" rel="stylesheet"> --}}
+    <link rel='stylesheet' href='https://www.jqueryscript.net/demo/toast-notification-td-message/td-msessage.css'>
+
 
     <style>
         /* ===== Scrollbar CSS ===== */
@@ -138,6 +172,55 @@
         .select2-selection__arrow {
             height: 46px !important;
         }
+
+        /** Loader */
+        .loader_bg{
+            position: fixed;
+            z-index: 999999;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+        .loader{
+            border: 0 soild transparent;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            top: calc(50vh - 75px);
+            left: calc(50vw - 75px);
+        }
+        .loader:before, .loader:after{
+            content: '';
+            border: 1em solid #ff5733;
+            border-radius: 50%;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loader 2s linear infinite;
+            opacity: 0;
+        }
+        .loader:before{
+            animation-delay: .5s;
+        }
+        @keyframes loader{
+            0%{
+                transform: scale(0);
+                opacity: 0;
+            }
+            50%{
+                opacity: 1;
+            }
+            100%{
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+
+
     </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -145,15 +228,482 @@
 </head>
 
 <body>
+    <div class="loader_bg ">
+        <div class="loader"></div>
+    </div>
+
     {{-- header  start --}}
-    @include('frontend.layouts.header')
+    <header>
+        <div class="headerCol">
+            <div class="container">
+                <div class="header_content">
+                    <div class="row align-items-center g-2">
+                        <div class="col-auto">
+                            <div class="header_logo">
+                                <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/images/luxury_logo.png') }}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="header_nav_links">
+                                <ul class="header_nav_links_style ">
+                                    <li class="mDropdownCol">
+                                        <a href="{{ route('front.eyeglass.page') }}">Eyeglasses</a>
+                                        <div class="mDDCol">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent brands_navbar d-none">
+                                                        <h4 class="mDDTitle">Brands</h4>
+                                                        <ul class="mDDList brands_list"
+                                                            style="height: 450px; overflow-y:scroll;">
+                                                            @php
+                                                                $brands = DB::table('brands')
+                                                                    ->select('*')
+                                                                    ->get();
+                                                            @endphp
+                                                            <ul class="mDDList brands_list"
+                                                                style="overflow:scroll; width:fit-content;  /*white-space: nowrap;*/">
+                                                                <li><a href="javascript:void(0)">All Brands</a></li>
+                                                                @foreach ($brands as $brand)
+                                                                    <li><a
+                                                                            href="{{ url('product-brand/' . $brand->slug) }}">{{ $brand->title }}</a>
+                                                                    </li>
+                                                                @endforeach
+
+                                                            </ul>
+                                                    </div>
+                                                                                    {{-- @php
+                                                            $brands = DB::table('brands')->select('*')->get();
+                                                            @endphp
+                                                            <div class="bbb_viewed_slider_container">
+                                                                <div class="owl-carousel owl-theme bbb_viewed_slider">
+                                                                    @foreach ($brands as $brand)
+                                                                        <a href="{{url('product-brand/'.$brand->slug)}}">
+                                                                            <div class="owl-item">
+                                                                                <div class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
+                                                                                    {{$brand->title}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div> --}}
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                        <h4 class="mDDTitle"
+                                                            onclick="redirect('{{ route('front.eyeglass.page', ['men']) }}')">
+                                                            Male Eyeglasses</h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['men', 'round']) }}')">Round</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page') }}')">Unisex</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['men', 'Square']) }}')">Square</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['men', 'Aviator']) }}')">Aviator</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['men', 'Sports']) }}')">Sports</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['men', 'Cat-Eye']) }}')">Cat-Eye</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                        <h4 class="mDDTitle"
+                                                            onclick="redirect('{{ route('front.eyeglass.page', ['women']) }}')">
+                                                            Female Eyeglasses </h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['women', 'Round']) }}')">Round</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page') }}')">Unisex</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['women', 'Square']) }}')">Square</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['women', 'Aviator']) }}')">Aviator</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['women', 'Sports']) }}')">Sports</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.eyeglass.page', ['women', 'Cat-Eye']) }}')">Cat-Eye</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                      <h4 class="mDDTitle">Child Eyeglasses</h4>
+                                                      <ul class="mDDList">
+                                                        <li><a href="javascript:void(0)">All Brands</a></li>
+                                                        <li><a href="javascript:void(0)">Round</a></li>
+                                                        <li><a href="javascript:void(0)">Unisex</a></li>
+                                                        <li><a href="javascript:void(0)">Square</a></li>
+                                                        <li><a href="javascript:void(0)">Aviator</a></li>
+                                                        <li><a href="javascript:void(0)">Sports</a></li>
+                                                        <li><a href="javascript:void(0)">Cat-Eye</a></li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mDropdownCol">
+                                        <a href="{{ route('front.sunglass.page') }}">Sunglasses</a>
+                                        <div class="mDDCol">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent brands_navbar d-none ">
+                                                        <h4 class="mDDTitle">Brands</h4>
+                                                        <ul class="mDDList brands_list"
+                                                            style="height: 450px; overflow-y:scroll;">
+
+                                                            <ul class="mDDList brands_list"
+                                                                style="overflow-y:scroll;width:fit-content;  /*white-space: nowrap;*/">
+                                                                <li><a href="javascript:void(0)">All Brands</a></li>
+                                                                @foreach ($brands as $brand)
+                                                                    <li><a
+                                                                            href="{{ url('product-brand/' . $brand->slug) }}">{{ $brand->title }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                        <h4 class="mDDTitle"
+                                                            onclick="redirect('{{ route('front.sunglass.page', ['men']) }}')">
+                                                            Male Sunglasses</h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['men', 'Round']) }}')">Round</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page') }}')">Unisex</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['men', 'Square']) }}')">Square</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['men', 'Aviator']) }}')">Aviator</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['men', 'Sports']) }}')">Sports</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['men', 'Cat-Eye']) }}')">Cat-Eye</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                        <h4 class="mDDTitle"
+                                                            onclick="redirect('{{ route('front.sunglass.page', ['women']) }}')">
+                                                            Female Sunglasses</h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['women', 'Round']) }}')">Round</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page') }}')">Unisex</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['women', 'Square']) }}')">Square</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['women', 'Aviator']) }}')">Aviator</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['women', 'Sports']) }}')">Sports</a>
+                                                            </li>
+                                                            <li><a
+                                                                    href="javascript:redirect('{{ route('front.sunglass.page', ['women', 'Cat-Eye']) }}')">Cat-Eye</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="mDDContent">
+                                                      <h4 class="mDDTitle">Child Eyeglasses</h4>
+                                                      <ul class="mDDList">
+                                                        <li><a href="javascript:void(0)">All Brands</a></li>
+                                                        <li><a href="javascript:void(0)">Round</a></li>
+                                                        <li><a href="javascript:void(0)">Unisex</a></li>
+                                                        <li><a href="javascript:void(0)">Square</a></li>
+                                                        <li><a href="javascript:void(0)">Aviator</a></li>
+                                                        <li><a href="javascript:void(0)">Sports</a></li>
+                                                        <li><a href="javascript:void(0)">Cat-Eye</a></li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('front.brands.page') }}">Brands</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="header_right_link_icon">
+                                <ul class="header_right_link_icon_style">
+                                    <li>
+                                        <div class="headerSearchCol">
+                                            <a href="javascript:void(0)" class="searchTrigger">
+                                                <img src="{{ asset('assets/./images/search-icon.svg') }}"
+                                                    alt="Image Not Found"></a>
+                                            <div class="headerFldCol">
+                                                <div class="headerSearchFld">
+                                                    <div class="container-fluid">
+                                                        <div class="row g-2 align-items-center">
+                                                            <div class="col">
+                                                                <form action="{{ route('product.search') }}"
+                                                                    method="get"
+                                                                    class="topmenusearch page_speed_1450106835">
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Search Products..." name="search"
+                                                                        id="search_keyword" required="">
+                                                                </form>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <span class="searchCloseTrigger">
+                                                                    <img src="{{ asset('assets/images/close-icon.svg') }}"
+                                                                        alt="...">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="dropchoose">
+
+                                        @auth
+                                            <a href="{{ route('user') }}"><img
+                                                    src="{{ asset('assets/./images/login.png') }}" alt="Image Not Found"></a>
+                                        @else
+                                            <a href="{{ route('login.form') }}"><img
+                                                    src="{{ asset('assets/./images/login.png') }}" alt="Image Not Found"></a>
+                                        @endauth
+
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('wishlist') }}"><img
+                                                src="{{ asset('assets/./images/like-icon.svg') }}"
+                                                alt="Image Not Found"></a>
+
+
+                                        {{ DB::table('wishlists')->where('user_id', request()->ip())->count() }}
+
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('cart') }}"><img
+                                                src="{{ asset('assets/./images/cart-icon.svg') }}"
+                                                alt="Image Not Found"></a>
+                                        {{-- @auth --}}
+                                        {{ DB::table('carts')->where('user_id', request()->ip())->where('order_id',null)->count() }}
+                                        {{-- @else
+                           0
+                           @endauth --}}
+
+                                    </li>
+                                    <li class="d-lg-none">
+                                        <a href="javascript:void(0)" class="navTrigger"><img
+                                                src="{{ asset('assets/images/nav-toggle.svg') }}"
+                                                alt="Image Not Found"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <style type="text/css">
+        .header_nav_links_style ul.mDDList li a {
+        text-align: left;
+    }
+    </style>
+
+
     {{-- header  end --}}
     @yield('main-content')
 
-
-
     {{-- Footer --}}
-    @include('frontend.layouts.footer')
+    <footer>
+        <div class="footer_section" style="padding-left: 0% !important">
+            <div class="footer_fade"></div>
+            <div class="container">
+                <div class="newsletter_content newsletter_space_section">
+                    <h2 class="whiteColor">NEWSLETTER</h2>
+                    <p class="whiteColor">Once you subscribe to our newsletter, we will send our promo offers and news to
+                        your email.</p>
+                    <div class="subscribe_col">
+                        <form action="{{ route('subscribe') }}" method="post" class="newsletter-inner">
+                            @csrf
+
+                            <input name="email" placeholder="Your email address" required="" type="email"
+                                class="sub_input_style">
+                            <button class="sub_btn_style" type="submit">SUBSCRIBE US</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom_footer darkBGColor">
+                <div class="container">
+                    <div class="row gy-5">
+                        <div class="col-xl-auto col-lg-12 col-sm-12 ">
+                            <div class="foot_logo_content">
+                                <div class="footer_logo">
+                                    <a href="index.html"><img src="{{ asset('assets/images/luxuryeyewear.png') }}"
+                                            alt="..."></a>
+                                </div>
+                                <p class="whiteColor">Luxuryeyewear ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                                    tincidunt ornare viverra.</p>
+                                <ul class="foot_social_icon">
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/foot_facebook_icon.svg') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/foot_twitter_icon.svg') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/foot_instagram_icon.svg') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/foot_linkedin_icon.svg') }}"
+                                                alt="..."></a></li>
+                                    <li><a href="javascript:void(0)"><img
+                                                src="{{ asset('assets/./images/foot_youtube_icon.svg') }}"
+                                                alt="..."></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="footer_imp_links">
+                                <div class="row gy-5">
+                                    <div class="col-sm col-lg">
+                                        <div class="imp_links_col">
+                                            <div class="imp_link_head">
+                                                <h3 class="foot_link_head_style">Quick Links</h3>
+                                            </div>
+                                            <ul class="foot_link_list">
+
+                                                <li><a href="{{ route('order.track') }}">Track Order</a></li>
+                                                <li><a href="{{ route('return.and.exchange') }}">Return & Exchange</a></li>
+                                                <li><a href="{{ route('shipping.policy') }}">Shipping Policy</a></li>
+                                                <li><a href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm col-lg">
+                                        <div class="imp_links_col">
+                                            <div class="imp_link_head">
+                                                <h3 class="foot_link_head_style">usefull links</h3>
+                                            </div>
+                                            <ul class="foot_link_list">
+                                                <li><a href="{{ route('home') }}">home</a></li>
+                                                <li><a href="{{ route('about-us') }}">about us</a></li>
+                                                <li><a href="{{ route('contact') }}">contact us</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-auto">
+                                        <div class="imp_links_col add_cont">
+                                            <div class="imp_link_head">
+                                                <h3 class="foot_link_head_style">Get In Touch</h3>
+                                            </div>
+                                            <ul class="foot_link_list contact">
+                                                <li><a href="javascript:void(0)">C-12 Paryavaran Complex Ignu Road New
+                                                        Delhi, Delhi - 110030, India</a></li>
+                                                <li><a href="javascript:void(0)"><img
+                                                            src="{{ asset('assets/./images/phone-icon.svg') }}"
+                                                            alt="...">9990360806</a></li>
+                                                <li><a href="javascript:void(0)"><img
+                                                            src="{{ asset('assets/./images/email_icon.svg') }}"
+                                                            alt="...">Support@Luxuryeyewear.In</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="copyright_col">
+                        <div class="row align-items-center gy-4">
+                            <div class="col-xl col-lg-12 ">
+                                <div class="courier_logo justify-content-center">
+                                    <ul>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/dhl_icon.png') }}" alt="..."></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/fedex_icon.png') }}" alt="..."></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/ups_icon.png') }}" alt="..."></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/aramex_icon.png') }}"
+                                                    alt="..."></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xl-auto col-lg-12">
+                                <div class="payment_method_logo">
+                                    <ul>
+                                        <li><a href="javascript:void(0)"><img src="{{ asset('assets/./images/visa.png') }}"
+                                                    alt="..."></a></li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/mastercard.png') }}" alt="..."></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/american-express.png') }}"
+                                                    alt="..."></a></li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="{{ asset('assets/./images/paypal.png') }}" alt="..."></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xl-auto col-md-12 order-xl-first">
+                                <p class="mb-xl-0">Copyright © {{ date('Y') }} by luxuryeyewear. All Rights reserved
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
     {{-- footer --}}
 
 
@@ -178,14 +728,29 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
     <script type="text/javascript" src="https://www.jqueryscript.net/demo/toast-notification-td-message/td-message.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript"></script>
 
 
     <!--new js end -->
 
     <script>
-        var symbol = "{{ html_entity_decode(currencySymbol()) }}";
+        var symbol = "";
         var convertPriceVal = "";
-        var countryCode = "{{locationVal()->countryCode}}";
+        var countryCode = "";
+        var allproducts = "";
+        var total_shipping = 0;
+        var cart_subtotal = 0;
+        var session_coupon = false;
+        var session_coupon_value = 0;
+        var total_cart = 0;
+        var type = "";
+        var root = "{{asset('')}}";
+        var current_url = window.location.href;
+        var female_eyeglass = [];
+        var female_sunglasses = [];
+        var male_eyeglasses = [];
+        var male_sunglasses = [];
+
         var swiper = new Swiper(".logoSwiper", {
             autoplay: {
                 delay: 2400,
@@ -273,8 +838,6 @@
 
         });
 
-
-
         function redirect(url){
             window.location.href = url
         }
@@ -289,7 +852,6 @@
             }
             return $stringArr.join('/');
         }
-
 
         $("#share").jsSocials({
             shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon", "whatsapp"]
@@ -507,25 +1069,80 @@
 
         function convertPrice()
         {
-            var requestURL = 'https://api.exchangerate.host/convert?from=USD&to={{current_currency()}}';
-            var request = new XMLHttpRequest();
-            request.open('GET', requestURL);
-            request.responseType = 'json';
-            request.send();
+            $.get('https://ipapi.co/currency/', function(data) {
+                symbol = data
+                var requestURL = `https://api.exchangerate.host/convert?from=USD&to=${data}`;
+                var request = new XMLHttpRequest();
+                request.open('GET', requestURL);
+                request.responseType = 'json';
+                request.send();
 
-            request.onload = function() {
-                var response = request.response;
-                convertPriceVal = response.result
-            }
+                request.onload = function() {
+                    var response = request.response;
+                    convertPriceVal = response.result
+
+                    if (current_url == root) {
+                        $.each(female_eyeglass, function(index, value){
+                            $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
+                        });
+                        $.each(female_sunglasses, function(index, value){
+                            $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
+                        });
+                        $.each(male_eyeglasses, function(index, value){
+                            $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
+                        });
+                        $.each(male_sunglasses, function(index, value){
+                            $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
+                        });
+                    }else if(current_url.includes('cart')){
+                        $.each(allproducts, function(index, value){
+                            $("#cart_pro_price_"+value.id).html(price(value,'productPrice'))
+                            $("#cart_pro_total_price_"+value.id).html(price(value))
+                        });
+
+                        $("#cart_shipping").html(priceOnly(total_shipping))
+                        if(session_coupon){
+                            $("#order_subtotal").html(priceOnly(cart_subtotal+session_coupon_value))
+                            $("#coupon_price").html(priceOnly(session_coupon_value))
+                        }else{
+                            $("#order_subtotal").html(priceOnly(cart_subtotal))
+                        }
+                        $("#order_total_price").html(priceOnly(total_cart))
+
+                    }else if(current_url.includes('checkout')){
+
+                        $("#cart_shipping").html(priceOnly(total_shipping))
+                        if(session_coupon){
+                            $("#order_subtotal").html(priceOnly(cart_subtotal))
+                            $("#coupon_price").html(priceOnly(session_coupon_value))
+                        }else{
+                            $("#order_subtotal").html(priceOnly(cart_subtotal))
+                        }
+                        $("#order_total_price").html(priceOnly(total_cart))
+
+                    }else{
+                        $.each(allproducts, function(index, value){
+                            $("#"+type+value.id).html(price(value))
+                        });
+                    }
+                    $(".loader_bg").addClass('d-none');
+                }
+            })
+
+
         }
 
-        function price($details)
+        function price($details, $col=null)
         {
-            $total = Number((extraPrice($details) * convertPriceVal).toFixed(2)).toLocaleString('en');
-            return $total;
+            return new Intl.NumberFormat('en-us', { style: 'currency', currency: symbol }).format(extraPrice($details,$col) * convertPriceVal);
         }
 
-        function extraPrice($details){
+        function priceOnly($number)
+        {
+            return new Intl.NumberFormat('en-us', { style: 'currency', currency: symbol }).format($number * convertPriceVal);
+        }
+
+        function extraPrice($details,$col=null){
             $extra = @json(config('currencyPrice.extra'));
             if($extra != null){
                 $extra_amount = $extra.price ?? 0;
@@ -534,14 +1151,25 @@
             }
 
             if($details.dispatch_from.includes(countryCode)){
-                $price = $details.price + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+                if($col != null){
+                    $price = $details[$col] + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+                }else{
+                    $price = $details.price + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+                }
             }else{
-                $price = $details.price + parseInt($extra_amount);
+
+                if($col != null){
+                    $price = $details[$col] + parseInt($extra_amount);
+                }else{
+                    $price = $details.price + parseInt($extra_amount);
+                }
             }
 
             return $price;
-
         }
+
+
+
     </script>
 
 

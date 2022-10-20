@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**
@@ -33,12 +33,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // dd(app());
         Schema::defaultStringLength(191);
-        Config::set('currencyPrice.rate', Currency::convert()->from('USD')->to(current_currency())->get());
-        $location = locationVal();
-        if($location){
-            Config::set('currencyPrice.extra', DB::table('extras')->whereRaw('FIND_IN_SET(?, countries)', [$location->countryCode])->where('status','active')->first());
-        }
+
+        // Config::set('currencyPrice.rate', Currency::convert()->from('USD')->to(current_currency())->get());
+        // $location = locationVal();
+        // if($location){
+        //     Config::set('currencyPrice.extra', DB::table('extras')->whereRaw('FIND_IN_SET(?, countries)', [$location->countryCode])->where('status','active')->first());
+        // }
 
 
         $permissions = Permmission::where('role','superadmin')->get();
