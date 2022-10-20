@@ -1152,16 +1152,16 @@
 
             if($details.dispatch_from.includes(countryCode)){
                 if($col != null){
-                    $price = $details[$col] + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+                    $price = parseInt($details[$col]) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
                 }else{
-                    $price = $details.price + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
+                    $price = parseInt($details.price) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
                 }
             }else{
 
                 if($col != null){
-                    $price = $details[$col] + parseInt($extra_amount);
+                    $price = parseInt($details[$col]) + parseInt($extra_amount);
                 }else{
-                    $price = $details.price + parseInt($extra_amount);
+                    $price = parseInt($details.price) + parseInt($extra_amount);
                 }
             }
 
