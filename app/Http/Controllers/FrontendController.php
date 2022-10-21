@@ -312,7 +312,7 @@ class FrontendController extends Controller
         $data['ip_country'] = $ip_country;
 
         $view = view('frontend.pages.section.load_more_products',$data)->render();
-        return response()->json(['status'=>1, 'more_data'=>$products->count(), 'html'=>$view]);
+        return response()->json(['status'=>1, 'more_data'=> $products->count(), 'html'=> $view]);
     }
 
 
@@ -334,7 +334,6 @@ class FrontendController extends Controller
         $material_array = "";
         $brand_array = "";
 
-        // DB::enableQueryLog();
         $arr = DB::table('products')->where('products.status', 'Active')
                         ->select('products.id','products.slug','products.title','products.photo','products.price',
                         'products.product_for','products.shape','products.type', 'products.product_material','products.dispatch_from','products.extra',
@@ -495,13 +494,13 @@ class FrontendController extends Controller
 
         // dd($arr->get(),$request->all());
 
-        $arr = $arr->paginate(20);
+        $arr = $arr->simplePaginate(20);
+        $datas = $arr;
 
-        $data = $arr;
         $arr = json_encode($arr);
         $products = json_decode($arr, true);
 
-
+        // dd(DB::getQueryLog());
         //Get Frmae Type Filter
         // $query1 = DB::table('attributes')->leftJoin('products','products.product_for', '=','attributes.id');
         $query1 = DB::table('attributes')->select('products.*','categories.frame_type')
@@ -659,36 +658,17 @@ class FrontendController extends Controller
                 }
             $addWhere .= ') ';
         }
-        if (!empty($this->color_filter)) {
-            $addWhere .= ' and ( b.category_color = "'.$this->color_filter[0].'"';
-                for ($i = 1; $i < COUNT($this->color_filter); $i++) {
-                    $addWhere .= ' or b.category_color = "'.$this->color_filter[$i].'"';
-                }
-            $addWhere .= ') ';
-        }
 
-        // dd($addWhere);
-        // $all_brands = DB::select("
-        //     SELECT a.* FROM `categories` a
-        //     where parent_id = 0
-        //     and status = 'Active'
-        //     and (
-        //         SELECT count(b.parent_id) from categories b
-        //         where a.id = b.parent_id
-        //         and b.status = 'Active'
-        //         and b.frame_type = '".$glass_type."'
-        //         ".$addWhere." ) > 0" );
 
         $all_brands = [];
-        $product_variant = DB::table('products')->select('id','slug','price','title','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
-
+        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        //    dd($request->all()) ;
         if ($request->ajax()) {
-            $view = view('load_more_filtered', compact('product_for', 'products', 'product_variant','all_brands', 'search_product', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'))->render();
-            return response()->json(['status' => 1, 'more_data'=> $more_data->count(), 'html' => $view]);
+            $view = view('frontend.pages.section.load_more_products', ['products' => $datas, 'product_variant' => $product_variant])->render();
+            return response()->json(['status' => 1, 'more_data'=> $datas->count(), 'html' => $view]);
+        }else{
+            return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'datas', 'ip_country', 'glass_type'));
         }
-
-
-        return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'data', 'ip_country', 'glass_type'));
 
     }
 

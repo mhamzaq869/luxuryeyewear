@@ -24,7 +24,7 @@
 
 
                     </div>
-                    <p style="text-align: center;">We found {{ count($data) }} products available for you all page</p>
+                    <p style="text-align: center;">We found {{ count($datas) }} products available for you all page</p>
                     <div class="filterColMain pt-3">
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
@@ -42,7 +42,8 @@
                                         <option value="2">Sort by Name</option>
                                     </select> --}}
 
-                                    <form class="filter-form-product-for" action="{{ route('filter.product') }}">
+                                    <form class="filter-form-product-for" method="GET"
+                                        action="{{ route('filter.product') }}">
 
                                         @csrf
                                         @method('GET')
@@ -69,6 +70,7 @@
                                             @isset($max_price) value="{{ $max_price }}" @endisset>
                                         <input type="hidden" name="product_for" id="product_for"
                                             value="{{ $product_for }}">
+                                        <input type="hidden" name="ajax" id="ajax" value="">
 
                                         <select name="order_filter" id="order_filter"
                                             onchange="filter_product_for('order_filter')" class="form-select selectStyle"
@@ -103,7 +105,7 @@
                             </div>
                             <div class="col-md-6 col-xl-10">
                                 <div class="row g-4" id="productsList">
-                                    @foreach ($data as $product)
+                                    @foreach ($datas as $product)
                                         <div class="col-md-6 col-xl-4">
 
 
@@ -164,7 +166,7 @@
                                                             @if (isset($i) && $i > 2)
                                                                 <li style="padding: 0px">
                                                                     <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                        class="text-danger m-2" >
+                                                                        class="text-danger m-2">
                                                                         @if (count($product_variant->where('product_for', $product->product_for)) - 4 > 0)
                                                                             +{{ count($product_variant->where('product_for', $product->product_for)) - 4 }}
                                                                         @endif
@@ -240,11 +242,11 @@
 @push('scripts')
     <script>
         var root = "{{ asset('') }}";
-        var current_product = "{{ $data->count() }}"
+        var current_product = "{{ $datas->count() }}"
         var product = @json($product_variant)
 
         type = "eyelass_pro_price_"
-        allproducts = @json($data).data
+        allproducts = @json($datas).data
 
 
         function changeProDetail(id, type, parent_id) {
@@ -291,15 +293,20 @@
 
 
         function loadMoreData(page) {
+            $("#ajax").val('true');
+
             $.ajax({
-                url: "{{ url('load_more_products') }}" + '/{{ $search }}?page=' + page,
-                method: "get",
-                dataType: "json",
-                success: function(res) {
-                    if (res.status == 1) {
+                url: "{{ route('filter.product') }}" + '?page=' + page,
+                type: "GET",
+                data: $('.filter-form-product-for').serialize(),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(response) {
+                    if (response.status == 1) {
                         processing = false;
-                        if (res.more_data > 0) {
-                            $("#productsList").append(res.html);
+                        if (response.more_data > 0) {
+                            $("#productsList").append(response.html);
                             $(".ajax-load").css('display', 'none');
                         } else {
                             $(".ajax-load-show-message").html('No More Products Found!');
@@ -310,8 +317,42 @@
                     } else {
                         console.error('server err');
                     }
+                },
+                error: function(e) {
+                    console.log(e);
                 }
-            })
+            });
         }
+
+        // $('.filter-form-product-for').on('submit', (function(e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         url: $(this).attr('action'),
+        //         type: "GET",
+        //         data: $(this).serialize(),
+        //         contentType: false,
+        //         cache: false,
+        //         processData: false,
+        //         success: function(response) {
+        //             if (response.status == 1) {
+        //                 processing = false;
+        //                 if (response.more_data > 0) {
+        //                     $("#productsList").append(response.html);
+        //                     $(".ajax-load").css('display', 'none');
+        //                 } else {
+        //                     $(".ajax-load-show-message").html('No More Products Found!');
+        //                     $(".ajax-load-show-message").css('display', 'block');
+        //                     $(".ajax-load").css('display', 'none');
+        //                     processing = true;
+        //                 }
+        //             } else {
+        //                 console.error('server err');
+        //             }
+        //         },
+        //         error: function(e) {
+        //             console.log(e);
+        //         }
+        //     });
+        // }));
     </script>
 @endpush
