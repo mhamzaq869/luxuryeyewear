@@ -16,6 +16,8 @@ use App\Models\State;
 use Illuminate\Support\Str;
 use Helper;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Object_;
+use stdClass;
 use Stevebauman\Location\Facades\Location;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\Exception\ApiErrorException;
@@ -319,31 +321,35 @@ class CartController extends Controller
                 ];
             endforeach;
 
-            Stripe::setApiKey($integerations->secret_key);
-            $session = StripeSession::create([
-                'success_url' => route('checkout'),
-                'cancel_url' => route('checkout'),
-                'shipping_options' => [
-                    [
-                      'shipping_rate_data' => [
-                        'type' => 'fixed_amount',
-                        'fixed_amount' => [
-                          'amount' => $carts->sum('shipping') * 100,
-                          'currency' => 'usd',
+            if($integerations){
+                Stripe::setApiKey($integerations->secret_key);
+                $session = StripeSession::create([
+                    'success_url' => route('checkout'),
+                    'cancel_url' => route('checkout'),
+                    'shipping_options' => [
+                        [
+                          'shipping_rate_data' => [
+                            'type' => 'fixed_amount',
+                            'fixed_amount' => [
+                              'amount' => $carts->sum('shipping') * 100,
+                              'currency' => 'usd',
+                            ],
+                            'display_name' => 'Shipping Cost',
+                          ]
                         ],
-                        'display_name' => 'Shipping Cost',
-                      ]
-                    ],
 
-                ],
-                'line_items' => [
-                    $meta
-                ],
-                'automatic_tax' => [
-                    'enabled' => false,
-                ],
-                'mode' => 'payment',
-            ]);
+                    ],
+                    'line_items' => [
+                        $meta
+                    ],
+                    'automatic_tax' => [
+                        'enabled' => false,
+                    ],
+                    'mode' => 'payment',
+                ]);
+            }else{
+                $session = new stdClass;
+            }
 
             return view('frontend.pages.checkout', get_defined_vars());
         }

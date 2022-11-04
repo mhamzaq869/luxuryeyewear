@@ -955,8 +955,8 @@
                     $("#error").hide()
                 }, 3000);
             }else{
-                const stripe = Stripe("{{$integerations->public_key}}");
-                stripe.redirectToCheckout({ sessionId: "{{ $session->id }}" });
+                const stripe = Stripe("{{$integerations->public_key ?? ''}}");
+                stripe.redirectToCheckout({ sessionId: "{{ $session->id ?? '' }}" });
             }
         });
 
