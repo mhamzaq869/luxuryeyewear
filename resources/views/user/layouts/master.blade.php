@@ -138,12 +138,60 @@
             .badge-danger{
                 background: #dc3545;
             }
+            /** Loader */
+        .loader_bg{
+            position: fixed;
+            z-index: 999999;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+        .loader{
+            border: 0 soild transparent;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            top: calc(50vh - 75px);
+            left: calc(50vw - 75px);
+        }
+        .loader:before, .loader:after{
+            content: '';
+            border: 1em solid #ff5733;
+            border-radius: 50%;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loader 2s linear infinite;
+            opacity: 0;
+        }
+        .loader:before{
+            animation-delay: .5s;
+        }
+        @keyframes loader{
+            0%{
+                transform: scale(0);
+                opacity: 0;
+            }
+            50%{
+                opacity: 1;
+            }
+            100%{
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
         </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
     </head>
 
 <body>
+    <div class="loader_bg ">
+        <div class="loader"></div>
+    </div>
     {{-- header  start --}}
     @include('frontend.layouts.header')
     {{-- header  end --}}
@@ -178,341 +226,21 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
-    <!--new js-->
-
-
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/proSlider.js') }}"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe-ui-default.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
-
-    @stack('scripts')
     <!--new js end -->
-
     <script>
-        var swiper = new Swiper(".logoSwiper", {
-            autoplay: {
-                delay: 2400,
-                disableOnInteraction: false,
-            },
-            slidesPerView: 1,
-            spaceBetween: 5,
-            loop: true,
-            loopFillGroupWithBlank: true,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            breakpoints: {
-                375: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                },
-                480: {
-                    slidesPerView: 3,
-                    spaceBetween: 10,
-                },
-                768: {
-                    slidesPerView: 4,
-                    spaceBetween: 10,
-                },
-                1200: {
-                    slidesPerView: 5,
-                    spaceBetween: 10,
-                },
-            },
-        });
-
-        $(document).ready(function() {
-
-
-            if ($('.bbb_viewed_slider').length) {
-                var viewedSlider = $('.bbb_viewed_slider');
-
-                viewedSlider.owlCarousel({
-                    loop: true,
-                    margin: 30,
-                    autoplay: true,
-                    autoplayTimeout: 6000,
-                    nav: false,
-                    dots: false,
-                    responsive: {
-                        0: {
-                            items: 1
-                        },
-                        575: {
-                            items: 2
-                        },
-                        768: {
-                            items: 3
-                        },
-                        991: {
-                            items: 4
-                        },
-                        1199: {
-                            items: 6
-                        }
-                    }
-                });
-
-                if ($('.bbb_viewed_prev').length) {
-                    var prev = $('.bbb_viewed_prev');
-                    prev.on('click', function() {
-                        viewedSlider.trigger('prev.owl.carousel');
-                    });
-                }
-
-                if ($('.bbb_viewed_next').length) {
-                    var next = $('.bbb_viewed_next');
-                    next.on('click', function() {
-                        viewedSlider.trigger('next.owl.carousel');
-                    });
-                }
-            }
-
-
-        });
-
-
-
-        function redirect(url){
-            window.location.href = url
-        }
-
-        function insertAtPosition($string,$med=null) {
-            $stringArr = $string.split('/');
-            $stringArr[5] = $stringArr[4];
-            if($med == null){
-                $stringArr[4] = 'compress';
-            }else{
-                $stringArr[4] = $med+'-compress';
-            }
-            return $stringArr.join('/');
-        }
-
-
-        $("#share").jsSocials({
-            shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon", "whatsapp"]
-        });
-
-
-        $("#min_price,#max_price").keypress(function(event){
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
-                filter_product_for('search_filter')
-            }
-        })
-
-        $("#search").keypress(function(){
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
-                filter_product_for('search_filter')
-            }
-        })
-        /* Function for Product For(Man,Woman,Junior) */
-        function filter_product_for(filter_type,price=null) {
-            var min_price = $('#min_price').val();
-            var max_price = $('#max_price').val();
-            var search_product = $('#search').val();
-
-            if(min_price != null || max_price != null){
-                if(price != null){
-                    var maxmin = price.split('-')
-                    min_price = maxmin[0]
-                    max_price = maxmin[1]
-                }
-            }
-            // console.log($(this).val())
-            $('.min_price').val(min_price);
-            $('.max_price').val(max_price);
-            $('.search_product').val(search_product);
-
-            var brand = document.getElementsByName('brands[]');
-            var brand_array = "";
-            for (var i = 0, n = brand.length; i < n; i++) {
-                if (brand[i].checked) {
-                    brand_array += "," + brand[i].value;
-                }
-            }
-            if (brand_array) brand_array = brand_array.substring(1);
-            $('.brands').val(brand_array);
-
-            var gender = document.getElementsByName('genders[]');
-            var gender_array = "";
-            for (var i = 0, n = gender.length; i < n; i++) {
-                if (gender[i].checked) {
-                    gender_array += "," + gender[i].value;
-                }
-            }
-            if (gender_array) gender_array = gender_array.substring(1);
-            $('.genders').val(gender_array);
-            console.log(gender_array)
-
-            var shape = document.getElementsByName('shapes[]');
-            var shape_array = "";
-            for (var i = 0, n = shape.length; i < n; i++) {
-                if (shape[i].checked) {
-                    shape_array += "," + shape[i].value;
-                }
-            }
-            if (shape_array) shape_array = shape_array.substring(1);
-            $('.shapes').val(shape_array);
-
-            var frame = document.getElementsByName('frames[]');
-            var frame_array = "";
-            for (var i = 0, n = frame.length; i < n; i++) {
-                if (frame[i].checked) {
-                    frame_array += "," + frame[i].value;
-                }
-            }
-            if (frame_array) frame_array = frame_array.substring(1);
-            $('.frames').val(frame_array);
-
-            var material = document.getElementsByName('materials[]');
-            var material_array = "";
-            for (var i = 0, n = material.length; i < n; i++) {
-                if (material[i].checked) {
-                    material_array += "," + material[i].value;
-                }
-            }
-            if (material_array) material_array = material_array.substring(1);
-            $('.materials').val(material_array);
-             // var color = document.getElementsByName('colors[]');
-            // var color_array = "";
-            // for (var i=0, n=color.length;i<n;i++)
-            // { if (color[i].checked){
-            // color_array += ","+color[i].value;}}
-            // if (color_array) color_array = color_array.substring(1);
-            // $('.colors').val(color_array);
-
-            $('.filter-form-product-for').submit();
-
-        }
-
-        function reset_filter_product_for() {
-            $('.min_price').val('');
-            $('.max_price').val('');
-            $('.search_product').val('');
-            $('.brands').val('');
-            $('.genders').val('');
-            $('.shapes').val('');
-            $('.frames').val('');
-            $('.materials').val('');
-            $('.colors').val('');
-            $('.filter-form-product-for').submit();
-        }
-
-        function reset_filter() {
-            $('.min_price').val('');
-            $('.max_price').val('');
-            $('.search_product').val('');
-            $('.genders').val('');
-            $('.shapes').val('');
-            $('.frames').val('');
-            $('.materials').val('');
-            $('.colors').val('');
-            $('.filter-form').submit();
-        }
-
-        $("#show_more_brands").click(function(){
-            $("#all_brands").toggle('slow');
-
-            $(this).text(function(i, text){
-                return text === "Show less" ? "Show More" : "Show less";
-            })
-        })
-
-        // remove d-none class from brands navbar
         window.onload = function() {
             if (window.jQuery) {
                 $(".brands_navbar").removeClass('d-none')
             }
         }
 
-        function isValidURL(string) {
-            try {
-                const url = new URL(string);
-                return url.protocol === 'http:' || url.protocol === 'https:';
-            } catch (err) {
-                return false;
-            }
-        };
-
-        var swiper2 = new Swiper(".testimonialSlider", {
-            spaceBetween: 30,
-            effect: "fade",
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-        });
-
-        var swiper3 = new Swiper(".bannerSlider", {
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-        });
-
-
-        $(document).ready(function(){
-            $("#brand_search").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $(".brand_list li").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
-            $(".newsletter-inner").on('submit', (function(e) {
-                e.preventDefault();
-                $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if(data.status == true){
-                        $.message({
-                            type:'success',
-                            text:data.message,
-                            duration: 5000
-                        });
-                    }else{
-                        $.message({
-                            type:'error',
-                            text:data.message,
-                            duration: 5000
-                        });
-                    }
-                },
-                error: function(e) {
-                    console.log(e);
-                }
-                });
-            }));
-        });
     </script>
+
+    @include('scripts.frontend.currencyConvertorJs')
+
+    @stack('scripts')
+
 </body>
 
 </html>

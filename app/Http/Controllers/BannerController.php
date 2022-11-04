@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Page;
 use Illuminate\Support\Str;
 class BannerController extends Controller
@@ -26,7 +27,8 @@ class BannerController extends Controller
      */
     public function create()
     {
-        return view('backend.banner.create');
+        $brands = Brand::all();
+        return view('backend.banner.create', get_defined_vars());
     }
 
     /**
@@ -91,7 +93,8 @@ class BannerController extends Controller
     public function edit($id)
     {
         $banner=Banner::findOrFail($id);
-        return view('backend.banner.edit')->with('banner',$banner);
+        $brands = Brand::all();
+        return view('backend.banner.edit', get_defined_vars());
     }
 
     /**

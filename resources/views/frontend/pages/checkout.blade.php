@@ -720,6 +720,16 @@
                                         <form-group>
                                             {{-- <input name="method" onclick="paymentMetod('card')" class="form-check-input"  type="radio" value="card"> <label> Debit/Credit Card</label><br>
                                             <input name="method" onclick="paymentMetod('paypal')"  class="form-check-input" type="radio" value="paypal"> <label> PayPal</label> --}}
+                                            @if ( $availablePaymnMethod->where('method', 'stripe')->first())
+                                                <div id="smart-button-container">
+                                                    <div style="text-align: center;">
+                                                        <button type="button" id="stripe" class="btn btn-primary btn-lg btn-block w-100 mb-2 py-0">
+                                                            <i class="fa-brands fa-stripe fa-3x"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endif
+
                                             @if ($paypal = $availablePaymnMethod->where('method', 'paypal')->first())
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
@@ -735,7 +745,6 @@
                                                     <script src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? 'sb' }}&currency=USD&intent=capture"
                                                         data-sdk-integration-source="integrationbuilder"></script>
                                                 @endif
-
 
                                             @endif
                                         </form-group>
@@ -905,6 +914,8 @@
 
     <script src="{{ asset('frontend/js/nice-select/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('frontend/js/select2/js/select2.min.js') }}"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
     <script>
         var addresses = @json($address)
 
@@ -935,7 +946,23 @@
             }
         }
 
+         //Stripe
+        $("#stripe").on('click', function(){
+            if (!validateForm()) {
+                $("#error").text("All (*) Fields are required!")
+                $("#error").show()
+                setTimeout(() => {
+                    $("#error").hide()
+                }, 3000);
+            }else{
+                const stripe = Stripe("{{$integerations->public_key}}");
+                stripe.redirectToCheckout({ sessionId: "{{ $session->id }}" });
+            }
+        });
 
+
+
+        //Paypal
         const fundingSources = [
             paypal.FUNDING.PAYPAL,
             paypal.FUNDING.CARD
@@ -1003,7 +1030,6 @@
                 onApprove: (data, actions) => {
                     const captureOrderHandler = (details) => {
                         const payerName = details.payer.name.given_name
-                        console.log(details)
 
                         $.ajax({
                             url: "{{ route('cart.order') }}",

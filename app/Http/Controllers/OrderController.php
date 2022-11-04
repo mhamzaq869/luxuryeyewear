@@ -79,7 +79,7 @@ class OrderController extends Controller
             $shipping = $request->shipping;
 
             $order_data['sub_total'] = Helper::totalCartPrice();
-            $order_data['quantity'] = Helper::cartCount();
+
             if(session('coupon')){
                 $order_data['coupon']=session('coupon')['value'];
             }
@@ -103,9 +103,9 @@ class OrderController extends Controller
             $order_data['status']="new";
 
             $order->fill($order_data);
-            $status=$order->save();
+            $order->save();
             if($order)
-            // dd($order->id);
+
             $users=User::where('role','admin')->first();
             $details=[
                 'title'=>'You have new order',
@@ -116,6 +116,9 @@ class OrderController extends Controller
             Notification::send($users, new StatusNotification($details));
             Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => Auth::id()]);
 
+            Order::find($order->id)->update([
+                'quantity' => Helper::cartCount()
+            ]);
             // dd($users);
             request()->session()->flash('success','Your product successfully placed in order');
 

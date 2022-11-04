@@ -55,7 +55,7 @@ function uploadImage ($file, $path = null) {
 
 function fn_resize($image_resource_id, $width, $height,$qulaity)
 {
-    if($width >= 800){
+    if($width > 600){
         $target_width = $width * $qulaity;
         $target_height = $height * $qulaity;
     }else{

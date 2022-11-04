@@ -81,8 +81,9 @@
         width: 1080,
         height: 300,
         resize_dir: 'both',
-
         removeButtons: 'PasteFromWord'
     } );
+
+
 </script>
 @endpush

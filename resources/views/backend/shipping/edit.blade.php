@@ -8,50 +8,73 @@
             <form method="post" action="{{ route('shipping.update', $shipping->id) }}">
                 @csrf
                 @method('PATCH')
-                <div class="form-group">
-                    <label for="inputTitle" class="col-form-label">Type <span class="text-danger">*</span></label>
-                    <input id="inputTitle" type="text" name="type" placeholder="Enter type"
-                        value="{{ $shipping->type }}" class="form-control">
-                    @error('title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="inputTitle" class="col-form-label">Countries <span class="text-danger">*</span></label>
-                    <select class="select2 form-control " id="countries" name="countries[]" style="width: 100%; height:36px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle" class="col-form-label">Type <span class="text-danger">*</span></label>
+                            <input id="inputTitle" type="text" name="type" placeholder="Enter type"
+                                value="{{ $shipping->type }}" class="form-control">
+                            @error('title')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle" class="col-form-label">Countries <span class="text-danger">*</span></label>
+                            <select class="select2 form-control " id="countries" name="countries[]" style="width: 100%; height:36px;">
 
-                        @foreach ($countries as $user)
-                            <option value="{{ $user->shortname }}">
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                                @foreach ($countries as $user)
+                                    <option value="{{ $user->shortname }}">
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="inputTitle" class="col-form-label">Transit Days<span class="text-danger">*</span></label>
-                    <input  type="text" name="transit" placeholder="5-10"  value="{{ $shipping->transit }}" class="form-control">
-                    @error('type')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
-                    <input id="price" type="number" name="price" placeholder="Enter price"
-                        value="{{ $shipping->price }}" class="form-control">
-                    @error('price')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-                    <select name="status" class="form-control">
-                        <option value="active" {{ $shipping->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ $shipping->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    </select>
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle" class="col-form-label">Transit From<span class="text-danger">*</span></label>
+                            <input  type="date" name="transitfrom" placeholder="5-10"  value="{{ $shipping->transitfrom }}" class="form-control">
+                            @error('type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle" class="col-form-label">Transit To<span class="text-danger">*</span></label>
+                            <input  type="date" name="transitto" placeholder="5-10"  value="{{ $shipping->transitto }}" class="form-control">
+                            @error('type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
+                            <input id="price" type="number" name="price" placeholder="Enter price"
+                                value="{{ $shipping->price }}" class="form-control">
+                            @error('price')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+                            <select name="status" class="form-control">
+                                <option value="active" {{ $shipping->status == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ $shipping->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            @error('status')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group mb-3">
                     <button class="btn btn-success" type="submit">Update</button>

@@ -133,22 +133,15 @@
     <div class="image_grid_col section_space image_grid_content overflow-hidden">
       <div class="row g-2">
         @foreach ($gallery as $gl)
-        <div class="col-sm-6">
-            <a href="#">
-                <img src="{{asset($gl->photo)}}" alt="{{$gl->photo}}">
+        <div class="col-sm-6" style="position: relative">
+            <a href="{{ route('product-brand',[$gl->brandSlug]) }}">
+                <img src="{{asset($gl->photo)}}" alt="{{$gl->photo}}" style="position: relative;
+                @if($gl->description != null) filter: brightness(0.7) opacity(0.6) @endif">
             </a>
+            <span class="text-center" style="position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); ">{!! $gl->description !!}</span>
         </div>
         @endforeach
-
-        {{-- <div class="col-sm-6">
-          <a href="#">  <img src="{{asset('assets/./images/img_grid2.png')}}" alt="Image Not Found"> </a>
-        </div>
-        <div class="col-sm-6">
-          <a href="#">  <img src="{{asset('assets/./images/img_grid3.png')}}" alt="Image Not Found"> </a>
-        </div>
-        <div class="col-sm-6">
-          <a href="#">  <img src="{{asset('assets/./images/img_grid4.png')}}" alt="Image Not Found"> </a>
-        </div> --}}
       </div>
     </div>
   </section>

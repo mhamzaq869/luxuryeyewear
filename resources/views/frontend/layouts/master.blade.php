@@ -225,6 +225,9 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.css" integrity="sha512-+1GzNJIJQ0SwHimHEEDQ0jbyQuglxEdmQmKsu8KI7QkMPAnyDrL9TAnVyLPEttcTxlnLVzaQgxv2FpLCLtli0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -583,8 +586,7 @@
                                     <a href="index.html"><img src="{{ asset('assets/images/luxuryeyewear.png') }}"
                                             alt="..."></a>
                                 </div>
-                                <p class="whiteColor">Luxuryeyewear ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                                    tincidunt ornare viverra.</p>
+                                <p class="whiteColor">{!! $site_setting->short_des !!}</p>
                                 <ul class="foot_social_icon">
                                     <li><a href="javascript:void(0)"><img
                                                 src="{{ asset('assets/./images/foot_facebook_icon.svg') }}"
@@ -640,14 +642,29 @@
                                                 <h3 class="foot_link_head_style">Get In Touch</h3>
                                             </div>
                                             <ul class="foot_link_list contact">
-                                                <li><a href="javascript:void(0)">C-12 Paryavaran Complex Ignu Road New
-                                                        Delhi, Delhi - 110030, India</a></li>
-                                                <li><a href="javascript:void(0)"><img
-                                                            src="{{ asset('assets/./images/phone-icon.svg') }}"
-                                                            alt="...">9990360806</a></li>
-                                                <li><a href="javascript:void(0)"><img
-                                                            src="{{ asset('assets/./images/email_icon.svg') }}"
-                                                            alt="...">Support@Luxuryeyewear.In</a></li>
+                                                @foreach (explode('|',$site_setting->address) as $address)
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                       {{$address}}
+                                                    </a>
+                                                </li>
+                                                @endforeach
+
+                                                @foreach (explode('|',$site_setting->phone) as $phone)
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                    <img src="{{ asset('assets/./images/phone-icon.svg') }}" alt="{{$phone}}">{{$phone}}</a>
+                                                </li>
+                                                @endforeach
+
+                                                @foreach (explode('|',$site_setting->email) as $email)
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                        <img src="{{ asset('assets/./images/email_icon.svg') }}" alt="{{$email}}">{{$email}}
+                                                    </a>
+                                                </li>
+                                                @endforeach
+
                                             </ul>
                                         </div>
                                     </div>
@@ -730,27 +747,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript"></script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.js" integrity="sha512-sww7U197vVXpRSffZdqfpqDU2SNoFvINLX4mXt1D6ZecxkhwcHmLj3QcL2cJ/aCxrTkUcaAa6EGmPK3Nfitygw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--new js end -->
 
     <script>
-        var symbol = "";
-        var convertPriceVal = "";
-        var countryCode = "";
-        var allproducts = "";
-        var total_shipping = 0;
-        var cart_subtotal = 0;
-        var session_coupon = false;
-        var session_coupon_value = 0;
-        var total_cart = 0;
-        var type = "";
-        var root = "{{asset('')}}";
-        var current_url = window.location.href;
-        var female_eyeglass = [];
-        var female_sunglasses = [];
-        var male_eyeglasses = [];
-        var male_sunglasses = [];
-
         var swiper = new Swiper(".logoSwiper", {
             autoplay: {
                 delay: 2400,
@@ -853,136 +853,6 @@
             return $stringArr.join('/');
         }
 
-        $("#share").jsSocials({
-            shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon", "whatsapp"]
-        });
-
-
-        $("#min_price,#max_price").keypress(function(event){
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
-                filter_product_for('search_filter')
-            }
-        })
-
-        $("#search").keypress(function(){
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
-                filter_product_for('search_filter')
-            }
-        })
-        /* Function for Product For(Man,Woman,Junior) */
-        function filter_product_for(filter_type,price=null) {
-            var min_price = $('#min_price').val();
-            var max_price = $('#max_price').val();
-            var search_product = $('#search').val();
-
-            if(min_price != null || max_price != null){
-                if(price != null){
-                    var maxmin = price.split('-')
-                    min_price = maxmin[0]
-                    max_price = maxmin[1]
-                }
-            }
-            // console.log($(this).val())
-            $('.min_price').val(min_price);
-            $('.max_price').val(max_price);
-            $('.search_product').val(search_product);
-
-            var brand = document.getElementsByName('brands[]');
-            var brand_array = "";
-            for (var i = 0, n = brand.length; i < n; i++) {
-                if (brand[i].checked) {
-                    brand_array += "," + brand[i].value;
-                }
-            }
-            if (brand_array) brand_array = brand_array.substring(1);
-            $('.brands').val(brand_array);
-
-            var gender = document.getElementsByName('genders[]');
-            var gender_array = "";
-            for (var i = 0, n = gender.length; i < n; i++) {
-                if (gender[i].checked) {
-                    gender_array += "," + gender[i].value;
-                }
-            }
-            if (gender_array) gender_array = gender_array.substring(1);
-            $('.genders').val(gender_array);
-            console.log(gender_array)
-
-            var shape = document.getElementsByName('shapes[]');
-            var shape_array = "";
-            for (var i = 0, n = shape.length; i < n; i++) {
-                if (shape[i].checked) {
-                    shape_array += "," + shape[i].value;
-                }
-            }
-            if (shape_array) shape_array = shape_array.substring(1);
-            $('.shapes').val(shape_array);
-
-            var frame = document.getElementsByName('frames[]');
-            var frame_array = "";
-            for (var i = 0, n = frame.length; i < n; i++) {
-                if (frame[i].checked) {
-                    frame_array += "," + frame[i].value;
-                }
-            }
-            if (frame_array) frame_array = frame_array.substring(1);
-            $('.frames').val(frame_array);
-
-            var material = document.getElementsByName('materials[]');
-            var material_array = "";
-            for (var i = 0, n = material.length; i < n; i++) {
-                if (material[i].checked) {
-                    material_array += "," + material[i].value;
-                }
-            }
-            if (material_array) material_array = material_array.substring(1);
-            $('.materials').val(material_array);
-             // var color = document.getElementsByName('colors[]');
-            // var color_array = "";
-            // for (var i=0, n=color.length;i<n;i++)
-            // { if (color[i].checked){
-            // color_array += ","+color[i].value;}}
-            // if (color_array) color_array = color_array.substring(1);
-            // $('.colors').val(color_array);
-
-            $('.filter-form-product-for').submit();
-
-        }
-
-        function reset_filter_product_for() {
-            $('.min_price').val('');
-            $('.max_price').val('');
-            $('.search_product').val('');
-            $('.brands').val('');
-            $('.genders').val('');
-            $('.shapes').val('');
-            $('.frames').val('');
-            $('.materials').val('');
-            $('.colors').val('');
-            $('.filter-form-product-for').submit();
-        }
-
-        function reset_filter() {
-            $('.min_price').val('');
-            $('.max_price').val('');
-            $('.search_product').val('');
-            $('.genders').val('');
-            $('.shapes').val('');
-            $('.frames').val('');
-            $('.materials').val('');
-            $('.colors').val('');
-            $('.filter-form').submit();
-        }
-
-        $("#show_more_brands").click(function(){
-            $("#all_brands").toggle('slow');
-
-            $(this).text(function(i, text){
-                return text === "Show less" ? "Show More" : "Show less";
-            })
-        })
 
         // remove d-none class from brands navbar
         window.onload = function() {
@@ -1065,113 +935,17 @@
         });
 
 
-        convertPrice()
-
-        function convertPrice()
-        {
-            $.get('https://ipapi.co/currency/', function(data) {
-                symbol = data
-                var requestURL = `https://api.exchangerate.host/convert?from=USD&to=${data}`;
-                var request = new XMLHttpRequest();
-                request.open('GET', requestURL);
-                request.responseType = 'json';
-                request.send();
-
-                request.onload = function() {
-                    var response = request.response;
-                    convertPriceVal = response.result
-
-                    if (current_url == root) {
-                        $.each(female_eyeglass, function(index, value){
-                            $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
-                        });
-                        $.each(female_sunglasses, function(index, value){
-                            $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
-                        });
-                        $.each(male_eyeglasses, function(index, value){
-                            $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
-                        });
-                        $.each(male_sunglasses, function(index, value){
-                            $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
-                        });
-                    }else if(current_url.includes('cart')){
-                        $.each(allproducts, function(index, value){
-                            $("#cart_pro_price_"+value.id).html(price(value,'productPrice'))
-                            $("#cart_pro_total_price_"+value.id).html(price(value))
-                        });
-
-                        $("#cart_shipping").html(priceOnly(total_shipping))
-                        if(session_coupon){
-                            $("#order_subtotal").html(priceOnly(cart_subtotal+session_coupon_value))
-                            $("#coupon_price").html(priceOnly(session_coupon_value))
-                        }else{
-                            $("#order_subtotal").html(priceOnly(cart_subtotal))
-                        }
-                        $("#order_total_price").html(priceOnly(total_cart))
-
-                    }else if(current_url.includes('checkout')){
-
-                        $("#cart_shipping").html(priceOnly(total_shipping))
-                        if(session_coupon){
-                            $("#order_subtotal").html(priceOnly(cart_subtotal))
-                            $("#coupon_price").html(priceOnly(session_coupon_value))
-                        }else{
-                            $("#order_subtotal").html(priceOnly(cart_subtotal))
-                        }
-                        $("#order_total_price").html(priceOnly(total_cart))
-
-                    }else{
-                        $.each(allproducts, function(index, value){
-                            $("#"+type+value.id).html(price(value))
-                        });
-                    }
-                    $(".loader_bg").addClass('d-none');
-                }
-            })
-
-
-        }
-
-        function price($details, $col=null)
-        {
-            return new Intl.NumberFormat('en-us', { style: 'currency', currency: symbol }).format(extraPrice($details,$col) * convertPriceVal);
-        }
-
-        function priceOnly($number)
-        {
-            return new Intl.NumberFormat('en-us', { style: 'currency', currency: symbol }).format($number * convertPriceVal);
-        }
-
-        function extraPrice($details,$col=null){
-            $extra = @json(config('currencyPrice.extra'));
-            if($extra != null){
-                $extra_amount = $extra.price ?? 0;
-            }else{
-                $extra_amount = 0;
-            }
-
-            if($details.dispatch_from.includes(countryCode)){
-                if($col != null){
-                    $price = parseInt($details[$col]) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
-                }else{
-                    $price = parseInt($details.price) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt($extra_amount);
-                }
-            }else{
-
-                if($col != null){
-                    $price = parseInt($details[$col]) + parseInt($extra_amount);
-                }else{
-                    $price = parseInt($details.price) + parseInt($extra_amount);
-                }
-            }
-
-            return $price;
-        }
-
-
+        $("#share").jsSocials({
+            shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon",
+                "whatsapp"
+            ]
+        });
 
     </script>
 
+
+    @include('scripts.frontend.filterJs')
+    @include('scripts.frontend.currencyConvertorJs')
 
     @stack('scripts')
 </body>

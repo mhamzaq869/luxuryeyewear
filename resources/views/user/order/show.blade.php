@@ -30,7 +30,7 @@
             <td>{{$order->email}}</td>
             <td>{{$order->quantity}}</td>
             <td>${{$order->shipping->price ?? 0}}</td>
-            <td>${{number_format($order->total_amount,2)}}</td>
+            <td><span id="user_order_price_{{$order->id}}"></span></td>
             <td>
                 @if($order->status=='new')
                   <span class="badge badge-primary">{{$order->status}}</span>
@@ -197,4 +197,11 @@
     }
 
 </style>
+@endpush
+
+
+@push('scripts')
+<script>
+    allproducts = [@json($order)]
+</script>
 @endpush

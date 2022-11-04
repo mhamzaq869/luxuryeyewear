@@ -8,3 +8,4 @@ class Settings extends Model
 {
     protected $fillable=['short_des','description','photo','address','phone','email','logo'];
 }
+

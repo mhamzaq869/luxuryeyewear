@@ -39,40 +39,17 @@
             <tr>
 
               <th>S.N.</th>
-
               <th>Title</th>
-
               <th>Slug</th>
-
+              <th>Type</th>
               <th>Photo</th>
-
               <th>Status</th>
-
               <th>Action</th>
 
             </tr>
 
           </thead>
 
-          <tfoot>
-
-            <tr>
-
-              <th>S.N.</th>
-
-              <th>Title</th>
-
-              <th>Slug</th>
-
-              <th>Photo</th>
-
-              <th>Status</th>
-
-              <th>Action</th>
-
-              </tr>
-
-          </tfoot>
 
           <tbody>
 
@@ -81,10 +58,9 @@
                 <tr>
 
                     <td>{{$banner->id}}</td>
-
                     <td>{{$banner->title}}</td>
-
                     <td>{{$banner->slug}}</td>
+                    <td>{{$banner->type}}</td>
 
                     <td>
 

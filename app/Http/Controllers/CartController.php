@@ -10,12 +10,16 @@ use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\Cart;
 use App\Models\Country;
+use App\Models\PaymentIntegration;
 use App\Models\Shipping;
 use App\Models\State;
 use Illuminate\Support\Str;
 use Helper;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
+use Stripe\Checkout\Session as StripeSession;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Stripe;
 
 class CartController extends Controller
 {
@@ -290,12 +294,56 @@ class CartController extends Controller
     public function checkout(Request $request){
 
         if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty !');
+            session()->flash('error','Cart is Empty !');
             return redirect()->route('home');
         }else{
             $address = Address::with(['state','country'])->get();
             $countries = Country::all();
             $states = State::all();
+            $integerations = PaymentIntegration::where('method','stripe')->first();
+
+            // Stripe Checkout Session
+            $carts = Cart::with(['product'])->where('user_id',request()->ip())->where('order_id',null)->get();
+            $meta = [];
+            foreach($carts as $i => $cart):
+                $meta[] =  [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'unit_amount' => $i == 0 ? $cart->price * 100 + $carts->sum('tax') * 100 : $cart->price * 100,
+                        'product_data' => [
+                            'name' => $cart->product->title,
+                        ]
+                    ],
+
+                    'quantity' => $cart->quantity,
+                ];
+            endforeach;
+
+            Stripe::setApiKey($integerations->secret_key);
+            $session = StripeSession::create([
+                'success_url' => route('checkout'),
+                'cancel_url' => route('checkout'),
+                'shipping_options' => [
+                    [
+                      'shipping_rate_data' => [
+                        'type' => 'fixed_amount',
+                        'fixed_amount' => [
+                          'amount' => $carts->sum('shipping') * 100,
+                          'currency' => 'usd',
+                        ],
+                        'display_name' => 'Shipping Cost',
+                      ]
+                    ],
+
+                ],
+                'line_items' => [
+                    $meta
+                ],
+                'automatic_tax' => [
+                    'enabled' => false,
+                ],
+                'mode' => 'payment',
+            ]);
 
             return view('frontend.pages.checkout', get_defined_vars());
         }

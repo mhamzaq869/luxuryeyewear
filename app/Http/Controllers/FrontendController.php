@@ -71,7 +71,9 @@ class FrontendController extends Controller
 
         $data['posts'] = DB::table('posts')->where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
-        $data['banners'] = DB::table('banners')->where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
+        $data['banners'] = DB::table('banners')->join('brands','banners.brand_id','=','brands.id')
+                            ->select('banners.*','brands.slug as brandSlug')
+                            ->where('banners.status', 'active')->limit(3)->orderBy('banners.id', 'DESC')->get();
 
         // return $banner;
 
@@ -723,7 +725,6 @@ class FrontendController extends Controller
         $location = locationVal();
 
         $product_detail = Product::getProductBySlug($slug);
-        $product_detail->price = extraPrice($product_detail);
 
         if($product_detail != null && $product_detail->cat_info->size != null){
             $lensDetail = json_decode($product_detail->cat_info->size);
@@ -765,8 +766,6 @@ class FrontendController extends Controller
 
 
             $detail->all_imgs = $imgs;
-
-            $detail->price = extraPrice($detail);
 
         }
 
@@ -1091,14 +1090,6 @@ class FrontendController extends Controller
         $recent_products = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
 
         if($request->search != null){
-            // $products = DB::table('products')->orwhere('title', 'like', '%' . $request->search . '%')
-            // ->whereIn('status', ['active','outofstock'])
-            // ->orwhere('slug', 'like', '%' . $request->search . '%')
-            // ->orwhere('product_ean_code', 'like', '%' . $request->search . '%')
-            // ->orwhere('price', 'like', '%' . $request->search . '%')
-            // ->orderBy('id', 'DESC')
-            // ->simplePaginate(20);
-
             $products = DB::table('products')
             ->join('brands','products.brand_id','=','brands.id')
             ->select('products.*','brands.title as brandName')

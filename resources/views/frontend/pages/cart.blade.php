@@ -300,9 +300,9 @@
     <script>
         allproducts = @json($carts)
 
-        total_cart = {{ $total_amount }}
-        total_shipping = {{ $total_shipping }}
-        cart_subtotal = {{ $total_amount }}
+        total_cart = {{ isset($total_amount) ? $total_amount : 0  }}
+        total_shipping = {{ isset($total_shipping) ? $total_shipping : 0 }}
+        cart_subtotal = {{ isset($total_amount) ? $total_amount : 0  }}
         session_coupon = {{ isset(Session::get('coupon')['value']) ? 1 : 0 }};
         if (session_coupon) {
             session_coupon_value = {{ isset(Session::get('coupon')['value']) ? Session::get('coupon')['value'] : 0 }}

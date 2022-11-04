@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" name="email" required value="{{ $data->email }}">
+                    <input type="text" class="form-control" name="email" required value="{{ $data->email }}">
                     @error('email')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

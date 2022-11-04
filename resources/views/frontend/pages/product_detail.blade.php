@@ -14,6 +14,10 @@
     <meta property="og:image" content="{{ $product_detail->photo ?? '' }}">
 
     <meta property="og:description" content="{{ $product_detail->description ?? '' }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/css/lightgallery.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lg-zoom.css">
 @endsection
 @section('title', ' PRODUCT DETAIL')
 @section('main-content')
@@ -23,8 +27,81 @@
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-6">
-                        <div class="swiper_COl">
-                            <div class="swiper mySwiper2" itemscope data-swiper-autoplay="1000000" itemtype="http://schema.org/ImageGallery">
+                        {{-- <div class="swiper_COl">
+                            <div class="swiper" style="margin-top:50px">
+                                <div class="swiper-wrapper text-center" data-swiper-autoplay="1000000">
+
+                                    @if (!empty($product_detail->p_f))
+                                        <div class="swiper-slide" onmouseover="hoverImage(1)" data-swiper-autoplay="1000000"
+                                            style="width: 151.5px;margin-right: 10px;">
+                                            @if (!isValidUrl($product_detail->p_f))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_f)) }}"
+                                                    alt="{{ asset($product_detail->p_f) }}" class="w-75 " />
+                                            @else
+                                                <img src="{{ $product_detail->p_f }}" alt="{{ $product_detail->p_f }}"
+                                                    class="w-75 " />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div class="swiper-slide" onmouseover="hoverImage(2)" data-swiper-autoplay="1000000"
+                                            style="width: 151.5px;margin-right: 10px;">
+                                            @if (!isValidUrl($product_detail->p_b))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_b)) }}"
+                                                    alt="{{ asset($product_detail->p_b) }}" class="w-75 " />
+                                            @else
+                                                <img src="{{ $product_detail->p_b }}" alt="{{ $product_detail->p_b }}"
+                                                    class="w-75 " />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div class="swiper-slide" onmouseover="hoverImage(3)" data-swiper-autoplay="1000000"
+                                            style="width: 151.5px;margin-right: 10px;">
+                                            @if (!isValidUrl($product_detail->g_image_1))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1)) }}"
+                                                    alt="{{ asset($product_detail->g_image_1) }}" class="w-75 " />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_1 }}"
+                                                    alt="{{ $product_detail->g_image_1 }}" class="w-75 " />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div class="swiper-slide" onmouseover="hoverImage(4)" data-swiper-autoplay="1000000"
+                                            style="width: 151.5px;margin-right: 10px;">
+                                            @if (!isValidUrl($product_detail->g_image_2))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    alt="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    class="w-75 " />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_2 }}"
+                                                    alt="{{ $product_detail->g_image_2 }}" class="w-75 " />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div class="swiper-slide" onmouseover="hoverImage(5)" data-swiper-autoplay="1000000"
+                                            style="width: 151.5px;margin-right: 10px;">
+                                            @if (!isValidUrl($product_detail->g_image_3))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    alt="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    class="w-75 " />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_3 }}"
+                                                    alt="{{ $product_detail->g_image_3 }}" class="w-75 " />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                </div>
+                            </div>
+
+                            <div class="swiper">
                                 <ul class="swiper-wrapper my-gallery ">
 
                                     @if (!empty($product_detail->p_f))
@@ -33,10 +110,11 @@
                                             <a title="click to zoom-in " href="{{ asset($product_detail->p_f) ?? '' }}"
                                                 itemprop="contentUrl" data-size="2400x1200">
                                                 @if (!isValidUrl($product_detail->p_f))
-                                                <img src="{{ asset(insertAtPosition($product_detail->p_f,'med')) ?? '' }}" class="proSlideImg"
-                                                    itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ asset(insertAtPosition($product_detail->p_f, 'med')) ?? '' }}"
+                                                        class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                                 @else
-                                                <img src="{{ $product_detail->p_f }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ $product_detail->p_f }}" class="proSlideImg"
+                                                        itemprop="thumbnail" alt="Image description" />
                                                 @endif
                                             </a>
                                         </li>
@@ -49,26 +127,29 @@
                                                 itemprop="contentUrl" data-size="2400x1200">
 
                                                 @if (!isValidUrl($product_detail->p_b))
-                                                <img src="{{ asset(insertAtPosition($product_detail->p_b,'med')) ?? '' }}" class="proSlideImg"
-                                                    itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ asset(insertAtPosition($product_detail->p_b, 'med')) ?? '' }}"
+                                                        class="proSlideImg" itemprop="thumbnail"
+                                                        alt="Image description" />
                                                 @else
-                                                <img src="{{ $product_detail->p_b}}" class="proSlideImg"
-                                                itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ $product_detail->p_b }}" class="proSlideImg"
+                                                        itemprop="thumbnail" alt="Image description" />
                                                 @endif
                                             </a>
                                         </li>
                                     @endif
 
                                     @if (!empty($product_detail->g_image_1))
-                                        <li id="3" class="swiper-slide" >
-                                            <a title="click to zoom-in" href="{{ asset($product_detail->g_image_1) ?? '' }}"
+                                        <li id="3" class="swiper-slide">
+                                            <a title="click to zoom-in"
+                                                href="{{ asset($product_detail->g_image_1) ?? '' }}"
                                                 itemprop="contentUrl" data-size="2400x1200">
                                                 @if (!isValidUrl($product_detail->g_image_1))
-                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1,'med')) ?? '' }}"
-                                                    class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}"
+                                                        class="proSlideImg" itemprop="thumbnail"
+                                                        alt="Image description" />
                                                 @else
-                                                <img src="{{ $product_detail->g_image_1  }}"
-                                                    class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ $product_detail->g_image_1 }}" class="proSlideImg"
+                                                        itemprop="thumbnail" alt="Image description" />
                                                 @endif
                                             </a>
                                         </li>
@@ -78,30 +159,32 @@
                                         <li id="4" class="swiper-slide" itemprop="associatedMedia" itemscope
                                             itemtype="http://schema.org/ImageObject">
                                             <a title="click to zoom-in"
-                                                href="{{ asset($product_detail->g_image_2) ?? '' }}" itemprop="contentUrl"
-                                                data-size="2400x1200">
+                                                href="{{ asset($product_detail->g_image_2) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
                                                 @if (!isValidUrl($product_detail->g_image_2))
-                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2,'med')) ?? '' }}"
-                                                    class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}"
+                                                        class="proSlideImg" itemprop="thumbnail"
+                                                        alt="Image description" />
                                                 @else
-                                                <img src="{{ $product_detail->g_image_2 }}"
-                                                    class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ $product_detail->g_image_2 }}" class="proSlideImg"
+                                                        itemprop="thumbnail" alt="Image description" />
                                                 @endif
                                             </a>
                                         </li>
                                     @endif
 
                                     @if (!empty($product_detail->g_image_3))
-                                        <li id="5" class="swiper-slide" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                                            <a title="click to zoom-in"
-                                                href="{{ asset($product_detail->g_image_3) ?? '' }}" itemprop="contentUrl"
-                                                data-size="2400x1200">
+                                        <li id="5" class="swiper-slide" itemprop="associatedMedia" itemscope
+                                            itemtype="http://schema.org/ImageObject">
+                                            <a title="click to zoom-in" href="{{ asset($product_detail->g_image_3) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
                                                 @if (!isValidUrl($product_detail->g_image_3))
-                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3,'med')) ?? '' }}"
-                                                    class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}"
+                                                        class="proSlideImg" itemprop="thumbnail"
+                                                        alt="Image description" />
                                                 @else
-                                                <img src="{{ $product_detail->g_image_3}}"
-                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                                    <img src="{{ $product_detail->g_image_3 }}" class="proSlideImg"
+                                                        itemprop="thumbnail" alt="Image description" />
                                                 @endif
                                             </a>
                                         </li>
@@ -113,6 +196,7 @@
                                 <div class="swiper-button-next"></div>
                                 <div class="swiper-button-prev"></div>
                             </div>
+
                             <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="pswp__bg"></div>
                                 <div class="pswp__scroll-wrap">
@@ -149,64 +233,509 @@
                                     </div>
                                 </div>
                             </div>
-                            <div thumbsSlider="" class="swiper mySwiper" data-swiper-autoplay="1000000" style="margin-top:50px">
-                                <div class="swiper-wrapper text-center" data-swiper-autoplay="1000000">
+                        </div> --}}
+
+
+                        {{-- <div class="swiper-container gallery-thumbs">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img data-src="https://placeimg.com/300/300/nature"
+                                        class="swiper-lazy"></div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973438664" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973570868" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973594016" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973605655" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973631599" class="swiper-lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-container gallery-top">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img data-src="https://placeimg.com/300/300/nature"
+                                        class="swiper-lazy"></div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973438664" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973570868" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973594016" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973605655" class="swiper-lazy">
+                                </div>
+                                <div class="swiper-slide"><img
+                                        data-src="https://placeimg.com/300/300/nature?t=1511973631599" class="swiper-lazy">
+                                </div>
+                            </div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div> --}}
+
+                        {{-- <div class="row">
+                            <div class="col-lg-3">
+                                <div class="slider slider-nav">
 
                                     @if (!empty($product_detail->p_f))
-                                        <div class="swiper-slide" onmouseover="hoverImage(1)" data-swiper-autoplay="1000000"  style="width: 151.5px;margin-right: 10px;">
+                                        <div onmouseover="hoverImage(1)">
                                             @if (!isValidUrl($product_detail->p_f))
-                                            <img src="{{ asset(insertAtPosition($product_detail->p_f)) }}" alt="{{ asset($product_detail->p_f) }}" class="w-75 " />
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_f)) }}"
+                                                    alt="{{ asset($product_detail->p_f) }}" class="h-100 p-2 border-black" />
                                             @else
-                                            <img src="{{ $product_detail->p_f }}" alt="{{ $product_detail->p_f }}" class="w-75 " />
+                                                <img src="{{ $product_detail->p_f }}" alt="{{ $product_detail->p_f }}"
+                                                    class="h-100 p-2 border-black" />
                                             @endif
                                         </div>
                                     @endif
 
                                     @if (!empty($product_detail->p_b))
-                                        <div class="swiper-slide" onmouseover="hoverImage(2)" data-swiper-autoplay="1000000" style="width: 151.5px;margin-right: 10px;">
+                                        <div onmouseover="hoverImage(2)">
                                             @if (!isValidUrl($product_detail->p_b))
-                                            <img src="{{ asset(insertAtPosition($product_detail->p_b)) }}"
-                                                alt="{{ asset($product_detail->p_b) }}" class="w-75 " />
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_b)) }}"
+                                                    alt="{{ asset($product_detail->p_b) }}" class="h-100 p-2 border-black" />
                                             @else
-                                            <img src="{{ $product_detail->p_b }}"
-                                                alt="{{ $product_detail->p_b }}" class="w-75 " />
+                                                <img src="{{ $product_detail->p_b }}" alt="{{ $product_detail->p_b }}"
+                                                    class="h-100 p-2 border-black" />
                                             @endif
                                         </div>
                                     @endif
 
                                     @if (!empty($product_detail->g_image_1))
-                                        <div class="swiper-slide" onmouseover="hoverImage(3)" data-swiper-autoplay="1000000" style="width: 151.5px;margin-right: 10px;">
+                                        <div onmouseover="hoverImage(3)">
                                             @if (!isValidUrl($product_detail->g_image_1))
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_1)) }}" alt="{{ asset($product_detail->g_image_1) }}" class="w-75 " />
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1)) }}"
+                                                    alt="{{ asset($product_detail->g_image_1) }}" class="h-100 p-2 border-black" />
                                             @else
-                                            <img src="{{ $product_detail->g_image_1 }}" alt="{{ $product_detail->g_image_1 }}" class="w-75 " />
+                                                <img src="{{ $product_detail->g_image_1 }}"
+                                                    alt="{{ $product_detail->g_image_1 }}" class="h-100 p-2 border-black" />
                                             @endif
                                         </div>
                                     @endif
 
                                     @if (!empty($product_detail->g_image_2))
-                                        <div class="swiper-slide" onmouseover="hoverImage(4)" data-swiper-autoplay="1000000" style="width: 151.5px;margin-right: 10px;">
+                                        <div onmouseover="hoverImage(4)">
                                             @if (!isValidUrl($product_detail->g_image_2))
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_2)) }}" alt="{{ asset(insertAtPosition($product_detail->g_image_2)) }}" class="w-75 " />
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    alt="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    class="h-100 p-2 border-black" />
                                             @else
-                                            <img src="{{ $product_detail->g_image_2 }}" alt="{{ $product_detail->g_image_2 }}" class="w-75 " />
+                                                <img src="{{ $product_detail->g_image_2 }}"
+                                                    alt="{{ $product_detail->g_image_2 }}" class="h-100 p-2 border-black" />
                                             @endif
                                         </div>
                                     @endif
 
                                     @if (!empty($product_detail->g_image_3))
-                                        <div class="swiper-slide" onmouseover="hoverImage(5)" data-swiper-autoplay="1000000" style="width: 151.5px;margin-right: 10px;">
+                                        <div onmouseover="hoverImage(5)">
                                             @if (!isValidUrl($product_detail->g_image_3))
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_3)) }}" alt="{{ asset(insertAtPosition($product_detail->g_image_3)) }}" class="w-75 " />
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    alt="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    class="h-100 p-2 border-black" />
                                             @else
-                                            <img src="{{ $product_detail->g_image_3 }}" alt="{{ $product_detail->g_image_3 }}" class="w-75 " />
+                                                <img src="{{ $product_detail->g_image_3 }}"
+                                                    alt="{{ $product_detail->g_image_3 }}" class="h-100 p-2 border-black" />
                                             @endif
                                         </div>
                                     @endif
 
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-lg-9">
+                                <div class="slider slider-for p-2">
+                                    @if (!empty($product_detail->p_f))
+                                        <div>
+                                            <a title="click to zoom-in " href="{{ asset($product_detail->p_f) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
+                                                @if (!isValidUrl($product_detail->p_f))
+                                                    <img src="{{ asset(insertAtPosition($product_detail->p_f, 'med')) ?? '' }}"
+                                                         itemprop="thumbnail"
+                                                        alt="Image description" />
+                                                @else
+                                                    <img src="{{ $product_detail->p_f }}"
+                                                        itemprop="thumbnail" alt="Image description" />
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div>
+                                            <a title="click to zoom-in" href="{{ asset($product_detail->p_b) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
+
+                                                @if (!isValidUrl($product_detail->p_b))
+                                                    <img src="{{ asset(insertAtPosition($product_detail->p_b, 'med')) ?? '' }}"
+                                                         itemprop="thumbnail"
+                                                        alt="Image description" />
+                                                @else
+                                                    <img src="{{ $product_detail->p_b }}"
+                                                        itemprop="thumbnail" alt="Image description" />
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div>
+                                            <a title="click to zoom-in"
+                                                href="{{ asset($product_detail->g_image_1) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
+                                                @if (!isValidUrl($product_detail->g_image_1))
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}"
+                                                         itemprop="thumbnail"
+                                                        alt="Image description" />
+                                                @else
+                                                    <img src="{{ $product_detail->g_image_1 }}"
+                                                        itemprop="thumbnail" alt="Image description" />
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div>
+                                            <a title="click to zoom-in"
+                                                href="{{ asset($product_detail->g_image_2) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
+                                                @if (!isValidUrl($product_detail->g_image_2))
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}"
+                                                         itemprop="thumbnail"
+                                                        alt="Image description" />
+                                                @else
+                                                    <img src="{{ $product_detail->g_image_2 }}"
+                                                        itemprop="thumbnail" alt="Image description" />
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div>
+                                            <a title="click to zoom-in"
+                                                href="{{ asset($product_detail->g_image_3) ?? '' }}"
+                                                itemprop="contentUrl" data-size="2400x1200">
+                                                @if (!isValidUrl($product_detail->g_image_3))
+                                                    <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}"
+                                                         itemprop="thumbnail"
+                                                        alt="Image description" />
+                                                @else
+                                                    <img src="{{ $product_detail->g_image_3 }}"
+                                                        itemprop="thumbnail" alt="Image description" />
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div> --}}
+
+                         <!-- Slider main wrapper -->
+                        {{-- <div class="swiper-container-wrapper">
+                            <!-- Slider thumbnail container -->
+                            <div class="swiper-container gallery-thumbs">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper" id="swiper-wrapper-gallery-thumbs">
+                                    <!-- Slides -->
+                                    @if (!empty($product_detail->p_f))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->p_f))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_f)) }}"
+                                                    alt="{{ asset($product_detail->p_f) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->p_f }}" alt="{{ $product_detail->p_f }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->p_b))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_b)) }}"
+                                                    alt="{{ asset($product_detail->p_b) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->p_b }}" alt="{{ $product_detail->p_b }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_1))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1)) }}"
+                                                    alt="{{ asset($product_detail->g_image_1) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_1 }}" alt="{{ $product_detail->g_image_1 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_2))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    alt="{{ asset($product_detail->g_image_2) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_2 }}" alt="{{ $product_detail->g_image_2 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_3))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    alt="{{ asset($product_detail->g_image_3) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_3 }}" alt="{{ $product_detail->g_image_3 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <!-- Slider main container -->
+                            <div class="swiper-container gallery-top">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper" id="swiper-wrapper-gallery-top">
+                                    <!-- Slides -->
+                                    @if (!empty($product_detail->p_f))
+                                        <div class="swiper-slide" >
+                                            @if (!isValidUrl($product_detail->p_f))
+                                            <img src="{{ asset(insertAtPosition($product_detail->p_f, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            @else
+                                                <img src="{{ $product_detail->p_f }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->p_b))
+                                            <img src="{{ asset(insertAtPosition($product_detail->p_b, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            @else
+                                                <img src="{{ $product_detail->p_b }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_1))
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_1 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_2))
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_2 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div class="swiper-slide">
+                                            @if (!isValidUrl($product_detail->g_image_3))
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_3 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                                <!-- Add Arrows -->
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col-2 navi">
+                               <div class="carousel carousel-nav"
+                                    data-flickity='{
+                                      "asNavFor": ".carousel-main",
+                                      "draggable": false,
+                                      "percentPosition": false,
+                                      "groupCells": "100%",
+                                      "pageDots": false,
+                                      "wrapAround": true
+                                    }'>
+
+                                    @if (!empty($product_detail->p_f))
+                                        <div class="carousel-cell carousel-cell-thumb">
+                                            @if (!isValidUrl($product_detail->p_f))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_f)) }}" alt="{{ asset($product_detail->p_f) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->p_f }}" alt="{{ $product_detail->p_f }}" />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div class="carousel-cell carousel-cell-thumb">
+                                            @if (!isValidUrl($product_detail->p_b))
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_b)) }}"
+                                                    alt="{{ asset($product_detail->p_b) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->p_b }}" alt="{{ $product_detail->p_b }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div class="carousel-cell carousel-cell-thumb">
+                                            @if (!isValidUrl($product_detail->g_image_1))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1)) }}"
+                                                    alt="{{ asset($product_detail->g_image_1) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_1 }}" alt="{{ $product_detail->g_image_1 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div class="carousel-cell carousel-cell-thumb">
+                                            @if (!isValidUrl($product_detail->g_image_2))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2)) }}"
+                                                    alt="{{ asset($product_detail->g_image_2) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_2 }}" alt="{{ $product_detail->g_image_2 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div class="carousel-cell carousel-cell-thumb">
+                                            @if (!isValidUrl($product_detail->g_image_3))
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3)) }}"
+                                                    alt="{{ asset($product_detail->g_image_3) }}"  />
+                                            @else
+                                                <img src="{{ $product_detail->g_image_3 }}" alt="{{ $product_detail->g_image_3 }}"
+                                                     />
+                                            @endif
+                                        </div>
+                                    @endif
+                              </div>
+                            </div>
+                            <div class="col-10 main">
+                              <div class="carousel carousel-main"
+                                   data-flickity='{
+                                     "contain": true,
+                                     "pageDots": true,
+                                     "wrapAround": true
+                                   }'>
+
+                                    @if (!empty($product_detail->p_f))
+                                        <div class="carousel-cell" id="1">
+                                            @if (!isValidUrl($product_detail->p_f))
+                                            <a data-lg-size="400-400" data-src="{{ asset($product_detail->p_f) }}">
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_f, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @else
+                                            <a data-src="{{ $product_detail->p_f }}">
+                                                <img src="{{ $product_detail->p_f }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->p_b))
+                                        <div class="carousel-cell" id="2">
+                                            @if (!isValidUrl($product_detail->p_b))
+                                            <a data-src="{{ asset($product_detail->p_b) }}" data-lg-size="400-400">
+                                                <img src="{{ asset(insertAtPosition($product_detail->p_b, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @else
+                                            <a data-src="{{ $product_detail->p_b }}" data-lg-size="400-400">
+                                                <img src="{{ $product_detail->p_b }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_1))
+                                        <div class="carousel-cell" id="3">
+                                            @if (!isValidUrl($product_detail->g_image_1))
+                                            <a data-src="{{ asset($product_detail->g_image_1) }}" data-lg-size="400-400">
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @else
+                                            <a data-src="{{ $product_detail->g_image_1 }}">
+                                                <img src="{{ $product_detail->g_image_1 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_2))
+                                        <div class="carousel-cell" id="4">
+                                            @if (!isValidUrl($product_detail->g_image_2))
+                                            <a data-src="{{ asset($product_detail->g_image_2) }}" data-lg-size="400-400">
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @else
+                                            <a data-src="{{ $product_detail->g_image_2 }}">
+                                                <img src="{{ $product_detail->g_image_2 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($product_detail->g_image_3))
+                                        <div class="carousel-cell" id="5">
+                                            @if (!isValidUrl($product_detail->g_image_3))
+                                            <a data-src="{{ asset($product_detail->g_image_3) }}" data-lg-size="400-400">
+                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}"
+                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @else
+                                            <a data-src="{{ $product_detail->g_image_3 }}">
+                                                <img src="{{ $product_detail->g_image_3 }}" class="proSlideImg"
+                                                    itemprop="thumbnail" alt="Image description" />
+                                            </a>
+                                            @endif
+                                        </div>
+                                    @endif
+                              </div>
+                            </div>
+                          </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="proDetailRightCol">
@@ -221,31 +750,35 @@
                                 </a>
                             </div>
                             <h2 class="proTitle pt-2 pb-1 text-dark">{{ $product_detail->title }}</h2>
-                            <p class="uan_no" style="font-weight: bold">{{ $product_detail->size ?? '' }} {{ $product_detail->color_description ?? '' }}
+                            <p class="uan_no" style="font-weight: bold">{{ $product_detail->size ?? '' }}
+                                {{ $product_detail->color_description ?? '' }}
                             </p>
-                            <p class="ean_no" style="font-weight: ">Item Code: {{ $product_detail->product_uan_code ?? '' }}</p>
+                            <p class="ean_no" style="font-weight: ">Item Code:
+                                {{ $product_detail->product_uan_code ?? '' }}</p>
 
                             <div class="row gy-2">
                                 <div class="col-12">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                             <span class="productPrice">{!! currencySymbol() !!}{{ number_format(price($product_detail->price),2) }}</span> <br>
+                                            <span class="productPrice"></span> <br>
                                             @if ($product_detail->shipping_cost > 0)
-                                             <span>Shipping Cost: {!! currencySymbol() !!}{{ price($product_detail->shipping_cost) }}</span> <br>
+                                                Shipping Cost: <span id="productDetailShippingCost"></span> <br>
                                             @endif
 
                                             @if ($product_detail->transit)
-                                             <span>Delivery {{ $product_detail->transit }}</span>
+                                                <span>Delivery {{ $product_detail->transit }}</span>
                                             @endif
                                         </div>
-                                        <div class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">
+                                        <div
+                                            class="col-auto mt-2 qntyInput text-end @if ($product_detail->stock == 0) d-none @endif">
                                             <div class="product_quantity">
                                                 <div class="qtySelector row g-0">
                                                     <div class="col-auto">
                                                         <span class="qtyTrigger" onclick="decreaseValue()">-</span>
                                                     </div>
                                                     <div class="col">
-                                                        <input type="number" min="0" max="{{$product_detail->stock}}"
+                                                        <input type="number" min="0"
+                                                            max="{{ $product_detail->stock }}"
                                                             onchange="changePriceQty(this.value)" id="quantity"
                                                             class="form-control qtyValue"
                                                             value="{{ old('quantity') ?? 1 }}" />
@@ -260,11 +793,13 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="row align-items-center mt-2">
-                                        <div class="col-auto
-                                        @if ($product_detail->product_lens_width == null || $product_detail->product_bridge == null ||
-                                        $product_detail->product_arm_length == null || $product_detail->product_bridge == null || $product_detail->product_lens_height == null)
-                                        d-none
-                                        @endif
+                                        <div
+                                            class="col-auto
+                                        @if ($product_detail->product_lens_width == null ||
+                                            $product_detail->product_bridge == null ||
+                                            $product_detail->product_arm_length == null ||
+                                            $product_detail->product_bridge == null ||
+                                            $product_detail->product_lens_height == null) d-none @endif
                                         ">
                                             <span class="detailLblCol">Size</span>
                                         </div>
@@ -288,62 +823,39 @@
                                                             onclick="changePic({{ $product_detail->id }})"
                                                             class="p-2 px-1 text-center hover-product active-product ">
                                                             @if (!isValidUrl($product_detail->photo))
-                                                            <img src="{{ asset(insertAtPosition($product_detail->photo)) }}" style="width:50px;" id="pro_pic_{{ $product_detail->id }}">
+                                                                <img src="{{ asset(insertAtPosition($product_detail->photo)) }}"
+                                                                    style="width:50px;"
+                                                                    id="pro_pic_{{ $product_detail->id }}">
                                                             @else
-                                                            <img src="{{ $product_detail->photo }}" style="width:50px;" id="pro_pic_{{ $product_detail->id }}">
+                                                                <img src="{{ $product_detail->photo }}"
+                                                                    style="width:50px;"
+                                                                    id="pro_pic_{{ $product_detail->id }}">
                                                             @endif
-                                                            <small
-                                                                class="text-dark"><b>{!! currencySymbol() !!}{{ number_format(price($product_detail->price),2)}}</b></small>
+                                                            <small class="text-dark" id="productPrice2"></small>
                                                         </a>
                                                     </div>
 
-                                                    @foreach ($product_variant->where('id', '!=', $product_detail->id)->where('cat_id',$product_detail->cat_id)->flatten() as $i => $data)
+                                                    @foreach ($product_variant->where('id', '!=', $product_detail->id)->where('cat_id', $product_detail->cat_id)->flatten() as $i => $data)
                                                         {{-- @if ($i <= 4) --}}
-                                                            <div
-                                                                class="col-3">
-                                                                <a href="javascript:void(0)"
-                                                                    id="href_{{ $data->id }}"
-                                                                    @if ($product_detail->id != $data->id) onclick="changePic({{ $data->id }})" @endif
-                                                                    class="p-2 px-1 text-center hover-product @if ($product_detail->id == $data->id) active-product @endif">
-                                                                    @if (!isValidUrl($data->photo))
+                                                        <div class="col-3">
+                                                            <a href="javascript:void(0)" id="href_{{ $data->id }}"
+                                                                @if ($product_detail->id != $data->id) onclick="changePic({{ $data->id }})" @endif
+                                                                class="p-2 px-1 text-center hover-product @if ($product_detail->id == $data->id) active-product @endif">
+                                                                @if (!isValidUrl($data->photo))
                                                                     <img src="{{ asset(insertAtPosition($data->photo)) }}"
                                                                         style="width:50px;"
                                                                         id="pro_pic_{{ $data->id }}">
-
-                                                                    @else
-                                                                    <img src="{{$data->photo}}" style="width:50px;" id="pro_pic_{{ $data->id }}">
-                                                                    @endif
-                                                                    <small class="text-dark"><b>{!! currencySymbol() !!}{{ number_format(price($data->price),2)}}</b></small>
-                                                                </a>
-                                                            </div>
-                                                        {{-- @endif --}}
-                                                    @endforeach
-                                                    {{-- @foreach ($product_variant->where('id', '!=', $product_detail->id)->flatten() as $i => $data)
-                                                        @if ($i <= 4)
-                                                            <div
-                                                                class="col-5 @if ($i % 2 == 1) text-end @endif">
-                                                                <a href="javascript:void(0)"
-                                                                    id="href_{{ $data->id }}"
-                                                                    @if ($product_detail->id != $data->id) onclick="changePic({{ $data->id }})" @endif
-                                                                    class="p-2 px-1 text-center hover-product @if ($product_detail->id == $data->id) active-product @endif">
-                                                                    <img src="{{ asset($data->photo) }}"
-                                                                        style="width:50px;"
+                                                                @else
+                                                                    <img src="{{ $data->photo }}" style="width:50px;"
                                                                         id="pro_pic_{{ $data->id }}">
-                                                                    <small
-                                                                        class="text-dark"><b>${{ $data->price }}</b></small>
-                                                                </a>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach --}}
-
-                                                    {{-- @if ($i >= 4)
-                                                        <div class="col-5 text-center">
-                                                            <a href="{{ route('product-brand', [$product_variant[0]->brand_name]) }}"
-                                                                class="text-danger">
-                                                                +{{ count($product_variant) - 6 }}
+                                                                @endif
+                                                                <small
+                                                                    class="text-dark productVariantPrice{{ $data->id }}"></small>
                                                             </a>
                                                         </div>
-                                                    @endif --}}
+                                                        {{-- @endif --}}
+                                                    @endforeach
+
                                                 </div>
 
                                             </div>
@@ -400,12 +912,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-3 align-items mt-3 notifyProduct @if ($product_detail->stock != 0) d-none @endif">
+                                    <div
+                                        class="row g-3 align-items mt-3 notifyProduct @if ($product_detail->stock != 0) d-none @endif">
                                         <div class="col-12">
                                             <form action="{{ url('notify-email') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" id="notify_product_id" name="product_id"
-                                                            value="{{ $product_detail->id }}">
+                                                    value="{{ $product_detail->id }}">
                                                 <div class="class_Btn">
                                                     <input type="email" name="email" id="email"
                                                         class="form-control notfiyMail" placeholder="Email ">
@@ -439,7 +952,8 @@
                                 <div class="lense_imgs">
                                     <div class="row">
 
-                                        <div class="col-6 col-sm-2 lens_width_div @if (empty($product_detail->product_lens_width)) d-none @endif">
+                                        <div
+                                            class="col-6 col-sm-2 lens_width_div @if (empty($product_detail->product_lens_width)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/1lens_width.png') }}" alt="">
                                             <h6 class="page_speed_1600560138">LENS WIDTH<br>
                                                 <span class="lens_width ">
@@ -451,11 +965,11 @@
 
 
 
-                                        <div class="col-6 col-sm-2 product_bridge_div @if (empty($product_detail->product_bridge)) d-none @endif">
+                                        <div
+                                            class="col-6 col-sm-2 product_bridge_div @if (empty($product_detail->product_bridge)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/2width.png') }}" alt="">
                                             <h6 class="page_speed_1600560138">BRIDGE WIDTH<br>
-                                                <span
-                                                    class="product_bridge ">
+                                                <span class="product_bridge ">
                                                     {{ $product_detail->product_bridge }}
                                                 </span>
                                             </h6>
@@ -464,7 +978,8 @@
 
 
 
-                                        <div class="col-6 col-sm-2 product_arm_length_div @if (empty($product_detail->product_arm_length)) d-none @endif">
+                                        <div
+                                            class="col-6 col-sm-2 product_arm_length_div @if (empty($product_detail->product_arm_length)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/3temple_length.png') }}"
                                                 alt="">
                                             <h6 class="page_speed_1600560138">TEMPLE LENGTH<br>
@@ -475,7 +990,8 @@
 
 
 
-                                        <div class="col-6 col-sm-2 product_lens_height_div @if (empty($product_detail->product_lens_height)) d-none @endif">
+                                        <div
+                                            class="col-6 col-sm-2 product_lens_height_div @if (empty($product_detail->product_lens_height)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/4lens_height.png') }}" alt="">
                                             <h6 class="page_speed_542998610">LENS HEIGHT<br>
                                                 <span
@@ -485,7 +1001,8 @@
 
 
 
-                                        <div class="col-6 col-sm-2 product_total_width_div @if (empty($product_detail->product_total_width)) d-none @endif">
+                                        <div
+                                            class="col-6 col-sm-2 product_total_width_div @if (empty($product_detail->product_total_width)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/total_wdth.png') }}" alt="">
                                             <h6 class="page_speed_542998610 ">TOTAL WIDTH<br>
                                                 <span
@@ -504,77 +1021,14 @@
                     <div class="fg-border @if (!empty($product_detail->cat_info) && $product_detail->cat_info->size != null) proCard @endif">
                         <h4 class="detailTitle">Product Detail</h4>
                         <div class="row product_row ">
-
-
-                            {{-- <div class="col-md-12"> <!--col md 4 start -->
-                                <ul class="d-flex">
-
-
-                                  @if(!empty($product_detail['frametype']['name']))
-                                  <li id="frame_type_div" class="w-25"> <b>Frame Type :</b> <span id="frame_type">{{$product_detail['frametype']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="frame_type_div"  class="d-none"> <b>Frame Type :</b> <span id="frame_type"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail['type_name']['name']))
-                                  <li id="type_div" class="w-25"> <b>Type :</b> <span id="type">{{$product_detail['type_name']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="type_div"  class="d-none"> <b>Type :</b> <span id="type"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail['get_shape']['name']))
-                                  <li id="shape_div" class="w-25"> <b>Shape :</b> <span id="shape">{{$product_detail['get_shape']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="shape_div"  class="d-none"> <b>Shape :</b> <span id="shape"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail['get_lens']['name']))
-                                  <li id="lens_div" class="w-25"> <b>Lens Type :</b> <span id="lens">{{$product_detail['get_lens']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="lens_div"  class="d-none"> <b>Lens Type :</b> <span id="lens"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail['get_gender']['name']))
-                                  <li id="gender_div" class="w-25"> <b>Gender :</b> <span id="gender">{{$product_detail['get_gender']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="gender_div"  class="d-none"> <b>Gender :</b> <span id="gender"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail->product_ean_code))
-                                  <li id="ean_div" class="w-25"> <b>EAN Code :</b> <span id="ean">{{$product_detail->product_ean_code ?? ''}}</span> </li>
-                                  @else
-                                  <li id="ean_div"  class="d-none"> <b>EAN Code :</b> <span id="ean"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail->extra))
-                                  <li id="extra_div" class="w-25"> <b>Extra :</b> <span id="extra">{{$product_detail->extra ?? ''}}</span> </li>
-                                  @else
-                                  <li id="extra_div" class="d-none"> <b>Extra :</b> <span id="extra"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail['get_product_material']['name']))
-                                  <li id="material_div" class="w-25"> <b>Material :</b> <span id="material">{{$product_detail['get_product_material']['name'] ?? ''}}</span> </li>
-                                  @else
-                                  <li id="material_div"> class="d-none"> <b>Material :</b> <span id="material"></span></li>
-                                  @endif
-
-                                  @if(!empty($product_detail->dispatch_from))
-                                  <li id="dispatch_div" class="w-25"> <b>Dispatch From  :</b> <span id="dispatch">{{$product_detail->dispatch_from ?? ''}}</span> </li>
-                                  @else
-                                  <li id="dispatch_div"  class="d-none"> <b>Dispatch From  :</b> <span id="dispatch"></span></li>
-                                  @endif
-
-
-                                </ul>
-                            </div> --}}
-
-                            <div class="col-md-3 py-2 @if (empty($product_detail['frametype']['name'])) d-none @endif" id="frame_type_div">
+                            <div class="col-md-3 py-2 @if (empty($product_detail['frametype']['name'])) d-none @endif"
+                                id="frame_type_div">
                                 <div class="row">
                                     <div class="col-md-5 col-sm-6">
                                         <span class="detailListLbl">Frame Type :</span>
                                     </div>
                                     <div class="col-md-6 col-sm-6" id="frame_type">
-                                        <span class="text-left">{{ $product_detail['frametype']['name'] ?? ''}}</span>
+                                        <span class="text-left">{{ $product_detail['frametype']['name'] ?? '' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -585,7 +1039,7 @@
                                         <span class="detailListLbl">Type :</span>
                                     </div>
                                     <div class="col-md-6 col-sm-6" id="type">
-                                        <span class="text-left">{{ $product_detail['type_name']['name'] ?? ''}}</span>
+                                        <span class="text-left">{{ $product_detail['type_name']['name'] ?? '' }}</span>
                                     </div>
                                     <div class="col-md-3"> </div>
                                 </div>
@@ -597,7 +1051,7 @@
                                         <span class="detailListLbl">Shape :</span>
                                     </div>
                                     <div class="col-md-4" id="shape">
-                                        <span class="text-left">{{ $product_detail['get_shape']['name'] ?? ''}}</span>
+                                        <span class="text-left">{{ $product_detail['get_shape']['name'] ?? '' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -626,7 +1080,7 @@
                                         <span class="detailListLbl">Gender :</span>
                                     </div>
                                     <div class="col-md-6 col-sm-6" id="gender">
-                                        <span class="text-left">{{ $product_detail['get_gender']['name'] ?? ''}}</span>
+                                        <span class="text-left">{{ $product_detail['get_gender']['name'] ?? '' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -660,7 +1114,7 @@
                                         <span class="detailListLbl">Material :</span>
                                     </div>
                                     <div class="col-md-4 text-left" id="material">
-                                        {{ $product_detail['get_product_material']['name'] ?? ''}}
+                                        {{ $product_detail['get_product_material']['name'] ?? '' }}
                                     </div>
                                 </div>
                             </div>
@@ -694,159 +1148,288 @@
         </div>
     </section>
 
+
     @if ($product_detail->rel_prods->count() > 1)
-    <div class="product_detail pb-0">
-        <div class="container">
-            <div class="product_deatail_list">
+        <div class="product_detail pb-0">
+            <div class="container">
+                <div class="product_deatail_list">
 
-                <div class="product_deatail_list_text">
-                    <div class="lineTitleCol">
-                        <h6 class="lineTitle">Explore Our Products</h6>
+                    <div class="product_deatail_list_text">
+                        <div class="lineTitleCol">
+                            <h6 class="lineTitle">Explore Our Products</h6>
+                        </div>
+                        <h2 class="product_detail_head lgTitle darkColor">YOU MIGHT ALSO LIKE</h2>
                     </div>
-                    <h2 class="product_detail_head lgTitle darkColor">YOU MIGHT ALSO LIKE</h2>
-                </div>
-                <div class="productColMain">
-                    <div class="row g-4">
-                        {{-- start card --}}
-                        @foreach ($product_detail->rel_prods as $data)
-                            @if ($data->id !== $product_detail->id)
-                                <div class="col-md-6 py-1 col-xl-4">
-                                    <div class="cardStyle1">
+                    <div class="productColMain">
+                        <div class="row g-4">
+                            {{-- start card --}}
+                            @foreach ($product_detail->rel_prods as $data)
+                                @if ($data->id !== $product_detail->id)
+                                    <div class="col-md-6 py-1 col-xl-4">
+                                        <div class="cardStyle1">
 
-                                        <div class="productImg">
-                                            <a href="{{ route('product-detail', $data->slug) }}">
-                                                <div class="imgCol">
-                                                    @if (!isValidUrl($data->photo))
-                                                    <img src="{{ asset(insertAtPosition($data->photo,'med')) }}"
-                                                        id="men_sunglass_pro_img_{{ $data->id }}" class=""
-                                                        alt="{{ asset(insertAtPosition($data->photo)) }}">
-                                                    @else
-                                                    <img src="{{ $data->photo }}"
-                                                    id="men_sunglass_pro_img_{{ $data->id }}" class=""
-                                                    alt="{{ $data->photo }}">
-                                                    @endif
-                                                </div>
-                                            </a>
+                                            <div class="productImg">
+                                                <a href="{{ route('product-detail', $data->slug) }}">
+                                                    <div class="imgCol">
+                                                        @if (!isValidUrl($data->photo))
+                                                            <img src="{{ asset(insertAtPosition($data->photo, 'med')) }}"
+                                                                id="men_sunglass_pro_img_{{ $data->id }}"
+                                                                class=""
+                                                                alt="{{ asset(insertAtPosition($data->photo)) }}">
+                                                        @else
+                                                            <img src="{{ $data->photo }}"
+                                                                id="men_sunglass_pro_img_{{ $data->id }}"
+                                                                class="" alt="{{ $data->photo }}">
+                                                        @endif
+                                                    </div>
+                                                </a>
 
-                                            <div class="color_builts">
+                                                <div class="color_builts">
 
-                                                <ul>
-                                                    @php $like = \DB::table('products')->where('cat_id', $data->cat_id)->get();  @endphp
+                                                    <ul>
+                                                        @php
+                                                            $like = \DB::table('products')
+                                                                ->where('cat_id', $data->cat_id)
+                                                                ->get();
+                                                        @endphp
 
-                                                    @if ($active = $like->where('id', $data->id)->first())
-                                                        <li>
-                                                            <a href="javascript:void(0)"
-                                                                onclick="changeProDetail({{ $active->id }},'men_sunglass_',{{ $data->id }})"
-                                                                onmouseover="changeProDetail({{ $active->id }},'men_sunglass_',{{ $data->id }})">
-                                                                @if (!isValidUrl($active->photo))
-                                                                <img src="{{ asset(insertAtPosition($active->photo)) }}" alt=""
-                                                                    class="p-2 hover-product active-product last-product last-product-{{ $data->id }}"
-                                                                    id="href_men_sunglass_{{ $data->id }}_{{ $active->id }}">
-                                                                @else
-                                                                <img src="{{ $active->photo }}" alt=""
-                                                                    class="p-2 hover-product active-product last-product last-product-{{ $data->id }}"
-                                                                    id="href_men_sunglass_{{ $data->id }}_{{ $active->id }}">
-                                                                @endif
-                                                            </a>
-                                                        </li>
-                                                    @endif
-
-                                                    @foreach ($like->where('id', '!=', $data->id)->flatten() as $i => $variant)
-                                                        @if ($i <= 2)
+                                                        @if ($active = $like->where('id', $data->id)->first())
                                                             <li>
                                                                 <a href="javascript:void(0)"
-                                                                    onclick="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $data->id }})"
-                                                                    onmouseover="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $data->id }})">
-                                                                    @if (!isValidUrl($variant->photo))
-                                                                    <img src="{{ asset(insertAtPosition($variant->photo)) }}"
-                                                                        class="p-2 hover-product last-product-{{ $data->id }}"
-                                                                        id="href_men_sunglass_{{ $data->id }}_{{ $variant->id }}">
+                                                                    onclick="changeProDetail({{ $active->id }},'men_sunglass_',{{ $data->id }})"
+                                                                    onmouseover="changeProDetail({{ $active->id }},'men_sunglass_',{{ $data->id }})">
+                                                                    @if (!isValidUrl($active->photo))
+                                                                        <img src="{{ asset(insertAtPosition($active->photo)) }}"
+                                                                            alt=""
+                                                                            class="p-2 hover-product active-product last-product last-product-{{ $data->id }}"
+                                                                            id="href_men_sunglass_{{ $data->id }}_{{ $active->id }}">
                                                                     @else
-                                                                    <img src="{{ $variant->photo }}"
-                                                                        class="p-2 hover-product last-product-{{ $data->id }}"
-                                                                        id="href_men_sunglass_{{ $data->id }}_{{ $variant->id }}">
+                                                                        <img src="{{ $active->photo }}" alt=""
+                                                                            class="p-2 hover-product active-product last-product last-product-{{ $data->id }}"
+                                                                            id="href_men_sunglass_{{ $data->id }}_{{ $active->id }}">
                                                                     @endif
                                                                 </a>
                                                             </li>
                                                         @endif
-                                                    @endforeach
 
-                                                    @if ($i > 2)
-                                                        @if((count($like) - 4 ) != 0)
-                                                            <li>
-                                                                <a href="{{ route('product-detail', [$data->slug]) }}"
-                                                                    class="text-danger m-2">
-                                                                    +{{ count($like) - 4 }}
-                                                                </a>
-                                                            </li>
+                                                        @foreach ($like->where('id', '!=', $data->id)->flatten() as $i => $variant)
+                                                            @if ($i <= 2)
+                                                                <li>
+                                                                    <a href="javascript:void(0)"
+                                                                        onclick="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $data->id }})"
+                                                                        onmouseover="changeProDetail({{ $variant->id }},'men_sunglass_',{{ $data->id }})">
+                                                                        @if (!isValidUrl($variant->photo))
+                                                                            <img src="{{ asset(insertAtPosition($variant->photo)) }}"
+                                                                                class="p-2 hover-product last-product-{{ $data->id }}"
+                                                                                id="href_men_sunglass_{{ $data->id }}_{{ $variant->id }}">
+                                                                        @else
+                                                                            <img src="{{ $variant->photo }}"
+                                                                                class="p-2 hover-product last-product-{{ $data->id }}"
+                                                                                id="href_men_sunglass_{{ $data->id }}_{{ $variant->id }}">
+                                                                        @endif
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+
+                                                        @if ($i > 2)
+                                                            @if (count($like) - 4 != 0)
+                                                                <li>
+                                                                    <a href="{{ route('product-detail', [$data->slug]) }}"
+                                                                        class="text-danger m-2">
+                                                                        +{{ count($like) - 4 }}
+                                                                    </a>
+                                                                </li>
+                                                            @endif
                                                         @endif
-                                                    @endif
-                                                </ul>
+                                                    </ul>
 
-                                            </div>
-                                        </div>
-                                        <div class="contentCol pt-5">
-                                            <h4 class="brandCol" id="men_sunglass_brand_name_{{ $data->id }}">
-                                                {{ $data->brand->title }} </h4>
-                                            <a href="{{ route('product-detail', $data->slug) }}" target="_blank"     class="text-dark">
-
-                                                <p id="men_sunglass_pro_model_{{ $data->id }}">
-                                                    {{ $data->title }} </p>
-                                            </a>
-                                            <span class="priceCol"
-                                                id="men_sunglass_pro_price_{{ $data->id }}">{!! currencySymbol() !!}{{ number_format(price($data->price),2) }}
-                                            </span>
-                                            <div class="row gx-2">
-                                                <div class="col-6">
-                                                    <a href="{{ route('add-to-cart', $data->slug) }}"
-                                                        class="btn btn-dark w-100 addCartBtn btn_explore">ADD TO CART</a>
                                                 </div>
-                                                <div class="col-6">
-                                                    <a href="{{ route('add-to-wishlist', $data->slug) }}"
-                                                        class="btn btn-outline-dark w-100 px-1 btn_explore">ADD TO
-                                                        WISHLIST</a>
+                                            </div>
+                                            <div class="contentCol pt-5">
+                                                <h4 class="brandCol" id="men_sunglass_brand_name_{{ $data->id }}">
+                                                    {{ $data->brand->title }} </h4>
+                                                <a href="{{ route('product-detail', $data->slug) }}" target="_blank"
+                                                    class="text-dark">
+
+                                                    <p id="men_sunglass_pro_model_{{ $data->id }}">
+                                                        {{ $data->title }} </p>
+                                                </a>
+                                                <span class="priceCol" id="men_sunglass_pro_price_{{ $data->id }}">
+                                                </span>
+                                                <div class="row gx-2">
+                                                    <div class="col-6">
+                                                        <a href="{{ route('add-to-cart', $data->slug) }}"
+                                                            class="btn btn-dark w-100 addCartBtn btn_explore">ADD TO
+                                                            CART</a>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <a href="{{ route('add-to-wishlist', $data->slug) }}"
+                                                            class="btn btn-outline-dark w-100 px-1 btn_explore">ADD TO
+                                                            WISHLIST</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endif
-                        @endforeach
-                        {{-- end card --}}
+                                @endif
+                            @endforeach
+                            {{-- end card --}}
 
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
-
-
-
-
 
 @endsection
 
 @push('scripts')
     <style>
-        .my-gallery .swiper-slide-active .append_slider_imgs {
-            padding: 60px !important
+        .carousel-cell {
+            background: rgb(255, 255, 255);
+            counter-increment: carousel-cell;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* cell number */
         }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+        .carousel-cell:before {
+            content: counter(carousel-cell);
         }
+        .carousel-main .carousel-cell {
+            width: 100%;
+            height: 360px;
+            font-size: 5rem;
+        }
+        .carousel-nav {
+            width: 300px;
+            transform: rotate(90deg) translate(30px, -100%);
+            transform-origin: left top;
+        }
+        @media screen and (max-width: 1200px) {
+            .carousel-nav {
+                transform: rotate(90deg) translate(30px, -50%);
+            }
+        }
+        .carousel-nav .carousel-cell {
+            transform: rotate(-90deg);
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            margin-right: 1rem;
+            font-size: 1.4rem;
+            /* selected cell */
+        }
+        .carousel-cell-thumb img{
+            transform: rotate(270deg) translate(0px, -10%);
+        }
+        .carousel-nav .carousel-cell:before {
+            transform: rotate(-90deg);
+        }
+        .carousel-nav .carousel-cell{
+            border: 1px solid rgb(189, 189, 189);
+        }
+        .carousel-nav .carousel-cell.is-nav-selected {
+            border: 1px solid rgb(250, 120, 45);
+        }
+        .carousel-nav .flickity-prev-next-button {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+        }
+        .carousel-nav .flickity-prev-next-button.previous {
+            left: -40px;
+        }
+        .carousel-nav .flickity-prev-next-button.next {
+            right: -40px;
+        }
+        .proSlideImg{
+            transform: translate(30px)
+        }
+
+
+        .lg-img-wrap .lg-object{
+            width: 800px !important;
+        }
+
     </style>
+
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
 
     <script>
         var product = @json($product_variant)
 
         var stock = {{ $product_detail->stock }}
         var current_prod_id = "{{ $product_detail->id }}";
+
+        allproducts = [@json($product_detail)]
+
+        allproductVariants = @json($product_variant)
+
+        productDetailShippCost = {{ $product_detail->shipping_cost }}
+
+
+        var galleryThumbs = new Swiper(".gallery-thumbs", {
+            centeredSlides: true,
+            centeredSlidesBounds: true,
+            direction: "horizontal",
+            spaceBetween: 10,
+            slidesPerView: 5,
+            freeMode: false,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            watchOverflow: true,
+            loop: false,
+            breakpoints: {
+                480: {
+                    direction: "vertical",
+                    slidesPerView: 5
+                }
+            }
+        });
+        var galleryTop = new Swiper(".gallery-top", {
+            direction: "horizontal",
+            spaceBetween: 10,
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev"
+            },
+            a11y: {
+                prevSlideMessage: "Previous slide",
+                nextSlideMessage: "Next slide",
+            },
+            keyboard: {
+                enabled: true,
+            },
+            thumbs: {
+                swiper: galleryThumbs
+            }
+        });
+        galleryTop.on("slideChangeTransitionStart", function() {
+            galleryThumbs.slideTo(galleryTop.activeIndex);
+        });
+        galleryThumbs.on("transitionStart", function() {
+            galleryTop.slideTo(galleryThumbs.activeIndex);
+        });
+
+
+        for (var i = 1; i < 5; i++) {
+           lightGallery(document.getElementById(i),{
+            download: false,
+           })
+        }
+
+
 
         function changePic(id) {
 
@@ -865,12 +1448,12 @@
             if (data != null) {
 
                 stock = data.stock
-                if(data.stock != 0){
+                if (data.stock != 0) {
                     var exist_qty = $("#quantity").val();
                     if (exist_qty == 1) {
-                        $(".productPrice").text(symbol + price(data.price).toFixed(2))
+                        $(".productPrice").html('<b>' + price(data) + '</b>')
                     }
-                    $("#current_product_price").val(price(data.price).toFixed(2))
+                    $("#current_product_price").val(Number(price(data).replace(/[^0-9.-]+/g, "")))
                     changePriceQty(exist_qty)
                 }
 
@@ -881,14 +1464,14 @@
                 //Product Top
                 $(".brand").text(data.brand_name)
                 $(".proTitle").text(data.title)
-                $(".uan_no").text(data.size+' '+data.color_description)
-                $(".ean_no").text(data.product_uan_code != null ? 'Item Code: '+data.product_uan_code : '')
+                $(".uan_no").text(data.size + ' ' + data.color_description)
+                $(".ean_no").text(data.product_uan_code != null ? 'Item Code: ' + data.product_uan_code : '')
 
-                if(data.stock == 0 ){
+                if (data.stock == 0) {
                     $('.qntyInput').addClass('d-none')
                     $('.addToCart').addClass('d-none')
                     $('.notifyProduct').removeClass('d-none')
-                }else{
+                } else {
                     $('.qntyInput').removeClass('d-none')
                     $('.addToCart').removeClass('d-none')
                     $('.notifyProduct').addClass('d-none')
@@ -901,50 +1484,50 @@
 
                     $(".dtlTextCol").text(size)
 
-                    // frame_fragment_div
+                // frame_fragment_div
                 //Frame Fragment
 
 
-                if(data.frame_fragment != null){
+                if (data.frame_fragment != null) {
                     $(".frame_fragment_div").removeClass('d-none');
                     $(".fg-border").addClass('proCard');
 
-                    if(data.frame_fragment.width != null){
+                    if (data.frame_fragment.width != null) {
                         $(".product_lens_width_div").removeClass('d-none')
                         $(".product_lens_width").text(data.frame_fragment.width)
-                    }else{
+                    } else {
                         $(".product_lens_width_div").addClass('d-none')
                     }
 
-                    if(data.frame_fragment.bridge != null){
+                    if (data.frame_fragment.bridge != null) {
                         $(".product_bridge_div").removeClass('d-none')
                         $(".product_bridge").text(data.frame_fragment.bridge)
-                    }else{
+                    } else {
                         $(".product_bridge_div").addClass('d-none')
                     }
 
-                    if(data.frame_fragment.arm_length != null){
+                    if (data.frame_fragment.arm_length != null) {
                         $(".product_arm_length_div").removeClass('d-none')
                         $(".product_arm_length").text(data.frame_fragment.arm_length)
-                    }else{
+                    } else {
                         $(".product_arm_length_div").addClass('d-none')
                     }
 
-                    if(data.frame_fragment.lens_height != null){
+                    if (data.frame_fragment.lens_height != null) {
                         $(".product_lens_height_div").removeClass('d-none')
                         $(".product_lens_height").text(data.frame_fragment.lens_height)
-                    }else{
+                    } else {
                         $(".product_lens_height_div").addClass('d-none')
                     }
 
-                    if(data.frame_fragment.total_width != null){
+                    if (data.frame_fragment.total_width != null) {
                         $(".product_total_width_div").removeClass('d-none')
                         $(".product_total_width").text(data.frame_fragment.total_width)
-                    }else{
+                    } else {
                         $(".product_total_width_div").addClass('d-none')
                     }
 
-                }else{
+                } else {
                     $(".frame_fragment_div").addClass('d-none');
                     $(".fg-border").removeClass('proCard');
                 }
@@ -1036,40 +1619,132 @@
                 // $(".my-gallery").html('')
                 $(".swiper-wrapper").html('')
                 var imgs = data.all_imgs;
-                var gallery = ``,
-                    swiper = ``;
+                var gallery_thumb = ``;
+                var gallery_top = ``;
+                var imgLength = 0;
+
                 for (var i = 0; i < imgs.length; i++) {
                     if (imgs[i] != null) {
+                        imgLength++
+                        if (!isValidURL(imgs[i])) {
 
-                        if(!isValidURL(imgs[i])){
-                            gallery += `<li id="` + (i + 1) + `" class="swiper-slide" data-swiper-autoplay="1000000"  itemprop="associatedMedia" itemscope
-                                itemtype="http://schema.org/ImageObject" style="width: 636px; margin-right: 10px;">
-                                <a id="first" title="click to zoom-in" href="{{ asset('') }}/` + imgs[i] + `"
-                                    itemprop="contentUrl" data-size="2400x1200">
-                                    <img src="{{ asset('') }}/` + insertAtPosition(imgs[i],'med') + `" class="proSlideImg">
-                                </a>
-                            </li>`
-                            swiper += `<div class="swiper-slide" data-swiper-autoplay="1000000" style="width: 166.5px; margin-right: 10px;">
-                                <img src="{{ asset('') }}/` + insertAtPosition(imgs[i]) + `"  alt="{{ asset('') }}/` + imgs[i] + `" class="append_slider_imgs w-75  " />
-                            </div>`
-                        }else{
-                            gallery += `<li id="` + (i + 1) + `" class="swiper-slide" data-swiper-autoplay="1000000"  itemprop="associatedMedia" itemscope
-                                itemtype="http://schema.org/ImageObject" style="width: 636px; margin-right: 10px;">
-                                <a id="first" title="click to zoom-in" href="` + imgs[i] + `"
-                                    itemprop="contentUrl" data-size="2400x1200">
-                                    <img src="`+ imgs[i] + `" class="proSlideImg">
-                                </a>
-                            </li>`
-                            swiper += `<div class="swiper-slide" data-swiper-autoplay="1000000" style="width: 166.5px; margin-right: 10px;">
-                                <img src="` +imgs[i] + `"  alt="` + imgs[i] + `" class="append_slider_imgs w-75  " />
-                            </div>`
+                            gallery_thumb += `<div class="carousel-cell carousel-cell-thumb">
+                                                <img src="${insertAtPosition(imgs[i])}" alt="${insertAtPosition(imgs[i])}" >
+                                            </div>`
+
+                            gallery_top += `<div class="carousel-cell" id="dynamic_${i+1}">
+                                                <a data-src="${root+imgs[i]}">
+                                                    <img src="${root+insertAtPosition(imgs[i],'med')}" alt="${insertAtPosition(imgs[i])}" class="proSlideImg">
+                                                </a>
+                                            </div>`
+
+                        } else {
+
+                            gallery_thumb += `<div class="carousel-cell carousel-cell-thumb">
+                                                <img src="${imgs[i]}" alt="${imgs[i]}">
+                                            </div>`
+                            gallery_top += `<div class="carousel-cell" id="${i+1}">
+                                                <a data-src="${imgs[i]}">
+                                                    <img src="${imgs[i]}" alt="${imgs[i]}">
+                                                </a>
+                                            </div>`
                         }
                     }
 
+
                 }
 
-                $(".swiper-wrapper").html(swiper)
-                $(".my-gallery").html(gallery)
+
+
+                $html = `<div class='carousel carousel-nav'>
+                            ${gallery_thumb}
+                        </div>`
+                $('.carousel-nav').flickity();
+                $('.carousel-nav').flickity('destroy');
+                $(".navi").html($html);
+                $('.carousel-nav').flickity({
+                    asNavFor: ".carousel-main",
+                    draggable: false,
+                    percentPosition: false,
+                    groupCells: "100%",
+                    pageDots: false,
+                    wrapAround: true,
+                    imagesLoaded: true,
+                    verticalCells: true
+                });
+
+                $html = `<div class='carousel carousel-main'>
+                            ${gallery_top}
+                        </div>`
+                $('.carousel-main').flickity();
+                $('.carousel-main').flickity('destroy');
+                $(".main").html($html);
+                $('.carousel-main').flickity({
+                    contain: true,
+                    pageDots: true,
+                    wrapAround: true
+                });
+
+                if(imgLength == 1){
+                    $('.flickity-slider').css('transform','translateX(0px) !important');
+                }
+                for (var i = 1; i < 5; i++) {
+                    lightGallery(document.getElementById("dynamic_"+i),{
+                        download: false,
+                    })
+                }
+
+                // $(".swiper-container-wrapper").html('')
+                // $(".swiper-container-wrapper").html($html)
+                // galleryThumbs.update();
+                // galleryTop.init();
+                // console.log(gallery_thumb)
+
+                // var galleryThumbsAfter = new Swiper(".gallery-thumbs-after", {
+                //     centeredSlides: true,
+                //     centeredSlidesBounds: true,
+                //     direction: "horizontal",
+                //     spaceBetween: 10,
+                //     slidesPerView: 5,
+                //     freeMode: false,
+                //     watchSlidesVisibility: true,
+                //     watchSlidesProgress: true,
+                //     watchOverflow: true,
+                //     loop: false,
+                //     breakpoints: {
+                //         480: {
+                //             direction: "vertical",
+                //             slidesPerView: 5
+                //         }
+                //     }
+                // });
+                // var galleryTopAfter = new Swiper(".gallery-top-after", {
+                //     direction: "horizontal",
+                //     spaceBetween: 10,
+                //     loop: true,
+                //     navigation: {
+                //         nextEl: ".swiper-button-next",
+                //         prevEl: ".swiper-button-prev"
+                //     },
+                //     a11y: {
+                //         prevSlideMessage: "Previous slide",
+                //         nextSlideMessage: "Next slide",
+                //     },
+                //     keyboard: {
+                //         enabled: true,
+                //     },
+                //     thumbs: {
+                //         swiper: galleryThumbs
+                //     }
+                // });
+                // galleryTopAfter.on("slideChangeTransitionStart", function() {
+                //     galleryThumbsAfter.slideTo(galleryTopAfter.activeIndex);
+                // });
+                // galleryThumbsAfter.on("transitionStart", function() {
+                //     galleryTopAfter.slideTo(galleryThumbsAfter.activeIndex);
+                // });
+
+
             }
 
         }
@@ -1084,24 +1759,24 @@
                 if (data.id != id) {
                     $("#href_" + type + parent_id + "_" + current_prod_id).removeClass('active-product')
                 }
-                if(!isValidURL(data.photo)){
-                    $("#" + type + "pro_img_" + parent_id).attr('src', root + insertAtPosition(data.photo,'med'))
-                }else{
+                if (!isValidURL(data.photo)) {
+                    $("#" + type + "pro_img_" + parent_id).attr('src', root + insertAtPosition(data.photo, 'med'))
+                } else {
                     $("#" + type + "pro_img_" + parent_id).attr('src', data.photo)
                 }
                 $("#" + type + "brand_name_" + parent_id).html(data.brand_name)
                 $("#" + type + "pro_model_" + parent_id).html(
                     "<a class='text-dark link-primary' href='{{ url('product-detail') }}/" + data.slug + "'>" + data
                     .title + "</a>")
-                $("#" + type + "pro_price_" + parent_id).html(symbol + price(data.price).toFixed(2))
+                $("#" + type + "pro_price_" + parent_id).html(price(data))
                 $("#" + type + "pro_discount_" + parent_id).html("%" + data.discount)
             }
 
         }
 
-        function hoverImage(id){
+        function hoverImage(id) {
             $(".swiper-slide").removeClass('swiper-slide-active')
-            $("#"+id).addClass('swiper-slide-active')
+            $("#" + id).addClass('swiper-slide-active')
         }
 
         function changeActive(data, id, type, parent_id) {
@@ -1129,8 +1804,8 @@
                 $("#addToCart").attr('onsubmit', '')
             }
 
-            $(".productPrice").text(symbol + total_price)
-            $("#product_price").val(total_price)
+            $(".productPrice").html('<b>' + symbol + ' ' + total_price.toFixed(2) + '</b>')
+            $("#product_price").val(total_price.toFixed(2))
             $("#product_qty").val(qty)
         }
 
@@ -1178,8 +1853,8 @@
             document.getElementById('quantity').value = value;
         }
 
-        $("#quantity").on('keyup', function(){
-            if($(this).val() > stock){
+        $("#quantity").on('keyup', function() {
+            if ($(this).val() > stock) {
                 swal({
                     title: "Oops!",
                     text: "Product Stock not available",
@@ -1190,5 +1865,8 @@
                 return false
             }
         })
+
+
+
     </script>
 @endpush

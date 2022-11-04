@@ -25,6 +25,7 @@
         "spatie/laravel-newsletter": "^4.11",
         "srmklive/paypal": "~1.0",
         "stevebauman/location": "^6.5",
+        "stripe/stripe-php": "^9.8",
         "torann/currency": "^1.1",
         "torann/geoip": "^3.0",
         "unisharp/laravel-filemanager": "^2.5.1"

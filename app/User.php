@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Country;
+use App\Models\State;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,6 +12,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $appends = ['fullname'];
     /**
      * The attributes that are mass assignable.
      *
@@ -36,6 +39,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return  $this->first_name.' '.$this->last_name;
+    }
 
     public function orders(){
         return $this->hasMany('App\Models\Order');

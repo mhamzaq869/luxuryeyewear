@@ -28,6 +28,10 @@ class Brand extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function banner(){
+        return $this->hasMany(Banner::class);
+    }
+
     public function products(){
 
         return $this->hasMany('App\Models\Product','brand_id','id')->where('status','active');
