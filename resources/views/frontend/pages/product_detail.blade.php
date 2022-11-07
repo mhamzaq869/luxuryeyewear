@@ -656,16 +656,16 @@
                                      "contain": true,
                                      "pageDots": true,
                                      "wrapAround": true
-                                   }'>
+                                   }' id="carouselMain">
 
                                     @if (!empty($product_detail->p_f))
                                         <div class="carousel-cell" id="1">
                                             @if (!isValidUrl($product_detail->p_f))
-                                            <a data-lg-size="400-400" data-src="{{ asset($product_detail->p_f) }}">
+                                            <a class="carousel-href" data-lg-size="400-400" data-src="{{ asset($product_detail->p_f) }}">
                                                 <img src="{{ asset(insertAtPosition($product_detail->p_f, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @else
-                                            <a data-src="{{ $product_detail->p_f }}">
+                                            <a class="carousel-href" data-src="{{ $product_detail->p_f }}">
                                                 <img src="{{ $product_detail->p_f }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @endif
@@ -675,11 +675,11 @@
                                     @if (!empty($product_detail->p_b))
                                         <div class="carousel-cell" id="2">
                                             @if (!isValidUrl($product_detail->p_b))
-                                            <a data-src="{{ asset($product_detail->p_b) }}" data-lg-size="400-400">
+                                            <a class="carousel-href" data-src="{{ asset($product_detail->p_b) }}" data-lg-size="400-400">
                                                 <img src="{{ asset(insertAtPosition($product_detail->p_b, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @else
-                                            <a data-src="{{ $product_detail->p_b }}" data-lg-size="400-400">
+                                            <a class="carousel-href" data-src="{{ $product_detail->p_b }}" data-lg-size="400-400">
                                                 <img src="{{ $product_detail->p_b }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @endif
@@ -689,14 +689,12 @@
                                     @if (!empty($product_detail->g_image_1))
                                         <div class="carousel-cell" id="3">
                                             @if (!isValidUrl($product_detail->g_image_1))
-                                            <a data-src="{{ asset($product_detail->g_image_1) }}" data-lg-size="400-400">
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}"
-                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ asset($product_detail->g_image_1) }}" data-lg-size="400-400">
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_1, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @else
-                                            <a data-src="{{ $product_detail->g_image_1 }}">
-                                                <img src="{{ $product_detail->g_image_1 }}" class="proSlideImg"
-                                                    itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ $product_detail->g_image_1 }}">
+                                                <img src="{{ $product_detail->g_image_1 }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @endif
                                         </div>
@@ -705,14 +703,12 @@
                                     @if (!empty($product_detail->g_image_2))
                                         <div class="carousel-cell" id="4">
                                             @if (!isValidUrl($product_detail->g_image_2))
-                                            <a data-src="{{ asset($product_detail->g_image_2) }}" data-lg-size="400-400">
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}"
-                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ asset($product_detail->g_image_2) }}" data-lg-size="400-400">
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_2, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @else
-                                            <a data-src="{{ $product_detail->g_image_2 }}">
-                                                <img src="{{ $product_detail->g_image_2 }}" class="proSlideImg"
-                                                    itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ $product_detail->g_image_2 }}">
+                                                <img src="{{ $product_detail->g_image_2 }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @endif
                                         </div>
@@ -721,14 +717,12 @@
                                     @if (!empty($product_detail->g_image_3))
                                         <div class="carousel-cell" id="5">
                                             @if (!isValidUrl($product_detail->g_image_3))
-                                            <a data-src="{{ asset($product_detail->g_image_3) }}" data-lg-size="400-400">
-                                            <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}"
-                                                class="proSlideImg" itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ asset($product_detail->g_image_3) }}" data-lg-size="400-400">
+                                                <img src="{{ asset(insertAtPosition($product_detail->g_image_3, 'med')) ?? '' }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @else
-                                            <a data-src="{{ $product_detail->g_image_3 }}">
-                                                <img src="{{ $product_detail->g_image_3 }}" class="proSlideImg"
-                                                    itemprop="thumbnail" alt="Image description" />
+                                            <a class="carousel-href" data-src="{{ $product_detail->g_image_3 }}">
+                                                <img src="{{ $product_detail->g_image_3 }}" class="proSlideImg" itemprop="thumbnail" alt="Image description" />
                                             </a>
                                             @endif
                                         </div>
@@ -1350,12 +1344,22 @@
         .proSlideImg{
             transform: translate(30px)
         }
-
-
         .lg-img-wrap .lg-object{
             width: 800px !important;
         }
 
+        .lg-backdrop{
+            background-color:#ffffffd9;
+        }
+        .lg-toolbar{
+            background: transparent;
+        }
+        .lg-toolbar .lg-icon:hover{
+            color: black
+        }
+        .lg-actions .lg-next:hover, .lg-actions .lg-prev:hover{
+            color: black
+        }
     </style>
 
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
@@ -1378,57 +1382,16 @@
         productDetailShippCost = {{ $product_detail->shipping_cost }}
 
 
-        var galleryThumbs = new Swiper(".gallery-thumbs", {
-            centeredSlides: true,
-            centeredSlidesBounds: true,
-            direction: "horizontal",
-            spaceBetween: 10,
-            slidesPerView: 5,
-            freeMode: false,
-            watchSlidesVisibility: true,
-            watchSlidesProgress: true,
-            watchOverflow: true,
-            loop: false,
-            breakpoints: {
-                480: {
-                    direction: "vertical",
-                    slidesPerView: 5
-                }
-            }
-        });
-        var galleryTop = new Swiper(".gallery-top", {
-            direction: "horizontal",
-            spaceBetween: 10,
-            loop: true,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev"
-            },
-            a11y: {
-                prevSlideMessage: "Previous slide",
-                nextSlideMessage: "Next slide",
-            },
-            keyboard: {
-                enabled: true,
-            },
-            thumbs: {
-                swiper: galleryThumbs
-            }
-        });
-        galleryTop.on("slideChangeTransitionStart", function() {
-            galleryThumbs.slideTo(galleryTop.activeIndex);
-        });
-        galleryThumbs.on("transitionStart", function() {
-            galleryTop.slideTo(galleryThumbs.activeIndex);
-        });
+        lightGallery(document.getElementById("carouselMain"),{
+             download: false,
+             actualSize:false,
+             selector: '.carousel-href'
+        })
 
-
-        for (var i = 1; i < 5; i++) {
-           lightGallery(document.getElementById(i),{
-            download: false,
-           })
-        }
-
+        // $(window).scroll(function(e) {
+        //      $(".lg-backdrop").css('display','none')
+        //      $(".lg-outer").css('display','none')
+        // });
 
 
         function changePic(id) {
@@ -1633,7 +1596,7 @@
                                             </div>`
 
                             gallery_top += `<div class="carousel-cell" id="dynamic_${i+1}">
-                                                <a data-src="${root+imgs[i]}">
+                                                <a class="carousel-href" data-src="${root+imgs[i]}">
                                                     <img src="${root+insertAtPosition(imgs[i],'med')}" alt="${insertAtPosition(imgs[i])}" class="proSlideImg">
                                                 </a>
                                             </div>`
@@ -1644,7 +1607,7 @@
                                                 <img src="${imgs[i]}" alt="${imgs[i]}">
                                             </div>`
                             gallery_top += `<div class="carousel-cell" id="${i+1}">
-                                                <a data-src="${imgs[i]}">
+                                                <a class="carousel-href" data-src="${imgs[i]}">
                                                     <img src="${imgs[i]}" alt="${imgs[i]}">
                                                 </a>
                                             </div>`
@@ -1673,7 +1636,7 @@
                     verticalCells: true
                 });
 
-                $html = `<div class='carousel carousel-main'>
+                $html = `<div class='carousel carousel-main' id="carouselMain">
                             ${gallery_top}
                         </div>`
                 $('.carousel-main').flickity();
@@ -1688,11 +1651,12 @@
                 if(imgLength == 1){
                     $('.flickity-slider').css('transform','translateX(0px) !important');
                 }
-                for (var i = 1; i < 5; i++) {
-                    lightGallery(document.getElementById("dynamic_"+i),{
-                        download: false,
-                    })
-                }
+
+                lightGallery(document.getElementById("carouselMain"),{
+                    download: false,
+                    actualSize:false,
+                    selector: '.carousel-href'
+                })
 
                 // $(".swiper-container-wrapper").html('')
                 // $(".swiper-container-wrapper").html($html)
