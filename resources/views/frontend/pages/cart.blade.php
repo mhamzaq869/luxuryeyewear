@@ -161,6 +161,11 @@
                                                         <div class="col">
                                                             <input class="form-control" name="code"
                                                                 placeholder="Enter Your Coupon" type="text">
+                                                                @if (session()->has('error'))
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ session()->get('error')}}</strong>
+                                                                </span>
+                                                                @endif
                                                         </div>
                                                         <div class="col-auto mt-2">
                                                             <button type="submit" class="btn btn-dark h-100">Apply
