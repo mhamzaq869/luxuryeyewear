@@ -44,7 +44,7 @@ class CartController extends Controller
                 $countryCode = $location->countryCode;
                 $shipping = DB::table('shippings')->whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
 
-                if($shipping != null && $shipping->count() > 0){
+                if($shipping != null){
                     if(in_array($countryCode,explode(',',$cart->dispatch_from))){
                         $carts->shipping_id = $shipping->id;
                         $carts->shipping_cost = $shipping->price ?? 0;
