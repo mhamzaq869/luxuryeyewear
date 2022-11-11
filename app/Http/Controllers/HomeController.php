@@ -138,6 +138,20 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Order Successfully Completed.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function orderCompleted()
+    {
+        if(session()->get('order_number')){
+            $order_number = session()->get('order_number') ?? '';
+            return view('user.order.order_completed',get_defined_vars());
+        }else{
+            return redirect()->route('user.order.index');
+        }
+    }
     public function orderShow($id)
     {
         $order=Order::with(['cart_info.product'])->where('id',$id)->first();

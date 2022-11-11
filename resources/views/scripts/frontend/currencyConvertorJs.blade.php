@@ -93,9 +93,13 @@
 
                 } else if (current_url.includes('user/order') || current_url.includes('user/order/show')) {
                     $.each(allproducts, function(index, value) {
-                        $("#user_order_price_" + value.id).html(priceOnly(value.total_amount))
+                        $("#user_order_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+                        $("#user_order_shipping_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.shipping != null ? value.shipping : 0 * value.conversion_rate))
+                        $("#user_order_total_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+                        $.each(value.cart_info, function(i, val) {
+                            $("#user_order_cart_price_"+val.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(val.price * value.conversion_rate))
+                        });
                     });
-
                 } else {
                     $.each(allproducts, function(index, value) {
                         $("#" + type + value.id).html(price(value))

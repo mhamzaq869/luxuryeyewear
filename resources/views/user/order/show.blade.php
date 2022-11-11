@@ -15,8 +15,8 @@
             <th>Order No.</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Quantity</th>
-            <th>Charge</th>
+            {{-- <th>Quantity</th>
+            <th>Charge</th> --}}
             <th>Total Amount</th>
             <th>Status</th>
             <th>Action</th>
@@ -28,8 +28,8 @@
             <td>{{$order->order_number}}</td>
             <td>{{$order->first_name}} {{$order->last_name}}</td>
             <td>{{$order->email}}</td>
-            <td>{{$order->quantity}}</td>
-            <td>${{$order->shipping->price ?? 0}}</td>
+            {{-- <td>{{$order->quantity}}</td> --}}
+            {{-- <td>${{$order->shipping->price ?? 0}}</td> --}}
             <td><span id="user_order_price_{{$order->id}}"></span></td>
             <td>
                 @if($order->status=='new')
@@ -76,7 +76,7 @@
                           <!-- Title -->
                           <p class="mb-4 fs-sm fw-bold">
                             <a class="text-body" href="product.html">{{$cart->product->title}}</a> <br>
-                            <span class="text-muted">${{number_format($cart->price, 2,'.', '')}}</span>
+                            <span class="text-muted" id="user_order_cart_price_{{$cart->id}}"></span>
                           </p>
 
                           <!-- Text -->
@@ -111,10 +111,10 @@
                         <td>Order Date </td>
                         <td>: {{$order->created_at->format('D d M, Y')}} at {{$order->created_at->format('g:i A')}} </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>Quantity </td>
                         <td>: {{$order->quantity}}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Order Status </td>
                         <td>: {{$order->status}}</td>
@@ -124,19 +124,19 @@
                           $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
                       @endphp
                         <td>Shipping Charge</td>
-                        <td>: ${{$order->price}}</td>
+                        <td>: <span id="user_order_shipping_price_{{$order->id}}"></span></td>
                     </tr>
                     <tr>
                         <td>Total Amount</td>
-                        <td> : ${{number_format($order->total_amount,2)}}</td>
+                        <td> : <span id="user_order_total_price_{{$order->id}}"></span></td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td> : @if($order->payment_method=='cod') Cash on Delivery @else Paypal @endif</td>
+                      <td> : @if($order->payment_method=='paypal') Paypal @else Stripe  @endif</td>
                     </tr>
                     <tr>
                         <td>Payment Status</td>
-                        <td> : <svg xmlns="http://www.w3.org/2000/svg" class="text-success" style="width:15px;" viewBox="0 0 512 512">
+                        <td> : <svg xmlns="http://www.w3.org/2000/svg" class="text-success" style="width:15px; fill:green;" viewBox="0 0 512 512">
                                 <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
                                 Paid
@@ -171,7 +171,7 @@
                         <td> : {{$order->country}}</td>
                     </tr>
                     <tr>
-                        <td>Pin Code</td>
+                        <td>ZipCode</td>
                         <td> : {{$order->post_code}}</td>
                     </tr>
               </table>

@@ -25,7 +25,8 @@
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th scope="col" class="product_thumb w-25">Image</th>
-                                                        <th scope="col" class="product_name">Product</th>
+                                                        <th scope="col" class="product_name" style="width:70%">Product
+                                                        </th>
                                                         <th scope="col" class="product-price">Price</th>
                                                         <th scope="col" class="product_quantity">Quantity</th>
                                                         <th scope="col" class="product_total">Total</th>
@@ -74,8 +75,8 @@
 
                                                                         <input type="number"
                                                                             name="quant[{{ $key }}]"
-                                                                            class="form-control" data-min="1"
-                                                                            data-max="100" value="{{ $cart->quantity }}">
+                                                                            class="form-control" min="1"
+                                                                            max="100" value="{{ $cart->quantity }}">
 
                                                                         <input type="hidden" name="qty_id[]"
                                                                             value="{{ $cart->id }}">
@@ -158,14 +159,16 @@
                                                     <form action="{{ route('coupon.discount') }}" method="POST"
                                                         id="couponForm">
                                                         @csrf
+
                                                         <div class="col">
+                                                            @if (session()->has('error'))
+                                                                <span class="invalid-feedback d-block" role="alert">
+                                                                    <strong>{{ session()->get('error') }}</strong>
+                                                                </span>
+                                                            @endif
                                                             <input class="form-control" name="code"
                                                                 placeholder="Enter Your Coupon" type="text">
-                                                                @if (session()->has('error'))
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ session()->get('error')}}</strong>
-                                                                </span>
-                                                                @endif
+
                                                         </div>
                                                         <div class="col-auto mt-2">
                                                             <button type="submit" class="btn btn-dark h-100">Apply
@@ -305,9 +308,9 @@
     <script>
         allproducts = @json($carts)
 
-        total_cart = {{ isset($total_amount) ? $total_amount : 0  }}
+        total_cart = {{ isset($total_amount) ? $total_amount : 0 }}
         total_shipping = {{ isset($total_shipping) ? $total_shipping : 0 }}
-        cart_subtotal = {{ isset($total_amount) ? $total_amount : 0  }}
+        cart_subtotal = {{ isset($total_amount) ? $total_amount : 0 }}
         session_coupon = {{ isset(Session::get('coupon')['value']) ? 1 : 0 }};
         if (session_coupon) {
             session_coupon_value = {{ isset(Session::get('coupon')['value']) ? Session::get('coupon')['value'] : 0 }}

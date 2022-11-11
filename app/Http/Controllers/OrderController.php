@@ -47,17 +47,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request,[
-        //     'first_name'=>'string|required',
-        //     'last_name'=>'string|required',
-        //     'address1'=>'string|required',
-        //     'address2'=>'string|nullable',
-        //     'coupon'=>'nullable|numeric',
-        //     'phone'=>'numeric|required',
-        //     'post_code'=>'string|nullable',
-        //     'email'=>'string|required'
-        // ]);
-        // return $request->all();
+
 
         if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
             request()->session()->flash('error','Cart is Empty !');
@@ -73,9 +63,9 @@ class OrderController extends Controller
         try{
             $order=new Order();
             $order_data = $request->all();
-            $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
-            $order_data['user_id']= Auth::id();
-            $order_data['shipping_id']=$request->shipping;
+            $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
+            $order_data['user_id'] = Auth::id();
+            $order_data['shipping_id'] = $request->shipping;
             $shipping = $request->shipping;
 
             $order_data['sub_total'] = Helper::totalCartPrice();
@@ -120,7 +110,7 @@ class OrderController extends Controller
                 'quantity' => Helper::cartCount()
             ]);
             // dd($users);
-            request()->session()->flash('success','Your product successfully placed in order');
+           session()->flash('success','Your product successfully placed in order');
 
 
             $response['success'] = true;
@@ -292,5 +282,92 @@ class OrderController extends Controller
             $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
         }
         return $data;
+    }
+
+    /**
+     * Charge a payment and store the transaction.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function paymentSuccess(Request $request,$type=null)
+    {
+        if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
+            session()->flash('error','Cart is Empty !');
+
+            $response['success'] = false;
+            $response['status'] = 404;
+            $response['message'] = 'Cart is Empty !';
+
+            return response($response);
+        }
+
+
+        try{
+            $order = new Order();
+            $data = json_decode($_COOKIE['data'], true);
+
+            $order_data = $data;
+            $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
+            $order_data['user_id'] = Auth::id();
+            $order_data['shipping_id'] = $data['shipping'];
+            $order_data['payment_status'] = 'paid';
+            $shipping = $data['shipping'];
+
+            $order_data['sub_total'] = Helper::totalCartPrice();
+
+            if(session('coupon')){
+                $order_data['coupon'] = session('coupon')['value'];
+            }
+            if($request->shipping){
+                if(session('coupon')){
+                    $order_data['total_amount'] = Helper::totalCartPrice() + $shipping + session('coupon')['value'];
+                }
+                else{
+                    $order_data['total_amount'] = Helper::totalCartPrice() + $shipping;
+                }
+            }
+            else{
+                if(session('coupon')){
+                    $order_data['total_amount'] = Helper::totalCartPrice() + session('coupon')['value'];
+                }
+                else{
+                    $order_data['total_amount'] = Helper::totalCartPrice();
+                }
+            }
+
+            $order_data['status']="new";
+
+            $order->fill($order_data);
+            $order->save();
+            if($order)
+
+            $users = User::where('role','admin')->first();
+            $details=[
+                'title'=>'You have new order',
+                'actionURL'=>route('order.show',$order->id),
+                'fas'=>'fa-file-alt'
+            ];
+
+            Notification::send($users, new StatusNotification($details));
+            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => Auth::id()]);
+
+            Order::find($order->id)->update([
+                'quantity' => Helper::cartCount()
+            ]);
+
+            session()->put('order_number',$order->id);
+            session()->forget('coupon');
+            return redirect()->route('user.order.completed');
+        }catch(Exception $e){
+            return redirect()->route('checkout')->with('error',$e->getMessage());
+        }
+    }
+
+    /**
+     * Error Handling.
+     */
+    public function paymentError()
+    {
+        return view('frontend.pages.order_failed');
     }
 }

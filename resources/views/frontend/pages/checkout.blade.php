@@ -457,7 +457,6 @@
             <form class="form" method="POST" id="checkoutForm" action="{{ route('cart.order') }}">
                 @csrf
                 <div class="row">
-
                     <div class="col-lg-8 col-12">
                         <div class="checkout-form">
                             <h2>Make Your Checkout Here</h2>
@@ -680,6 +679,168 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-6">
+                            <input type="radio" name="bill_shipp" value="same" id="billing_shipping_same">
+                            <label class="form-check-label" for="billing_shipping_same">Is shipping and billing same?</label>
+                        </div>
+
+                        <div class="col-6">
+                            <input type="radio" name="bill_shipp"  value="diff" id="billing_different">
+                            <label class="form-check-label" for="billing_different">Is billing different?</label>
+                        </div>
+
+                        <div class="billing_address_diff d-none mt-4">
+
+                            @php
+                                $carts = Helper::getAllProductFromCart() ;
+
+                                $total_amount = Helper::totalCartPrice() + $carts->total_shipping;
+                                if (session('coupon')) {
+                                    $total_amount = $total_amount - session('coupon')['value'];
+                                }
+                            @endphp
+                            <div class="row">
+                                <div class="alert alert-danger" style="display: none" id="error" role="alert"></div>
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label>Saved Adresses<span>*</span></label>
+                                        <select id="bill_addresses" class="form-control">
+                                            @foreach ($address as $ship)
+                                                <option value="{{$ship->id}}">
+                                                    {{$ship->address_1 != null ? $ship->address_1.',' : ''}}
+                                                    {{$ship->address_2 != null ? $ship->address_2.',' : ''}}
+                                                    {{$ship->zipcode != null ? $ship->zipcode.',' : ''}}
+                                                    {{$ship->city != null ? $ship->city.',' : '' }}
+                                                    {{!empty($ship->country) == true ? $ship->country->name : ''}}
+                                                    ({{!empty($ship->user) == true ? $ship->user->first_name : ''}})
+                                                </option>
+                                            @endforeach
+                                            <option value="0">Use Custome Address</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label>Country<span>*</span></label>
+                                        <select name="bill_country" id="bill_country" class="form-control select2">
+                                            @foreach ($countries as $country)
+                                                <option value="{{$country->name}}">
+                                                    {{$country->name ?? ''}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>First Name<span>*</span></label>
+                                        <input type="text" name="bill_first_name" placeholder=""
+                                            value="{{ old('first_name') }}"
+                                            value="{{ old('first_name') }}">
+                                        @error('first_name')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Last Name<span>*</span></label>
+                                        <input type="text" name="bill_last_name" placeholder=""
+                                            value="{{ old('lat_name') }}">
+                                        @error('last_name')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label>Company (Optional)</label>
+                                        <input type="text" name="bill_company"  placeholder=""
+                                            value="{{ old('company') }}">
+                                        @error('company')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label>Address Line 1<span>*</span></label>
+                                        <input type="text" name="bill_address1"  placeholder=""
+                                            value="{{ old('address1') }}">
+                                        @error('address1')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label>Address Line 2</label>
+                                        <input type="text" name="bill_address2" placeholder=""
+                                            value="{{ old('address2') }}">
+                                        @error('address2')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <label>City <span>*</span></label>
+                                        <input type="text" name="bill_city"  placeholder="" value="{{ old('city') }}" required>
+                                        @error('city')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <label>State<span>*</span></label>
+                                        <select name="bill_state" id="bill_state" class="form-select select2">
+                                            @foreach ($states as $state)
+                                                <option value="{{$state->name}}">
+                                                    {{$state->name ?? ''}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <div class="form-group">
+                                        <label>Postal Code <span>*</span></label>
+                                        <input type="text" name="bill_post_code"  placeholder=""
+                                            value="{{ old('post_code') }}" required>
+                                        @error('post_code')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Email Address<span>*</span></label>
+                                        <input type="email" name="bill_email"  placeholder=""
+                                            value="{{ old('email') }}">
+                                        @error('email')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Phone Number <span>*</span></label>
+                                        <input type="number" name="bill_phone"  placeholder="" required
+                                            value="{{ old('phone') }}">
+                                        @error('phone')
+                                            <span class='text-danger'>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/ End Form -->
+                        </div>
+
                     </div>
                     <div class="col-lg-4 col-12">
                         <div class="order-details">
@@ -753,26 +914,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--/ End Order Widget -->
-                            <!-- Payment Method Widget -->
-                            {{-- <div class="single-widget payement">
-                                <div class="content">
-                                    <img src="{{ 'backend/img/payment-method.png' }}" alt="#">
-                                </div>
-                            </div> --}}
-                            <!--/ End Payment Method Widget -->
-                            <!-- Button Widget -->
-                            {{-- <div class="single-widget get-button">
-                                <div class="content">
-                                    <div class="button">
-                                        <button type="submit" class="btn btn-dark">proceed to checkout</button>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <!--/ End Button Widget -->
+
                         </div>
                     </div>
                 </div>
+
+
             </form>
         </div>
     </section>
@@ -844,17 +991,10 @@
             </div>
         </div>
     </div>
-    <!--Model Popup starts-->
-    {{-- <div class="container">
-        <div class="row">
-            <a class="btn btn-primary" data-toggle="modal" href="#thankyou">open Popup</a>
 
-        </div>
-    </div> --}}
-    <!--Model Popup ends-->
 @endsection
 @push('styles')
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     <style>
         li.shipping {
@@ -934,9 +1074,9 @@
         }
 
         $(document).ready(function() {
-            $("select.select2").select2();
+            $(".select2").select2();
         });
-        $('select.nice-select').niceSelect();
+
 
         function paymentMetod(type) {
             if (type == 'card') {
@@ -955,12 +1095,43 @@
                     $("#error").hide()
                 }, 3000);
             }else{
+
+                const data = {
+                    user_id: "{{ request()->ip() }}",
+                    conversion_rate: convertPriceVal,
+                    coupon: session_coupon_value,
+                    shipping_id: "{{ $carts->shipping_id ?? 0 }}",
+                    payment_method: 'stripe',
+                    bill_shipp: $("#bill_shipp option:checked").val(),
+                    first_name: $("input[name=first_name]").val(),
+                    last_name: $("input[name=last_name]").val(),
+                    email: $("input[name=email]").val(),
+                    company: $("input[name=company]").val(),
+                    address1: $("input[name=address1]").val(),
+                    address2: $("input[name=address2]").val(),
+                    phone: $("input[name=phone]").val(),
+                    country: $("#country option:selected").val(),
+                    state: $("#state option:selected").val(),
+                    city: $("input[name=city]").val(),
+                    post_code: $("input[name=post_code]").val(),
+                    bill_first_name: $("input[name=bill_first_name]").val(),
+                    bill_last_name: $("input[name=bill_last_name]").val(),
+                    bill_email: $("input[name=bill_email]").val(),
+                    bill_company: $("input[name=bill_company]").val(),
+                    bill_address1: $("input[name=bill_address1]").val(),
+                    bill_address2: $("input[name=bill_address2]").val(),
+                    bill_phone: $("input[name=bill_phone]").val(),
+                    bill_country: $("#bill_country option:selected").val(),
+                    bill_state: $("#bill_state option:selected").val(),
+                    bill_city: $("input[name=bill_city]").val(),
+                    bill_post_code: $("input[name=bill_post_code]").val(),
+                }
+
+                setCookie('data', JSON.stringify(data) ,30);
                 const stripe = Stripe("{{$integerations->public_key ?? ''}}");
                 stripe.redirectToCheckout({ sessionId: "{{ $session->id ?? '' }}" });
             }
         });
-
-
 
         //Paypal
         const fundingSources = [
@@ -1039,15 +1210,33 @@
                             data: {
                                 _token: "{{ csrf_token() }}",
                                 user_id: "{{ request()->ip() }}",
-                                shipping: "{{ $carts->shipping_id }}",
+                                conversion_rate: convertPriceVal,
+                                coupon: session_coupon_value,
+                                shipping_id: "{{ $carts->shipping_id ?? 0 }}",
                                 payment_method: 'paypal',
+                                bill_shipp: $("#bill_shipp option:checked").val(),
                                 first_name: $("input[name=first_name]").val(),
                                 last_name: $("input[name=last_name]").val(),
                                 email: $("input[name=email]").val(),
+                                company: $("input[name=company]").val(),
                                 address1: $("input[name=address1]").val(),
                                 address2: $("input[name=address2]").val(),
                                 phone: $("input[name=phone]").val(),
                                 country: $("#country option:selected").val(),
+                                state: $("#state option:selected").val(),
+                                city: $("input[name=city]").val(),
+                                post_code: $("input[name=post_code]").val(),
+                                bill_first_name: $("input[name=bill_first_name]").val(),
+                                bill_last_name: $("input[name=bill_last_name]").val(),
+                                bill_email: $("input[name=bill_email]").val(),
+                                bill_company: $("input[name=bill_company]").val(),
+                                bill_address1: $("input[name=bill_address1]").val(),
+                                bill_address2: $("input[name=bill_address2]").val(),
+                                bill_phone: $("input[name=bill_phone]").val(),
+                                bill_country: $("#bill_country option:selected").val(),
+                                bill_state: $("#bill_state option:selected").val(),
+                                bill_city: $("input[name=bill_city]").val(),
+                                bill_post_code: $("input[name=bill_post_code]").val(),
                             },
                             success: function(data) {
                                 if(data.status == true){
@@ -1139,6 +1328,30 @@
             }
         });
 
+        $("#bill_addresses").on('change', function(){
+            if(this.value == 0){
+
+                $("#checkoutForm")[0].reset()
+
+            }else{
+
+                var address = addresses.find(item => item.id == this.value);
+
+                $("#bill_country").val(address != null ? address.country.name : '')
+                $("#bill_country").trigger('change')
+                $("input[name=bill_first_name]").val(address != null ? address.first_name : '')
+                $("input[name=bill_last_name]").val(address != null ? address.last_name : '')
+                $("input[name=bill_company]").val(address != null ? address.company : '')
+                $("input[name=bill_ddress1]").val(address != null ? address.address_1 : '')
+                $("input[name=bill_address2]").val(address != null ? address.address_2 : '')
+                $("input[name=bill_city]").val(address != null ? address.city : '')
+                $("#bill_state").val(address != null ? address.state.id : '')
+                $("#bill_state").trigger('change')
+                $("input[name=bill_post_code]").val(address != null ? address.zipcode : '')
+                $("input[name=bill_email]").val(address != null ? address.email : '')
+                $("input[name=bill_phone]").val(address != null ? address.phone : '')
+            }
+        });
 
         $("#country").on('change', function(){
             var country = countries.find(item => item.name == this.value);
@@ -1151,5 +1364,23 @@
             $("#state").html(html)
             $("#state").trigger('change')
         });
+
+        $('input[name=bill_shipp]').click(function() {
+            if (this.value == 'diff') {
+                $(".billing_address_diff").removeClass('d-none')
+            }else{
+                $(".billing_address_diff").addClass('d-none')
+            }
+        });
+
+        function setCookie(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
     </script>
 @endpush

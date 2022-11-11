@@ -324,8 +324,8 @@ class CartController extends Controller
             if($integerations){
                 Stripe::setApiKey($integerations->secret_key);
                 $session = StripeSession::create([
-                    'success_url' => route('checkout'),
-                    'cancel_url' => route('checkout'),
+                    'success_url' => route('paid.success',['stripe']),
+                    'cancel_url' => route('paid.error'),
                     'shipping_options' => [
                         [
                           'shipping_rate_data' => [

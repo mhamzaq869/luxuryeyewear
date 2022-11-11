@@ -103,7 +103,8 @@ Route::post('/add-to-cart','CartController@addToCart')->name('add-to-cart');
 Route::get('/add-to-cart-single/{slug?}','CartController@singleAddToCart')->name('single-add-to-cart');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
-
+Route::get('paid/success/{type?}','OrderController@paymentSuccess')->name('paid.success');
+Route::get('paid/error/{type?}','OrderController@paymentError')->name('paid.error');
 
 Route::get('/checkout','CartController@checkout')->name('checkout')->middleware(['auth','user']);
 // Wishlist
@@ -268,6 +269,7 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::get('/order',"HomeController@orderIndex")->name('user.order.index');
     Route::get('/order/show/{id}',"HomeController@orderShow")->name('user.order.show');
     Route::delete('/order/delete/{id}','HomeController@userOrderDelete')->name('user.order.delete');
+    Route::get('order-completed','HomeController@orderCompleted')->name('user.order.completed');
 
     // Product Review
     Route::get('/user-review','HomeController@productReviewIndex')->name('user.productreview.index');

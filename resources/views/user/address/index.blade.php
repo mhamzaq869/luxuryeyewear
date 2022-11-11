@@ -26,7 +26,7 @@
 
     <div class="row">
         @foreach ($address as $add)
-        <div class="col-md-6">
+        <div class="col-md-6 py-2">
             <div class="card shadow">
                 <div class="card-header border">
                     <div class="row">

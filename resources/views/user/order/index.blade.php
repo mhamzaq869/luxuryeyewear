@@ -27,7 +27,7 @@
                         <th>Order No.</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Quantity</th>
+                        {{-- <th>Quantity</th> --}}
                         <th>Total Amount</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -42,7 +42,7 @@
                                 <td>{{ $order->order_number }}</td>
                                 <td>{{ $order->first_name }} {{ $order->last_name }}</td>
                                 <td>{{ $order->email }}</td>
-                                <td>{{ $order->quantity }}</td>
+                                {{-- <td>{{ $order->quantity }}</td> --}}
                                 <td><span id="user_order_price_{{$order->id}}"></span></td>
                                 <td>
                                     @if ($order->status == 'new')
