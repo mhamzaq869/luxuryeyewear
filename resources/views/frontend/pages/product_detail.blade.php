@@ -579,8 +579,8 @@
 
                         </div> --}}
 
-                        <div class="row">
-                            <div class="col-2 navi">
+                        <div class="row g-0">
+                            <div class="col-md-2 col-3 navi">
                                <div class="carousel carousel-nav"
                                     data-flickity='{
                                       "asNavFor": ".carousel-main",
@@ -650,7 +650,7 @@
                                     @endif
                               </div>
                             </div>
-                            <div class="col-10 main">
+                            <div class="col-md-10 col-9 main">
                               <div class="carousel carousel-main"
                                    data-flickity='{
                                      "contain": true,
@@ -807,12 +807,12 @@
                                 <div class="col-12">
                                     @if ($product_variant->count() != 0)
                                         <div class="row  g-1 mt-2">
-                                            <div class="col-2">
+                                            <div class="col-md-2 col-4">
                                                 <span class="detailLblCol">Color</span>
                                             </div>
-                                            <div class="col-10" style="margin-left:-25px">
+                                            <div class="col-md-10 col-8" style="margin-left:-25px">
                                                 <div class="row g-1">
-                                                    <div class="col-3">
+                                                    <div class="col-md-3 col-6">
                                                         <a href="javascript:void(0)" id="href_{{ $product_detail->id }}"
                                                             onclick="changePic({{ $product_detail->id }})"
                                                             class="p-2 px-1 text-center hover-product active-product ">
@@ -825,13 +825,13 @@
                                                                     style="width:50px;"
                                                                     id="pro_pic_{{ $product_detail->id }}">
                                                             @endif
-                                                            <small class="text-dark" id="productPrice2"></small>
+                                                            <small class="text-dark productPrice" id="productPrice2"></small>
                                                         </a>
                                                     </div>
 
                                                     @foreach ($product_variant->where('id', '!=', $product_detail->id)->where('cat_id', $product_detail->cat_id)->flatten() as $i => $data)
                                                         {{-- @if ($i <= 4) --}}
-                                                        <div class="col-3">
+                                                        <div class="col-md-3 col-6">
                                                             <a href="javascript:void(0)" id="href_{{ $data->id }}"
                                                                 @if ($product_detail->id != $data->id) onclick="changePic({{ $data->id }})" @endif
                                                                 class="p-2 px-1 text-center hover-product @if ($product_detail->id == $data->id) active-product @endif">
@@ -843,8 +843,7 @@
                                                                     <img src="{{ $data->photo }}" style="width:50px;"
                                                                         id="pro_pic_{{ $data->id }}">
                                                                 @endif
-                                                                <small
-                                                                    class="text-dark productVariantPrice{{ $data->id }}"></small>
+                                                                <small  class="text-dark productPrice productVariantPrice{{ $data->id }}"></small>
                                                             </a>
                                                         </div>
                                                         {{-- @endif --}}
@@ -1145,7 +1144,7 @@
 
     @if ($product_detail->rel_prods->count() > 1)
         <div class="product_detail pb-0">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="product_deatail_list">
 
                     <div class="product_deatail_list_text">
@@ -1159,7 +1158,7 @@
                             {{-- start card --}}
                             @foreach ($product_detail->rel_prods as $data)
                                 @if ($data->id !== $product_detail->id)
-                                    <div class="col-md-6 py-1 col-xl-4">
+                                    <div class="col-md-6 py-1 col-xl-3">
                                         <div class="cardStyle1">
 
                                             <div class="productImg">
@@ -1283,7 +1282,7 @@
 @push('scripts')
     <style>
         .carousel-cell {
-            background: rgb(255, 255, 255);
+            /* background: rgb(255, 255, 255); */
             counter-increment: carousel-cell;
             color: white;
             display: flex;
@@ -1304,11 +1303,7 @@
             transform: rotate(90deg) translate(30px, -100%);
             transform-origin: left top;
         }
-        @media screen and (max-width: 1200px) {
-            .carousel-nav {
-                transform: rotate(90deg) translate(30px, -50%);
-            }
-        }
+
         .carousel-nav .carousel-cell {
             transform: rotate(-90deg);
             width: 80px;
@@ -1349,7 +1344,7 @@
         }
 
         .lg-backdrop{
-            background-color:#ffffffd9;
+            background-color:#ffffff;
         }
         .lg-toolbar{
             background: transparent;
@@ -1359,6 +1354,44 @@
         }
         .lg-actions .lg-next:hover, .lg-actions .lg-prev:hover{
             color: black
+        }
+
+        @media screen and (max-width: 1200px) {
+            .carousel-nav {
+                transform: rotate(90deg) translate(30px, -50%);
+            }
+        }
+
+
+        @media screen and (max-width: 480px) {
+            .carousel-nav {
+                transform: rotate(90deg) translate(30px, -89%);
+            }
+
+            .proSlideImg{
+                transform:translate(-25px);
+                max-width:100%
+            }
+            .flickity-prev-next-button.previous{
+                left: 0;
+            }
+            .carousel-nav .flickity-prev-next-button{
+                width:24px;
+                height:24px;
+            }
+
+            .flickity-prev-next-button{
+                width:24px;
+                height:24px;
+            }
+
+            .flickity-page-dots{
+                bottom: 0px
+            }
+
+            .productPrice{
+                font-size: 10px
+            }
         }
     </style>
 
