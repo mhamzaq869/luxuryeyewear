@@ -231,7 +231,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/coupon','CouponController');
     // Settings
     Route::get('settings','AdminController@settings')->name('settings');
-    Route::get('settings/payment_int','AdminController@paymentInteg');
+    Route::get('settings/payment_int','AdminController@paymentInteg')->name('integeration');
     Route::post('settings/payment_int_save','AdminController@paymentIntegSave')->name('settings.payment.int.save');
     Route::get('settings/payment_int_destroy/{id}','AdminController@paymentIntegDestroy')->name('settings.payment.int.destroy');
     Route::post('setting/update','AdminController@settingsUpdate')->name('settings.update');

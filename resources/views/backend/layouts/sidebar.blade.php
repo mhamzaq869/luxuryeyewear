@@ -193,7 +193,15 @@
             <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-users"></i><span>Users</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('settings') }}"><i class="fas fa-cog"></i><span>Settings</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settingCollapse"
+                aria-expanded="true" aria-controls="settingCollapse"><i class="fas fa-cog"></i><span>Setting</span></a>
+            <div id="settingCollapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+
+                    <a class="collapse-item" href="{{ route('settings') }}">General</a>
+                    <a class="collapse-item" href="{{ route('integeration') }}">Integerations</a>
+                </div>
+            </div>
         </li>
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -411,8 +419,16 @@
         </li>
         @endif
         @if (in_array('setting',$permissions) || in_array('setting',$user_permissions))
+
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('settings') }}"><i class="fas fa-cog"></i><span>Settings</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settingCollapse"
+                aria-expanded="true" aria-controls="settingCollapse"><i
+                    class="fas fa-tags fa-folder"></i><span>Setting</span></a>
+            <div id="settingCollapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="nav-link" href="{{ route('settings') }}"><i class="fas fa-cog"></i><span>Settings</span></a>
+                </div>
+            </div>
         </li>
         @endif
 
