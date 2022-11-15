@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportCategory;
 use App\Exports\ExportCategory;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -366,9 +367,19 @@ class CategoryController extends Controller
     public function saveCategoryImport(Request $request)
     {
 
-        Excel::import(new ImportCategory, $request->file('file')->store('files'));
+        $fileName = $request->file('file')->getClientOriginalName();
+        $path = 'upload/import/files/';
+        $moved = $request->file('file')->move($path, $fileName);
 
-        request()->session()->flash('success', 'Category Import Successfully!');
+        Excel::import(new ImportCategory, $moved->getRealPath());
+
+        session()->flash('success', 'Category Import Successfully!');
+
+        if (File::exists(public_path($path.$fileName))) {
+            File::delete(public_path($path.$fileName));
+        }
+
+        session()->flash('success', 'Category Import Successfully!');
 
         return redirect()->route('category.index');
     }
