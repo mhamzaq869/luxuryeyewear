@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Session;
+
 class CouponController extends Controller
 {
     /**
@@ -142,15 +144,21 @@ class CouponController extends Controller
             return back();
         }
         if($coupon){
-            $total_price = Cart::where('user_id',request()->ip())->where('order_id',null)->sum('price');
 
-            session()->put('coupon',[
-                'id'=> $coupon->id,
-                'code'=> $coupon->code,
-                'value'=> $coupon->discount($total_price)
-            ]);
-            session()->flash('success','Coupon successfully applied');
-            return redirect()->back();
+            if(!session()->has('coupon')){
+                $total_price = Cart::where('user_id',request()->ip())->where('order_id',null)->sum('price');
+
+                session()->put('coupon',[
+                    'id'=> $coupon->id,
+                    'code'=> $coupon->code,
+                    'value'=> $coupon->discount($total_price)
+                ]);
+                session()->flash('success','Coupon successfully applied');
+                return redirect()->back();
+            }else{
+                session()->flash('error','Coupon '. Session::get('coupon')['code'] .' already applied!');
+                return back();
+            }
         }
     }
 

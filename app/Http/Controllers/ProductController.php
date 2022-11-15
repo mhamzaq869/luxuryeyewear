@@ -15,6 +15,7 @@ use App\Imports\ImportProduct;
 use App\Models\ProductNotify;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -882,15 +883,23 @@ class ProductController extends Controller
     public function saveProductImport(Request $request)
     {
         try{
-            Excel::import(new ImportProduct, $request->file('file')->store('files'));
-            request()->session()->flash('success','Product Import Successfully!');
+            $fileName = $request->file('file')->getClientOriginalName();
+            $path = 'upload/import/files/';
+            $moved = $request->file('file')->move($path, $fileName);
+
+            Excel::import(new ImportProduct, $moved->getRealPath());
+
+            if (File::exists(public_path($path.$fileName))) {
+                File::delete(public_path($path.$fileName));
+            }
+            session()->flash('success','Product Import Successfully!');
         }catch(Exception $e){
             $errorCode = $e->errorInfo[1];
             if($errorCode == '1062'){
-                request()->session()->flash('error',$e->errorInfo[2]);
+                session()->flash('error',$e->errorInfo[2]);
             }
             else{
-                request()->session()->flash('error',$e->getMessage());
+                session()->flash('error',$e->getMessage());
             }
         }
         return redirect()->route('product.index');
