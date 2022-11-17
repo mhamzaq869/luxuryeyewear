@@ -35,24 +35,12 @@ class ImportCategory implements ToModel,WithStartRow
     	$size = [];
         $slug=Str::slug($row[0]);
         $brand=Brand::where('slug',$slug)->first();
-        $attribute = Attribute::where('name',$row[7])->where('attribute_type', 'frame_type')->first();
+        $attribute = Attribute::where('name','LIKE','%'.$row[7].'%')->where('attribute_type', 'frame_type')->first();
         $size['width'] = $row[2];
         $size['bridge'] = $row[3];
         $size['arm_length'] = $row[4];
         $size['lens_height'] = $row[5];
         $size['total_width'] = $row[6];
-
-        // if(!$brand){
-        //    $brand=New Brand;
-        //    $brand->title = $row[0];
-        //    $brand->slug = $slug;
-        //    $brand->url = 'https://example.com/';
-        //    $brand->brand_image = 'No Image';
-
-        //   $brand->save();
-
-
-        // }
 
         $brand = Brand::updateOrCreate(['slug' => $brand->slug],[
                 'title' => $row[0],
@@ -60,13 +48,13 @@ class ImportCategory implements ToModel,WithStartRow
                 'url' => '',
         ]);
 
-        $slug1=Str::slug($row[1]);
+        $slug1 = Str::slug($row[1]);
 
         return Category::updateOrCreate(['slug' => $slug1],[
             'title' => $row[1],
             'slug' => $slug1,
             'brand_id' => $brand->id,
-            'frame_type' =>$attribute->id ?? '',
+            'frame_type' => $attribute->id ?? '',
             'size' =>json_encode($size),
             'status' => 'active'
 
