@@ -1250,17 +1250,35 @@
                                                 </a>
                                                 <span class="priceCol" id="men_sunglass_pro_price_{{ $data->id }}">
                                                 </span>
-                                                <div class="row gx-2">
+                                                {{-- <div class="row">
                                                     <div class="col-6">
                                                         <a href="{{ route('add-to-cart', $data->slug) }}"
-                                                            class="btn btn-dark w-100 addCartBtn btn_explore">ADD TO
+                                                            class="btn btn-dark w-100 btnDark addCartBtn btn_explore">ADD TO
                                                             CART</a>
                                                     </div>
                                                     <div class="col-6">
                                                         <a href="{{ route('add-to-wishlist', $data->slug) }}"
-                                                            class="btn btn-outline-dark w-100 px-1 btn_explore">ADD TO
+                                                            class="btn btnDark_outline w-100 px-1 btn_explore" style="margin-left: 15px">ADD TO
                                                             WISHLIST</a>
                                                     </div>
+                                                </div> --}}
+
+                                                <div class="row gx-1">
+
+                                                    <div class="col-auto">
+
+                                                        <a href="{{ route('single-add-to-cart', $data->slug) }}"
+                                                            class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
+
+                                                    </div>
+
+                                                    <div class="col">
+
+                                                        <a href="{{ route('add-to-wishlist', $data->slug) }}"
+                                                            class="btn btnDark_outline w-100 px-1">ADD TO WISHLIST</a>
+
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

@@ -31,7 +31,7 @@ class ProductExport implements FromCollection, WithHeadings
             foreach($products as $i => $product){
                 $data[$i]['id'] = $product->product_uan_code;
                 $data[$i]['ean'] = $product->product_ean_code;
-                $data[$i]['category'] = $attributes->where('id',$category->where('id',$product->cat_id)->first()->frame_type)->first()->name ?? '';
+                $data[$i]['category'] = $attributes->where('id',$category->where('id',$product->cat_id)->first()->frame_type ?? '')->first()->name ?? '';
                 $data[$i]['brand'] = $brands->where('id',$product->brand_id)->first()->title ?? '';
                 $data[$i]['model'] = $product->title;
                 $data[$i]['color'] = $product->color;
