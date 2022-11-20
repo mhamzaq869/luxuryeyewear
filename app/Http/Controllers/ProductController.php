@@ -322,13 +322,16 @@ class ProductController extends Controller
         ->where('title', 'like', '%' .$searchValue . '%')
         ->count();
 
+
+    $brand = DB::table('brands')->where('title', 'like', '%' . $searchValue . '%')->first();
+
      // Fetch records
      $records = Product::orderBy($columnName,$columnSortOrder)
             ->join('brands', 'brands.id','=','products.brand_id')
             ->join('categories', 'categories.id','=','products.cat_id')
             ->join('attributes', 'attributes.id','=','categories.frame_type')
             ->where('products.title', 'like', '%' .$searchValue . '%')
-            ->orWhere('brands.title', 'like', '%' .$searchValue . '%')
+            ->orWhere('products.brand_id', 'like', '%' . $brand->id ?? 0 . '%')
             ->orWhere('attributes.name', 'like', '%' .$searchValue . '%')
             ->orWhere('products.product_ean_code', 'like', '%' .$searchValue . '%')
             ->orWhere('products.price', 'like', '%' .$searchValue . '%')
@@ -450,12 +453,14 @@ class ProductController extends Controller
         ->where('title', 'like', '%' .$searchValue . '%')
         ->count();
 
+        $brand = DB::table('brands')->where('title', $searchValue)->first();
         // Fetch records
         $records = ProductNotify::orderBy($columnName,$columnSortOrder)
             ->join('products', 'product_notifies.product_id','=','products.id')
             ->where('products.title', 'like', '%' .$searchValue . '%')
             ->orWhere('products.price', 'like', '%' .$searchValue . '%')
             ->orWhere('products.status', 'like', '%' .$searchValue . '%')
+            ->orWhere('products.brand_id', 'like', '%' .$brand->id ?? 0 . '%')
             ->orWhere('product_notifies.email', 'like', '%' .$searchValue . '%')
             ->select('products.*','product_notifies.product_id','product_notifies.email')
             ->skip($start)
