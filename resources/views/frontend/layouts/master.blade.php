@@ -469,7 +469,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-auto nav-responsive">
                             <div class="header_right_link_icon">
                                 <ul class="header_right_link_icon_style">
                                     <li>

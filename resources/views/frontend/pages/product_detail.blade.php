@@ -1374,12 +1374,18 @@
             color: black
         }
 
+
         @media screen and (max-width: 1200px) {
             .carousel-nav {
                 transform: rotate(90deg) translate(30px, -50%);
             }
         }
 
+        @media screen and (max-width: 320px) {
+            .nav-responsive {
+                padding: 0px;
+            }
+        }
 
         @media screen and (max-width: 480px) {
             .carousel-nav {
@@ -1411,6 +1417,14 @@
                 font-size: 10px
             }
         }
+
+        @media screen and (max-width: 768px) {
+            .carousel-nav {
+                transform: rotate(90deg) translate(30px, -96%);
+            }
+
+        }
+
     </style>
 
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
@@ -1438,12 +1452,6 @@
              actualSize:false,
              selector: '.carousel-href'
         })
-
-        // $(window).scroll(function(e) {
-        //      $(".lg-backdrop").css('display','none')
-        //      $(".lg-outer").css('display','none')
-        // });
-
 
         function changePic(id) {
 
@@ -1708,56 +1716,6 @@
                     actualSize:false,
                     selector: '.carousel-href'
                 })
-
-                // $(".swiper-container-wrapper").html('')
-                // $(".swiper-container-wrapper").html($html)
-                // galleryThumbs.update();
-                // galleryTop.init();
-                // console.log(gallery_thumb)
-
-                // var galleryThumbsAfter = new Swiper(".gallery-thumbs-after", {
-                //     centeredSlides: true,
-                //     centeredSlidesBounds: true,
-                //     direction: "horizontal",
-                //     spaceBetween: 10,
-                //     slidesPerView: 5,
-                //     freeMode: false,
-                //     watchSlidesVisibility: true,
-                //     watchSlidesProgress: true,
-                //     watchOverflow: true,
-                //     loop: false,
-                //     breakpoints: {
-                //         480: {
-                //             direction: "vertical",
-                //             slidesPerView: 5
-                //         }
-                //     }
-                // });
-                // var galleryTopAfter = new Swiper(".gallery-top-after", {
-                //     direction: "horizontal",
-                //     spaceBetween: 10,
-                //     loop: true,
-                //     navigation: {
-                //         nextEl: ".swiper-button-next",
-                //         prevEl: ".swiper-button-prev"
-                //     },
-                //     a11y: {
-                //         prevSlideMessage: "Previous slide",
-                //         nextSlideMessage: "Next slide",
-                //     },
-                //     keyboard: {
-                //         enabled: true,
-                //     },
-                //     thumbs: {
-                //         swiper: galleryThumbs
-                //     }
-                // });
-                // galleryTopAfter.on("slideChangeTransitionStart", function() {
-                //     galleryThumbsAfter.slideTo(galleryTopAfter.activeIndex);
-                // });
-                // galleryThumbsAfter.on("transitionStart", function() {
-                //     galleryTopAfter.slideTo(galleryThumbsAfter.activeIndex);
-                // });
 
 
             }

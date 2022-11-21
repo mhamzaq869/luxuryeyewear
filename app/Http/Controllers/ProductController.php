@@ -323,15 +323,15 @@ class ProductController extends Controller
         ->count();
 
 
-    $brand = DB::table('brands')->where('title', 'like', '%' . $searchValue . '%')->first();
-
+    $brand = DB::table('brands')->where(DB::raw('lower(title)'), 'like', '%' . strtolower($searchValue) . '%')->first();
+    // dd($brand);
      // Fetch records
      $records = Product::orderBy($columnName,$columnSortOrder)
             ->join('brands', 'brands.id','=','products.brand_id')
             ->join('categories', 'categories.id','=','products.cat_id')
             ->join('attributes', 'attributes.id','=','categories.frame_type')
             ->where('products.title', 'like', '%' .$searchValue . '%')
-            ->orWhere('products.brand_id', 'like', '%' . $brand->id ?? 0 . '%')
+            ->orWhere('products.brand_id', 'like', '%' . ($brand != null ? $brand->id : '') . '%')
             ->orWhere('attributes.name', 'like', '%' .$searchValue . '%')
             ->orWhere('products.product_ean_code', 'like', '%' .$searchValue . '%')
             ->orWhere('products.price', 'like', '%' .$searchValue . '%')
@@ -342,7 +342,6 @@ class ProductController extends Controller
             ->take($rowperpage)
             ->get();
 
-            // dd( $records);
      $data_arr = array();
 
      foreach($records as $i => $record){
