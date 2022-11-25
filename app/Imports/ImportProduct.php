@@ -26,7 +26,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
     {
     //   print_r($row[12]); die;
 
-        // dd($rows[435]['shape']);
+
         $arr=[];
         foreach($rows as $i => $row){
 
@@ -48,7 +48,6 @@ class ImportProduct implements ToCollection,WithHeadingRow
             }
 
 
-
             $brand = Brand::updateOrCreate(['slug' => Str::slug($row['brands'],'-')],[
                     'title' => $row['brands'],
                     'slug' => Str::slug($row['brands'],'-'),
@@ -60,7 +59,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                     'slug' => Str::slug($row['model'],'-'),
                     'is_parent' => 1,
                     'brand_id' => ($brand != null) ? $brand->id : null,
-                    'frame_type' => ($frameType != null) ? $frameType->id : null,
+                    // 'frame_type' => ($frameType != null) ? $frameType->id : null,
                     'status' => 'active',
             ]);
 

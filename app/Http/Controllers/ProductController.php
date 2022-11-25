@@ -326,6 +326,7 @@ class ProductController extends Controller
     $brand = DB::table('brands')->where(DB::raw('lower(title)'), 'like', '%' . strtolower($searchValue) . '%')->first();
     // dd($brand);
      // Fetch records
+     DB::enableQueryLog();
      $records = Product::orderBy($columnName,$columnSortOrder)
             ->join('brands', 'brands.id','=','products.brand_id')
             ->join('categories', 'categories.id','=','products.cat_id')
@@ -341,6 +342,8 @@ class ProductController extends Controller
             ->skip($start)
             ->take($rowperpage)
             ->get();
+
+        // dd(DB::getQueryLog());
 
      $data_arr = array();
 
