@@ -765,7 +765,7 @@
             font-size: 5rem;
         }
         .carousel-nav {
-            width: 340px;
+            width: 355px;
             transform: rotate(90deg) translate(30px, -100%);
             transform-origin: left top;
         }
