@@ -30,7 +30,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
         $arr=[];
         foreach($rows as $i => $row){
 
-            $frameType = Attribute::where('name',$row['category'])->first();
+            $frameType = Attribute::where('name','LIKE','%'.$row['category'].'%')->first();
             $shape = Attribute::where('name',$row['shape'])->first();
             $productType = Attribute::where('name',$row['type'])->first();
             $material = Attribute::where('name',$row['material'])->first();
@@ -59,7 +59,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                     'slug' => Str::slug($row['model'],'-'),
                     'is_parent' => 1,
                     'brand_id' => ($brand != null) ? $brand->id : null,
-                    // 'frame_type' => ($frameType != null) ? $frameType->id : null,
+                    'frame_type' => ($frameType != null) ? $frameType->id : null,
                     'status' => 'active',
             ]);
 
