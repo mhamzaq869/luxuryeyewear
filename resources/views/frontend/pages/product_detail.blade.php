@@ -1141,7 +1141,8 @@
                     pageDots: false,
                     wrapAround: true,
                     imagesLoaded: true,
-                    verticalCells: true
+                    verticalCells: true,
+                    cellAlign:"left"
                 });
 
                 $html = `<div class='carousel carousel-main' id="carouselMain">
