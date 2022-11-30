@@ -36,7 +36,8 @@
                                       "percentPosition": false,
                                       "groupCells": "100%",
                                       "pageDots": false,
-                                      "wrapAround": true
+                                      "wrapAround": true,
+                                      "cellAlign":"left"
                                     }'>
 
                                     @if (!empty($product_detail->p_f))
