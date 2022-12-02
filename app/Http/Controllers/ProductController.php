@@ -332,7 +332,8 @@ class ProductController extends Controller
             ->join('categories', 'categories.id','=','products.cat_id')
             ->join('attributes', 'attributes.id','=','categories.frame_type')
             ->where('products.title', 'like', '%' .$searchValue . '%')
-            ->orWhere('products.brand_id', 'like', '%' . ($brand != null ? $brand->id : '') . '%')
+            // ->where('brands.brandTitle', 'like', '%' .$searchValue . '%')
+            // ->orWhere('products.brand_id', 'like', '%' . ($brand != null ? $brand->id : '') . '%')
             ->orWhere('attributes.name', 'like', '%' .$searchValue . '%')
             ->orWhere('products.product_ean_code', 'like', '%' .$searchValue . '%')
             ->orWhere('products.price', 'like', '%' .$searchValue . '%')
@@ -343,7 +344,7 @@ class ProductController extends Controller
             ->take($rowperpage)
             ->get();
 
-        // dd(DB::getQueryLog());
+        // dd(DB::getQueryLog(),$records->count());
 
      $data_arr = array();
 

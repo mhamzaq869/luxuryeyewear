@@ -309,9 +309,9 @@ class OrderController extends Controller
             $order_data = $data;
             $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
             $order_data['user_id'] = Auth::id();
-            $order_data['shipping_id'] = $data['shipping'];
+            $order_data['shipping_id'] = $data['shipping_id'];
             $order_data['payment_status'] = 'paid';
-            $shipping = $data['shipping'];
+            $shipping = $data['shipping_id'];
 
             $order_data['sub_total'] = Helper::totalCartPrice();
 
@@ -359,6 +359,7 @@ class OrderController extends Controller
             session()->forget('coupon');
             return redirect()->route('user.order.completed');
         }catch(Exception $e){
+            dd($e->getMessage());
             return redirect()->route('checkout')->with('error',$e->getMessage());
         }
     }

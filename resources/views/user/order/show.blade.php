@@ -6,7 +6,7 @@
 <div class="card">
 <h5 class="card-header">Order <a href="{{route('order.pdf',$order->id)}}" class=" btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i> Generate PDF</a>
   </h5>
-  <div class="card-body p-0">
+  <div class="card-body p-3">
     @if($order)
     <table class="table table-striped table-hover">
       <thead>
@@ -56,7 +56,7 @@
 
     <section class="confirmation_part py-3 section_padding">
         <div class="order_boxes">
-          <div class="row">
+          <div class="row p-3">
             <div class="col-lg-12 col-lx-12 p-3">
                 <h4 class="ml-2">Order Items ({{$order->cart_info->count()}})</h4>
                 <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x">
@@ -98,7 +98,7 @@
 
     <section class="confirmation_part section_padding mt-2">
       <div class="order_boxes">
-        <div class="row">
+        <div class="row p-3">
           <div class="col-lg-6 col-lx-4">
             <div class="order-info">
               <h4 class="ml-2 pb-4">ORDER INFORMATION</h4>

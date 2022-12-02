@@ -1,8 +1,21 @@
 @extends('frontend.layouts.master')
 
 @section('main-content')
+<!-- Breadcrumbs -->
+<section>
+    <div class="brand_banner">
+        <div class="container">
+          <div class="brand_banner_content">
+            <div class="brand_banner_content_text text-center">
+              <h1 class="brand_bannner_head">Payment</h1>
 
-<section class="py-12">
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+<!-- End Breadcrumbs -->
+<section class="p-5">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8 col-xl-6 text-center">
