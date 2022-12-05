@@ -192,7 +192,7 @@ class OrderController extends Controller
         endforeach;
 
         $mail = new MailController;
-        $mail->sendMail($order->user->email, "You have a new Order #".$order->order_number, view('frontend.mails.order',get_defined_vars())->render());
+        $mail->sendMail($order->user->email, $subject, view('frontend.mails.order',get_defined_vars())->render());
 
         if($status){
 
