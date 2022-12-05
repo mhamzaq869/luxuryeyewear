@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 /*
 
@@ -120,7 +122,17 @@ Route::get('order/pdf/{id}','OrderController@pdf')->name('order.pdf');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
 
+Route::get('new-order', function(){
+    $customer = \App\User::find(Auth::id());
+    $admin = \App\User::where('role','admin')->first();
+    $shipping = \App\Models\Shipping::find(0);
+    $order = Order::find(13);
+    $mail = new App\Http\Controllers\MailController;
+    $message = "Your order is confirmed!";
+    //  $mail->sendMail(\App\User::where('role','admin')->first()->email, "You have a new Order #".$order->order_number, view('frontend.mails.new_order',get_defined_vars())->render());
 
+    return view('frontend.mails.order', get_defined_vars());
+});
 
 Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
 Route::get('/product-lists','FrontendController@productLists')->name('product-lists');
@@ -231,9 +243,11 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/coupon','CouponController');
     // Settings
     Route::get('settings','AdminController@settings')->name('settings');
-    Route::get('settings/payment_int','AdminController@paymentInteg')->name('integeration');
-    Route::post('settings/payment_int_save','AdminController@paymentIntegSave')->name('settings.payment.int.save');
-    Route::get('settings/payment_int_destroy/{id}','AdminController@paymentIntegDestroy')->name('settings.payment.int.destroy');
+    Route::get('settings/integration','AdminController@paymentInteg')->name('integeration');
+    Route::get('settings/integration/{id}','AdminController@integrationShow')->name('integration.show');
+    Route::post('settings/integration/store','AdminController@integrationStore')->name('integration.store');
+    Route::post('settings/integration/{id}/update','AdminController@integrationUpdate')->name('integration.update');
+
     Route::post('setting/update','AdminController@settingsUpdate')->name('settings.update');
     // Notification
     Route::get('/notification/{id}','NotificationController@show')->name('admin.notification');

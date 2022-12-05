@@ -1108,7 +1108,7 @@ class FrontendController extends Controller
         $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','dispatch_from','extra','product_for']);
 
         return view('frontend.pages.product_for')
-                ->with('data', $products)
+                ->with('datas', $products)
                 ->with('recent_products', $recent_products)
                 ->with('search', $request->search)
                 ->with('product_for', '')

@@ -23,6 +23,7 @@
     function convertPrice() {
         $.get('https://ipapi.co/currency/', function(data) {
             symbol = data
+            setCookie('symbol', data, 30)
             var requestURL = `https://api.exchangerate.host/convert?from=USD&to=${data}`;
             var request = new XMLHttpRequest();
             request.open('GET', requestURL);
@@ -153,4 +154,12 @@
 
         return $price;
     }
+
+    function setCookie(key, value, expiry) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    }
+
+    
 </script>

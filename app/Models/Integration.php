@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
 use Dompdf\Css\Color;
 
-class PaymentIntegration extends Model
+class Integration extends Model
 {
     protected $guarded=[];
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
@@ -26,7 +27,8 @@ class OrderController extends Controller
     public function index()
     {
         $orders=Order::orderBy('id','DESC')->paginate(10);
-        return view('backend.order.index')->with('orders',$orders);
+        $attributes = Attribute::where('attribute_type','order_status')->get();
+        return view('backend.order.index', get_defined_vars());
     }
 
     /**
@@ -163,28 +165,48 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order=Order::find($id);
-        $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
-        ]);
-        $data=$request->all();
-        // return $request->status;
-        if($request->status=='delivered'){
-            foreach($order->cart as $cart){
-                $product=$cart->product;
-                // return $product;
-                $product->stock -=$cart->quantity;
-                $product->save();
+        $order = Order::find($id);
+        $data = $request->all();
+        $status = $order->fill($data)->save();
+
+        $attributes = Attribute::where('attribute_type','order_status')->get();
+        foreach($attributes as $attribute):
+            if($request->status == 'delivered'){
+                foreach($order->cart as $cart){
+                    $product=$cart->product;
+
+                    $product->stock -=$cart->quantity;
+                    $product->save();
+                }
             }
-        }
-        $status=$order->fill($data)->save();
+
+            if(strtolower($request->status) == 'new'){
+                $message = "Your order is confirmed!";
+            }else{
+                $message = "Your order has been ".$order->status;
+            }
+
+            $mail = new MailController;
+            $mail->sendMail($order->user->email, "You have a new Order #".$order->order_number, view('frontend.mails.order',get_defined_vars())->render());
+
+        endforeach;
+
+
         if($status){
-            request()->session()->flash('success','Successfully updated order');
+
+            $response['message'] = 'Successfully updated order';
+            $response['code'] = 200;
+            $response['status'] = true;
+            return response($response);
+
+        }else{
+
+            $response['message'] = 'Error while updating order';
+            $response['code'] = 500;
+            $response['status'] = false;
+            return response($response);
         }
-        else{
-            request()->session()->flash('error','Error while updating order');
-        }
-        return redirect()->route('order.index');
+
     }
 
     /**
@@ -344,7 +366,7 @@ class OrderController extends Controller
             $users = User::where('role','admin')->first();
             $details=[
                 'title'=>'You have new order',
-                'actionURL'=>route('order.show',$order->id),
+                'actionURL'=> route('order.show',$order->id),
                 'fas'=>'fa-file-alt'
             ];
 
@@ -355,11 +377,20 @@ class OrderController extends Controller
                 'quantity' => Helper::cartCount()
             ]);
 
+            $customer = User::find(Auth::id());
+            $admin = User::where('role','admin')->first();
+            $shipping = Shipping::find($order->shipping_id);
+
+            $mail = new MailController;
+            $mail->sendMail($customer->email, "You have made a Order #".$order->order_number, view('frontend.mails.new_order',get_defined_vars())->render());
+            $mail->sendMail($admin->email, "You have a new Order #".$order->order_number, view('frontend.mails.admin_new_order',get_defined_vars())->render());
+
+
             session()->put('order_number',$order->id);
             session()->forget('coupon');
             return redirect()->route('user.order.completed');
         }catch(Exception $e){
-            dd($e->getMessage());
+
             return redirect()->route('checkout')->with('error',$e->getMessage());
         }
     }

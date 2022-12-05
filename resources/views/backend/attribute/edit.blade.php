@@ -24,6 +24,7 @@
               <option value="type" {{(($attribute->attribute_type=='type')? 'selected' : '')}}>type</option>
               <option value="lens_type" {{(($attribute->attribute_type=='lens_type')? 'selected' : '')}}>lens_type</option>
               <option value="extra" {{(($attribute->attribute_type=='extra')? 'selected' : '')}}>extra</option>
+              <option value="order_status" {{(($attribute->attribute_type=='order_status')? 'selected' : '')}}>Order Status</option>
           </select>
         </div>
 

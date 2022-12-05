@@ -5,7 +5,7 @@ namespace App\Providers;
 use AmrShawky\LaravelCurrency\Facade\Currency;
 use App\Models\Attribute;
 use App\Models\Brand;
-use App\Models\PaymentIntegration;
+use App\Models\Integration;
 use App\Models\Permmission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer(['frontend.pages.checkout'], function($view) use($permissions){
-            $view->with('availablePaymnMethod', PaymentIntegration::all());
+            $view->with('availablePaymnMethod', Integration::all());
         });
 
     }

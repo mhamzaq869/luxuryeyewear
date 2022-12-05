@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\Cart;
 use App\Models\Country;
-use App\Models\PaymentIntegration;
+use App\Models\Integration;
 use App\Models\Shipping;
 use App\Models\State;
 use Illuminate\Support\Str;
@@ -302,7 +302,7 @@ class CartController extends Controller
             $address = Address::with(['state','country'])->get();
             $countries = Country::all();
             $states = State::all();
-            $integerations = PaymentIntegration::where('method','stripe')->first();
+            $integerations = Integration::where('method','stripe')->first();
 
             // Stripe Checkout Session
             $carts = Cart::with(['product'])->where('user_id',request()->ip())->where('order_id',null)->get();

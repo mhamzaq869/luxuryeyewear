@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PaymentIntegration;
+use App\Models\Integration;
 use Illuminate\Http\Request;
 use App\Models\Settings;
 use App\User;
 use App\Rules\MatchOldPassword;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Activitylog\Models\Activity;
 class AdminController extends Controller
@@ -119,19 +120,83 @@ class AdminController extends Controller
 
     public function paymentInteg()
     {
-        $paymentIntegeration = PaymentIntegration::all();
-        return view('backend.payment_integration', compact('paymentIntegeration'));
+        $integrations = Integration::all();
+        return view('backend.setting.index', get_defined_vars());
+        // return view('backend.payment_integration', compact('paymentIntegeration'));
     }
 
-    public function paymentIntegSave(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function integrationStore(Request $request)
     {
-        PaymentIntegration::create($request->all());
-        return redirect()->back()->with('success','Payment Integration Added Successfully');
+         try{
+            $integration = Integration::find($request->id);
+            $integration->update($request->except('id'));
+
+            $response['status'] = true;
+            $response['code'] = 200;
+            $response['message'] = $integration->name.' Integration Updated Successfully!';
+
+            return response($response);
+
+         }catch(Exception $e){
+            $response['status'] = false;
+            $response['code'] = 500;
+            $response['message'] = $e->getMessage();
+
+            return response($response);
+         }
     }
 
-    public function paymentIntegDestroy($id)
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function integrationShow($id)
     {
-        PaymentIntegration::where('id',$id)->delete();
-        return redirect()->back()->with('success','Payment Integration Deleted Successfully');
+        $integration = Integration::find($id);
+
+        $response['status'] = true;
+        $response['code'] = 200;
+        $response['message'] = $integration->name.' Integration Updated Successfully!';
+        $response['data'] = $integration;
+
+        return response($response);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function integrationUpdate(Request $request)
+    {
+         try{
+            $integration = Integration::find($request->id);
+            $integration->update($request->except('id'));
+
+            $response['status'] = true;
+            $response['code'] = 200;
+            $response['message'] = $integration->name.' Integration Updated Successfully!';
+
+            return response($response);
+
+         }catch(Exception $e){
+            $response['status'] = false;
+            $response['code'] = 500;
+            $response['message'] = $e->getMessage();
+
+            return response($response);
+         }
+    }
+
+
 }
