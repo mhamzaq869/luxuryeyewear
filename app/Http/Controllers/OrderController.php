@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders=Order::orderBy('id','DESC')->paginate(10);
-        $attributes = Attribute::where('attribute_type','order_status')->get();
+        $attributes = Attribute::where('attribute_type','order_status')->orderBy('id','desc')->get();
         return view('backend.order.index', get_defined_vars());
     }
 
