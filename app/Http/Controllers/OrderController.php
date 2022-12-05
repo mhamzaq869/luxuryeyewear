@@ -183,7 +183,7 @@ class OrderController extends Controller
             if(strtolower($request->status) == 'new'){
                 $message = "Your order is confirmed!";
             }else{
-                $message = "Your order has been ".$order->status;
+                $message = "Your order is ".$order->status;
             }
 
             $mail = new MailController;
@@ -383,7 +383,7 @@ class OrderController extends Controller
             $shipping = Shipping::find($order->shipping_id);
 
             $mail = new MailController;
-            $mail->sendMail($customer->email, "You have made a Order #".$order->order_number, view('frontend.mails.new_order',get_defined_vars())->render());
+            $mail->sendMail($customer->email, "You have made a Order #".$order->order_number, view('frontend.mails.order',get_defined_vars())->render());
             $mail->sendMail($admin->email, "You have a new Order #".$order->order_number, view('frontend.mails.admin_new_order',get_defined_vars())->render());
 
 
