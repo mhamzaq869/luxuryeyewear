@@ -333,6 +333,7 @@ class OrderController extends Controller
             $order_data['user_id'] = Auth::id();
             $order_data['shipping_id'] = $data['shipping_id'];
             $order_data['payment_status'] = 'paid';
+            $order_data['symbol'] = $_COOKIE['symbol'];
             $shipping = $data['shipping_id'];
 
             $order_data['sub_total'] = Helper::totalCartPrice();

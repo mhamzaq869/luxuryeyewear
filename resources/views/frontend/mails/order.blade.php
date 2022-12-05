@@ -211,7 +211,7 @@
                                                                                                             Total:</span>
                                                                                                     </td>
                                                                                                     <td><span
-                                                                                                            style="font-size: 14px; line-height: 150%;">{{ $_COOKIE['symbol'] . number_format($order->conversion_rate*$order->total_amount,2) }}</span>
+                                                                                                            style="font-size: 14px; line-height: 150%;">{{ $order->symbol  . number_format($order->conversion_rate*$order->total_amount,2) }}</span>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -427,7 +427,7 @@
                                                                                                         </td>
                                                                                                         <td style="text-align: center;"
                                                                                                             width="100">
-                                                                                                            {{ $_COOKIE['symbol'] . number_format($order->conversion_rate*$detail->product->price,2) }}
+                                                                                                            {{ $order->symbol . number_format($order->conversion_rate*$detail->product->price,2) }}
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                 </tbody>
@@ -501,7 +501,7 @@
                                                                                                         items):</td>
                                                                                                     <td
                                                                                                         style="text-align: right; font-size: 18px; line-height: 150%;">
-                                                                                                        {{ $_COOKIE['symbol'] . number_format($order->conversion_rate*$order->total_amount,2) }}
+                                                                                                        {{ $order->symbol . number_format($order->conversion_rate*$order->total_amount,2) }}
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
@@ -510,7 +510,7 @@
                                                                                                         Discount:</td>
                                                                                                     <td
                                                                                                         style="text-align: right; font-size: 18px; line-height: 150%;">
-                                                                                                        {{ $_COOKIE['symbol'] . number_format($order->conversion_rate*$order->coupon,2) }}
+                                                                                                        {{ $order->symbol . number_format($order->conversion_rate*$order->coupon,2) }}
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
@@ -520,7 +520,7 @@
                                                                                                     </td>
                                                                                                     <td
                                                                                                         style="text-align: right; font-size: 18px; line-height: 150%; color: #d48344;">
-                                                                                                        <strong>{{ $_COOKIE['symbol'] . number_format($order->conversion_rate*$order->total_amount,2) }}</strong>
+                                                                                                        <strong>{{ $order->symbol . number_format($order->conversion_rate*$order->total_amount,2) }}</strong>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
