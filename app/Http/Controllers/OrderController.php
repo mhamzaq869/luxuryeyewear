@@ -182,15 +182,17 @@ class OrderController extends Controller
 
             if(strtolower($request->status) == 'new'){
                 $message = "Your order is confirmed!";
+                $subject = 'Your order #'.$order->order_number.' is '.$order->status.' From Luxuryeyewear';
             }else{
                 $message = "Your order is ".$order->status;
+                $subject = 'Your order #'.$order->order_number.' is '.$order->status.' From Luxuryeyewear';
             }
 
-            $mail = new MailController;
-            $mail->sendMail($order->user->email, "You have a new Order #".$order->order_number, view('frontend.mails.order',get_defined_vars())->render());
 
         endforeach;
 
+        $mail = new MailController;
+        $mail->sendMail($order->user->email, "You have a new Order #".$order->order_number, view('frontend.mails.order',get_defined_vars())->render());
 
         if($status){
 
