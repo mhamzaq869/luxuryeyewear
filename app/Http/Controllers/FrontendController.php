@@ -1090,13 +1090,12 @@ class FrontendController extends Controller
         $recent_products = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
 
         if($request->search != null){
-            $products = DB::table('products')
-            ->join('brands','products.brand_id','=','brands.id')
+            $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
             ->select('products.*','brands.title as brandName')
-            // ->orwhere('products.slug', 'like', '%' . $request->search . '%')
-            ->orwhere('products.product_ean_code', 'like', '%' . $request->search . '%')
-            ->orwhere('products.price', 'like', '%' . $request->search . '%')
-            ->orWhereNot('products.status', 'inactive')
+            ->where('products.title', 'like', '%' . $request->search . '%')
+            ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
+            ->orWhere('products.price', 'like', '%' . $request->search . '%')
+            ->whereNot('products.status', 'inactive')
             ->orderBy('products.id', 'DESC')
             ->simplePaginate(20);
 
@@ -1104,6 +1103,7 @@ class FrontendController extends Controller
             $products = [];
         }
 
+        // dd($products);
 
         $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','dispatch_from','extra','product_for']);
 

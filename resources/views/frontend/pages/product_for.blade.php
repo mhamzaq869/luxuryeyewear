@@ -163,15 +163,14 @@
                                                                 @endif
                                                             @endforeach
 
-                                                            @if (isset($i) && $i > 2)
+                                                            @if (isset($i) && $i >= 2)
+                                                                @if((count($product_variant->where('product_for', $product->product_for)) - 4) != 0)
                                                                 <li style="padding: 0px">
-                                                                    <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                        class="text-danger m-2">
-                                                                        @if (count($product_variant->where('product_for', $product->product_for)) - 4 > 0)
-                                                                            +{{ count($product_variant->where('product_for', $product->product_for)) - 4 }}
-                                                                        @endif
+                                                                    <a href="{{route('product-detail',[$product->slug])}}" target="_blank" style="padding: 14px" class="text-danger m-2">
+                                                                        +{{count($product_variant->where('product_for', $product->product_for)) - 4}}
                                                                     </a>
                                                                 </li>
+                                                                @endif
                                                             @endif
 
                                                         </ul>
@@ -324,35 +323,6 @@
             });
         }
 
-        // $('.filter-form-product-for').on('submit', (function(e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         url: $(this).attr('action'),
-        //         type: "GET",
-        //         data: $(this).serialize(),
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success: function(response) {
-        //             if (response.status == 1) {
-        //                 processing = false;
-        //                 if (response.more_data > 0) {
-        //                     $("#productsList").append(response.html);
-        //                     $(".ajax-load").css('display', 'none');
-        //                 } else {
-        //                     $(".ajax-load-show-message").html('No More Products Found!');
-        //                     $(".ajax-load-show-message").css('display', 'block');
-        //                     $(".ajax-load").css('display', 'none');
-        //                     processing = true;
-        //                 }
-        //             } else {
-        //                 console.error('server err');
-        //             }
-        //         },
-        //         error: function(e) {
-        //             console.log(e);
-        //         }
-        //     });
-        // }));
+
     </script>
 @endpush

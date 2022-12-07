@@ -135,22 +135,31 @@
             $extra_amount = 0;
         }
 
-        if ($details.dispatch_from.includes(countryCode)) {
-            if ($col != null) {
-                $price = parseInt($details[$col]) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt(
-                    $extra_amount);
+        if($details.dispatch_from != null){
+            if ($details.dispatch_from.includes(countryCode)) {
+                if ($col != null) {
+                    $price = parseInt($details[$col]) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt(
+                        $extra_amount);
+                } else {
+                    $price = parseInt($details.price) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt(
+                        $extra_amount);
+                }
             } else {
-                $price = parseInt($details.price) + ($details.extra != null ? parseInt($details.extra) : 0) + parseInt(
-                    $extra_amount);
-            }
-        } else {
 
+                if ($col != null) {
+                    $price = parseInt($details[$col]) + parseInt($extra_amount);
+                } else {
+                    $price = parseInt($details.price) + parseInt($extra_amount);
+                }
+            }
+        }else{
             if ($col != null) {
                 $price = parseInt($details[$col]) + parseInt($extra_amount);
             } else {
                 $price = parseInt($details.price) + parseInt($extra_amount);
             }
         }
+
 
         return $price;
     }
@@ -161,5 +170,5 @@
         document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
     }
 
-    
+
 </script>
