@@ -49,7 +49,7 @@
                                         @method('GET')
 
                                         <input type="hidden" name="search_product" class="search_product"
-                                            @isset($search_product) value="{{ $search_product }}" @endisset>
+                                            @isset($search) value="{{ $search }}" @endisset>
                                         <input type="hidden" name="glass_type" class="glass_type"
                                             @isset($glass_type) value="{{ $glass_type }}" @endisset>
                                         <input type="hidden" name="color_array" class="colors"
