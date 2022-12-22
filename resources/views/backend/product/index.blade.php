@@ -83,99 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($products as $key => $product)
-                                    @php
-                                        $sub_cat_info = DB::table('categories')
-                                            ->select('title')
-                                            ->where('id', $product->child_cat_id)
-                                            ->get();
-                                        $brands = DB::table('brands')
-                                            ->select('title')
-                                            ->where('id', $product->brand_id)
-                                            ->get();
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $product->id }}</td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input cust-checkbox"
-                                                    id="check{{ $product->id }}" value="{{ $product->id }}"
-                                                    name="checked[]">
-                                                <label class="custom-control-label" for="check{{ $product->id }}"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @if ($product->status == 'active')
-                                                <span class="badge badge-success">{{ $product->status }}</span>
-                                            @else
-                                                <span class="badge badge-warning">{{ $product->status }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($product->photo)
-                                                @php
-                                                    $photo = explode(',', $product->photo);
-                                                @endphp
-                                                <img src="{{ asset($photo[0]) }}" class="img-fluid " style="max-width:80px"
-                                                    alt="{{ $product->photo }}">
-                                            @else
-                                                <img src="{{ asset('backend/img/thumbnail-default.jpg') }}"
-                                                    class="img-fluid" style="max-width:80px" alt="avatar.png">
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (isset($product->frametype))
-                                                {{ $product->frametype->name }}
-                                            @else
-                                                NA
-                                            @endif
-                                        </td>
-                                        <td style="width: 25% !important"> <a href="{{url('product-detail',[$product->slug])}}" target="_blank"> {{ $product->title }} </a></td>
-                                        <td>
-                                           {{ $product->brand->title ?? '' }}
-                                        </td>
-                                        <td>
-                                            @if ($product->cat_info)
-                                                {{ ucfirst($product->cat_info->title) }}
-                                            @else
-                                                NA
-                                            @endif
-                                        </td>
 
-
-
-                                        <td> {{ $product->color }}</td>
-                                        <td>{{ $product->product_ean_code }}</td>
-                                        <td>%{{ $product->discount }}</td>
-
-
-
-                                        <td>
-                                            @if ($product->stock > 0)
-                                                <span class="badge badge-primary">{{ $product->stock }}</span>
-                                            @else
-                                                <span class="badge badge-danger">{{ $product->stock }}</span>
-                                            @endif
-                                        </td>
-                                        <td>Rs. {{ $product->price }} /-</td>
-
-
-                                        <td>
-                                            <a href="{{ route('product.edit', $product->id) }}"
-                                                class="btn btn-primary btn-sm float-left mr-1"
-                                                style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                            <form method="POST" action="{{ route('product.destroy', [$product->id]) }}">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn btn-danger btn-sm dltBtn" data-id={{ $product->id }}
-                                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    data-placement="bottom" title="Delete"><i
-                                                        class="fas fa-trash-alt"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
                             </tbody>
                         </table>
                     @else
@@ -221,10 +129,15 @@
                 }
             });
 
-            $('#product').DataTable({
-
-                'processing': true,
+            $('#product').on('preXhr.dt', function ( e, settings, data ) {
+                    $(".loader_bg").removeClass('d-none');
+                }).DataTable({
+                deferRender: true,
+                'processing': false,
                 'serverSide': true,
+                "language": {
+                    processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+                },
                 'serverMethod': 'post',
                 lengthMenu: [
                     [25, 50, 100, 150, 250, {{count($products)}}],
@@ -235,6 +148,9 @@
                 ],
                 'ajax': {
                     'url':'{{route("product.show.ajax.data")}}'
+                },
+                "drawCallback": function (settings) {
+                    $(".loader_bg").addClass('d-none');
                 },
                 'columns': [
                     { data: 'id' },

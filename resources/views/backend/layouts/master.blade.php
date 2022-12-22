@@ -16,6 +16,9 @@
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
+        <div class="loader_bg">
+            <div class="loader"></div>
+        </div>
         <!-- Topbar -->
         @include('backend.layouts.header')
         <!-- End of Topbar -->

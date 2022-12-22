@@ -42,6 +42,52 @@
         .select2-selection__arrow {
             height: 34px !important;
         }
+
+        /** Loader */
+        .loader_bg{
+            position: fixed;
+            z-index: 999999;
+            background: #ffffffbf;
+            width: 100%;
+            height: 100%;
+        }
+        .loader{
+            border: 0 soild transparent;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            top: calc(50vh - 100px);
+            left: calc(50vw - 200px);
+        }
+        .loader:before, .loader:after{
+            content: '';
+            border: 1em solid #ff5733;
+            border-radius: 50%;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loader 2s linear infinite;
+            opacity: 0;
+        }
+        .loader:before{
+            animation-delay: .5s;
+        }
+        @keyframes loader{
+            0%{
+                transform: scale(0);
+                opacity: 0;
+            }
+            50%{
+                opacity: 1;
+            }
+            100%{
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
     </style>
 
 </head>
