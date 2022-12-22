@@ -18,79 +18,44 @@
                     <div class="product_deatail_list_text">
                         <div class="lineTitleCol">
                             <h6 class="lineTitle">Explore Our Products</h6>
-
                         </div>
                         <h2 class="product_detail_head lgTitle darkColor">Most Loved Frames</h2>
-
-
                     </div>
                     <p style="text-align: center;">We found {{ count($datas) }} products available for you all page</p>
                     <div class="filterColMain pt-3">
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
                                 <div class="col">
-                                    {{-- <a class="btn btnDark w-100 filterBtn" data-bs-toggle="offcanvas"
-                                        href="#filterCanvas" role="button" aria-controls="filterCanvas"><span
-                                            class="filterIcon">
-                                            <img src="{{ asset('assets/images/filter-icon.svg') }}" alt="..."></span>
-                                        <span>Filter</span></a> --}}
+
                                 </div>
                                 <div class="col">
-                                    {{-- <select class="form-select selectStyle" aria-label="Default select example">
-                                        <option selected>Sort by</option>
-                                        <option value="1">Sort by Name</option>
-                                        <option value="2">Sort by Name</option>
-                                    </select> --}}
 
-                                    <form class="filter-form-product-for" method="GET"
-                                        action="{{ route('filter.product') }}">
+
+                                    <form class="filter-form-product-for" method="GET"  action="{{ route('filter.product') }}">
 
                                         @csrf
                                         @method('GET')
 
-                                        <input type="hidden" name="search_product" class="search_product"
-                                            @isset($search) value="{{ $search }}" @endisset>
-                                        <input type="hidden" name="glass_type" class="glass_type"
-                                            @isset($glass_type) value="{{ $glass_type }}" @endisset>
-                                        <input type="hidden" name="color_array" class="colors"
-                                            @isset($color_array) value="{{ $color_array }}" @endisset>
-                                        <input type="hidden" name="brand_array" class="brands"
-                                            @isset($brand_array) value="{{ $brand_array }}" @endisset>
-                                        <input type="hidden" name="gender_array" class="genders"
-                                            @isset($gender_array) value="{{ $gender_array }}" @endisset>
-                                        <input type="hidden" name="shape_array" class="shapes"
-                                            @isset($shape_array) value="{{ $shape_array }}" @endisset>
-                                        <input type="hidden" name="frame_array" class="frames"
-                                            @isset($frame_array) value="{{ $frame_array }}" @endisset>
-                                        <input type="hidden" name="material_array" class="materials"
-                                            @isset($material_array) value="{{ $material_array }}" @endisset>
-                                        <input type="hidden" name="min_price" class="min_price"
-                                            @isset($min_price) value="{{ $min_price }}" @endisset>
-                                        <input type="hidden" name="max_price" class="max_price"
-                                            @isset($max_price) value="{{ $max_price }}" @endisset>
-                                        <input type="hidden" name="product_for" id="product_for"
-                                            value="{{ $product_for }}">
+                                        <input type="hidden" name="search_product" class="search_product" @isset($search) value="{{ $search }}" @endisset>
+                                        <input type="hidden" name="glass_type" class="glass_type" @isset($glass_type) value="{{ $glass_type }}" @endisset>
+                                        <input type="hidden" name="color_array" class="colors" @isset($color_array) value="{{ $color_array }}" @endisset>
+                                        <input type="hidden" name="brand_array" class="brands" @isset($brand_array) value="{{ $brand_array }}" @endisset>
+                                        <input type="hidden" name="gender_array" class="genders" @isset($gender_array) value="{{ $gender_array }}" @endisset>
+                                        <input type="hidden" name="shape_array" class="shapes" @isset($shape_array) value="{{ $shape_array }}" @endisset>
+                                        <input type="hidden" name="frame_array" class="frames" @isset($frame_array) value="{{ $frame_array }}" @endisset>
+                                        <input type="hidden" name="material_array" class="materials" @isset($material_array) value="{{ $material_array }}" @endisset>
+                                        <input type="hidden" name="min_price" class="min_price" @isset($min_price) value="{{ $min_price }}" @endisset>
+                                        <input type="hidden" name="max_price" class="max_price" @isset($max_price) value="{{ $max_price }}" @endisset>
+                                        <input type="hidden" name="product_for" id="product_for" value="{{ $product_for }}">
                                         <input type="hidden" name="ajax" id="ajax" value="">
 
-                                        <select name="order_filter" id="order_filter"
-                                            onchange="filter_product_for('order_filter')" class="form-select selectStyle"
-                                            aria-label="Default select example">
+                                        <select name="order_filter" id="order_filter" onchange="filter_product_for('order_filter')" class="form-select selectStyle" aria-label="Default select example">
                                             <option value="Default">Sort by</option>
-                                            <option
-                                                value="Latest"@isset($order_filter) @if ($order_filter == 'Latest') selected @endif @endisset>
-                                                Latest</option>
-                                            <option value="Low"
-                                                @isset($order_filter) @if ($order_filter == 'Low') selected @endif @endisset>
-                                                Price: low to high</option>
-                                            <option value="High"
-                                                @isset($order_filter) @if ($order_filter == 'High') selected @endif @endisset>
-                                                Price: high to low</option>
-                                            <option value="Sort_ASC"
-                                                @isset($order_filter) @if ($order_filter == 'Sort_ASC') selected @endif @endisset>
-                                                A to Z</option>
-                                            <option value="Sort_DESC"
-                                                @isset($order_filter) @if ($order_filter == 'Sort_DESC') selected @endif @endisset>
-                                                Z to A</option>
+                                            <option value="Latest"@isset($order_filter) @if ($order_filter == 'Latest') selected @endif @endisset> Latest</option>
+                                            <option value="Low" @isset($order_filter) @if ($order_filter == 'Low') selected @endif @endisset> Price: low to high</option>
+                                            <option value="High" @isset($order_filter) @if ($order_filter == 'High') selected @endif @endisset> Price: high to low</option>
+                                            <option value="Sort_ASC" @isset($order_filter) @if ($order_filter == 'Sort_ASC') selected @endif @endisset> A to Z</option>
+                                            <option value="Sort_DESC" @isset($order_filter) @if ($order_filter == 'Sort_DESC') selected @endif @endisset> Z to A</option>
                                         </select>
 
                                     </form>
@@ -98,6 +63,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="productColMain">
                         <div class="row g-4">
                             <div class="col-md-6 col-xl-2">
@@ -107,12 +73,7 @@
                                 <div class="row g-4" id="productsList">
                                     @foreach ($datas as $product)
                                         <div class="col-md-6 col-xl-4">
-
-
                                             <div class="cardStyle1">
-
-                                                {{-- <span class="discountCol" id="female_eyeglass_pro_discount_{{ $product->id }}">{{$product->discount}}% off</span> --}}
-
                                                 <div class="productImg">
                                                     <a href="{{ route('product-detail', $product->slug) }}">
                                                         <div class="imgCol">
@@ -142,7 +103,7 @@
                                                                     </a>
                                                                 </li>
                                                             @endif
-                                                            {{-- {{dd($product_variant->where('id','!=',$product->id)->whereIn('product_for',[27,30]))}} --}}
+
                                                             @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
@@ -174,55 +135,33 @@
                                                                     </a>
                                                                 </li>
                                                             @endif
-
                                                         </ul>
-
                                                     </div>
-
                                                 </div>
 
                                                 <div class="contentCol">
-
-                                                    <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}">
-                                                        {{ $product->brandName }} </h4>
-                                                    <a href="{{ route('product-detail', $product->slug) }}"
-                                                        target="_blank" class="text-dark">
-                                                        <p id="eyelass_pro_model_{{ $product->id }}"
-                                                            class="text-dark link-primary">{{ $product->title }}</p>
+                                                    <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}"> {{ $product->brandName }} </h4>
+                                                    <a href="{{ route('product-detail', $product->slug) }}" target="_blank" class="text-dark">
+                                                        <p id="eyelass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
                                                     </a>
-                                                    <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}">
-                                                    </span>
-
+                                                    <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}"> </span>
 
                                                     <div class="row gx-2">
-
                                                         <div class="col-auto">
-
-                                                            <a href="{{ route('single-add-to-cart', $product->slug) }}"
-                                                                class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
-
+                                                            <a href="{{ route('single-add-to-cart', $product->slug) }}" class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
                                                         </div>
 
                                                         <div class="col">
-
-                                                            <a href="{{ route('add-to-wishlist', $product->slug) }}"
-                                                                class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
-
+                                                            <a href="{{ route('add-to-wishlist', $product->slug) }}" class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
                                             </div>
-
-
                                         </div>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -233,9 +172,6 @@
         <img src="{{ asset('assets/images/iphone-spinner.gif') }}">
     </div>
     <div class="ajax-load-show-message text-center my-3" style="display:none"></div>
-
-    {{-- @include('frontend.layouts.product_filter') --}}
-
 @endsection
 
 
