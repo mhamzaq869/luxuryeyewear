@@ -163,14 +163,16 @@
                                                                 @endif
                                                             @endforeach
 
-                                                            @if (isset($i) && $i >= 2)
-                                                                @if((count($product_variant->where('product_for', $product->product_for)) - 4) != 0)
-                                                                <li style="padding: 0px">
-                                                                    <a href="{{route('product-detail',[$product->slug])}}" target="_blank" style="padding: 14px" class="text-danger m-2">
-                                                                        +{{count($product_variant->where('product_for', $product->product_for)) - 4}}
+                                                            @if (isset($i) && $i > 2)
+                                                                <li style="padding: 0">
+                                                                    <a href="{{ route('product-detail', [$product->slug]) }}"
+                                                                        class="text-danger m-2" style="padding: 14px">
+                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0)
+
+                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 }}
+                                                                        @endif
                                                                     </a>
                                                                 </li>
-                                                                @endif
                                                             @endif
 
                                                         </ul>
