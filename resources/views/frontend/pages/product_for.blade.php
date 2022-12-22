@@ -143,7 +143,7 @@
                                                                 </li>
                                                             @endif
                                                             {{-- {{dd($product_variant->where('id','!=',$product->id)->whereIn('product_for',[27,30]))}} --}}
-                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
+                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
                                                                         <a href="javascript:void(0)"
