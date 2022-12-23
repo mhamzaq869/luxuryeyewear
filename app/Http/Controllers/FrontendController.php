@@ -1095,7 +1095,8 @@ class FrontendController extends Controller
             ->where('products.title', 'like', '%' . $request->search . '%')
             ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
             ->orWhere('products.price', 'like', '%' . $request->search . '%')
-            ->whereNot('products.status', 'inactive')
+            ->where('products.status', 'active')
+            // ->whereNot('products.status', 'inactive')
             ->orderBy('products.id', 'DESC')
             ->simplePaginate(20);
 

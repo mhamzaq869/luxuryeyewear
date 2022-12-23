@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Integration;
 use App\Models\Permmission;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['frontend.layouts.product_filter'], function($view) use($permissions){
             $attribute = DB::table('attributes')->get();
 
-            $data['brand'] = DB::table('brands')->get();
+            $data['brand'] = DB::table('brands')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->get();
             $data['shapes'] = $attribute->where('attribute_type','shape');
             $data['materials'] = $attribute->where('attribute_type','material');
             $data['type'] = $attribute->where('attribute_type','type');
