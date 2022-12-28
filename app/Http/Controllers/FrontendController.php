@@ -102,13 +102,16 @@ class FrontendController extends Controller
                         ->where('categories.frame_type', 32);
 
         if($type == 'women'){
-            $eyeglasses->whereIn('products.product_for', [28,30]);
+            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+
+            $eyeglasses->whereIn('products.product_for', [$womenId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
-            $eyeglasses->whereIn('products.product_for', [27,30]);
+            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+            $eyeglasses->whereIn('products.product_for', [$manId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
@@ -156,13 +159,16 @@ class FrontendController extends Controller
 
 
         if($type == 'women'){
-            $products->whereIn('products.product_for', [28,30]);
+            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+
+            $products->whereIn('products.product_for', [$womenId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
-            $products->whereIn('products.product_for', [27,30]);
+            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+            $products->whereIn('products.product_for', [$manId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
@@ -191,14 +197,17 @@ class FrontendController extends Controller
             ->where('categories.frame_type', 31);
 
         if($type == 'women'){
-            $sunglasses->whereIn('products.product_for', [28,30]);
+            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+
+            $sunglasses->whereIn('products.product_for', [$womenId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $sunglasses->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
+            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
 
-            $sunglasses->whereIn('products.product_for', [27,30]);
+            $sunglasses->whereIn('products.product_for', [$manId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
 
@@ -239,14 +248,17 @@ class FrontendController extends Controller
                     ->where('categories.frame_type', 31);
 
         if($type == 'women'){
-            $products->whereIn('products.product_for', [28,30]);
+            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+
+            $products->whereIn('products.product_for', [$womenId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
         }else if($type == 'men'){
+            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
 
-            $products->whereIn('products.product_for', [27,30]);
+            $products->whereIn('products.product_for', [$manId,30]);
             if($for != null){
                 $attribute = Attribute::where('name',$for)->first()->id ?? '';
 

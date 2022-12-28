@@ -72,6 +72,7 @@
                             </div>
                             <div class="col-md-6 col-xl-10">
                                 <div class="row g-4" id="productsList">
+
                                     @foreach ($sunglasses as $product)
                                         <div class="col-md-6 col-xl-4">
                                             <div class="cardStyle1">
@@ -89,7 +90,7 @@
                                                     </a>
 
                                                     <div class="color_builts">
-                                                        <ul @if (count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) == 0) style="margin-left:-40px" @endif>
+                                                        <ul @if (count($product_variant->where('cat_id',$product->cat_id)) == 0) style="margin-left:-40px" @endif>
                                                             @if ($active = $product)
                                                                 <li>
                                                                     <a href="javascript:void(0)"
@@ -99,7 +100,7 @@
                                                                             class="p-2 hover-product active-product last-product last-product-{{ $product->id }}"
                                                                             id="href_sunglass_{{ $product->id }}_{{ $active->id }}"
                                                                             onmouseover="changeProDetail({{ $product->id }},'sunglass_',{{ $product->id }})"
-                                                                            @if ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->count() === 0)
+                                                                            @if ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->count() === 0)
                                                                                 style="margin-left:-20px"
                                                                             @endif >
                                                                         @else
@@ -114,8 +115,8 @@
                                                                     </a>
                                                                 </li>
                                                             @endif
-                                                            {{-- {{dd($product_variant->where('id','!=',$product->id)->whereIn('product_for',[27,30]))}} --}}
-                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
+
+                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
                                                                         <a href="javascript:void(0)"
@@ -139,9 +140,9 @@
                                                                 <li style="padding: 0">
                                                                     <a href="{{ route('product-detail', [$product->slug]) }}"
                                                                         class="text-danger m-2" style="padding: 14px">
-                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0)
+                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
 
-                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 }}
+                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}
                                                                         @endif
                                                                     </a>
                                                                 </li>

@@ -223,7 +223,7 @@ class ProductController extends Controller
         }
 
 
-        $data['slug']=$slug;
+        $data['slug'] = $slug;
 
 
 
@@ -250,14 +250,14 @@ class ProductController extends Controller
 
         try{
             $status = Product::create($data);
-            request()->session()->flash('success','Product Successfully added');
+             session()->flash('success','Product Successfully added');
         }catch(Exception $e){
             $errorCode = $e->errorInfo[1];
             if($errorCode == '1062'){
-                request()->session()->flash('error','Duplicated Product EAN Code');
+                 session()->flash('error','Duplicated Product EAN Code');
             }
             else{
-                request()->session()->flash('error',$e->getMessage());
+                 session()->flash('error',$e->getMessage());
             }
         }
 
