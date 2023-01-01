@@ -1107,9 +1107,10 @@ class FrontendController extends Controller
             ->where('products.title', 'like', '%' . $request->search . '%')
             ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
             ->orWhere('products.price', 'like', '%' . $request->search . '%')
-            ->whereNotIn('products.status', ['inactive','outofstock'])
             ->orderBy('products.id', 'DESC')
             ->simplePaginate(20);
+
+            $products = $products->where('status','active')->flatten();
 
         }else{
             $products = [];
