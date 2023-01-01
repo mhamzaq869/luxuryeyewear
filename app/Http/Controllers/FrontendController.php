@@ -1104,13 +1104,14 @@ class FrontendController extends Controller
         if($request->search != null){
             $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
             ->select('products.*','brands.title as brandName')
-            ->where('products.title', 'like', '%' . $request->search . '%')
+            ->where('products.status', 'active')
+            ->orWhere('products.title', 'like', '%' . $request->search . '%')
             ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
             ->orWhere('products.price', 'like', '%' . $request->search . '%')
             ->orderBy('products.id', 'DESC')
             ->simplePaginate(20);
 
-            $products = $products->where('status','active')->flatten();
+            // $products = $products->where('status','active')->flatten();
 
         }else{
             $products = [];
