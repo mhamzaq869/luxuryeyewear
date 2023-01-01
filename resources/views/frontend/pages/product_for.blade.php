@@ -143,7 +143,7 @@
                                                                 </li>
                                                             @endif
                                                             {{-- {{dd($product_variant->where('id','!=',$product->id)->whereIn('product_for',[27,30]))}} --}}
-                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)->flatten() as $i => $variant)
+                                                            @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
                                                                         <a href="javascript:void(0)"
@@ -167,9 +167,9 @@
                                                                 <li style="padding: 0">
                                                                     <a href="{{ route('product-detail', [$product->slug]) }}"
                                                                         class="text-danger m-2" style="padding: 14px">
-                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 > 0)
+                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
 
-                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)->where('product_for', $product->product_for)) - 4 }}
+                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}
                                                                         @endif
                                                                     </a>
                                                                 </li>
