@@ -73,7 +73,8 @@
                     @if (isset($gender_array)) @if (in_array($gender->id, $check_gender)) checked @endif @endisset
                     class="form-check-input" />
                 <span> {{ $gender->name }}
-                    <b> ({{\App\Models\Product::where('product_for',$gender->id)->count()}}) </b>
+                    @php $genderCount =  \App\Models\Product::where('product_for',$gender->id)->where('status','active')->count(); @endphp
+                    <b> {{ $genderCount != 0 ? '('.$genderCount.')' : ''}} </b>
                 </span>
             </a>
         </li>
@@ -106,7 +107,8 @@
                                     onclick="filter_product_for('brand_filter')" name="brands[]" value="{{ $brand->id }}"
                                     @if (isset($brand_array)) @if (in_array($brand->id, $check_brand)) checked @endif
                                     @endisset class="form-check-input" /><span> {{ $brand->title }}
-                                        <b> ({{\App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->count()}}) </b>
+                                        @php $brandCount =  \App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->where('status','active')->count(); @endphp
+                                        <b> {{ $brandCount != 0 ? '('.$brandCount.')' : ''}} </b>
                                     </span></a>
                                 </li>
                                 @endif
@@ -119,7 +121,8 @@
                                         onclick="filter_product_for('brand_filter')" name="brands[]" value="{{ $brand->id }}"
                                         @if (isset($brand_array)) @if (in_array($brand->id, $check_brand)) checked @endif
                                         @endisset class="form-check-input" /><span> {{ $brand->title }}
-                                            <b> ({{\App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->count()}}) </b>
+                                            @php $brandCount =  \App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->where('status','active')->count(); @endphp
+                                            <b> {{ $brandCount != 0 ? '('.$brandCount.')' : ''}} </b>
                                         </span></a>
                                     </li>
                                     @endif
@@ -184,7 +187,9 @@
                                         @if (isset($shape_array)) @if (in_array($shape->id, $check_shape))
                         checked @endif
                                     @endisset /><span> {{ $shape->name }}
-                                        <b> ({{\App\Models\Product::where('shape',$shape->id)->count()}}) </b>
+                                        @php $shapeCount =  \App\Models\Product::where('shape',$shape->id)->where('status','active')->count(); @endphp
+
+                                        <b> {{ $shapeCount != 0 ? '('.$shapeCount.')' : ''}} </b>
                                     </span></a></li>
                     @endforeach
                     </ul>
@@ -212,7 +217,8 @@
                                         onclick="filter_product_for('material_filter')" name="materials[]" value="{{ $material->id }}"
                                         @if (isset($material_array)) @if (in_array($material->id, $check_material)) checked @endif
                                     @endisset class="form-check-input" /><span> {{ $material->name }}
-                                        <b> ({{\App\Models\Product::where('product_material',$material->id)->count()}}) </b>
+                                        @php $materialCount =  \App\Models\Product::where('product_material',$material->id)->where('status','active')->count(); @endphp
+                                        <b> {{ $materialCount != 0 ? '('.$materialCount.')' : ''}} </b>
                                     </span></a>
                         </li>
                     @endforeach
