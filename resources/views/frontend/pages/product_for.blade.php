@@ -24,7 +24,7 @@
 
 
                     </div>
-                    <p style="text-align: center;">We found {{ count($datas) }} products available for you all page</p>
+                    <p style="text-align: center;">We found {{ $allProductsCount }} products available for you all page</p>
                     <div class="filterColMain pt-3">
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
@@ -107,26 +107,19 @@
                                 <div class="row g-4" id="productsList">
                                     @foreach ($datas as $product)
                                         <div class="col-md-6 col-xl-4">
-
-
-                                            <div class="cardStyle1">
-
-                                                {{-- <span class="discountCol" id="female_eyeglass_pro_discount_{{ $product->id }}">{{$product->discount}}% off</span> --}}
-
-                                                <div class="productImg">
-                                                    <a href="{{ route('product-detail', $product->slug) }}">
+                                            <a href="{{ route('product-detail', $product->slug) }} ">
+                                                <div class="cardStyle1">
+                                                    <div class="productImg">
                                                         <div class="imgCol">
                                                             <img src="{{ asset($product->photo) }}"
                                                                 id="eyelass_pro_img_{{ $product->id }}" alt="Product ">
                                                         </div>
-                                                    </a>
 
                                                     <div class="color_builts">
                                                         <ul>
                                                             @if ($active = $product)
                                                                 <li>
-                                                                    <a href="javascript:void(0)"
-                                                                        onclick="changeProDetail({{ $active->id }},'eyelass_',{{ $product->id }})">
+                                                                    <a href="javascript:void(0)"  onclick="changeProDetail({{ $active->id }},'eyelass_',{{ $product->id }})">
                                                                         @if (!isValidUrl($active->photo))
                                                                             <img src="{{ asset(insertAtPosition($active->photo)) }}"
                                                                                 alt=""
@@ -142,13 +135,13 @@
                                                                     </a>
                                                                 </li>
                                                             @endif
-                                                            {{-- {{dd($product_variant->where('id','!=',$product->id)->whereIn('product_for',[27,30]))}} --}}
+
                                                             @foreach ($product_variant->where('id', '!=', $product->id)->where('cat_id',$product->cat_id)->flatten() as $i => $variant)
                                                                 @if ($i <= 2)
                                                                     <li>
                                                                         <a href="javascript:void(0)"
                                                                             onclick="changeProDetail({{ $variant->id }},'eyelass_',{{ $product->id }})"
-                                                                            onmouseover="changeProDetail({{ $variant->id }},'eyelass_',{{ $product->id }})">
+                                                                            onmouseover="changeProDetail({{ $variant->id }},'eyelass_',{{ $product->id }})" >
                                                                             @if (!isValidUrl($variant->photo))
                                                                                 <img src="{{ asset(insertAtPosition($variant->photo)) }}"
                                                                                     class="p-2 hover-product last-product-{{ $product->id }}"
@@ -166,7 +159,7 @@
                                                             @if (isset($i) && $i > 2)
                                                                 <li style="padding: 0">
                                                                     <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                        class="text-danger m-2" style="padding: 14px">
+                                                                        class="text-danger m-2" style="padding: 14px" >
                                                                         @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
 
                                                                         +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}
@@ -183,13 +176,10 @@
 
                                                 <div class="contentCol">
 
-                                                    <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}">
-                                                        {{ $product->brandName }} </h4>
-                                                    <a href="{{ route('product-detail', $product->slug) }}"
-                                                        target="_blank" class="text-dark">
-                                                        <p id="eyelass_pro_model_{{ $product->id }}"
-                                                            class="text-dark link-primary">{{ $product->title }}</p>
-                                                    </a>
+                                                    <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}"> {{ $product->brandName }} </h4>
+
+                                                        <p id="eyelass_pro_model_{{ $product->id }}"class="text-dark link-primary">{{ $product->title }}</p>
+
                                                     <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}">
                                                     </span>
 
@@ -198,7 +188,7 @@
 
                                                         <div class="col-auto">
 
-                                                            <a href="{{ route('single-add-to-cart', $product->slug) }}"
+                                                            <a href=" {{ route('single-add-to-cart', $product->slug) }} "
                                                                 class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
 
                                                         </div>
@@ -214,9 +204,8 @@
 
                                                 </div>
 
-                                            </div>
-
-
+                                                </div>
+                                            </a>
                                         </div>
                                     @endforeach
                                 </div>

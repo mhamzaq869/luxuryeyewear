@@ -46,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['frontend.layouts.product_filter'], function($view) use($permissions){
             $attribute = DB::table('attributes')->get();
 
+
             $data['brand'] = DB::table('brands')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->get();
             $data['shapes'] = $attribute->where('attribute_type','shape');
             $data['materials'] = $attribute->where('attribute_type','material');

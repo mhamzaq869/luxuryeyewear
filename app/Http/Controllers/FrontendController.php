@@ -507,7 +507,7 @@ class FrontendController extends Controller
 
 
         // dd($arr->get(),$request->all());
-
+        $allProductsCount = $arr->count();
         $arr = $arr->simplePaginate(20);
         $datas = $arr;
 
@@ -674,6 +674,8 @@ class FrontendController extends Controller
         }
 
 
+
+
         $all_brands = [];
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         //    dd($request->all()) ;
@@ -681,7 +683,7 @@ class FrontendController extends Controller
             $view = view('frontend.pages.section.load_more_products', ['products' => $datas, 'product_variant' => $product_variant])->render();
             return response()->json(['status' => 1, 'more_data'=> $datas->count(), 'html' => $view]);
         }else{
-            return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'datas', 'ip_country', 'glass_type'));
+            return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'datas','allProductsCount', 'ip_country', 'glass_type'));
         }
 
     }
@@ -1119,7 +1121,7 @@ class FrontendController extends Controller
 
         // dd($products);
 
-        $product_variant = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','dispatch_from','extra','product_for']);
+        $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','title','photo','dispatch_from','extra','status','cat_id']);
 
         return view('frontend.pages.product_search')
                 ->with('datas', $products)
