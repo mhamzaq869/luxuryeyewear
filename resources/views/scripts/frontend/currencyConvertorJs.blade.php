@@ -66,6 +66,11 @@
                         $("#men_sunglass_pro_price_"+value.id).html(price(value))
                     });
 
+                } else if (current_url.includes('wishlist')) {
+                    $.each(allproducts, function(index, value) {
+                        $("#wishlist-" + value.id).html(price(value,'amount'))
+                    });
+
                 } else if (current_url.includes('cart')) {
                     $.each(allproducts, function(index, value) {
                         $("#cart_pro_price_" + value.id).html(price(value, 'productPrice'))

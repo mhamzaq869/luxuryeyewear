@@ -82,7 +82,7 @@ class FrontendController extends Controller
         $data['category'] = DB::table('categories')->where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
 
         // return $category;
-        $data['brand_img'] =  DB::table('brands')->where('status', 'active')->orderBy('title')->get();
+        $data['brand_img'] =  DB::table('brands')->where('status', 'active')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
 
         $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','dispatch_from','extra','product_for']);
 
@@ -118,15 +118,11 @@ class FrontendController extends Controller
             }
         }
 
-        $data['eyeglasses'] = $eyeglasses->simplePaginate(20);
+        $data['eyeglasses'] = $eyeglasses->simplePaginate(18);
         $data['type'] = 'eyelass_pro_price_';
-        // if($type == null ){
-        //     $data['type'] = 'eyelass_pro_price_';
-        // }elseif($type == 'women'){
-        //     $data['type'] = 'eyelass_pro_price_';
-        // }
+
         $data['products_count'] = $eyeglasses->count();
-        $data['eyeglasses'] = $eyeglasses->simplePaginate(20);
+        $data['eyeglasses'] = $eyeglasses->simplePaginate(18);
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
@@ -175,7 +171,7 @@ class FrontendController extends Controller
             }
         }
 
-        $products = $products->simplePaginate(20);
+        $products = $products->simplePaginate(18);
         $ip_country = $this->ip_country ?? '';
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
@@ -216,7 +212,7 @@ class FrontendController extends Controller
         }
 
         $data['products_count'] = $sunglasses->count();
-        $data['sunglasses'] = $sunglasses->simplePaginate(20);
+        $data['sunglasses'] = $sunglasses->simplePaginate(18);
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['type'] = 'sunglass_pro_price_';
@@ -266,7 +262,7 @@ class FrontendController extends Controller
             }
         }
 
-        $products = $products->simplePaginate(20);
+        $products = $products->simplePaginate(18);
         $ip_country = $this->ip_country ?? '';
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
@@ -284,7 +280,7 @@ class FrontendController extends Controller
         $brand_id = DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
         $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
         ->select('products.id','products.slug','products.dispatch_from','products.extra','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
-        ->where('products.status', 'active')->where('products.brand_id', $brand_id)->simplePaginate(20);
+        ->where('products.status', 'active')->where('products.brand_id', $brand_id)->simplePaginate(18);
 
         $data['products_count'] = 0;
         $data['products'] = $products;
@@ -315,7 +311,7 @@ class FrontendController extends Controller
     {
         $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
         ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
-        ->where('products.status', 'active')->where('products.brand_id', $brand)->simplePaginate(20);
+        ->where('products.status', 'active')->where('products.brand_id', $brand)->simplePaginate(18);
 
         $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
@@ -381,7 +377,6 @@ class FrontendController extends Controller
             }
         }
 
-
         if (!empty($request->min_price) && !empty($request->max_price)) {
             $min_price = $request->min_price;
             $max_price = $request->max_price;
@@ -418,8 +413,7 @@ class FrontendController extends Controller
 
             });
         }
-        // dd($arr->get(),$request->all(),!empty($this->gender_filter));
-        // Condition for Shape Filter
+         // Condition for Shape Filter
         if (!empty($request->shape_array)) {
             $shape_array = $request->shape_array;
             $this->shape_filter = explode(',', $request->shape_array);
@@ -508,7 +502,7 @@ class FrontendController extends Controller
 
         // dd($arr->get(),$request->all());
         $allProductsCount = $arr->count();
-        $arr = $arr->simplePaginate(20);
+        $arr = $arr->simplePaginate(18);
         $datas = $arr;
 
         $arr = json_encode($arr);
@@ -695,7 +689,7 @@ class FrontendController extends Controller
 
     public function frontend_brands()
     {
-        $brand_data['brand_img'] =  Brand::where('status', 'active')->orderBy('title')->get();
+        $brand_data['brand_img'] =  Brand::where('status', 'active')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
         return view('frontend.pages.brands', $brand_data);
     }
     // product_detail
@@ -1111,7 +1105,7 @@ class FrontendController extends Controller
             ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
             ->orWhere('products.price', 'like', '%' . $request->search . '%')
             ->orderBy('products.id', 'DESC')
-            ->simplePaginate(20);
+            ->simplePaginate(18);
 
             // $products = $products->where('status','active')->flatten();
 
@@ -1143,7 +1137,7 @@ class FrontendController extends Controller
             ->orwhere('products.price', 'like', '%' . $search . '%')
             ->orWhereNot('products.status', 'inactive')
             ->orderBy('products.id', 'DESC')
-            ->simplePaginate(20);
+            ->simplePaginate(18);
 
         // dd($products);
         $ip_country = $this->ip_country ?? '';

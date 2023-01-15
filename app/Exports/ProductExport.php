@@ -44,6 +44,7 @@ class ProductExport implements FromCollection, WithHeadings
                 $data[$i]['type'] = $product->product_type != null ? $attributes->where('id',$category->where('id',($product->product_type))->first()->id)->first()->name ?? '' : '';
                 $data[$i]['material'] = $attributes->where('id',$product->product_material)->first()->name?? '';
                 $data[$i]['gender'] = $attributes->where('id',$product->product_for)->first()->name ?? '';
+                $data[$i]['status'] = $product->status;
                 $data[$i]['width'] = $product->product_total_width;
                 $data[$i]['bridge'] = $product->product_bridge;
                 $data[$i]['arm_length'] = $product->product_arm_length;
@@ -84,6 +85,7 @@ class ProductExport implements FromCollection, WithHeadings
                 "Type",
                 "Material",
                 "Gender",
+                "Status",
                 "Width",
                 "Brigde",
                 "Arm Length",

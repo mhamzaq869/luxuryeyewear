@@ -25,11 +25,7 @@
                         <div class="filterCol">
                             <div class="row g-2 g-md-3">
                                 <div class="col">
-                                    {{-- <a class="btn btnDark w-100 filterBtn" data-bs-toggle="offcanvas"
-                                        href="#filterCanvas" role="button" aria-controls="filterCanvas"><span
-                                            class="filterIcon">
-                                            <img src="{{ asset('assets/images/filter-icon.svg') }}" alt="..."></span>
-                                        <span>Filter</span></a> --}}
+
                                 </div>
                                 <div class="col">
 

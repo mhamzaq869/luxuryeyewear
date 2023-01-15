@@ -44,6 +44,7 @@
 
     .cardStyle1 {
         margin-bottom: -10px;
+        height: 550px;
     }
 </style>
 <div class="left-side">
@@ -64,18 +65,20 @@
             if (isset($gender_array)) {
                 $check_gender = explode(',', $gender_array);
             }
+
+            $unisex =  \DB::table('attributes')->where('attribute_type','product_for')->where('name','Unisex')->first();
+            $unisexId = $unisex != null ? $unisex->id : 0;
         @endphp
         @foreach ($genders as $key => $gender)
             <li>
                 <a class="ls-link" href="#">
-                    <input type="checkbox" name="genders[]" onclick="filter_product_for('gender_filter')"
-                        value="{{ $gender->id }}"
+                    <input type="checkbox" name="genders[]" onclick="filter_product_for('gender_filter')" id="gender{{$gender->id}}" value="{{ $gender->id }}"
                     @if (isset($gender_array)) @if (in_array($gender->id, $check_gender)) checked @endif @endisset
                     class="form-check-input" />
-                <span> {{ $gender->name }}
-                    @php $genderCount =  \App\Models\Product::where('product_for',$gender->id)->where('status','active')->count(); @endphp
+                <label for="gender{{$gender->id}}"> {{ $gender->name }}
+                    @php $genderCount =  \App\Models\Product::whereIn('product_for',[$gender->id,$unisexId])->where('status','active')->count(); @endphp
                     <b> {{ $genderCount != 0 ? '('.$genderCount.')' : ''}} </b>
-                </span>
+                </label>
             </a>
         </li>
         @endforeach
@@ -104,12 +107,12 @@
                             @foreach ($brands as $key => $brand)
                                 @if ($key <= 6)
                                 <li><a class="ls-link" href="#"><input type="checkbox"
-                                    onclick="filter_product_for('brand_filter')" name="brands[]" value="{{ $brand->id }}"
+                                    onclick="filter_product_for('brand_filter')" name="brands[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}"
                                     @if (isset($brand_array)) @if (in_array($brand->id, $check_brand)) checked @endif
-                                    @endisset class="form-check-input" /><span> {{ $brand->title }}
+                                    @endisset class="form-check-input" /><label for="brand-{{ $brand->id }}"> {{ $brand->title }}
                                         @php $brandCount =  \App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->where('status','active')->count(); @endphp
                                         <b> {{ $brandCount != 0 ? '('.$brandCount.')' : ''}} </b>
-                                    </span></a>
+                                    </label></a>
                                 </li>
                                 @endif
                             @endforeach
@@ -120,10 +123,10 @@
                                     <li><a class="ls-link" href="#"><input type="checkbox"
                                         onclick="filter_product_for('brand_filter')" name="brands[]" value="{{ $brand->id }}"
                                         @if (isset($brand_array)) @if (in_array($brand->id, $check_brand)) checked @endif
-                                        @endisset class="form-check-input" /><span> {{ $brand->title }}
+                                        @endisset class="form-check-input" /><label for="brand-{{ $brand->id }}"> {{ $brand->title }}
                                             @php $brandCount =  \App\Models\Product::whereIn('cat_id',\App\Models\Category::where('brand_id',$brand->id)->pluck('id')->toArray())->where('status','active')->count(); @endphp
                                             <b> {{ $brandCount != 0 ? '('.$brandCount.')' : ''}} </b>
-                                        </span></a>
+                                        </label></a>
                                     </li>
                                     @endif
                                 @endforeach
@@ -183,14 +186,14 @@
                         @endphp
                         @foreach ($shapes as $k => $shape)
                             <li><a class="ls-link" href="#"><input type="checkbox" name="shapes[]" class="form-check-input"
-                                        value="{{ $shape->id }}" onclick="filter_product_for('shape_filter')"
+                                        value="{{ $shape->id }}" id="shape-{{ $shape->id }}" onclick="filter_product_for('shape_filter')"
                                         @if (isset($shape_array)) @if (in_array($shape->id, $check_shape))
                         checked @endif
-                                    @endisset /><span> {{ $shape->name }}
+                                    @endisset /><label for="shape-{{ $shape->id }}"> {{ $shape->name }}
                                         @php $shapeCount =  \App\Models\Product::where('shape',$shape->id)->where('status','active')->count(); @endphp
 
                                         <b> {{ $shapeCount != 0 ? '('.$shapeCount.')' : ''}} </b>
-                                    </span></a></li>
+                                    </label></a></li>
                     @endforeach
                     </ul>
                 </div>
@@ -214,12 +217,12 @@
                         @endphp
                         @foreach ($materials as $k => $material)
                             <li><a class="ls-link" href="#"><input type="checkbox"
-                                        onclick="filter_product_for('material_filter')" name="materials[]" value="{{ $material->id }}"
+                                        onclick="filter_product_for('material_filter')" name="materials[]" value="{{ $material->id }}" id="material-{{ $material->id }}"
                                         @if (isset($material_array)) @if (in_array($material->id, $check_material)) checked @endif
-                                    @endisset class="form-check-input" /><span> {{ $material->name }}
+                                    @endisset class="form-check-input" /><label for="material-{{ $material->id }}"> {{ $material->name }}
                                         @php $materialCount =  \App\Models\Product::where('product_material',$material->id)->where('status','active')->count(); @endphp
                                         <b> {{ $materialCount != 0 ? '('.$materialCount.')' : ''}} </b>
-                                    </span></a>
+                                    </label></a>
                         </li>
                     @endforeach
                     </ul>
