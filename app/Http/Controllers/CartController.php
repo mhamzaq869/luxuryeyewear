@@ -118,11 +118,8 @@ class CartController extends Controller
         return back();
     }
 
-    public function singleAddToCart($slug){
-
-
-
-        // dd($request->quant[1]);
+    public function singleAddToCart($slug)
+    {
 
         $quant = 1;
 
@@ -131,13 +128,16 @@ class CartController extends Controller
             return back()->with('error','Out of stock, You can add other products.');
         }
         if ( ($quant < 1) || empty($product) ) {
-            request()->session()->flash('error','Invalid Products');
+            session()->flash('error','Invalid Products');
             return back();
         }
 
-        $already_cart = Cart::where('user_id', request()->ip())->where('order_id',null)->where('product_id', $product->id)->first();
+        $wishlist = Wishlist::where('product_id', $product->id)->first();
+        if($wishlist){
+            $wishlist->delete();
+        }
 
-        // return $already_cart;
+        $already_cart = Cart::where('user_id', request()->ip())->where('order_id',null)->where('product_id', $product->id)->first();
 
         if($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $quant;
@@ -159,7 +159,7 @@ class CartController extends Controller
             // return $cart;
             $cart->save();
         }
-        request()->session()->flash('success','Product successfully added to cart.');
+        session()->flash('success','Product successfully added to cart.');
         return back();
     }
 

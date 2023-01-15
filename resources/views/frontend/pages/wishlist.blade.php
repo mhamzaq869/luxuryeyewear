@@ -35,8 +35,8 @@
                                     @php
                                         $photo = explode(',', $wishlist->product['photo']);
                                     @endphp
-                                    <div class="col-md-6 col-xl-4 position-relative">
-                                        <a href="{{ route('product-detail', $wishlist->product['slug']) }}" class="link-overlay"></a>
+                                    <div class="col-md-6 col-xl-4">
+                                        {{-- <a href="{{ route('product-detail', $wishlist->product['slug']) }}" class="link-overlay"></a> --}}
                                         <div class="cardStyle1">
                                                 <div class="productImg pb-5">
                                                     <div class="imgCol">
@@ -58,10 +58,8 @@
                                                             class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
                                                     </div>
                                                     <div class="col">
-                                                        <a href="{{ route('wishlist-delete', $wishlist->id) }}"
+                                                        <a href="{{ route('wishlist-delete', $wishlist->product['slug']) }}"
                                                             class="btn btnDark_outline w-100">Remove</a>
-
-
 
                                                     </div>
                                                 </div>
