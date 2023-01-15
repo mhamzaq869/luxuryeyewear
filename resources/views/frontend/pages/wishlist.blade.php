@@ -54,7 +54,7 @@
                                                 <span class="priceCol" id="wishlist-{{$wishlist['id']}}">${{ $wishlist['amount'] }} </span>
                                                 <div class="row gx-2">
                                                     <div class="col-auto">
-                                                        <a href="{{ route('add-to-cart', $wishlist->product['slug']) }}"
+                                                        <a href="{{ route('single-add-to-cart', $wishlist->product['slug']) }}"
                                                             class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
                                                     </div>
                                                     <div class="col">
