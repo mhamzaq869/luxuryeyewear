@@ -31,14 +31,12 @@ class ImportProduct implements ToCollection,WithHeadingRow
         foreach($rows as $i => $row){
 
             $frameType = Attribute::where('name','LIKE','%'.$row['category'].'%')->first();
-            $shape = Attribute::where('name',$row['shape'])->first();
-            $productType = Attribute::where('name',$row['type'])->first();
-            $material = Attribute::where('name',$row['material'])->first();
-            $productFor = Attribute::where('name',$row['gender'])->first();
+            $shape = Attribute::where('name','LIKE','%'.$row['shape'].'%')->first();
+            $productType = Attribute::where('name','LIKE','%'.$row['type'].'%')->first();
+            $material = Attribute::where('name','LIKE','%'.$row['material'].'%')->first();
+            $productFor = Attribute::where('name','LIKE','%'.$row['gender'].'%')->first();
             $brand = Brand::where('title',$row['brands'])->first();
             $model = Category::where('title',trim($row['model']))->first();
-
-            // dump($i,$productFor);
 
 
             if($row['image1'] == null){
