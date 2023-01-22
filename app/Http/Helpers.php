@@ -108,8 +108,7 @@ class Helper{
             ->where('user_id',request()->ip())->where('order_id',null)->get();
 
             $location = Location::get(request()->ip());
-            // $location = Location::get('111.119.187.50');
-            foreach($carts as $cart){
+             foreach($carts as $cart){
                 if($location){
                     $countryCode = $location->countryCode;
                     $shipping = DB::table('shippings')->whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
@@ -178,7 +177,7 @@ class Helper{
     // Total price with shipping and coupon
     public static function grandPrice($id,$user_id){
         $order=Order::find($id);
-        dd($id);
+
         if($order){
             $shipping_price=(float)$order->shipping->price;
             $order_price=self::orderPrice($id,$user_id);

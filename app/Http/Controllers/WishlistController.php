@@ -13,9 +13,8 @@ class WishlistController extends Controller
     }
 
     public function wishlist(Request $request){
-        // dd($request->all());
         if (empty($request->slug)) {
-            request()->session()->flash('error','Invalid Products');
+            session()->flash('error','Invalid Products');
             return back();
         }
         $product = Product::where('slug', $request->slug)->first();
@@ -27,7 +26,7 @@ class WishlistController extends Controller
 
 
         $already_wishlist = Wishlist::where('user_id', request()->ip())->where('cart_id',null)->where('product_id', $product->id)->first();
-        // return $already_wishlist;
+
         if($already_wishlist) {
             session()->flash('error','You already placed in wishlist');
             return back();
@@ -37,7 +36,7 @@ class WishlistController extends Controller
             $wishlist->product_id = $product->id;
             $wishlist->unit_price = $product->unit_price;
             $wishlist->quantity = 1;
-            $wishlist->amount=intval($wishlist->unit_price)*$wishlist->quantity;
+            $wishlist->amount=$product->price;
             if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
             $wishlist->save();
         }

@@ -165,7 +165,7 @@
             }
         }
 
-
+        console.log($price)
         return $price;
     }
 
