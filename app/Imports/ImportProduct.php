@@ -33,6 +33,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $frameType = Attribute::where('name','LIKE','%'.$row['category'].'%')->first();
             $shape = Attribute::where('name','LIKE','%'.$row['shape'].'%')->first();
             $productType = Attribute::where('name','LIKE','%'.$row['type'].'%')->first();
+            $lenseType = Attribute::where('name','LIKE','%'.$row['lense_type'].'%')->first();
             $material = Attribute::where('name','LIKE','%'.$row['material'].'%')->first();
             $productFor = Attribute::where('name','LIKE','%'.$row['gender'].'%')->first();
             $brand = Brand::where('title',$row['brands'])->first();
@@ -107,6 +108,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'shape' => $shape->id ?? 0,
                 'product_for' => $productFor->id ?? 0,
                 'type' => $productType->id ?? 0,
+                'lense_type' => $lenseType->id ?? 0,
                 'product_material' => $material->id ?? 0,
                 'product_lens_width' => $row['width'],
                 'product_bridge' => $row['brigde'],
@@ -119,7 +121,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 'status' => ($row['qty'] == 0) ? 'outofstock' : 'inactive',
             ]);
         }
-        // dd('d');
+
     }
 
 }

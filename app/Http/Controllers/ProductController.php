@@ -565,7 +565,6 @@ class ProductController extends Controller
         $edit_data['countries']= DB::table('countries')->get();
         $product->countries = explode(',',$product->countries);
         $product->dispatch_from = explode(',',$product->dispatch_from);
-        // return $items;
 
         return view('backend.product.edit',$edit_data)->with('product',$product)
 

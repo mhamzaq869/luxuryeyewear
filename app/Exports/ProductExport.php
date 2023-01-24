@@ -41,7 +41,9 @@ class ProductExport implements FromCollection, WithHeadings
                 $data[$i]['price'] = $product->price != null ? $product->price : 0;
                 $data[$i]['stock'] = $product->stock ?? 0;
                 $data[$i]['shape'] = $attributes->where('id',$product->shape)->first()->name ?? '';
-                $data[$i]['type'] = $product->product_type != null ? $attributes->where('id',$category->where('id',($product->product_type))->first()->id)->first()->name ?? '' : '';
+                // $data[$i]['type'] = $product->product_type != null ? $attributes->where('id',$category->where('id',($product->product_type))->first()->id)->first()->name ?? '' : '';
+                $data[$i]['type'] = $product->type != null ? $attributes->where('id',$product->type)->first()->name ?? '' : '';
+                $data[$i]['lense'] = $product->lense_type != null ? $attributes->where('id',$product->lense_type)->first()->name ?? '' : '';
                 $data[$i]['material'] = $attributes->where('id',$product->product_material)->first()->name?? '';
                 $data[$i]['gender'] = $attributes->where('id',$product->product_for)->first()->name ?? '';
                 $data[$i]['status'] = $product->status;
@@ -76,13 +78,14 @@ class ProductExport implements FromCollection, WithHeadings
                 "Brands",
                 "Model",
                 "Colour",
-                "Size",
                 "Colour Description",
+                "Size",
                 "Unit Price",
                 "MRP",
                 "QTY",
                 "Shape",
-                "Type",
+                "Product Type",
+                "Lense Type",
                 "Material",
                 "Gender",
                 "Status",
