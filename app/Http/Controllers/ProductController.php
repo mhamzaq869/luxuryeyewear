@@ -901,9 +901,10 @@ class ProductController extends Controller
             }
             session()->flash('success','Product Import Successfully!');
         }catch(Exception $e){
-            $errorCode = $e->errorInfo[1];
+
+            $errorCode = $e->getCode();
             if($errorCode == '1062'){
-                session()->flash('error',$e->errorInfo[2]);
+                session()->flash('error',$e->getCode());
             }
             else{
                 session()->flash('error',$e->getMessage());

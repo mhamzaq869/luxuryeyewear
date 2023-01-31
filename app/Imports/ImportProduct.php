@@ -29,10 +29,9 @@ class ImportProduct implements ToCollection,WithHeadingRow
 
         $arr=[];
         foreach($rows as $i => $row){
-
             $frameType = Attribute::where('name','LIKE','%'.$row['category'].'%')->first();
             $shape = Attribute::where('name','LIKE','%'.$row['shape'].'%')->first();
-            $productType = Attribute::where('name','LIKE','%'.$row['type'].'%')->first();
+            $productType = Attribute::where('name','LIKE','%'.$row['product_type'].'%')->first();
             $lenseType = Attribute::where('name','LIKE','%'.$row['lense_type'].'%')->first();
             $material = Attribute::where('name','LIKE','%'.$row['material'].'%')->first();
             $productFor = Attribute::where('name','LIKE','%'.$row['gender'].'%')->first();
