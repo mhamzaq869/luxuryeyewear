@@ -250,7 +250,7 @@
                                                         <a href="{{ route('checkout') }}"
                                                             class="btn btn-dark w-100 py-2 my-2">Checkout</a>
 
-                                                        <a href="{{ name('/filter-product-for') }}"
+                                                        <a href="{{ url('/filter-product-for') }}"
                                                             class="btn btn-warning w-100 py-2">Continue shopping</a>
                                                     </div>
 
