@@ -49,8 +49,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
-
         if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
             request()->session()->flash('error','Cart is Empty !');
 
@@ -63,6 +61,23 @@ class OrderController extends Controller
 
 
         try{
+            $createUser = User::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'name' => $request->first_name.' '.$request->last_name,
+                'email' => $request->email,
+                'address_1' => $request->address_1,
+                'address_2' => $request->address_2,
+                'city' => $request->city,
+                'state_id' => $request->state,
+                'country_id' => $request->country_id,
+                'zipcode' => $request->post_code,
+                'phone' => $request->phone,
+                'role' => 'user',
+            ]);
+
+            Auth::login($createUser);
+
             $order=new Order();
             $order_data = $request->all();
             $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));

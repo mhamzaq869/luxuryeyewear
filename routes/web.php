@@ -107,8 +107,8 @@ Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
 Route::get('paid/success/{type?}','OrderController@paymentSuccess')->name('paid.success');
 Route::get('paid/error/{type?}','OrderController@paymentError')->name('paid.error');
+Route::get('/checkout','CartController@checkout')->name('checkout');
 
-Route::get('/checkout','CartController@checkout')->name('checkout')->middleware(['auth','user']);
 // Wishlist
 Route::get('/wishlist',function(){
 

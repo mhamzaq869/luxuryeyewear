@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
@@ -298,9 +298,10 @@ class CartController extends Controller
             session()->flash('error','Cart is Empty !');
             return redirect()->route('home');
         }else{
-            $address = Address::with(['state','country'])->get();
+            $address = Address::with(['state','country'])->where('user_id',Auth::id())->get();
             $countries = Country::all();
             $states = State::all();
+
             $integerations = Integration::where('method','stripe')->first();
 
             // Stripe Checkout Session

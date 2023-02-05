@@ -470,10 +470,10 @@
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
                             @endphp
-                            <div class="row">
+                            <div class="row no-gutters">
                                 <div class="alert alert-danger" style="display: none" id="error" role="alert"></div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
+                                    <div class="form-group m-0 mt-2">
                                         <label>Saved Adresses<span>*</span></label>
                                         <select id="addresses" class="form-control">
                                             @foreach ($address as $ship)
@@ -491,8 +491,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Country<span>*</span></label>
+                                    <div class="form-group m-0 mt-2">
                                         <select name="country" id="country" class="form-control select2">
                                             @foreach ($countries as $country)
                                                 <option value="{{$country->name}}">
@@ -503,9 +502,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>First Name<span>*</span></label>
-                                        <input type="text" name="first_name" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+
+                                        <input type="text" name="first_name" placeholder="First Name"
                                             value="{{ old('first_name') }}" class="validation"
                                             value="{{ old('first_name') }}">
                                         @error('first_name')
@@ -513,11 +512,10 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Last Name<span>*</span></label>
-                                        <input type="text" name="last_name" class="validation" placeholder=""
-                                            value="{{ old('lat_name') }}">
+                                    <div class="form-group m-0 mt-2">
+                                         <input type="text" name="last_name" class="validation" placeholder="Last Name" value="{{ old('lat_name') }}">
                                         @error('last_name')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -525,9 +523,8 @@
                                 </div>
 
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Company (Optional)</label>
-                                        <input type="text" name="company" class="validation" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="company" class="validation" placeholder="Company (Optional)"
                                             value="{{ old('company') }}">
                                         @error('company')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -535,19 +532,15 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 1<span>*</span></label>
-                                        <input type="text" name="address1" class="validation" placeholder=""
-                                            value="{{ old('address1') }}">
+                                    <div class="form-group m-0 mt-2"> <input type="text" name="address1" class="validation" placeholder="Address Line" value="{{ old('address1') }}">
                                         @error('address1')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 2</label>
-                                        <input type="text" name="address2" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="address2" placeholder="Address Line 2"
                                             value="{{ old('address2') }}">
                                         @error('address2')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -556,17 +549,16 @@
                                 </div>
 
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>City <span>*</span></label>
-                                        <input type="text" name="city" class="validation" placeholder="" value="{{ old('city') }}" required>
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="city" class="validation" placeholder="City" value="{{ old('city') }}" required>
                                         @error('city')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>State<span>*</span></label>
+                                    <div class="form-group m-0 mt-2">
+
                                         <select name="state" id="state" class="form-control select2">
                                             @foreach ($states as $state)
                                                 <option value="{{$state->name}}">
@@ -577,9 +569,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>Postal Code <span>*</span></label>
-                                        <input type="text" name="post_code" class="validation" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="post_code" class="validation" placeholder="Postal Code "
                                             value="{{ old('post_code') }}" required>
                                         @error('post_code')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -587,9 +578,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        <label>Email Address<span>*</span></label>
-                                        <input type="email" name="email" class="validation" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="email" name="email" class="validation" placeholder="Email Address"
                                             value="{{ old('email') }}">
                                         @error('email')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -597,9 +587,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        <label>Phone Number <span>*</span></label>
-                                        <input type="number" name="phone" class="validation" placeholder="" required
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="number" name="phone" class="validation" placeholder="Phone Number" required
                                             value="{{ old('phone') }}">
                                         @error('phone')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -680,7 +669,7 @@
                             </div>
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <input type="radio" name="bill_shipp" value="same" id="billing_shipping_same">
                             <label class="form-check-label" for="billing_shipping_same">Is shipping and billing same?</label>
                         </div>
@@ -721,8 +710,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Country<span>*</span></label>
+                                    <div class="form-group m-0 mt-2">
+
                                         <select name="bill_country" id="bill_country" class="form-control select2">
                                             @foreach ($countries as $country)
                                                 <option value="{{$country->name}}">
@@ -733,9 +722,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>First Name<span>*</span></label>
-                                        <input type="text" name="bill_first_name" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_first_name" placeholder="First Name"
                                             value="{{ old('first_name') }}"
                                             value="{{ old('first_name') }}">
                                         @error('first_name')
@@ -744,9 +732,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>Last Name<span>*</span></label>
-                                        <input type="text" name="bill_last_name" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_last_name" placeholder="Last Name"
                                             value="{{ old('lat_name') }}">
                                         @error('last_name')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -755,9 +742,8 @@
                                 </div>
 
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Company (Optional)</label>
-                                        <input type="text" name="bill_company"  placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_company"  placeholder="Company (Optional)"
                                             value="{{ old('company') }}">
                                         @error('company')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -765,9 +751,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 1<span>*</span></label>
-                                        <input type="text" name="bill_address1"  placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_address1"  placeholder="Address Line 1"
                                             value="{{ old('address1') }}">
                                         @error('address1')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -775,9 +760,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group">
-                                        <label>Address Line 2</label>
-                                        <input type="text" name="bill_address2" placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_address2" placeholder="Address Line 2"
                                             value="{{ old('address2') }}">
                                         @error('address2')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -786,17 +770,15 @@
                                 </div>
 
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>City <span>*</span></label>
-                                        <input type="text" name="bill_city"  placeholder="" value="{{ old('city') }}" required>
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_city"  placeholder="City" value="{{ old('city') }}" required>
                                         @error('city')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>State<span>*</span></label>
+                                    <div class="form-group m-0 mt-2">
                                         <select name="bill_state" id="bill_state" class="form-select select2">
                                             @foreach ($states as $state)
                                                 <option value="{{$state->name}}">
@@ -807,9 +789,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-12">
-                                    <div class="form-group">
-                                        <label>Postal Code <span>*</span></label>
-                                        <input type="text" name="bill_post_code"  placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="text" name="bill_post_code"  placeholder="Postal Code"
                                             value="{{ old('post_code') }}" required>
                                         @error('post_code')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -817,9 +798,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        <label>Email Address<span>*</span></label>
-                                        <input type="email" name="bill_email"  placeholder=""
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="email" name="bill_email"  placeholder="Email Address"
                                             value="{{ old('email') }}">
                                         @error('email')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -827,9 +807,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        <label>Phone Number <span>*</span></label>
-                                        <input type="number" name="bill_phone"  placeholder="" required
+                                    <div class="form-group m-0 mt-2">
+                                        <input type="number" name="bill_phone"  placeholder="Phone Number" required
                                             value="{{ old('phone') }}">
                                         @error('phone')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -1239,9 +1218,9 @@
                                 bill_post_code: $("input[name=bill_post_code]").val(),
                             },
                             success: function(data) {
-                                if(data.status == true){
+                                if(data.success == true){
                                     $("#thankyou").modal('show')
-                                    window.location = "{{url('/')}}"
+                                    window.location = "{{url('/user/order')}}"
                                 }
                             },
                             error: function(xhr, exception) {
@@ -1360,7 +1339,7 @@
             $.each(state , function(index, val) {
                 html += '<option value="'+val.id+'">'+val.name+'</option>'
             });
-
+            console.log(states,countries)
             $("#state").html(html)
             $("#state").trigger('change')
         });

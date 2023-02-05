@@ -70,20 +70,23 @@
                                 @include('frontend.layouts.product_filter')
                             </div>
                             <div class="col-md-6 col-xl-10">
-                                <div class="row g-4" id="productsList">
+                                <div class="row gx-4 gy-3" id="productsList">
                                     @foreach ($datas as $product)
                                         <div class="col-md-6 col-xl-4">
-                                            <div class="cardStyle1">
-                                                <div class="productImg">
-                                                    <a href="{{ route('product-detail', $product->slug) }}">
-                                                        <div class="imgCol">
-                                                            <img src="{{ asset($product->photo) }}"
-                                                                id="eyelass_pro_img_{{ $product->id }}" alt="Product ">
-                                                        </div>
-                                                    </a>
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <div class="productImg">
+                                                        <a href="{{ route('product-detail', $product->slug) }}">
+                                                            <div class="imgCol">
+                                                                <img src="{{ asset($product->photo) }}"
+                                                                    id="eyelass_pro_img_{{ $product->id }}" alt="Product ">
+                                                            </div>
+                                                        </a>
+
+                                                    </div>
 
                                                     <div class="color_builts">
-                                                        <ul>
+                                                        <ul class="text-center">
                                                             @if ($active = $product)
                                                                 <li>
                                                                     <a href="javascript:void(0)"
@@ -125,34 +128,31 @@
                                                             @endforeach
 
                                                             @if (isset($i) && $i > 2)
-                                                                <li style="padding: 0">
-                                                                    <a href="{{ route('product-detail', [$product->slug]) }}"
-                                                                        class="text-danger m-2" style="padding: 14px">
-                                                                        @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
-
-                                                                        +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}
-                                                                        @endif
+                                                                @if (count($product_variant->where('cat_id',$product->cat_id)) - 4 > 0)
+                                                                <li> <a href="{{ route('product-detail', [$product->slug]) }}" class="text-danger m-2">
+                                                                        <p> +{{ count($product_variant->where('cat_id',$product->cat_id)) - 4 }}</p>
                                                                     </a>
                                                                 </li>
+                                                                @endif
                                                             @endif
                                                         </ul>
                                                     </div>
-                                                </div>
 
-                                                <div class="contentCol">
-                                                    <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}"> {{ $product->brandName }} </h4>
-                                                    <a href="{{ route('product-detail', $product->slug) }}" target="_blank" class="text-dark">
-                                                        <p id="eyelass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
-                                                    </a>
-                                                    <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}"> </span>
+                                                    <div class="contentCol">
+                                                        <h4 class="brandCol" id="eyelass_brand_name_{{ $product->id }}"> {{ $product->brandName }} </h4>
+                                                        <a href="{{ route('product-detail', $product->slug) }}" target="_blank" class="text-dark">
+                                                            <p id="eyelass_pro_model_{{ $product->id }}" class="text-dark link-primary">{{ $product->title }}</p>
+                                                        </a>
+                                                        <span class="priceCol" id="eyelass_pro_price_{{ $product->id }}"> </span>
 
-                                                    <div class="row gx-2">
-                                                        <div class="col-auto">
-                                                            <a href="{{ route('single-add-to-cart', $product->slug) }}" class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
-                                                        </div>
+                                                        <div class="row gx-2">
+                                                            <div class="col-auto">
+                                                                <a href="{{ route('single-add-to-cart', $product->slug) }}" class="btn btnDark w-100 addCartBtn">ADD TO CART</a>
+                                                            </div>
 
-                                                        <div class="col">
-                                                            <a href="{{ route('add-to-wishlist', $product->slug) }}" class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
+                                                            <div class="col">
+                                                                <a href="{{ route('add-to-wishlist', $product->slug) }}" class="btn btnDark_outline w-100">ADD TO WISHLIST</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
