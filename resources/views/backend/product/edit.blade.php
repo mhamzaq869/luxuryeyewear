@@ -21,6 +21,7 @@
                 <input type="hidden" name="g_image_2">
                 <input type="hidden" name="g_image_3">
 
+
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -958,9 +959,10 @@
 
             $("#crop").click(function() {
                 var croppedImg = cropper.getData();
+
                 canvas = cropper.getCroppedCanvas({
-                    width: parseInt(croppedImg.width),
-                    height: parseInt(croppedImg.height),
+                    width: parseInt($("#dataWidth").val()),
+                    height: parseInt($("#dataHeight").val()),
                 });
 
                 canvas.toBlob(function(blob) {
@@ -969,10 +971,11 @@
                     reader.readAsDataURL(blob);
                     reader.onloadend = function() {
                         var base64data = reader.result;
-
                         jQuery('input[name="' + _target + '"]').val(base64data)
-                        $modal.modal('hide');
+                        jQuery('input[name="' + _target + '_width"]').val($("#dataWidth").val())
+                        jQuery('input[name="' + _target + '_height"]').val($("#dataHeight").val())
 
+                        $modal.modal('hide');
                     }
                 });
             })
