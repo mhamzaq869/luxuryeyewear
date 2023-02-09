@@ -472,6 +472,7 @@
                             @endphp
                             <div class="row no-gutters">
                                 <div class="alert alert-danger" style="display: none" id="error" role="alert"></div>
+                                @auth
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
                                         <label>Saved Adresses<span>*</span></label>
@@ -490,6 +491,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                @else
+                                <div class="col-lg-12 col-12">
+                                    <div class="form-group m-0 my-2">
+                                        <span>If you have an already account? <a href="{{route('login.form')}}">Login Here</a></span>
+                                    </div>
+                                </div>
+                                @endauth
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
                                         <select name="country" id="country" class="form-control select2">
@@ -674,10 +682,10 @@
                             <label class="form-check-label" for="billing_shipping_same">Is shipping and billing same?</label>
                         </div>
 
-                        <div class="col-6">
+                        {{-- <div class="col-6">
                             <input type="radio" name="bill_shipp"  value="diff" id="billing_different">
                             <label class="form-check-label" for="billing_different">Is billing different?</label>
-                        </div>
+                        </div> --}}
 
                         <div class="billing_address_diff d-none mt-4">
 
