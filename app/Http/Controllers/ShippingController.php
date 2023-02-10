@@ -45,8 +45,9 @@ class ShippingController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
+
         $data['countries'] = implode(',',$data['countries']);
-        $data['transit'] = $request->transitfrom .' to '.$request->transitto;
+        $data['transit'] = $request->transitfrom .'-'.$request->transitto;
         $status= Shipping::create($data);
         if($status){
            session()->flash('success','Shipping successfully created');
@@ -81,7 +82,8 @@ class ShippingController extends Controller
             session()->flash('error','Shipping not found');
         }
 
-        $transit = explode(' to ',$shipping->transit);
+        $transit = explode('-',$shipping->transit);
+
         $shipping->transitfrom = $transit[0];
         $shipping->transitto = $transit[1];
 

@@ -252,7 +252,7 @@ class ProductController extends Controller
             $status = Product::create($data);
              session()->flash('success','Product Successfully added');
         }catch(Exception $e){
-            $errorCode = $e->errorInfo[1];
+            $errorCode = $e->getCode();
             if($errorCode == '1062'){
                  session()->flash('error','Duplicated Product EAN Code');
             }
@@ -786,14 +786,14 @@ class ProductController extends Controller
 
         try{
             $status = $product->fill($data)->save();
-            request()->session()->flash('success','Product Successfully updated');
+            session()->flash('success','Product Successfully updated');
         }catch(Exception $e){
-            $errorCode = $e->errorInfo[1];
+            $errorCode = $e->getCode();
             if($errorCode == '1062'){
-                request()->session()->flash('error','Duplicated Product EAN Code');
+                session()->flash('error','Duplicated Product EAN Code');
             }
             else{
-                request()->session()->flash('error',$e->getMessage());
+                session()->flash('error',$e->getMessage());
             }
         }
 
@@ -823,13 +823,13 @@ class ProductController extends Controller
 
         if($status){
 
-            request()->session()->flash('success','Product successfully deleted');
+            session()->flash('success','Product successfully deleted');
 
         }
 
         else{
 
-            request()->session()->flash('error','Error while deleting product');
+            session()->flash('error','Error while deleting product');
 
         }
 
@@ -845,13 +845,13 @@ class ProductController extends Controller
 
         if($status){
 
-            request()->session()->flash('success','Request successfully deleted');
+            session()->flash('success','Request successfully deleted');
 
         }
 
         else{
 
-            request()->session()->flash('error','Error while deleting product');
+            session()->flash('error','Error while deleting product');
 
         }
 
@@ -980,9 +980,6 @@ class ProductController extends Controller
             $response['message'] = 'Product '.ucfirst($request->key).' Updated Successfully';
             return response($response);
         }
-
-
-
 
 
     }

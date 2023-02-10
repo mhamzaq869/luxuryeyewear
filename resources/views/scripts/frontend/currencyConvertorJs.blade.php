@@ -114,8 +114,6 @@
                 $(".loader_bg").addClass('d-none');
             }
         })
-
-
     }
 
     function price($details, $col = null) {
@@ -165,7 +163,6 @@
             }
         }
 
-        console.log($price)
         return $price;
     }
 
@@ -174,6 +171,13 @@
         expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
         document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
     }
+
+
+    $.get("https://api.ipify.org/?format=json", function(e) {
+        $.get(`https://ipapi.co/${e.ip}/country/`, function(data) {
+            localStorage.setItem('countryShortName',data)
+        })
+    });
 
 
 </script>

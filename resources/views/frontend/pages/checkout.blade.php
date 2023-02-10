@@ -494,7 +494,7 @@
                                 @else
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 my-2">
-                                        <span>If you have an already account? <a href="{{route('login.form')}}">Login Here</a></span>
+                                        <span>If you already have an account? <a href="{{route('login.form')}}">Login Here</a></span>
                                     </div>
                                 </div>
                                 @endauth
@@ -502,7 +502,7 @@
                                     <div class="form-group m-0 mt-2">
                                         <select name="country" id="country" class="form-control select2">
                                             @foreach ($countries as $country)
-                                                <option value="{{$country->name}}">
+                                                <option value="{{$country->shortname}}">
                                                     {{$country->name ?? ''}}
                                                 </option>
                                             @endforeach
@@ -677,15 +677,15 @@
                             </div>
                         </div>
 
-                        <div class="col-6 mt-2">
+                        {{-- <div class="col-6 mt-2">
                             <input type="radio" name="bill_shipp" value="same" id="billing_shipping_same">
                             <label class="form-check-label" for="billing_shipping_same">Is shipping and billing same?</label>
-                        </div>
+                        </div> --}}
 
-                        {{-- <div class="col-6">
+                        <div class="col-6 mt-2">
                             <input type="radio" name="bill_shipp"  value="diff" id="billing_different">
                             <label class="form-check-label" for="billing_different">Is billing different?</label>
-                        </div> --}}
+                        </div>
 
                         <div class="billing_address_diff d-none mt-4">
 
@@ -1341,16 +1341,18 @@
         });
 
         $("#country").on('change', function(){
-            var country = countries.find(item => item.name == this.value);
+            var country = countries.find(item => item.shortname == this.value);
             var state = states.filter(item => item.country_id == country.id);
             var html = '';
             $.each(state , function(index, val) {
                 html += '<option value="'+val.id+'">'+val.name+'</option>'
             });
-            console.log(states,countries)
+
             $("#state").html(html)
             $("#state").trigger('change')
         });
+
+        $("#country").val(localStorage.getItem('countryShortName')).trigger('change')
 
         $('input[name=bill_shipp]').click(function() {
             if (this.value == 'diff') {
