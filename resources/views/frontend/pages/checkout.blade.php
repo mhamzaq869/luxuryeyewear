@@ -446,6 +446,10 @@
             border: none;
             background: #F6F7FB;
         }
+
+        .select2-container{
+            display: block !important;
+        }
     </style>
     <section>
         @include('frontend.layouts.breadcrumb')
@@ -683,7 +687,7 @@
                         </div> --}}
 
                         <div class="col-6 mt-2">
-                            <input type="radio" name="bill_shipp"  value="diff" id="billing_different">
+                            <input type="checkbox" name="bill_shipp"  value="diff" id="billing_different">
                             <label class="form-check-label" for="billing_different">Is billing different?</label>
                         </div>
 
@@ -838,8 +842,7 @@
                                     <ul>
                                         <li data-price="{{ Helper::totalCartPrice() }}">
                                             Cart Subtotal<span id="order_subtotal"></span></li>
-                                        <li class="shipping">
-                                            Shipping Cost <span id="cart_shipping"></span>
+                                        <li class="shipping"> Shipping Cost <span id="cart_shipping"></span>
 
                                         </li>
 
@@ -1341,6 +1344,7 @@
         });
 
         $("#country").on('change', function(){
+
             var country = countries.find(item => item.shortname == this.value);
             var state = states.filter(item => item.country_id == country.id);
             var html = '';
@@ -1355,11 +1359,13 @@
         $("#country").val(localStorage.getItem('countryShortName')).trigger('change')
 
         $('input[name=bill_shipp]').click(function() {
-            if (this.value == 'diff') {
+            if($(this).is(":checked")){
                 $(".billing_address_diff").removeClass('d-none')
-            }else{
+            }
+            else if($(this).is(":not(:checked)")){
                 $(".billing_address_diff").addClass('d-none')
             }
+
         });
 
         function setCookie(name,value,days) {

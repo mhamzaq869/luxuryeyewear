@@ -173,8 +173,8 @@
     }
 
 
-    $.get("https://api.ipify.org/?format=json", function(e) {
-        $.get(`https://ipapi.co/${e.ip}/country/`, function(data) {
+    $.get("https://api.ipify.org/", function(e) {
+        $.get(`https://ipapi.co/${e}/country/`, function(data) {
             localStorage.setItem('countryShortName',data)
         })
     });
