@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Mail;
 use Newsletter;
 use Stevebauman\Location\Facades\Location;
 
+use function PHPUnit\Framework\isNull;
+
 class FrontendController extends Controller
 {
 
@@ -733,6 +735,11 @@ class FrontendController extends Controller
         $location = locationVal();
 
         $product_detail = Product::getProductBySlug($slug);
+
+        if($product_detail == null){
+            abort(404);
+        }
+
 
         if($product_detail != null && $product_detail->cat_info->size != null){
             $lensDetail = json_decode($product_detail->cat_info->size);
