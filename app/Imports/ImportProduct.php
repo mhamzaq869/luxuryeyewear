@@ -70,6 +70,7 @@ class ImportProduct implements ToCollection,WithHeadingRow
             $array['total_width'] = $row['total_width'] ?? '';
             $size = json_encode($array);
 
+
             $title = '';
             if(!empty($brand) && $brand != null){
                 $title .= $brand->title;
@@ -79,9 +80,19 @@ class ImportProduct implements ToCollection,WithHeadingRow
                 $title .= ' '.$model->title;
             }
 
-            $title .= ' '.$row['colour'];
-            $slug = Str::slug($title,'-').'-'. rand(0,1010) .'-'. date('Y-m-d-H-i-s-u');
+            if(!empty($row['colour']) && $row['colour'] !== null){
+                $title .= ' '.$row['colour'];
+            }
 
+            if(!empty($row['size']) && $row['size'] !== null){
+                $title .= ' '.$row['size'];
+            }
+
+            if(!empty($brand) && $brand != null){
+                $title .= ' by '. $brand->title;
+            }
+
+            $slug = Str::slug($title,'-');
 
             Product::create([
                 'title' => $title,
