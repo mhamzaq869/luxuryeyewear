@@ -178,7 +178,7 @@ class CartController extends Controller
         if($request->quant){
             $error = array();
             $success = '';
-            // return $request->quant;
+
             foreach ($request->quant as $k=>$quant) {
                 // return $k;
                 $id = $request->qty_id[$k];

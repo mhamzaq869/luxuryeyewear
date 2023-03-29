@@ -183,14 +183,13 @@
 
 
                                     @php
-
-                                        $total_amount = Helper::totalCartPrice() + $total_shipping;
+                                        $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $total_shipping;
                                         if (session()->has('coupon')) {
                                             $total_amount = $total_amount - Session::get('coupon')['value'];
                                         }
 
                                     @endphp
-                                    {{-- Cart Totals --}}
+
                                     <div class="col-lg-6 col-md-6">
                                         {{-- right --}}
                                         <div class="coupon_code right">
@@ -345,34 +344,5 @@
 
         });
 
-        // $("#couponForm").submit(function(e){
-        //     e.preventDefault();
-        //     $.ajax({
-        //         url: $(this).attr('action'),
-        //         type: "POST",
-        //         data: new FormData(this),
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success: function(data) {
-        //             if(data.status == true){
-        //                 $.message({
-        //                     type:'success',
-        //                     text:data.message,
-        //                     duration: 5000
-        //                 });
-        //             }else{
-        //                 $.message({
-        //                     type:'error',
-        //                     text:data.message,
-        //                     duration: 5000
-        //                 });
-        //             }
-        //         },
-        //         error: function(e) {
-        //             console.log(e);
-        //         }
-        //     });
-        // });
     </script>
 @endpush

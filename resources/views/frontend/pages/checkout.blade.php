@@ -469,7 +469,7 @@
                             @php
                                 $carts = Helper::getAllProductFromCart() ;
 
-                                $total_amount = Helper::totalCartPrice() + $carts->total_shipping;
+                                $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $carts->total_shipping;
                                 if (session('coupon')) {
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
@@ -696,7 +696,7 @@
                             @php
                                 $carts = Helper::getAllProductFromCart() ;
 
-                                $total_amount = Helper::totalCartPrice() + $carts->total_shipping;
+                                $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $carts->total_shipping;
                                 if (session('coupon')) {
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
@@ -867,10 +867,8 @@
                                 <h2>Payments</h2>
                                 <div class="content">
                                     <div class="checkbox">
-                                        {{-- <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label> --}}
-                                        <form-group>
-                                            {{-- <input name="method" onclick="paymentMetod('card')" class="form-check-input"  type="radio" value="card"> <label> Debit/Credit Card</label><br>
-                                            <input name="method" onclick="paymentMetod('paypal')"  class="form-check-input" type="radio" value="paypal"> <label> PayPal</label> --}}
+                                         <form-group>
+
                                             @if ( $availablePaymnMethod->where('method', 'stripe')->first())
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
@@ -890,8 +888,7 @@
 
                                                 @if ($paypal->type == 'live')
                                                     <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=venmo&currency=USD" data-sdk-integration-source="integrationbuilder"></script>
-                                                    {{-- <script src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? 'sb' }}&currency=USD&intent=capture"
-                                                        data-sdk-integration-source="integrationbuilder"></script> --}}
+
                                                 @else
                                                     <script src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? 'sb' }}&currency=USD&intent=capture"
                                                         data-sdk-integration-source="integrationbuilder"></script>
@@ -1055,7 +1052,7 @@
 
         total_cart = {{ $total_amount }}
         total_shipping = {{ $carts->total_shipping }}
-        cart_subtotal = {{ Helper::totalCartPrice() }}
+        cart_subtotal = {{ (float) str_replace( ',', '', Helper::totalCartPrice()) }}
         session_coupon = {{ isset(Session::get('coupon')['value']) ? 1 : 0 }};
         if (session_coupon) {
             session_coupon_value = {{ isset(Session::get('coupon')['value']) ? Session::get('coupon')['value'] : 0 }}

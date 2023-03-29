@@ -52,7 +52,19 @@ Route::get('/clearroute', function() {
 });
 
 
-Auth::routes(['register'=>false]);
+Route::get('/slug', function () {
+    $product = App\Models\Product::where('id', '>', 0)->get();
+    foreach($product as $pr){
+
+        $pr->update([
+            'slug' => Str::slug($pr->title.'-'.$pr->size.'-by-'.$pr->brand?->title)
+        ]);
+    }
+
+    return 'success';
+});
+
+Auth::routes(['register' => false]);
 
 Route::get('user/login','FrontendController@login')->name('login.form')->middleware('guest');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');

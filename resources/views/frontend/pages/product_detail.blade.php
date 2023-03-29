@@ -936,7 +936,7 @@
                 $(".brand").text(data.brand_name)
                 $(".proTitle").text(data.title)
                 $(".uan_no").text(data.size + ' ' + data.color_description)
-                $(".ean_no").text(data.product_uan_code != null ? 'Item Code: ' + data.product_uan_code : '')
+                $(".ean_no").text(data.product_uan_code != null ? 'Item Code: ' + data.product_uan_code : 'Item Code: N/A')
 
                 if (data.stock == 0) {
                     $('.qntyInput').addClass('d-none')

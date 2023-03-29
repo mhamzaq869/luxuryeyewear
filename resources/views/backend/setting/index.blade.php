@@ -128,7 +128,7 @@
                         <div class="form-group">
                             <div class="mb-1">
                                 <label class="form-label" for="first-name-column">Public Key </label>
-                                <input type="text" id="client_id" class="form-control" placeholder="Client/Public id" name="client_id">
+                                <input type="text" id="client_id" class="form-control" placeholder="Client/Public id" name="public_key">
                             </div>
                         </div>
                         <div class="form-group">
