@@ -4,14 +4,14 @@
 <head>
     <!-- Required meta tags -->
     <!-- Meta Tag -->
-<?php echo $__env->yieldContent('meta'); ?>
+    <?php echo $__env->yieldContent('meta'); ?>
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
 
     <title><?php echo $__env->yieldContent('title'); ?> - Luxury Eye Wear</title>
     <meta charset="utf-8">
-        <!-- CSRF Token -->
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,12 +28,16 @@
     <!--new css-->
 
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.min.css'>
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.min.css'>
 
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
 
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6307344bf4696f0019bda34f&product=inline-share-buttons" async="async"></script>
+    <script type="text/javascript"
+        src="https://platform-api.sharethis.com/js/sharethis.js#property=6307344bf4696f0019bda34f&product=inline-share-buttons"
+        async="async"></script>
     <!--new css end -->
     
     <link rel='stylesheet' href='https://www.jqueryscript.net/demo/toast-notification-td-message/td-msessage.css'>
@@ -122,8 +126,8 @@
             margin: 100px;
             transition: transform 0.25s ease;
             cursor: zoom-in;
-            top:15%;
-            left:20%;
+            top: 15%;
+            left: 20%;
         }
 
         .zoom_out {
@@ -134,19 +138,19 @@
             cursor: zoom-out;
         }
 
-        .w-25{
+        .w-25 {
             width: 25% !important;
         }
 
-        .form-control:focus{
+        .form-control:focus {
             color: #212529;
             background-color: #fff;
             border-color: #000000;
             outline: 0;
-            box-shadow:none;
+            box-shadow: none;
         }
 
-        .has-search .form-control-feedback{
+        .has-search .form-control-feedback {
             position: absolute;
             z-index: 2;
             display: block;
@@ -157,10 +161,12 @@
             pointer-events: none;
             color: #080808 !important;
         }
-        .select2-container--default .select2-selection--single{
+
+        .select2-container--default .select2-selection--single {
             background-color: #F6F7FB !important;
             border: 0px !important;
         }
+
         .select2-selection__rendered {
             line-height: 46px !important;
         }
@@ -174,14 +180,15 @@
         }
 
         /** Loader */
-        .loader_bg{
+        .loader_bg {
             position: fixed;
             z-index: 999999;
             background: #fff;
             width: 100%;
             height: 100%;
         }
-        .loader{
+
+        .loader {
             border: 0 soild transparent;
             border-radius: 50%;
             width: 150px;
@@ -190,7 +197,9 @@
             top: calc(50vh - 75px);
             left: calc(50vw - 75px);
         }
-        .loader:before, .loader:after{
+
+        .loader:before,
+        .loader:after {
             content: '';
             border: 1em solid #ff5733;
             border-radius: 50%;
@@ -202,32 +211,36 @@
             animation: loader 2s linear infinite;
             opacity: 0;
         }
-        .loader:before{
+
+        .loader:before {
             animation-delay: .5s;
         }
-        @keyframes loader{
-            0%{
+
+        @keyframes loader {
+            0% {
                 transform: scale(0);
                 opacity: 0;
             }
-            50%{
+
+            50% {
                 opacity: 1;
             }
-            100%{
+
+            100% {
                 transform: scale(1);
                 opacity: 0;
             }
         }
-
-
-
     </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.css" integrity="sha512-+1GzNJIJQ0SwHimHEEDQ0jbyQuglxEdmQmKsu8KI7QkMPAnyDrL9TAnVyLPEttcTxlnLVzaQgxv2FpLCLtli0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.css"
+        integrity="sha512-+1GzNJIJQ0SwHimHEEDQ0jbyQuglxEdmQmKsu8KI7QkMPAnyDrL9TAnVyLPEttcTxlnLVzaQgxv2FpLCLtli0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -262,7 +275,13 @@
                                                             style="height: 450px; overflow-y:scroll;">
                                                             <?php
                                                                 $brands = DB::table('brands')
-                                                                    ->select('*')
+                                                                    ->whereIn(
+                                                                        'id',
+                                                                        \App\Models\Product::with('cat_info')
+                                                                            ->pluck('brand_id')
+                                                                            ->unique()
+                                                                            ->flatten(),
+                                                                    )
                                                                     ->get();
                                                             ?>
                                                             <ul class="mDDList brands_list"
@@ -276,7 +295,6 @@
 
                                                             </ul>
                                                     </div>
-                                                                                    
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="mDDContent">
@@ -336,18 +354,18 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="mDDContent">
-                                                      <h4 class="mDDTitle">Child Eyeglasses</h4>
-                                                      <ul class="mDDList">
-                                                        <li><a href="javascript:void(0)">All Brands</a></li>
-                                                        <li><a href="javascript:void(0)">Round</a></li>
-                                                        <li><a href="javascript:void(0)">Unisex</a></li>
-                                                        <li><a href="javascript:void(0)">Square</a></li>
-                                                        <li><a href="javascript:void(0)">Aviator</a></li>
-                                                        <li><a href="javascript:void(0)">Sports</a></li>
-                                                        <li><a href="javascript:void(0)">Cat-Eye</a></li>
-                                                      </ul>
+                                                        <h4 class="mDDTitle">Child Eyeglasses</h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a href="javascript:void(0)">Round</a></li>
+                                                            <li><a href="javascript:void(0)">Unisex</a></li>
+                                                            <li><a href="javascript:void(0)">Square</a></li>
+                                                            <li><a href="javascript:void(0)">Aviator</a></li>
+                                                            <li><a href="javascript:void(0)">Sports</a></li>
+                                                            <li><a href="javascript:void(0)">Cat-Eye</a></li>
+                                                        </ul>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -433,18 +451,18 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="mDDContent">
-                                                      <h4 class="mDDTitle">Child Eyeglasses</h4>
-                                                      <ul class="mDDList">
-                                                        <li><a href="javascript:void(0)">All Brands</a></li>
-                                                        <li><a href="javascript:void(0)">Round</a></li>
-                                                        <li><a href="javascript:void(0)">Unisex</a></li>
-                                                        <li><a href="javascript:void(0)">Square</a></li>
-                                                        <li><a href="javascript:void(0)">Aviator</a></li>
-                                                        <li><a href="javascript:void(0)">Sports</a></li>
-                                                        <li><a href="javascript:void(0)">Cat-Eye</a></li>
-                                                      </ul>
+                                                        <h4 class="mDDTitle">Child Eyeglasses</h4>
+                                                        <ul class="mDDList">
+                                                            <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            <li><a href="javascript:void(0)">Round</a></li>
+                                                            <li><a href="javascript:void(0)">Unisex</a></li>
+                                                            <li><a href="javascript:void(0)">Square</a></li>
+                                                            <li><a href="javascript:void(0)">Aviator</a></li>
+                                                            <li><a href="javascript:void(0)">Sports</a></li>
+                                                            <li><a href="javascript:void(0)">Cat-Eye</a></li>
+                                                        </ul>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -471,8 +489,9 @@
                                                                     method="get"
                                                                     class="topmenusearch page_speed_1450106835">
                                                                     <input type="text" class="form-control"
-                                                                        placeholder="Search Products..." name="search"
-                                                                        id="search_keyword" required="">
+                                                                        placeholder="Search Products..."
+                                                                        name="search" id="search_keyword"
+                                                                        required="">
                                                                 </form>
                                                             </div>
                                                             <div class="col-auto">
@@ -491,10 +510,12 @@
 
                                         <?php if(auth()->guard()->check()): ?>
                                             <a href="<?php echo e(route('user')); ?>"><img
-                                                    src="<?php echo e(asset('assets/./images/login.png')); ?>" alt="Image Not Found"></a>
+                                                    src="<?php echo e(asset('assets/./images/login.png')); ?>"
+                                                    alt="Image Not Found"></a>
                                         <?php else: ?>
                                             <a href="<?php echo e(route('login.form')); ?>"><img
-                                                    src="<?php echo e(asset('assets/./images/login.png')); ?>" alt="Image Not Found"></a>
+                                                    src="<?php echo e(asset('assets/./images/login.png')); ?>"
+                                                    alt="Image Not Found"></a>
                                         <?php endif; ?>
 
                                     </li>
@@ -513,7 +534,7 @@
                                                 src="<?php echo e(asset('assets/./images/cart-icon.svg')); ?>"
                                                 alt="Image Not Found"></a>
                                         
-                                        <?php echo e(DB::table('carts')->where('user_id', request()->ip())->where('order_id',null)->count()); ?>
+                                        <?php echo e(DB::table('carts')->where('user_id', request()->ip())->where('order_id', null)->count()); ?>
 
                                         
 
@@ -534,22 +555,23 @@
 
     <style type="text/css">
         .header_nav_links_style ul.mDDList li a {
-        text-align: left;
-    }
+            text-align: left;
+        }
     </style>
 
 
-    
     <?php echo $__env->yieldContent('main-content'); ?>
 
-    
+    <?php echo $__env->make('modals.newsletter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     <footer>
         <div class="footer_section" style="padding-left: 0% !important">
             <div class="footer_fade"></div>
             <div class="container">
                 <div class="newsletter_content newsletter_space_section">
                     <h2 class="whiteColor">NEWSLETTER</h2>
-                    <p class="whiteColor">Once you subscribe to our newsletter, we will send our promo offers and news to
+                    <p class="whiteColor">Once you subscribe to our newsletter, we will send our promo offers and news
+                        to
                         your email.</p>
                     <div class="subscribe_col">
                         <form action="<?php echo e(route('subscribe')); ?>" method="post" class="newsletter-inner">
@@ -602,7 +624,8 @@
                                             <ul class="foot_link_list">
 
                                                 <li><a href="<?php echo e(route('order.track')); ?>">Track Order</a></li>
-                                                <li><a href="<?php echo e(route('return.and.exchange')); ?>">Return & Exchange</a></li>
+                                                <li><a href="<?php echo e(route('return.and.exchange')); ?>">Return & Exchange</a>
+                                                </li>
                                                 <li><a href="<?php echo e(route('shipping.policy')); ?>">Shipping Policy</a></li>
                                                 <li><a href="<?php echo e(route('privacy.policy')); ?>">Privacy Policy</a></li>
                                             </ul>
@@ -627,29 +650,31 @@
                                                 <h3 class="foot_link_head_style">Get In Touch</h3>
                                             </div>
                                             <ul class="foot_link_list contact">
-                                                <?php $__currentLoopData = explode('|',$site_setting->address); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <li>
-                                                    <a href="javascript:void(0)">
-                                                       <?php echo e($address); ?>
+                                                <?php $__currentLoopData = explode('|', $site_setting->address); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <li>
+                                                        <a href="javascript:void(0)">
+                                                            <?php echo e($address); ?>
 
-                                                    </a>
-                                                </li>
+                                                        </a>
+                                                    </li>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                                <?php $__currentLoopData = explode('|',$site_setting->phone); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $phone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <li>
-                                                    <a href="javascript:void(0)">
-                                                    <img src="<?php echo e(asset('assets/./images/phone-icon.svg')); ?>" alt="<?php echo e($phone); ?>"><?php echo e($phone); ?></a>
-                                                </li>
+                                                <?php $__currentLoopData = explode('|', $site_setting->phone); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $phone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <li>
+                                                        <a href="javascript:void(0)">
+                                                            <img src="<?php echo e(asset('assets/./images/phone-icon.svg')); ?>"
+                                                                alt="<?php echo e($phone); ?>"><?php echo e($phone); ?></a>
+                                                    </li>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                                <?php $__currentLoopData = explode('|',$site_setting->email); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $email): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <li>
-                                                    <a href="javascript:void(0)">
-                                                        <img src="<?php echo e(asset('assets/./images/email_icon.svg')); ?>" alt="<?php echo e($email); ?>"><?php echo e($email); ?>
+                                                <?php $__currentLoopData = explode('|', $site_setting->email); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $email): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <li>
+                                                        <a href="javascript:void(0)">
+                                                            <img src="<?php echo e(asset('assets/./images/email_icon.svg')); ?>"
+                                                                alt="<?php echo e($email); ?>"><?php echo e($email); ?>
 
-                                                    </a>
-                                                </li>
+                                                        </a>
+                                                    </li>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                             </ul>
@@ -666,13 +691,16 @@
                                 <div class="courier_logo justify-content-center">
                                     <ul>
                                         <li><a href="javascript:void(0)"><img
-                                                    src="<?php echo e(asset('assets/./images/dhl_icon.png')); ?>" alt="..."></a>
+                                                    src="<?php echo e(asset('assets/./images/dhl_icon.png')); ?>"
+                                                    alt="..."></a>
                                         </li>
                                         <li><a href="javascript:void(0)"><img
-                                                    src="<?php echo e(asset('assets/./images/fedex_icon.png')); ?>" alt="..."></a>
+                                                    src="<?php echo e(asset('assets/./images/fedex_icon.png')); ?>"
+                                                    alt="..."></a>
                                         </li>
                                         <li><a href="javascript:void(0)"><img
-                                                    src="<?php echo e(asset('assets/./images/ups_icon.png')); ?>" alt="..."></a>
+                                                    src="<?php echo e(asset('assets/./images/ups_icon.png')); ?>"
+                                                    alt="..."></a>
                                         </li>
                                         <li><a href="javascript:void(0)"><img
                                                     src="<?php echo e(asset('assets/./images/aramex_icon.png')); ?>"
@@ -683,22 +711,26 @@
                             <div class="col-xl-auto col-lg-12">
                                 <div class="payment_method_logo">
                                     <ul>
-                                        <li><a href="javascript:void(0)"><img src="<?php echo e(asset('assets/./images/visa.png')); ?>"
-                                                    alt="..."></a></li>
                                         <li><a href="javascript:void(0)"><img
-                                                    src="<?php echo e(asset('assets/./images/mastercard.png')); ?>" alt="..."></a>
+                                                    src="<?php echo e(asset('assets/./images/visa.png')); ?>" alt="..."></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                    src="<?php echo e(asset('assets/./images/mastercard.png')); ?>"
+                                                    alt="..."></a>
                                         </li>
                                         <li><a href="javascript:void(0)"><img
                                                     src="<?php echo e(asset('assets/./images/american-express.png')); ?>"
                                                     alt="..."></a></li>
                                         <li><a href="javascript:void(0)"><img
-                                                    src="<?php echo e(asset('assets/./images/paypal.png')); ?>" alt="..."></a>
+                                                    src="<?php echo e(asset('assets/./images/paypal.png')); ?>"
+                                                    alt="..."></a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-xl-auto col-md-12 order-xl-first">
-                                <p class="mb-xl-0">Copyright © <?php echo e(date('Y')); ?> by luxuryeyewear. All Rights reserved
+                                <p class="mb-xl-0">Copyright © <?php echo e(date('Y')); ?> by luxuryeyewear. All Rights
+                                    reserved
                                 </p>
                             </div>
                         </div>
@@ -708,7 +740,6 @@
 
         </div>
     </footer>
-    
 
 
     <div class="backDrop"></div>
@@ -721,7 +752,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     
     <!--new js-->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
     <script src="<?php echo e(asset('assets/js/bootstrap.bundle.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/proSlider.js')); ?>"></script>
@@ -729,14 +760,13 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe-ui-default.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
     <script type="text/javascript" src="https://www.jqueryscript.net/demo/toast-notification-td-message/td-message.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.js" integrity="sha512-sww7U197vVXpRSffZdqfpqDU2SNoFvINLX4mXt1D6ZecxkhwcHmLj3QcL2cJ/aCxrTkUcaAa6EGmPK3Nfitygw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.js" ></script>
     <!--new js end -->
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script>
         var swiper = new Swiper(".logoSwiper", {
             autoplay: {
@@ -825,17 +855,18 @@
 
         });
 
-        function redirect(url){
+        function redirect(url) {
             window.location.href = url
         }
 
-        function insertAtPosition($string,$med=null) {
+        $("#newsletterModal").modal('show');
+        function insertAtPosition($string, $med = null) {
             $stringArr = $string.split('/');
             $stringArr[5] = $stringArr[4];
-            if($med == null){
+            if ($med == null) {
                 $stringArr[4] = 'compress';
-            }else{
-                $stringArr[4] = $med+'-compress';
+            } else {
+                $stringArr[4] = $med + '-compress';
             }
             return $stringArr.join('/');
         }
@@ -882,7 +913,7 @@
         });
 
 
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#brand_search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $(".brand_list li").filter(function() {
@@ -900,16 +931,16 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
-                        if(data.status == true){
+                        if (data.status == true) {
                             $.message({
-                                type:'success',
-                                text:data.message,
+                                type: 'success',
+                                text: data.message,
                                 duration: 5000
                             });
-                        }else{
+                        } else {
                             $.message({
-                                type:'error',
-                                text:data.message,
+                                type: 'error',
+                                text: data.message,
                                 duration: 5000
                             });
                         }
@@ -926,7 +957,7 @@
             shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon",
                 "whatsapp"
             ]
-        });
+        })
 
     </script>
 

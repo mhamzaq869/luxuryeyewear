@@ -685,8 +685,6 @@ class FrontendController extends Controller
     }
 
 
-
-
     // brands
 
     public function frontend_brands()

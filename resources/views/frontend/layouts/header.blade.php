@@ -22,11 +22,6 @@
                                                     <h4 class="mDDTitle">Brands</h4>
                                                     <ul class="mDDList brands_list"
                                                         style="height: 450px; overflow-y:scroll;">
-                                                        @php
-                                                            $brands = DB::table('brands')
-                                                                ->select('*')
-                                                                ->get();
-                                                        @endphp
                                                         <ul class="mDDList brands_list"
                                                             style="overflow:scroll; width:fit-content;  /*white-space: nowrap;*/">
                                                             <li><a href="javascript:void(0)">All Brands</a></li>
@@ -38,22 +33,6 @@
 
                                                         </ul>
                                                 </div>
-                                                                                {{-- @php
-                                                        $brands = DB::table('brands')->select('*')->get();
-                                                        @endphp
-                                                        <div class="bbb_viewed_slider_container">
-                                                            <div class="owl-carousel owl-theme bbb_viewed_slider">
-                                                                @foreach ($brands as $brand)
-                                                                    <a href="{{url('product-brand/'.$brand->slug)}}">
-                                                                        <div class="owl-item">
-                                                                            <div class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
-                                                                                {{$brand->title}}
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
-                                                                @endforeach
-                                                            </div>
-                                                        </div> --}}
                                             </div>
                                             <div class="col-lg-3">
                                                 <div class="mDDContent">
