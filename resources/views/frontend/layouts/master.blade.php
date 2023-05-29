@@ -857,7 +857,7 @@
             window.location.href = url
         }
 
-        $("#newsletterModal").modal('show');
+        // $("#newsletterModal").modal('show');
         function insertAtPosition($string, $med = null) {
             $stringArr = $string.split('/');
             $stringArr[5] = $stringArr[4];
