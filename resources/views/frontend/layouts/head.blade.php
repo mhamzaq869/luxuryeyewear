@@ -12,7 +12,7 @@
 
   <meta name="description" content="@yield('description')">
   <meta name="keywords" content="@yield('keywords')">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper@6.4.4/swiper-bundle.min.css" />
   <link href="{{ asset('backend/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
   <!-- Bootstrap CSS -->
@@ -29,5 +29,4 @@
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
 
   <!--new css end -->
-  {{-- <link href="{{asset('assets/css/td-messages.css')}}" rel="stylesheet"> --}}
   <link rel='stylesheet' href='https://www.jqueryscript.net/demo/toast-notification-td-message/td-msessage.css'>

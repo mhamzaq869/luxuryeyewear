@@ -55,15 +55,7 @@ class FrontendController extends Controller
 
     public function home()
     {
-        // $productWithColor = Product::where('products.status', 'active')
-        //     ->leftJoin('categories', function ($join) {
-        //         $join->on('categories.id', '=', 'products.cat_id');
-        //     })->leftJoin('brands', function ($join) {
-        //         $join->on('brands.id', 'products.brand_id');
-        //     })->get();
 
-            // dd( Product::variant(1,[27,30]));
-        // $attribute = Attribute::get();
         $data['female_eyeglasses'] = Product::femaleEyeglasses();
         $data['male_sunglasses'] = Product::maleSunglasses();
         $data['female_sunglasses'] = Product::femaleSunglasses();
@@ -74,7 +66,7 @@ class FrontendController extends Controller
         $data['posts'] = DB::table('posts')->where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
         $data['banners'] = DB::table('banners')->join('brands','banners.brand_id','=','brands.id')
-                            ->select('banners.*','brands.slug as brandSlug')
+                            ->select('banners.*','brands.slug as brandSlug','brands.title as brandTitle')
                             ->where('banners.status', 'active')->limit(3)->orderBy('banners.id', 'DESC')->get();
 
         // return $banner;

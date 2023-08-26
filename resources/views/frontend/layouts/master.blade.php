@@ -35,9 +35,9 @@
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap'>
 
-    <script type="text/javascript"
+    {{-- <script type="text/javascript"
         src="https://platform-api.sharethis.com/js/sharethis.js#property=6307344bf4696f0019bda34f&product=inline-share-buttons"
-        async="async"></script>
+        async="async"></script> --}}
     <!--new css end -->
     {{-- <link href="{{asset('assets/css/td-messages.css')}}" rel="stylesheet"> --}}
     <link rel='stylesheet' href='https://www.jqueryscript.net/demo/toast-notification-td-message/td-msessage.css'>
@@ -745,10 +745,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/swiper@6.4.4/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
-    {{-- <script src="{{ asset('assets/js/td-message.js') }}"></script> --}}
+
     <!--new js-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
@@ -951,11 +951,11 @@
         });
 
 
-        $("#share").jsSocials({
-            shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon",
-                "whatsapp"
-            ]
-        })
+        // $("#share").jsSocials({
+        //     shares: ["email", "twitter", "facebook", "googleplus", "linkedin", "pinterest", "stumbleupon",
+        //         "whatsapp"
+        //     ]
+        // })
 
     </script>
 

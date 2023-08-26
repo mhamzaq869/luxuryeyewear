@@ -2,9 +2,9 @@
     var type = "";
     var root = "{{ asset('') }}";
     var current_url = window.location.href;
-    var symbol = "";
+    var symbol = "USD";
     var convertPriceVal = "";
-    var countryCode = "";
+    var countryCode = "USA";
     var allproducts = "";
     var total_shipping = 0;
     var cart_subtotal = 0;
@@ -21,113 +21,203 @@
     convertPrice()
 
     function convertPrice() {
-        $.get('https://ipapi.co/currency/', function(data) {
-            symbol = data
-            setCookie('symbol', data, 30)
-            var requestURL = `https://api.exchangerate.host/convert?from=USD&to=${data}`;
-            var request = new XMLHttpRequest();
-            request.open('GET', requestURL);
-            request.responseType = 'json';
-            request.send();
 
-            request.onload = function() {
-                var response = request.response;
-                convertPriceVal = response.result
+        if (current_url == root) {
+            $.each(female_eyeglass, function(index, value) {
+                $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
+            });
+            $.each(female_sunglasses, function(index, value) {
+                $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
+            });
+            $.each(male_eyeglasses, function(index, value) {
+                $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
+            });
+            $.each(male_sunglasses, function(index, value) {
+                $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
+            });
+        } else if (current_url.includes('product-detail')) {
+            $.each(allproducts, function(index, value) {
+                $(".productPrice").html('<b>'+price(value)+'</b>')
+                $("#productPrice2").html('<b>'+price(value)+'</b>')
+                $("#current_product_price").val(Number(price(value).replace(/[^0-9.-]+/g,"")))
 
-                if (current_url == root) {
-                    $.each(female_eyeglass, function(index, value) {
-                        $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
-                    });
-                    $.each(female_sunglasses, function(index, value) {
-                        $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
-                    });
-                    $.each(male_eyeglasses, function(index, value) {
-                        $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
-                    });
-                    $.each(male_sunglasses, function(index, value) {
-                        $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
-                    });
-                } else if (current_url.includes('product-detail')) {
-                    $.each(allproducts, function(index, value) {
-                        $(".productPrice").html('<b>'+price(value)+'</b>')
-                        $("#productPrice2").html('<b>'+price(value)+'</b>')
-                        $("#current_product_price").val(Number(price(value).replace(/[^0-9.-]+/g,"")))
-
-                        if(value.shipping_cost > 0){
-                            $("#productDetailShippingCost").html(priceOnly(value.shipping_cost))
-                        }
-                    });
-
-                    $.each(allproductVariants, function(index, value) {
-                        $(`.productVariantPrice${value.id}`).html('<b>'+price(value)+'</b>')
-                    });
-
-                    $.each(allproducts[0].rel_prods, function(index, value) {
-                        $("#men_sunglass_pro_price_"+value.id).html(price(value))
-                    });
-
-                } else if (current_url.includes('wishlist')) {
-                    $.each(allproducts, function(index, value) {
-                        $("#wishlist-" + value.id).html(price(value,'amount'))
-                    });
-
-                } else if (current_url.includes('cart')) {
-                    $.each(allproducts, function(index, value) {
-                        $("#cart_pro_price_" + value.id).html(price(value, 'productPrice'))
-                        $("#cart_pro_total_price_" + value.id).html(price(value))
-                    });
-
-                    $("#cart_shipping").html(priceOnly(total_shipping))
-                    if (session_coupon) {
-                        $("#order_subtotal").html(priceOnly(cart_subtotal + session_coupon_value))
-                        $("#coupon_price").html(priceOnly(session_coupon_value))
-                    } else {
-                        $("#order_subtotal").html(priceOnly(cart_subtotal))
-                    }
-                    $("#order_total_price").html(priceOnly(total_cart))
-
-                } else if (current_url.includes('checkout')) {
-
-                    $("#cart_shipping").html(priceOnly(total_shipping))
-                    if (session_coupon) {
-                        $("#order_subtotal").html(priceOnly(cart_subtotal))
-                        $("#coupon_price").html(priceOnly(session_coupon_value))
-                    } else {
-                        $("#order_subtotal").html(priceOnly(cart_subtotal))
-                    }
-                    $("#order_total_price").html(priceOnly(total_cart))
-
-                } else if (current_url.includes('user/order') || current_url.includes('user/order/show')) {
-                    $.each(allproducts, function(index, value) {
-                        $("#user_order_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
-                        $("#user_order_shipping_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.shipping != null ? value.shipping : 0 * value.conversion_rate))
-                        $("#user_order_total_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
-                        $.each(value.cart_info, function(i, val) {
-                            $("#user_order_cart_price_"+val.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(val.price * value.conversion_rate))
-                        });
-                    });
-                } else {
-                    $.each(allproducts, function(index, value) {
-                        $("#" + type + value.id).html(price(value))
-                    });
+                if(value.shipping_cost > 0){
+                    $("#productDetailShippingCost").html(priceOnly(value.shipping_cost))
                 }
-                $(".loader_bg").addClass('d-none');
+            });
+
+            $.each(allproductVariants, function(index, value) {
+                $(`.productVariantPrice${value.id}`).html('<b>'+price(value)+'</b>')
+            });
+
+            $.each(allproducts[0].rel_prods, function(index, value) {
+                $("#men_sunglass_pro_price_"+value.id).html(price(value))
+            });
+
+        } else if (current_url.includes('wishlist')) {
+            $.each(allproducts, function(index, value) {
+                $("#wishlist-" + value.id).html(price(value,'amount'))
+            });
+
+        } else if (current_url.includes('cart')) {
+            $.each(allproducts, function(index, value) {
+                $("#cart_pro_price_" + value.id).html(price(value, 'productPrice'))
+                $("#cart_pro_total_price_" + value.id).html(price(value))
+            });
+
+            $("#cart_shipping").html(priceOnly(total_shipping))
+            if (session_coupon) {
+                $("#order_subtotal").html(priceOnly(cart_subtotal + session_coupon_value))
+                $("#coupon_price").html(priceOnly(session_coupon_value))
+            } else {
+                $("#order_subtotal").html(priceOnly(cart_subtotal))
             }
-        })
+            $("#order_total_price").html(priceOnly(total_cart))
+
+        } else if (current_url.includes('checkout')) {
+
+            $("#cart_shipping").html(priceOnly(total_shipping))
+            if (session_coupon) {
+                $("#order_subtotal").html(priceOnly(cart_subtotal))
+                $("#coupon_price").html(priceOnly(session_coupon_value))
+            } else {
+                $("#order_subtotal").html(priceOnly(cart_subtotal))
+            }
+            $("#order_total_price").html(priceOnly(total_cart))
+
+        } else if (current_url.includes('user/order') || current_url.includes('user/order/show')) {
+            $.each(allproducts, function(index, value) {
+                $("#user_order_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+                $("#user_order_shipping_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.shipping != null ? value.shipping : 0 * value.conversion_rate))
+                $("#user_order_total_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+                $.each(value.cart_info, function(i, val) {
+                    $("#user_order_cart_price_"+val.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(val.price * value.conversion_rate))
+                });
+            });
+        } else {
+            $.each(allproducts, function(index, value) {
+                $("#" + type + value.id).html(price(value))
+            });
+        }
+        $(".loader_bg").addClass('d-none');
+        // $.get('https://ipapi.co/currency/', function(data) {
+        //     symbol = data
+        //     setCookie('symbol', data, 30)
+        //     var requestURL = `https://api.exchangerate.host/convert?from=USD&to=${data}`;
+        //     var request = new XMLHttpRequest();
+        //     request.open('GET', requestURL);
+        //     request.responseType = 'json';
+        //     request.send();
+
+        //     request.onload = function() {
+        //         var response = request.response;
+        //         convertPriceVal = response.result
+
+        //         //Converting Currency According to Country
+        //         // if (current_url == root) {
+        //         //     $.each(female_eyeglass, function(index, value) {
+        //         //         $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
+        //         //     });
+        //         //     $.each(female_sunglasses, function(index, value) {
+        //         //         $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
+        //         //     });
+        //         //     $.each(male_eyeglasses, function(index, value) {
+        //         //         $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
+        //         //     });
+        //         //     $.each(male_sunglasses, function(index, value) {
+        //         //         $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
+        //         //     });
+        //         // } else if (current_url.includes('product-detail')) {
+        //         //     $.each(allproducts, function(index, value) {
+        //         //         $(".productPrice").html('<b>'+price(value)+'</b>')
+        //         //         $("#productPrice2").html('<b>'+price(value)+'</b>')
+        //         //         $("#current_product_price").val(Number(price(value).replace(/[^0-9.-]+/g,"")))
+
+        //         //         if(value.shipping_cost > 0){
+        //         //             $("#productDetailShippingCost").html(priceOnly(value.shipping_cost))
+        //         //         }
+        //         //     });
+
+        //         //     $.each(allproductVariants, function(index, value) {
+        //         //         $(`.productVariantPrice${value.id}`).html('<b>'+price(value)+'</b>')
+        //         //     });
+
+        //         //     $.each(allproducts[0].rel_prods, function(index, value) {
+        //         //         $("#men_sunglass_pro_price_"+value.id).html(price(value))
+        //         //     });
+
+        //         // } else if (current_url.includes('wishlist')) {
+        //         //     $.each(allproducts, function(index, value) {
+        //         //         $("#wishlist-" + value.id).html(price(value,'amount'))
+        //         //     });
+
+        //         // } else if (current_url.includes('cart')) {
+        //         //     $.each(allproducts, function(index, value) {
+        //         //         $("#cart_pro_price_" + value.id).html(price(value, 'productPrice'))
+        //         //         $("#cart_pro_total_price_" + value.id).html(price(value))
+        //         //     });
+
+        //         //     $("#cart_shipping").html(priceOnly(total_shipping))
+        //         //     if (session_coupon) {
+        //         //         $("#order_subtotal").html(priceOnly(cart_subtotal + session_coupon_value))
+        //         //         $("#coupon_price").html(priceOnly(session_coupon_value))
+        //         //     } else {
+        //         //         $("#order_subtotal").html(priceOnly(cart_subtotal))
+        //         //     }
+        //         //     $("#order_total_price").html(priceOnly(total_cart))
+
+        //         // } else if (current_url.includes('checkout')) {
+
+        //         //     $("#cart_shipping").html(priceOnly(total_shipping))
+        //         //     if (session_coupon) {
+        //         //         $("#order_subtotal").html(priceOnly(cart_subtotal))
+        //         //         $("#coupon_price").html(priceOnly(session_coupon_value))
+        //         //     } else {
+        //         //         $("#order_subtotal").html(priceOnly(cart_subtotal))
+        //         //     }
+        //         //     $("#order_total_price").html(priceOnly(total_cart))
+
+        //         // } else if (current_url.includes('user/order') || current_url.includes('user/order/show')) {
+        //         //     $.each(allproducts, function(index, value) {
+        //         //         $("#user_order_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+        //         //         $("#user_order_shipping_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.shipping != null ? value.shipping : 0 * value.conversion_rate))
+        //         //         $("#user_order_total_price_" + value.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(value.total_amount * value.conversion_rate))
+        //         //         $.each(value.cart_info, function(i, val) {
+        //         //             $("#user_order_cart_price_"+val.id).html(new Intl.NumberFormat('en-us', {style: 'currency', currency: symbol }).format(val.price * value.conversion_rate))
+        //         //         });
+        //         //     });
+        //         // } else {
+        //         //     $.each(allproducts, function(index, value) {
+        //         //         $("#" + type + value.id).html(price(value))
+        //         //     });
+        //         // }
+        //         $(".loader_bg").addClass('d-none');
+        //     }
+        // })
     }
 
     function price($details, $col = null) {
         return new Intl.NumberFormat('en-us', {
             style: 'currency',
             currency: symbol
-        }).format(extraPrice($details, $col) * convertPriceVal);
+        }).format(extraPrice($details, $col));
+
+        // return new Intl.NumberFormat('en-us', {
+        //     style: 'currency',
+        //     currency: symbol
+        // }).format(extraPrice($details, $col) * convertPriceVal);
     }
 
     function priceOnly($number) {
         return new Intl.NumberFormat('en-us', {
             style: 'currency',
             currency: symbol
-        }).format($number * convertPriceVal);
+        }).format($number);
+
+        // return new Intl.NumberFormat('en-us', {
+        //     style: 'currency',
+        //     currency: symbol
+        // }).format($number * convertPriceVal);
     }
 
     function extraPrice($details, $col = null) {
@@ -173,11 +263,11 @@
     }
 
 
-    $.get("https://api.ipify.org/", function(e) {
-        $.get(`https://ipapi.co/${e}/country/`, function(data) {
-            localStorage.setItem('countryShortName',data)
-        })
-    });
+    // $.get("https://api.ipify.org/", function(e) {
+    //     $.get(`https://ipapi.co/${e}/country/`, function(data) {
+    //         localStorage.setItem('countryShortName',data)
+    //     })
+    // });
 
 
 </script>

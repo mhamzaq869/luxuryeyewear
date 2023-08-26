@@ -19,8 +19,15 @@
                 @method('PATCH')
 
                 <div class="form-group">
-
-                    <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
+                    <div class="row">
+                        <div class="col-1">
+                            <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="color" name="title_color" class="mt-2" value="{{ $banner->title_color }}"
+                                style="width:25px; padding:0">
+                        </div>
+                    </div>
 
                     <input id="inputTitle" type="text" name="title" placeholder="Enter title"
                         value="{{ $banner->title }}" class="form-control">
@@ -55,7 +62,8 @@
                     <select name="brand_id" class="form-control select2">
                         <option disabled="disabled">--Select Brand--</option>
                         @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ $brand->id == $banner->brand_id ? 'selected' : ''}}>{{ $brand->title }}</option>
+                            <option value="{{ $brand->id }}" {{ $brand->id == $banner->brand_id ? 'selected' : '' }}>
+                                {{ $brand->title }}</option>
                         @endforeach
                     </select>
                     @error('brand')
@@ -65,9 +73,7 @@
                 </div>
 
                 <div class="form-group">
-
                     <label for="inputDesc" class="col-form-label">Description</label>
-
                     <textarea class="form-control" id="description" name="description">{{ $banner->description }}</textarea>
 
                     @error('description')
@@ -143,14 +149,13 @@
 @push('scripts')
     <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
 
     <script>
         CKEDITOR.replace('description', {
             width: 1080,
             height: 300,
             resize_dir: 'both',
-
             removeButtons: 'PasteFromWord'
         });
     </script>

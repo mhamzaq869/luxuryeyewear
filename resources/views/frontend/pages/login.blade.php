@@ -158,20 +158,6 @@
 
                                 </div>
 
-                                <div class="col-12">
-
-                                    <a href="{{ route('login.redirect', 'github') }}" class="btn btnDark w-100">
-
-
-
-                                        <!-- <span><img src="{{ asset('assets/images/fb-icon.svg') }}" alt="..." width="16"></span> -->
-
-                                        <span>Login with gitHub</span>
-
-                                    </a>
-
-                                </div>
-
 
 
                             </div>
