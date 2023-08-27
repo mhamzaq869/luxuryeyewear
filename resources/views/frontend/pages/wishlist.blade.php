@@ -38,20 +38,22 @@
                                     <div class="col-md-6 col-xl-4">
                                         {{-- <a href="{{ route('product-detail', $wishlist->product['slug']) }}" class="link-overlay"></a> --}}
                                         <div class="cardStyle1">
-                                                <div class="productImg pb-5">
-                                                    <div class="imgCol">
-                                                        <img src="{{ $photo[0] }}" alt="... ">
-                                                    </div>
-
+                                            <div class="productImg pb-5">
+                                                <div class="imgCol">
+                                                    <img src="{{ $photo[0] }}" alt="... ">
                                                 </div>
+
+                                            </div>
 
                                             <div class="contentCol">
                                                 <h4 class="brandCol">HUGO BOSS</h4>
                                                 <p>
                                                 <p class="product-name">
-                                                    <a href="{{ route('product-detail', $wishlist->product['slug']) }}"> {{ $wishlist->product['title'] }}</a>
+                                                    <a href="{{ route('product-detail', $wishlist->product['slug']) }}">
+                                                        {{ $wishlist->product['title'] }}</a>
                                                 </p>
-                                                <span class="priceCol" id="wishlist-{{$wishlist['id']}}">${{ $wishlist['amount'] }} </span>
+                                                <span class="priceCol"
+                                                    id="wishlist-{{ $wishlist['id'] }}">${{ $wishlist['amount'] }} </span>
                                                 <div class="row gx-2">
                                                     <div class="col-auto">
                                                         <a href="{{ route('single-add-to-cart', $wishlist->product['slug']) }}"
@@ -87,59 +89,8 @@
     </section>
     <!--end product section-->
 
-
-
-
-
-
-
     <!-- Start Shop Services Area  -->
-    <section class="shop-services section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-rocket"></i>
-                        <h4>Free shiping</h4>
-                        <p>Orders over $100</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-reload"></i>
-                        <h4>Free Return</h4>
-                        <p>Within 30 days returns</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-lock"></i>
-                        <h4>Sucure Payment</h4>
-                        <p>100% secure payment</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-tag"></i>
-                        <h4>Best Peice</h4>
-                        <p>Guaranteed price</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Shop Newsletter -->
-
-
-
+    @include('frontend.pages.section.shop_service')
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
@@ -265,6 +216,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
         allproducts = @json(Helper::getAllProductFromWishlist())
-
+        $.each(allproducts, function(index, value) {
+            $("#wishlist-" + value.id).html(price(value, 'amount'))
+        });
     </script>
 @endpush

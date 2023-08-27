@@ -6,8 +6,8 @@
 
     <style>
         /*======================================
-           Start Checkout Form CSS
-        ========================================*/
+               Start Checkout Form CSS
+            ========================================*/
         .shop.checkout {
             padding: 0;
             background: #fff;
@@ -212,61 +212,8 @@
         }
 
         /*======================================
-           End Checkout Form CSS
-        ========================================*/
-
-
-        /*======================================
-           Start Shop Services CSS
-        ========================================*/
-        .shop-services.section {
-            padding: 80px 0 0px 0;
-            background: #fff;
-        }
-
-        .shop-services.home {
-            padding: 60px 0;
-            background: #F6F7FB;
-        }
-
-        .shop-services .single-service {
-            position: relative;
-            padding-left: 65px;
-        }
-
-        .shop-services .single-service i {
-            height: 50px;
-            width: 50px;
-            line-height: 50px;
-            text-align: center;
-            color: #333;
-            background: transparent;
-            border-radius: 100%;
-            display: block;
-            font-size: 32px;
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-
-        .shop-services .single-service h4 {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            line-height: 22px;
-            color: #333;
-        }
-
-        .shop-services .single-service p {
-            color: #898989;
-            line-height: 28px;
-            font-size: 14px;
-        }
-
-        /*======================================
-           End Shop Services CSS
-        ========================================*/
-
+               End Checkout Form CSS
+            ========================================*/
 
         .card {
 
@@ -370,45 +317,50 @@
 
         }
 
-                /*--thank you pop starts here--*/
-        .thank-you-pop{
-            width:100%;
-            padding:20px;
-            text-align:center;
-        }
-        .thank-you-pop img{
-            width:76px;
-            height:auto;
-            margin:0 auto;
-            display:block;
-            margin-bottom:25px;
+        /*--thank you pop starts here--*/
+        .thank-you-pop {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
         }
 
-        .thank-you-pop h1{
+        .thank-you-pop img {
+            width: 76px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        .thank-you-pop h1 {
             font-size: 42px;
             margin-bottom: 25px;
-            color:#5C5C5C;
+            color: #5C5C5C;
         }
-        .thank-you-pop p{
+
+        .thank-you-pop p {
             font-size: 20px;
             margin-bottom: 27px;
-            color:#5C5C5C;
+            color: #5C5C5C;
         }
-        .thank-you-pop h3.cupon-pop{
+
+        .thank-you-pop h3.cupon-pop {
             font-size: 25px;
             margin-bottom: 40px;
-            color:#222;
-            display:inline-block;
-            text-align:center;
-            padding:10px 20px;
-            border:2px dashed #222;
-            clear:both;
-            font-weight:normal;
+            color: #222;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            border: 2px dashed #222;
+            clear: both;
+            font-weight: normal;
         }
-        .thank-you-pop h3.cupon-pop span{
-            color:#03A9F4;
+
+        .thank-you-pop h3.cupon-pop span {
+            color: #03A9F4;
         }
-        .thank-you-pop a{
+
+        .thank-you-pop a {
             display: inline-block;
             margin: 0 auto;
             padding: 9px 20px;
@@ -418,22 +370,25 @@
             background-color: #8BC34A;
             border-radius: 17px;
         }
-        .thank-you-pop a i{
-            margin-right:5px;
-            color:#fff;
+
+        .thank-you-pop a i {
+            margin-right: 5px;
+            color: #fff;
         }
-        #thankyou .modal-header{
-            border:0px;
+
+        #thankyou .modal-header {
+            border: 0px;
             display: inline !important;
             padding: 0.5rem 1rem;
         }
 
-        #thankyou .modal-header button{
+        #thankyou .modal-header button {
             border: none;
             background: none;
             font-size: 14px;
             float: right;
         }
+
         /*--thank you pop ends here--*/
         .shop.checkout .form .form-group select {
             width: 100%;
@@ -447,10 +402,11 @@
             background: #F6F7FB;
         }
 
-        .select2-container{
+        .select2-container {
             display: block !important;
         }
     </style>
+
     <section>
         @include('frontend.layouts.breadcrumb')
     </section>
@@ -467,9 +423,9 @@
                             <p>Please register in order to checkout more quickly</p>
                             <!-- Form -->
                             @php
-                                $carts = Helper::getAllProductFromCart() ;
+                                $carts = Helper::getAllProductFromCart();
 
-                                $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $carts->total_shipping;
+                                $total_amount = (float) str_replace(',', '', Helper::totalCartPrice()) + $carts->total_shipping;
                                 if (session('coupon')) {
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
@@ -477,37 +433,38 @@
                             <div class="row no-gutters">
                                 <div class="alert alert-danger" style="display: none" id="error" role="alert"></div>
                                 @auth
-                                <div class="col-lg-12 col-12">
-                                    <div class="form-group m-0 mt-2">
-                                        <label>Saved Adresses<span>*</span></label>
-                                        <select id="addresses" class="form-control">
-                                            @foreach ($address as $ship)
-                                                <option value="{{$ship->id}}">
-                                                    {{$ship->address_1 != null ? $ship->address_1.',' : ''}}
-                                                    {{$ship->address_2 != null ? $ship->address_2.',' : ''}}
-                                                    {{$ship->zipcode != null ? $ship->zipcode.',' : ''}}
-                                                    {{$ship->city != null ? $ship->city.',' : '' }}
-                                                    {{!empty($ship->country) == true ? $ship->country->name : ''}}
-                                                    ({{!empty($ship->user) == true ? $ship->user->first_name : ''}})
-                                                </option>
-                                            @endforeach
-                                            <option value="0">Use Custome Address</option>
-                                        </select>
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group m-0 mt-2">
+                                            <label>Saved Adresses<span>*</span></label>
+                                            <select id="addresses" class="form-control">
+                                                @foreach ($address as $ship)
+                                                    <option value="{{ $ship->id }}">
+                                                        {{ $ship->address_1 != null ? $ship->address_1 . ',' : '' }}
+                                                        {{ $ship->address_2 != null ? $ship->address_2 . ',' : '' }}
+                                                        {{ $ship->zipcode != null ? $ship->zipcode . ',' : '' }}
+                                                        {{ $ship->city != null ? $ship->city . ',' : '' }}
+                                                        {{ !empty($ship->country) == true ? $ship->country->name : '' }}
+                                                        ({{ !empty($ship->user) == true ? $ship->user->first_name : '' }})
+                                                    </option>
+                                                @endforeach
+                                                <option value="0">Use Custome Address</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
                                 @else
-                                <div class="col-lg-12 col-12">
-                                    <div class="form-group m-0 my-2">
-                                        <span>If you already have an account? <a href="{{route('login.form')}}">Login Here</a></span>
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group m-0 my-2">
+                                            <span>If you already have an account? <a href="{{ route('login.form') }}">Login
+                                                    Here</a></span>
+                                        </div>
                                     </div>
-                                </div>
                                 @endauth
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
                                         <select name="country" id="country" class="form-control select2">
                                             @foreach ($countries as $country)
-                                                <option value="{{$country->shortname}}">
-                                                    {{$country->name ?? ''}}
+                                                <option value="{{ $country->shortname }}">
+                                                    {{ $country->name ?? '' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -527,7 +484,8 @@
 
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group m-0 mt-2">
-                                         <input type="text" name="last_name" class="validation" placeholder="Last Name" value="{{ old('lat_name') }}">
+                                        <input type="text" name="last_name" class="validation" placeholder="Last Name"
+                                            value="{{ old('lat_name') }}">
                                         @error('last_name')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -536,15 +494,16 @@
 
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="company" class="validation" placeholder="Company (Optional)"
-                                            value="{{ old('company') }}">
+                                        <input type="text" name="company" class="validation"
+                                            placeholder="Company (Optional)" value="{{ old('company') }}">
                                         @error('company')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-12">
-                                    <div class="form-group m-0 mt-2"> <input type="text" name="address1" class="validation" placeholder="Address Line" value="{{ old('address1') }}">
+                                    <div class="form-group m-0 mt-2"> <input type="text" name="address1"
+                                            class="validation" placeholder="Address Line" value="{{ old('address1') }}">
                                         @error('address1')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -562,7 +521,8 @@
 
                                 <div class="col-lg-4 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="city" class="validation" placeholder="City" value="{{ old('city') }}" required>
+                                        <input type="text" name="city" class="validation" placeholder="City"
+                                            value="{{ old('city') }}" required>
                                         @error('city')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -573,8 +533,8 @@
 
                                         <select name="state" id="state" class="form-control select2">
                                             @foreach ($states as $state)
-                                                <option value="{{$state->name}}">
-                                                    {{$state->name ?? ''}}
+                                                <option value="{{ $state->name }}">
+                                                    {{ $state->name ?? '' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -600,8 +560,8 @@
                                 </div>
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="number" name="phone" class="validation" placeholder="Phone Number" required
-                                            value="{{ old('phone') }}">
+                                        <input type="number" name="phone" class="validation"
+                                            placeholder="Phone Number" required value="{{ old('phone') }}">
                                         @error('phone')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -687,34 +647,35 @@
                         </div> --}}
 
                         <div class="col-6 mt-2">
-                            <input type="checkbox" name="bill_shipp"  value="diff" id="billing_different">
+                            <input type="checkbox" name="bill_shipp" value="diff" id="billing_different">
                             <label class="form-check-label" for="billing_different">Is billing different?</label>
                         </div>
 
                         <div class="billing_address_diff d-none mt-4">
 
                             @php
-                                $carts = Helper::getAllProductFromCart() ;
+                                $carts = Helper::getAllProductFromCart();
 
-                                $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $carts->total_shipping;
+                                $total_amount = (float) str_replace(',', '', Helper::totalCartPrice()) + $carts->total_shipping;
                                 if (session('coupon')) {
                                     $total_amount = $total_amount - session('coupon')['value'];
                                 }
                             @endphp
                             <div class="row">
-                                <div class="alert alert-danger" style="display: none" id="error" role="alert"></div>
+                                <div class="alert alert-danger" style="display: none" id="error" role="alert">
+                                </div>
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group">
                                         <label>Saved Adresses<span>*</span></label>
                                         <select id="bill_addresses" class="form-control">
                                             @foreach ($address as $ship)
-                                                <option value="{{$ship->id}}">
-                                                    {{$ship->address_1 != null ? $ship->address_1.',' : ''}}
-                                                    {{$ship->address_2 != null ? $ship->address_2.',' : ''}}
-                                                    {{$ship->zipcode != null ? $ship->zipcode.',' : ''}}
-                                                    {{$ship->city != null ? $ship->city.',' : '' }}
-                                                    {{!empty($ship->country) == true ? $ship->country->name : ''}}
-                                                    ({{!empty($ship->user) == true ? $ship->user->first_name : ''}})
+                                                <option value="{{ $ship->id }}">
+                                                    {{ $ship->address_1 != null ? $ship->address_1 . ',' : '' }}
+                                                    {{ $ship->address_2 != null ? $ship->address_2 . ',' : '' }}
+                                                    {{ $ship->zipcode != null ? $ship->zipcode . ',' : '' }}
+                                                    {{ $ship->city != null ? $ship->city . ',' : '' }}
+                                                    {{ !empty($ship->country) == true ? $ship->country->name : '' }}
+                                                    ({{ !empty($ship->user) == true ? $ship->user->first_name : '' }})
                                                 </option>
                                             @endforeach
                                             <option value="0">Use Custome Address</option>
@@ -726,8 +687,8 @@
 
                                         <select name="bill_country" id="bill_country" class="form-control select2">
                                             @foreach ($countries as $country)
-                                                <option value="{{$country->name}}">
-                                                    {{$country->name ?? ''}}
+                                                <option value="{{ $country->name }}">
+                                                    {{ $country->name ?? '' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -736,8 +697,7 @@
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group m-0 mt-2">
                                         <input type="text" name="bill_first_name" placeholder="First Name"
-                                            value="{{ old('first_name') }}"
-                                            value="{{ old('first_name') }}">
+                                            value="{{ old('first_name') }}" value="{{ old('first_name') }}">
                                         @error('first_name')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -755,7 +715,7 @@
 
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="bill_company"  placeholder="Company (Optional)"
+                                        <input type="text" name="bill_company" placeholder="Company (Optional)"
                                             value="{{ old('company') }}">
                                         @error('company')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -764,7 +724,7 @@
                                 </div>
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="bill_address1"  placeholder="Address Line 1"
+                                        <input type="text" name="bill_address1" placeholder="Address Line 1"
                                             value="{{ old('address1') }}">
                                         @error('address1')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -783,7 +743,8 @@
 
                                 <div class="col-lg-4 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="bill_city"  placeholder="City" value="{{ old('city') }}" required>
+                                        <input type="text" name="bill_city" placeholder="City"
+                                            value="{{ old('city') }}" required>
                                         @error('city')
                                             <span class='text-danger'>{{ $message }}</span>
                                         @enderror
@@ -793,8 +754,8 @@
                                     <div class="form-group m-0 mt-2">
                                         <select name="bill_state" id="bill_state" class="form-select select2">
                                             @foreach ($states as $state)
-                                                <option value="{{$state->name}}">
-                                                    {{$state->name ?? ''}}
+                                                <option value="{{ $state->name }}">
+                                                    {{ $state->name ?? '' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -802,7 +763,7 @@
                                 </div>
                                 <div class="col-lg-4 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="text" name="bill_post_code"  placeholder="Postal Code"
+                                        <input type="text" name="bill_post_code" placeholder="Postal Code"
                                             value="{{ old('post_code') }}" required>
                                         @error('post_code')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -811,7 +772,7 @@
                                 </div>
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="email" name="bill_email"  placeholder="Email Address"
+                                        <input type="email" name="bill_email" placeholder="Email Address"
                                             value="{{ old('email') }}">
                                         @error('email')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -820,7 +781,7 @@
                                 </div>
                                 <div class="col-lg-6 col-12">
                                     <div class="form-group m-0 mt-2">
-                                        <input type="number" name="bill_phone"  placeholder="Phone Number" required
+                                        <input type="number" name="bill_phone" placeholder="Phone Number" required
                                             value="{{ old('phone') }}">
                                         @error('phone')
                                             <span class='text-danger'>{{ $message }}</span>
@@ -847,8 +808,10 @@
                                         </li>
 
                                         @if (session()->has('coupon'))
-                                            <li class="coupon_price" >
-                                                You Save<span id="coupon_price">${{ number_format(Session::get('coupon')['value'], 2) }}</span></li>
+                                            <li class="coupon_price">
+                                                You Save<span
+                                                    id="coupon_price">${{ number_format(Session::get('coupon')['value'], 2) }}</span>
+                                            </li>
                                         @endif
 
                                         @if (session('coupon'))
@@ -867,12 +830,13 @@
                                 <h2>Payments</h2>
                                 <div class="content">
                                     <div class="checkbox">
-                                         <form-group>
+                                        <form-group>
 
-                                            @if ( $availablePaymnMethod->where('method', 'stripe')->first())
+                                            @if ($availablePaymnMethod->where('method', 'stripe')->first())
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
-                                                        <button type="button" id="stripe" class="btn btn-primary btn-lg btn-block w-100 mb-2 py-0">
+                                                        <button type="button" id="stripe"
+                                                            class="btn btn-primary btn-lg btn-block w-100 mb-2 py-0">
                                                             <i class="fa-brands fa-stripe fa-3x"></i>
                                                         </button>
                                                     </div>
@@ -887,8 +851,9 @@
                                                 </div>
 
                                                 @if ($paypal->type == 'live')
-                                                    <script src="https://www.paypal.com/sdk/js?client-id={{$paypal->secret_key ?? ''}}&disable-funding=venmo&currency=USD" data-sdk-integration-source="integrationbuilder"></script>
-
+                                                    <script
+                                                        src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? '' }}&disable-funding=venmo&currency=USD"
+                                                        data-sdk-integration-source="integrationbuilder"></script>
                                                 @else
                                                     <script src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? 'sb' }}&currency=USD&intent=capture"
                                                         data-sdk-integration-source="integrationbuilder"></script>
@@ -913,48 +878,7 @@
     <!--/ End Checkout -->
 
     <!-- Start Shop Services Area  -->
-    <section class="shop-services section home">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-rocket"></i>
-                        <h4>Free shiping</h4>
-                        <p>Orders over $100</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-reload"></i>
-                        <h4>Free Return</h4>
-                        <p>Within 30 days returns</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-lock"></i>
-                        <h4>Sucure Payment</h4>
-                        <p>100% secure payment</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Service -->
-                    <div class="single-service">
-                        <i class="ti-tag"></i>
-                        <h4>Best Peice</h4>
-                        <p>Guaranteed price</p>
-                    </div>
-                    <!-- End Single Service -->
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('frontend.pages.section.shop_service')
     <!-- End Shop Services -->
     <div class="modal fade" id="thankyou" role="dialog">
         <div class="modal-dialog">
@@ -966,7 +890,8 @@
                 <div class="modal-body">
 
                     <div class="thank-you-pop">
-                        <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png" alt="">
+                        <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png"
+                            alt="">
                         <h1>Thank You!</h1>
                         <p>Your submission is received and we will contact you soon</p>
                         <h3 class="cupon-pop">Your Id: <span>12345</span></h3>
@@ -1030,8 +955,6 @@
         .form-select .nice-select::after {
             top: 14px;
         }
-
-
     </style>
 @endpush
 @push('scripts')
@@ -1052,13 +975,22 @@
 
         total_cart = {{ $total_amount }}
         total_shipping = {{ $carts->total_shipping }}
-        cart_subtotal = {{ (float) str_replace( ',', '', Helper::totalCartPrice()) }}
+        cart_subtotal = {{ (float) str_replace(',', '', Helper::totalCartPrice()) }}
         session_coupon = {{ isset(Session::get('coupon')['value']) ? 1 : 0 }};
         if (session_coupon) {
             session_coupon_value = {{ isset(Session::get('coupon')['value']) ? Session::get('coupon')['value'] : 0 }}
         } else {
             session_coupon_value = 0
         }
+
+        $("#cart_shipping").html(priceOnly(total_shipping))
+        if (session_coupon) {
+            $("#order_subtotal").html(priceOnly(cart_subtotal))
+            $("#coupon_price").html(priceOnly(session_coupon_value))
+        } else {
+            $("#order_subtotal").html(priceOnly(cart_subtotal))
+        }
+        $("#order_total_price").html(priceOnly(total_cart))
 
         $(document).ready(function() {
             $(".select2").select2();
@@ -1073,15 +1005,15 @@
             }
         }
 
-         //Stripe
-        $("#stripe").on('click', function(){
+        //Stripe
+        $("#stripe").on('click', function() {
             if (!validateForm()) {
                 $("#error").text("All (*) Fields are required!")
                 $("#error").show()
                 setTimeout(() => {
                     $("#error").hide()
                 }, 3000);
-            }else{
+            } else {
 
                 const data = {
                     user_id: "{{ request()->ip() }}",
@@ -1114,9 +1046,11 @@
                     bill_post_code: $("input[name=bill_post_code]").val(),
                 }
 
-                setCookie('data', JSON.stringify(data) ,30);
-                const stripe = Stripe("{{$integerations->public_key ?? ''}}");
-                stripe.redirectToCheckout({ sessionId: "{{ $session->id ?? '' }}" });
+                setCookie('data', JSON.stringify(data), 30);
+                const stripe = Stripe("{{ $integerations->public_key ?? '' }}");
+                stripe.redirectToCheckout({
+                    sessionId: "{{ $session->id ?? '' }}"
+                });
             }
         });
 
@@ -1226,9 +1160,9 @@
                                 bill_post_code: $("input[name=bill_post_code]").val(),
                             },
                             success: function(data) {
-                                if(data.success == true){
+                                if (data.success == true) {
                                     $("#thankyou").modal('show')
-                                    window.location = "{{url('/user/order')}}"
+                                    window.location = "{{ url('/user/order') }}"
                                 }
                             },
                             error: function(xhr, exception) {
@@ -1290,12 +1224,12 @@
             }
         }
 
-        $("#addresses").on('change', function(){
-            if(this.value == 0){
+        $("#addresses").on('change', function() {
+            if (this.value == 0) {
 
                 $("#checkoutForm")[0].reset()
 
-            }else{
+            } else {
 
                 var address = addresses.find(item => item.id == this.value);
 
@@ -1315,12 +1249,12 @@
             }
         });
 
-        $("#bill_addresses").on('change', function(){
-            if(this.value == 0){
+        $("#bill_addresses").on('change', function() {
+            if (this.value == 0) {
 
                 $("#checkoutForm")[0].reset()
 
-            }else{
+            } else {
 
                 var address = addresses.find(item => item.id == this.value);
 
@@ -1340,13 +1274,13 @@
             }
         });
 
-        $("#country").on('change', function(){
+        $("#country").on('change', function() {
 
             var country = countries.find(item => item.shortname == this.value);
             var state = states.filter(item => item.country_id == country.id);
             var html = '';
-            $.each(state , function(index, val) {
-                html += '<option value="'+val.id+'">'+val.name+'</option>'
+            $.each(state, function(index, val) {
+                html += '<option value="' + val.id + '">' + val.name + '</option>'
             });
 
             $("#state").html(html)
@@ -1356,23 +1290,22 @@
         $("#country").val(localStorage.getItem('countryShortName')).trigger('change')
 
         $('input[name=bill_shipp]').click(function() {
-            if($(this).is(":checked")){
+            if ($(this).is(":checked")) {
                 $(".billing_address_diff").removeClass('d-none')
-            }
-            else if($(this).is(":not(:checked)")){
+            } else if ($(this).is(":not(:checked)")) {
                 $(".billing_address_diff").addClass('d-none')
             }
 
         });
 
-        function setCookie(name,value,days) {
+        function setCookie(name, value, days) {
             var expires = "";
             if (days) {
                 var date = new Date();
-                date.setTime(date.getTime() + (days*24*60*60*1000));
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
                 expires = "; expires=" + date.toUTCString();
             }
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
         }
     </script>
 @endpush

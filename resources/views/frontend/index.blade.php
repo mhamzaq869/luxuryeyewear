@@ -263,20 +263,32 @@
 
 
     <!-- Female Sunglasses COre Collection end -->
-
 @endsection
 
 @push('scripts')
     <script>
-        var product = @json($product_variant)
+        product = @json($product_variant)
 
-        female_eyeglass = @json($female_eyeglasses)
+        var female_eyeglass = @json($female_eyeglasses)
 
-        female_sunglasses = @json($female_sunglasses)
+        var female_sunglasses = @json($female_sunglasses)
 
-        male_eyeglasses = @json($male_eyeglasses)
+        var male_eyeglasses = @json($male_eyeglasses)
 
-        male_sunglasses = @json($male_sunglasses)
+        var male_sunglasses = @json($male_sunglasses)
+
+        $.each(female_eyeglass, function(index, value) {
+            $(`#female_eyeglass_pro_price_${value.id}`).html(price(value))
+        });
+        $.each(female_sunglasses, function(index, value) {
+            $(`#female_sunglass_pro_price_${value.id}`).html(price(value))
+        });
+        $.each(male_eyeglasses, function(index, value) {
+            $(`#men_eyeglass_pro_price_${value.id}`).html(price(value))
+        });
+        $.each(male_sunglasses, function(index, value) {
+            $(`#men_sunglass_pro_price_${value.id}`).html(price(value))
+        });
 
         function changeProDetail(id, type, parent_id) {
             var data = product.find(item => item.id == id)

@@ -47,22 +47,18 @@ class MessageController extends Controller
             'subject'=>'string|required',
             'phone'=>'numeric|required'
         ]);
-        // return $request->all();
 
-        $message=Message::create($request->all());
-            // return $message;
-        $data=array();
-        $data['url']=route('message.show',$message->id);
-        $data['date']=$message->created_at->format('F d, Y h:i A');
-        $data['name']=$message->name;
-        $data['email']=$message->email;
-        $data['phone']=$message->phone;
-        $data['message']=$message->message;
-        $data['subject']=$message->subject;
-        $data['photo']=Auth()->user()->photo;
-        // return $data;    
-        event(new MessageSent($data));
-        exit();
+        $mail = new MailController();
+        $title = $request->name.' has contact you for '.$request->subject;
+
+        $name  = $request->name;
+        $email = $request->email;
+        $phone = $request->phone;
+        $msg   = $request->message;
+
+        $mail->sendMail($request->email, $title, view('frontend.mails.contact-mail',get_defined_vars())->render());
+
+        return true;
     }
 
     /**

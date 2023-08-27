@@ -183,7 +183,7 @@
 
 
                                     @php
-                                        $total_amount = (float) str_replace( ',', '', Helper::totalCartPrice()) + $total_shipping;
+                                        $total_amount = (float) str_replace(',', '', Helper::totalCartPrice()) + $total_shipping;
                                         if (session()->has('coupon')) {
                                             $total_amount = $total_amount - Session::get('coupon')['value'];
                                         }
@@ -283,7 +283,6 @@
             </div>
 
         </div>
-
     </section>
 
     <!--section strat -->
@@ -344,5 +343,20 @@
 
         });
 
+        $.each(allproducts, function(index, value) {
+            $("#cart_pro_price_" + value.id).html(price(value, 'productPrice'))
+            $("#cart_pro_total_price_" + value.id).html(price(value))
+        });
+
+        $("#cart_shipping").html(priceOnly(total_shipping))
+
+        if (session_coupon) {
+            $("#order_subtotal").html(priceOnly(cart_subtotal + session_coupon_value))
+            $("#coupon_price").html(priceOnly(session_coupon_value))
+        } else {
+            $("#order_subtotal").html(priceOnly(cart_subtotal))
+        }
+
+        $("#order_total_price").html(priceOnly(total_cart))
     </script>
 @endpush

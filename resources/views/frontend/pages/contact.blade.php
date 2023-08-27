@@ -30,16 +30,16 @@
 	<section id="contact-us" class="contact-us section">
 		<div class="container">
 				<div class="contact-head">
+                    <div class="title mt-4">
+                        @php $settings = DB::table('settings')->get(); @endphp
+                        <h4>Get in touch</h4>
+                        <h3>Write us a message @auth @else<span style="font-size:12px;" class="text-danger">[You need to login first]</span>@endauth</h3>
+                    </div>
+
 					<div class="row py-3">
 						<div class="col-lg-8 col-12">
 							<div class="form-main">
-								<div class="title">
-									@php
-										$settings=DB::table('settings')->get();
-									@endphp
-									<h4>Get in touch</h4>
-									<h3>Write us a message @auth @else<span style="font-size:12px;" class="text-danger">[You need to login first]</span>@endauth</h3>
-								</div>
+
 								<form class="form-contact form contact_form" method="post" action="{{route('contact.store')}}" id="contactForm" novalidate="novalidate">
 									@csrf
 									<div class="row">
@@ -83,8 +83,8 @@
 							</div>
 						</div>
 						<div class="col-lg-4 col-12">
-							<div class="single-head">
-								<div class="single-info">
+							<div class="single-head mt-4">
+								<div class="single-info my-3">
                                     <div class="d-flex">
                                         <i class="fa fa-phone mt-2" style="margin-right: 10px"></i>
                                         <h4 class="title">Call us Now:</h4>
@@ -93,7 +93,7 @@
 										<li>@foreach($settings as $data) {{$data->phone}} @endforeach</li>
 									</ul>
 								</div>
-								<div class="single-info">
+								<div class="single-info my-3">
                                     <div class="d-flex">
                                         <i class="fa fa-envelope-open mt-2" style="margin-right: 10px"></i>
                                         <h4 class="title"> Email:</h4>
@@ -103,7 +103,7 @@
 									</ul>
 								</div>
 								<div class="single-info">
-                                    <div class="d-flex">
+                                    <div class="d-flex ">
                                         <i class="fa fa-location-arrow mt-2" style="margin-right: 10px"></i>
                                         <h4 class="title">Our Address:</h4>
                                     </div>

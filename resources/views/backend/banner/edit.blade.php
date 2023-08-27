@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-1">
-                            <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
+                            <label for="inputTitle" class="col-form-label">Title</label>
                         </div>
                         <div class="col-3">
                             <input type="color" name="title_color" class="mt-2" value="{{ $banner->title_color }}"

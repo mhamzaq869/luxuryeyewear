@@ -39,11 +39,6 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'title'=>'string|required|max:50',
-            'description'=>'string|nullable',
-            'status'=>'required|in:active,inactive',
-        ]);
         $data=$request->all();
 
         if($request->hasFile('photo')){
@@ -106,11 +101,7 @@ class BannerController extends Controller
     public function update(Request $request, $id)
     {
         $banner=Banner::findOrFail($id);
-        $this->validate($request,[
-            'title'=>'string|required|max:50',
-            'description'=>'string|nullable',
-            'status'=>'required|in:active,inactive',
-        ]);
+
         $data=$request->all();
 
         if($request->hasFile('photo')){
