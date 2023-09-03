@@ -77,13 +77,13 @@
                                     <div class="d-flex justify-content-between">
                                         <img src="{{ asset('images/'.$integration->image) }}"
                                             alt="{{ $integration->name }}" height="40" width="40" />
-                                        {{-- <label class="form-check form-switch">
+                                        <label class="form-check form-switch">
                                             <input type="checkbox" class="form-check-input med-query default" id="customSwitch1"
                                                 data-id="{{ $integration->id }}"
                                                 {{ $integration->status == '0' ? '' : 'checked' }} name="status"
                                                 onchange="integrationStatus({{$integration->id}},this)" />
                                                 <span class="slider round"></span>
-                                        </label> --}}
+                                        </label>
                                         <div class="dropdown chart-dropdown">
                                             <a class="btn" onclick="showFolderModel('{{ route('integration.show',[$integration->id]) }}')">
                                                 <span class="align-middle">
@@ -246,6 +246,24 @@
                     }
                 }
 
+            }
+        });
+    }
+
+    function integrationStatus(id,element){
+        $status = element.checked == true ? 1 : 0;
+
+        $.ajax({
+            type: "POST",
+            url: `{{url('/admin/settings/integration/${id}/update')}}`,
+            data: {
+                _token: "{{csrf_token()}}",
+                status: $status
+            },
+            success: function(data) {
+                if(data.status == true){
+                    alertNotification('success','Integrations',data.message)
+                }
             }
         });
     }

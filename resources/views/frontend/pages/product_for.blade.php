@@ -234,6 +234,9 @@
 
         type = "eyelass_pro_price_"
         allproducts = @json($datas).data
+        $.each(allproducts, function(index, value) {
+            $("#" + type + value.id).html(price(value))
+        });
 
 
         function changeProDetail(id, type, parent_id) {

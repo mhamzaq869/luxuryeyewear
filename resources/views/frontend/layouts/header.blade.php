@@ -25,6 +25,17 @@
                                                         <ul class="mDDList brands_list"
                                                             style="overflow:scroll; width:fit-content;  /*white-space: nowrap;*/">
                                                             <li><a href="javascript:void(0)">All Brands</a></li>
+                                                            @php
+                                                                $brands = DB::table('brands')
+                                                                    ->whereIn(
+                                                                        'id',
+                                                                        \App\Models\Product::with('cat_info')
+                                                                            ->pluck('brand_id')
+                                                                            ->unique()
+                                                                            ->flatten(),
+                                                                    )
+                                                                    ->get();
+                                                            @endphp
                                                             @foreach ($brands as $brand)
                                                                 <li><a
                                                                         href="{{ url('product-brand/' . $brand->slug) }}">{{ $brand->title }}</a>

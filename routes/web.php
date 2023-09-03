@@ -182,9 +182,9 @@ Route::post('/coupon_discount','CouponController@couponStore')->name('coupon.dis
 Route::get('payment', 'PayPalController@payment')->name('payment');
 Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('payment.success');
-// Backend section start
 
-Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
+// Admin section start
+Route::group(['prefix'=>'/admin','middleware' => ['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
@@ -273,11 +273,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
 });
 
-
-
 // User section start
-
-Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
+Route::group(['prefix'=>'/user','middleware'=> ['auth','user'] ],function(){
 
     Route::get('/','HomeController@index')->name('user');
 
@@ -292,7 +289,6 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::get('/address/{id}/edit','HomeController@addressEdit')->name('user.address.edit');
     Route::post('/address/{id}','HomeController@addressUpdate')->name('user.address.update');
 
-
     //  Order
     Route::get('/order',"HomeController@orderIndex")->name('user.order.index');
     Route::get('/order/show/{id}',"HomeController@orderShow")->name('user.order.show');
@@ -305,21 +301,15 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::get('/user-review/edit/{id}','HomeController@productReviewEdit')->name('user.productreview.edit');
     Route::patch('/user-review/update/{id}','HomeController@productReviewUpdate')->name('user.productreview.update');
 
-
     // Post comment
     Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
     Route::delete('user-post/comment/delete/{id}','HomeController@userCommentDelete')->name('user.post-comment.delete');
     Route::get('user-post/comment/edit/{id}','HomeController@userCommentEdit')->name('user.post-comment.edit');
     Route::patch('user-post/comment/udpate/{id}','HomeController@userCommentUpdate')->name('user.post-comment.update');
 
-
-
     // Password Change
-
     Route::get('changePassword', 'HomeController@changePassword')->name('user.change.password.form');
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
-
-
 
 });
 

@@ -121,6 +121,7 @@ class HomeController extends Controller
         $orders = Order::orderBy('id', 'DESC')->where('user_id', auth()->user()->id)->paginate(10);
         return view('user.order.index')->with('orders', $orders);
     }
+
     public function userOrderDelete($id)
     {
         $order = Order::find($id);

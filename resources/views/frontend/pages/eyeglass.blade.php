@@ -220,6 +220,10 @@
 
         allproducts = @json($eyeglasses).data
 
+        $.each(allproducts, function(index, value) {
+            $("#" + type + value.id).html(price(value))
+        });
+
         function changeProDetail(id, type, parent_id) {
             var data = product.find(item => item.id == id)
             if (data.length != 0) {

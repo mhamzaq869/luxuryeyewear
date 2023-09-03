@@ -122,7 +122,6 @@ class AdminController extends Controller
     {
         $integrations = Integration::all();
         return view('backend.setting.index', get_defined_vars());
-        // return view('backend.payment_integration', compact('paymentIntegeration'));
     }
 
     /**
@@ -137,18 +136,14 @@ class AdminController extends Controller
             $integration = Integration::find($request->id);
             $integration->update($request->except('id'));
 
-            $response['status'] = true;
-            $response['code'] = 200;
-            $response['message'] = $integration->name.' Integration Updated Successfully!';
-
-            return response($response);
+            return redirect()->back()->with('message',$integration->name.' Integration Updated Successfully!');
 
          }catch(Exception $e){
             $response['status'] = false;
             $response['code'] = 500;
             $response['message'] = $e->getMessage();
 
-            return response($response);
+            return redirect()->back()->withErrors($e->getMessage(),'error');
          }
     }
 
@@ -183,18 +178,14 @@ class AdminController extends Controller
             $integration = Integration::find($request->id);
             $integration->update($request->except('id'));
 
-            $response['status'] = true;
-            $response['code'] = 200;
-            $response['message'] = $integration->name.' Integration Updated Successfully!';
-
-            return response($response);
+            return redirect()->back()->with('message',$integration->name.' Integration Updated Successfully!');
 
          }catch(Exception $e){
             $response['status'] = false;
             $response['code'] = 500;
             $response['message'] = $e->getMessage();
 
-            return response($response);
+            return redirect()->back()->withErrors($e->getMessage(),'error');
          }
     }
 

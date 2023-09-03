@@ -452,12 +452,12 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="col-lg-12 col-12">
+                                    {{-- <div class="col-lg-12 col-12">
                                         <div class="form-group m-0 my-2">
                                             <span>If you already have an account? <a href="{{ route('login.form') }}">Login
                                                     Here</a></span>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 @endauth
                                 <div class="col-lg-12 col-12">
                                     <div class="form-group m-0 mt-2">
@@ -641,10 +641,6 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-6 mt-2">
-                            <input type="radio" name="bill_shipp" value="same" id="billing_shipping_same">
-                            <label class="form-check-label" for="billing_shipping_same">Is shipping and billing same?</label>
-                        </div> --}}
 
                         <div class="col-6 mt-2">
                             <input type="checkbox" name="bill_shipp" value="diff" id="billing_different">
@@ -832,7 +828,7 @@
                                     <div class="checkbox">
                                         <form-group>
 
-                                            @if ($availablePaymnMethod->where('method', 'stripe')->first())
+                                            @if ($availablePaymnMethod->where('method', 'stripe')->first()?->status == 1)
                                                 <div id="smart-button-container">
                                                     <div style="text-align: center;">
                                                         <button type="button" id="stripe"

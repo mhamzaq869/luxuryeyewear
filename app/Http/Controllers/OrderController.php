@@ -81,7 +81,7 @@ class OrderController extends Controller
             $order=new Order();
             $order_data = $request->all();
             $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
-            $order_data['user_id'] = Auth::id();
+            $order_data['user_id'] = $userId;
             $order_data['shipping_id'] = $request->shipping;
             $shipping = $request->shipping;
 
@@ -121,7 +121,7 @@ class OrderController extends Controller
             ];
 
             Notification::send($users, new StatusNotification($details));
-            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => Auth::id()]);
+            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => $userId]);
 
             Order::find($order->id)->update([
                 'quantity' => Helper::cartCount()
@@ -345,9 +345,11 @@ class OrderController extends Controller
             $order = new Order();
             $data = json_decode($_COOKIE['data'], true);
 
+            $userId = Auth::check() ? Auth::id() :
+
             $order_data = $data;
             $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
-            $order_data['user_id'] = Auth::id();
+            $order_data['user_id'] = $userId;
             $order_data['shipping_id'] = $data['shipping_id'];
             $order_data['payment_status'] = 'paid';
             $order_data['symbol'] = $_COOKIE['symbol'];
@@ -389,13 +391,13 @@ class OrderController extends Controller
             ];
 
             Notification::send($users, new StatusNotification($details));
-            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => Auth::id()]);
+            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => $userId]);
 
             Order::find($order->id)->update([
                 'quantity' => Helper::cartCount()
             ]);
 
-            $customer = User::find(Auth::id());
+            $customer = User::find($userId);
             $admin = User::where('role','admin')->first();
             $shipping = Shipping::find($order->shipping_id);
 
@@ -406,7 +408,12 @@ class OrderController extends Controller
 
             session()->put('order_number',$order->id);
             session()->forget('coupon');
-            return redirect()->route('user.order.completed');
+
+            if(Auth::check()){
+                return redirect()->route('user.order.completed');
+            }
+
+            return view('user.order.guest_order_completed');
         }catch(Exception $e){
 
             return redirect()->route('checkout')->with('error',$e->getMessage());

@@ -97,23 +97,27 @@
         allproducts = @json($orders).data;
 
         $.each(allproducts, function(index, value) {
+
             $("#user_order_price_" + value.id).html(new Intl.NumberFormat('en-us', {
                 style: 'currency',
                 currency: symbol
-            }).format(value.total_amount * value.conversion_rate))
+            }).format(value.total_amount))
+
             $("#user_order_shipping_price_" + value.id).html(new Intl.NumberFormat('en-us', {
                 style: 'currency',
                 currency: symbol
-            }).format(value.shipping != null ? value.shipping : 0 * value.conversion_rate))
+            }).format(value.shipping != null ? value.shipping : 0))
+
             $("#user_order_total_price_" + value.id).html(new Intl.NumberFormat('en-us', {
                 style: 'currency',
                 currency: symbol
-            }).format(value.total_amount * value.conversion_rate))
+            }).format(value.total_amount))
+
             $.each(value.cart_info, function(i, val) {
                 $("#user_order_cart_price_" + val.id).html(new Intl.NumberFormat('en-us', {
                     style: 'currency',
                     currency: symbol
-                }).format(val.price * value.conversion_rate))
+                }).format(val.price))
             });
         });
 
