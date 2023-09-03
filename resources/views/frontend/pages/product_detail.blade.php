@@ -1271,7 +1271,7 @@
                 $("#addToCart").attr('onsubmit', '')
             }
 
-            $(".productPrice").html('<b>' + symbol + ' ' + total_price.toFixed(2) + '</b>')
+            $(".productPrice").html('<b>$' + total_price.toFixed(2) + '</b>')
             $("#product_price").val(total_price.toFixed(2))
             $("#product_qty").val(qty)
         }
