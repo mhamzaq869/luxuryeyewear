@@ -1058,33 +1058,33 @@
 
         for (const fundingSource of fundingSources) {
             const paypalButtonsComponent = paypal.Buttons({
-                onInit: function(data, actions) {
-                    actions.disable();
-                    document.querySelectorAll("input").forEach(i => {
-                        i.addEventListener("change", () => {
-                            if (validateForm()) {
-                                actions.enable();
-                            } else {
-                                actions.disable()
-                            }
-                        });
-                    });
+                // onInit: function(data, actions) {
+                //     actions.disable();
+                //     document.querySelectorAll("input").forEach(i => {
+                //         i.addEventListener("change", () => {
+                //             if (validateForm()) {
+                //                 actions.enable();
+                //             } else {
+                //                 actions.disable()
+                //             }
+                //         });
+                //     });
 
-                    actionStatus = actions;
-
-
-                },
-                onClick: function() {
-                    if (!validateForm()) {
-                        $("#error").text("All (*) Fields are required!")
-                        $("#error").show()
-                        setTimeout(() => {
-                            $("#error").hide()
-                        }, 3000);
-                    }
+                //     actionStatus = actions;
 
 
-                },
+                // },
+                // onClick: function() {
+                //     if (!validateForm()) {
+                //         $("#error").text("All (*) Fields are required!")
+                //         $("#error").show()
+                //         setTimeout(() => {
+                //             $("#error").hide()
+                //         }, 3000);
+                //     }
+
+
+                // },
                 fundingSource: fundingSource,
 
                 // optional styling for buttons
@@ -1117,6 +1117,7 @@
                 // finalize the transaction
                 onApprove: (data, actions) => {
                     const captureOrderHandler = (details) => {
+
                         const payerName = details.payer.name.given_name
 
                         $.ajax({
@@ -1127,33 +1128,12 @@
                             data: {
                                 _token: "{{ csrf_token() }}",
                                 user_id: "{{ request()->ip() }}",
-                                conversion_rate: convertPriceVal,
                                 coupon: session_coupon_value,
                                 shipping_id: "{{ $carts->shipping_id ?? 0 }}",
                                 payment_method: 'paypal',
-                                bill_shipp: $("#bill_shipp option:checked").val(),
-                                first_name: $("input[name=first_name]").val(),
-                                last_name: $("input[name=last_name]").val(),
-                                email: $("input[name=email]").val(),
-                                company: $("input[name=company]").val(),
-                                address1: $("input[name=address1]").val(),
-                                address2: $("input[name=address2]").val(),
-                                phone: $("input[name=phone]").val(),
-                                country: $("#country option:selected").val(),
-                                state: $("#state option:selected").val(),
-                                city: $("input[name=city]").val(),
-                                post_code: $("input[name=post_code]").val(),
-                                bill_first_name: $("input[name=bill_first_name]").val(),
-                                bill_last_name: $("input[name=bill_last_name]").val(),
-                                bill_email: $("input[name=bill_email]").val(),
-                                bill_company: $("input[name=bill_company]").val(),
-                                bill_address1: $("input[name=bill_address1]").val(),
-                                bill_address2: $("input[name=bill_address2]").val(),
-                                bill_phone: $("input[name=bill_phone]").val(),
-                                bill_country: $("#bill_country option:selected").val(),
-                                bill_state: $("#bill_state option:selected").val(),
-                                bill_city: $("input[name=bill_city]").val(),
-                                bill_post_code: $("input[name=bill_post_code]").val(),
+                                first_name: details.payer.name.given_name,
+                                last_name: details.payer.name.surname,
+                                email: details.payer.email_address,
                             },
                             success: function(data) {
                                 if (data.success == true) {

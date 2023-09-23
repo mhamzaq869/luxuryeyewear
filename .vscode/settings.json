@@ -1,0 +1,7 @@
+{
+    "phpsab.autoRulesetSearch": false,
+    "php-cs-fixer.allowRisky": true,
+    "php-cs-fixer.formatHtml": true,
+    "php-cs-fixer.onsave": false,
+    "bladeFormatter.format.noMultipleEmptyLines": true
+}

@@ -6,45 +6,42 @@
 
 
 
-<div class="card">
+<div class="p-3">
 
-    <h5 class="card-header">Import Category</h5>
+    <h3>Import Category</h3>
 
-    <div class="card-body">
-      <a style="float: right;" href="{{route('category.export.get')}}">Download Excel Sample</a>
-      <form method="post" action="{{route('category.import.post')}}" enctype="multipart/form-data">
+    <a style="float: right;" href="{{route('category.export.get')}}">Download Excel Sample</a>
+    <form method="post" action="{{route('category.import.post')}}" enctype="multipart/form-data">
 
-        {{csrf_field()}}
+      {{csrf_field()}}
 
-        <div class="form-group">
+      <div class="form-group">
 
-          <label for="inputFile" class="col-form-label">Import Csv File <span class="text-danger">*</span></label>
+        <label for="inputFile" class="col-form-label">Import Csv File <span class="text-danger">*</span></label>
 
-          <div class="input-group">
+        <div class="input-group">
 
-          <input id="thumbnail" class="form-control" type="file" name="file" >
+        <input id="thumbnail" class="form-control" type="file" name="file" >
 
-        </div>
+      </div>
 
-          @error('file')
+        @error('file')
 
-          <span class="text-danger">{{$message}}</span>
+        <span class="text-danger">{{$message}}</span>
 
-          @enderror
+        @enderror
 
-        </div>
+      </div>
 
-        <div class="form-group mb-3">
+      <div class="form-group mb-3">
 
-          <button type="reset" class="btn btn-warning">Reset</button>
+        <button type="reset" class="btn btn-warning">Reset</button>
 
-           <button class="btn btn-success" type="submit">Submit</button>
+         <button class="btn btn-success" type="submit">Submit</button>
 
-        </div>
+      </div>
 
-      </form>
-
-    </div>
+    </form>
 
 </div>
 

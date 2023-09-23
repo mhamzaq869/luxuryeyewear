@@ -7,192 +7,184 @@
 
     <!-- DataTales Example -->
 
-    <div class="card shadow mb-4">
+    <div class="p-3 mb-4">
 
         <div class="row">
-
             <div class="col-md-12">
-
                 @include('backend.layouts.notification')
-
             </div>
-
         </div>
 
-        <div class="card-header py-3">
+        <div class="py-3">
 
-            <h6 class="m-0 font-weight-bold text-primary float-left">Users List</h6>
+            <h5 class="m-0 font-weight-bold text-dark float-left">Users List</h5>
 
             <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
                 data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
 
-            <a href="{{ route('users.permissions') }}" class="btn btn-secondary mx-1 btn-sm float-right" data-toggle="tooltip"
+            <a href="{{ route('users.permissions') }}" class="btn btn-secondary mx-1 btn-sm float-right mb-3" data-toggle="tooltip"
                 data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Manage Permissions</a>
 
         </div>
 
-        <div class="card-body">
+        <div class="table-responsive">
 
-            <div class="table-responsive">
+            <table class="table table-bordered" id="user-dataTable" width="100%" cellspacing="0">
 
-                <table class="table table-bordered" id="user-dataTable" width="100%" cellspacing="0">
+                <thead>
 
-                    <thead>
+                    <tr>
 
+                        <th>S.N.</th>
+
+                        <th>Name</th>
+
+                        <th>Email</th>
+
+                        <th>Photo</th>
+
+                        <th>Join Date</th>
+
+                        <th>Role</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tfoot>
+
+                    <tr>
+
+                        <th>S.N.</th>
+
+                        <th>Name</th>
+
+                        <th>Email</th>
+
+                        <th>Photo</th>
+
+                        <th>Join Date</th>
+
+                        <th>Role</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </tfoot>
+
+                <tbody>
+
+                    @foreach ($users as $user)
                         <tr>
 
-                            <th>S.N.</th>
+                            <td>{{ $user->id }}</td>
 
-                            <th>Name</th>
+                            <td>{{ $user->name }}</td>
 
-                            <th>Email</th>
+                            <td>{{ $user->email }}</td>
 
-                            <th>Photo</th>
+                            <td>
 
-                            <th>Join Date</th>
+                                @if ($user->photo)
+                                    <img src="{{ $user->photo }}" class="img-fluid rounded-circle"
+                                        style="max-width:50px" alt="{{ $user->photo }}">
+                                @else
+                                    <img src="{{ asset('backend/img/avatar.png') }}" class="img-fluid rounded-circle"
+                                        style="max-width:50px" alt="avatar.png">
+                                @endif
 
-                            <th>Role</th>
+                            </td>
 
-                            <th>Status</th>
+                            <td>{{ $user->created_at ? $user->created_at->diffForHumans() : '' }}</td>
 
-                            <th>Action</th>
+                            <td>{{ $user->role }}</td>
 
-                        </tr>
+                            <td>
 
-                    </thead>
+                                @if ($user->status == 'active')
+                                    <span class="badge badge-success">{{ $user->status }}</span>
+                                @else
+                                    <span class="badge badge-warning">{{ $user->status }}</span>
+                                @endif
 
-                    <tfoot>
+                            </td>
 
-                        <tr>
+                            <td>
 
-                            <th>S.N.</th>
+                                <a href="{{ route('users.edit', $user->id) }}"
+                                    class="btn btn-primary btn-sm float-left mr-1"
+                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                    title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
 
-                            <th>Name</th>
+                                <form method="POST" action="{{ route('users.destroy', [$user->id]) }}">
 
-                            <th>Email</th>
+                                    @csrf
 
-                            <th>Photo</th>
+                                    @method('delete')
 
-                            <th>Join Date</th>
-
-                            <th>Role</th>
-
-                            <th>Status</th>
-
-                            <th>Action</th>
-
-                        </tr>
-
-                    </tfoot>
-
-                    <tbody>
-
-                        @foreach ($users as $user)
-                            <tr>
-
-                                <td>{{ $user->id }}</td>
-
-                                <td>{{ $user->name }}</td>
-
-                                <td>{{ $user->email }}</td>
-
-                                <td>
-
-                                    @if ($user->photo)
-                                        <img src="{{ $user->photo }}" class="img-fluid rounded-circle"
-                                            style="max-width:50px" alt="{{ $user->photo }}">
-                                    @else
-                                        <img src="{{ asset('backend/img/avatar.png') }}" class="img-fluid rounded-circle"
-                                            style="max-width:50px" alt="avatar.png">
-                                    @endif
-
-                                </td>
-
-                                <td>{{ $user->created_at ? $user->created_at->diffForHumans() : '' }}</td>
-
-                                <td>{{ $user->role }}</td>
-
-                                <td>
-
-                                    @if ($user->status == 'active')
-                                        <span class="badge badge-success">{{ $user->status }}</span>
-                                    @else
-                                        <span class="badge badge-warning">{{ $user->status }}</span>
-                                    @endif
-
-                                </td>
-
-                                <td>
-
-                                    <a href="{{ route('users.edit', $user->id) }}"
-                                        class="btn btn-primary btn-sm float-left mr-1"
+                                    <button class="btn btn-danger btn-sm dltBtn" data-id={{ $user->id }}
                                         style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                        title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                        data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
 
-                                    <form method="POST" action="{{ route('users.destroy', [$user->id]) }}">
+                                </form>
 
-                                        @csrf
+                            </td>
 
-                                        @method('delete')
+                            {{-- Delete Modal --}}
 
-                                        <button class="btn btn-danger btn-sm dltBtn" data-id={{ $user->id }}
-                                            style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                            data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
 
-                                    </form>
+                    <div class="modal-dialog" role="document">
 
-                                </td>
+                      <div class="modal-content">
 
-                                {{-- Delete Modal --}}
+                        <div class="modal-header">
 
-                                {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
+                          <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
 
-                        <div class="modal-dialog" role="document">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                          <div class="modal-content">
+                            <span aria-hidden="true">&times;</span>
 
-                            <div class="modal-header">
-
-                              <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
-
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                                <span aria-hidden="true">&times;</span>
-
-                              </button>
-
-                            </div>
-
-                            <div class="modal-body">
-
-                              <form method="post" action="{{ route('users.destroy',$user->id) }}">
-
-                                @csrf
-
-                                @method('delete')
-
-                                <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
-
-                              </form>
-
-                            </div>
-
-                          </div>
+                          </button>
 
                         </div>
 
-                    </div> --}}
+                        <div class="modal-body">
 
-                            </tr>
-                        @endforeach
+                          <form method="post" action="{{ route('users.destroy',$user->id) }}">
 
-                    </tbody>
+                            @csrf
 
-                </table>
+                            @method('delete')
 
-                <span style="float:right">{{ $users->links() }}</span>
+                            <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
 
-            </div>
+                          </form>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                </div> --}}
+
+                        </tr>
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+            <span style="float:right">{{ $users->links() }}</span>
 
         </div>
 

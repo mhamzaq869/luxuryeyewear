@@ -2,93 +2,81 @@
 @section('title', 'Setting')
 @section('main-content')
 
-    <div class="card">
-        <h5 class="card-header">Edit Post
-            <a href="{{url('admin/settings/payment_int')}}" class="btn btn-primary float-right"><i class="fa fa-credit-card mr-2"></i> Add Payment Integrations</a>
-        </h5>
-        <div class="card-body">
-            <form method="post" action="{{ route('settings.update') }}">
-                @csrf
-                {{-- @method('PATCH') --}}
-                {{-- {{dd($data)}} --}}
-                <div class="form-group">
-                    <label for="short_des" class="col-form-label">Short Description <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="quote" name="short_des">{{ $data->short_des }}</textarea>
-                    @error('short_des')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="description" class="col-form-label">Description <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="description" name="description">{{ $data->description }}</textarea>
-                    @error('description')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+    <div class="p-3">
 
-                <div class="form-group">
-                    <label for="inputPhoto" class="col-form-label">Logo <span class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <a id="lfm1" data-input="thumbnail1" data-preview="holder1" class="btn btn-primary">
-                                <i class="fa fa-picture-o"></i> Choose
-                            </a>
-                        </span>
-                        <input id="thumbnail1" class="form-control" type="text" name="logo"
-                            value="{{ $data->logo }}">
-                    </div>
-                    <div id="holder1" style="margin-top:15px;max-height:100px;"></div>
+        <h4 class="m-0 font-weight-bold text-dark mb-3">Setting</h4>
 
-                    @error('logo')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+        <form method="post" action="{{ route('settings.update') }}">
+            @csrf
 
-                <div class="form-group">
-                    <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                                <i class="fa fa-picture-o"></i> Choose
-                            </a>
-                        </span>
-                        <input id="thumbnail" class="form-control" type="text" name="photo"
-                            value="{{ $data->photo }}">
-                    </div>
-                    <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+            <div class="form-group">
+                <label for="short_des" class="col-form-label">Short Description <span class="text-danger">*</span></label>
 
-                    @error('photo')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                <textarea class="form-control mt-2" id="quote" name="short_des">{{ $data->short_des }}</textarea>
+                @error('short_des')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-form-label">Description <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="description" name="description">{{ $data->description }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
 
-                <div class="form-group">
-                    <label for="address" class="col-form-label">Address <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="address" required value="{{ $data->address }}">
-                    @error('address')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+            <div class="form-group">
+                <label for="inputPhoto" class="col-form-label">Logo <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input class="form-control" type="file" name="logo"
+                        value="{{ $data->logo }}">
                 </div>
-                <div class="form-group">
-                    <label for="email" class="col-form-label">Email <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="email" required value="{{ $data->email }}">
-                    @error('email')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="phone" class="col-form-label">Phone Number <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="phone" required value="{{ $data->phone }}">
-                    @error('phone')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                <div id="holder1" style="margin-top:15px;max-height:100px;"></div>
 
-                <div class="form-group mb-3">
-                    <button class="btn btn-success" type="submit">Update</button>
+                @error('logo')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input class="form-control" type="file" name="photo"
+                        value="{{ $data->photo }}">
                 </div>
-            </form>
-        </div>
+                <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+
+                @error('photo')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="address" class="col-form-label">Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="address" required value="{{ $data->address }}">
+                @error('address')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-form-label">Email <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="email" required value="{{ $data->email }}">
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-form-label">Phone Number <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="phone" required value="{{ $data->phone }}">
+                @error('phone')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <button class="btn btn-success" type="submit">Update</button>
+            </div>
+        </form>
     </div>
 
 @endsection

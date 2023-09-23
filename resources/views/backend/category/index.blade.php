@@ -6,7 +6,47 @@
 
     <!-- DataTales Example -->
 
-    <div class="card shadow mb-4">
+    <div class="p-3 mb-4">
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <h6 class="m-0 font-weight-bold text-dark float-left">@yield('title') </h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" style="border:none !important">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2 class="text-warning font-weight-bold">{{ $data['total_eyeglass'] }}</h2>
+                                <h4>Total EyeGlasses</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <i class="fas fa-glasses text-warning fa-5x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card" style="border:none !important">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2 class="text-warning font-weight-bold">{{ $data['total_sunglass'] }}</h2>
+                                <h4>Total SunGlasses</h4>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <i class="fas fa-glasses text-warning fa-5x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
 
@@ -20,18 +60,10 @@
 
         <form method="POST" id="category-form" action="{{ route('categories.delete') }}">
             @csrf
-            <div class="card-header py-3">
-
+            <div class="py-3">
                 <div class="row">
-                    <div class="col-md-2">
-                        <h6 class="m-0 font-weight-bold text-primary float-left">@yield('title') </h6><br>
-                        <p class="m-0 font-weight-bold text-primary float-left">EyeGlass:&nbsp;</p>
-                        {{ $data['total_eyeglass'] }}<br>
-                        <p class="m-0 font-weight-bold text-primary float-left">SunGlass:&nbsp;</p>
-                        {{ $data['total_sunglass'] }}
-
-                    </div>
-                    <div class="col-md-10">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10 text-end">
 
                         <a href="{{ route('category.create') }}" class="btn btn-primary btn-sm float-right"
                             data-toggle="tooltip" data-placement="bottom" title="Add Category">
@@ -51,7 +83,7 @@
                             class="fas fa-file-import"></i> Sample Category</a>
 
                         <div class="col-md-6"></div>
-                        <div class="col-md-6 custom-section" style="display:none">
+                        <div class="col-md-6 custom-section text-end" style="display:none">
 
                             <div class="d-flex w-75 float-right">
                                 <select name="status" class="form-control select-status">
@@ -78,7 +110,7 @@
                 }
             </style>
 
-            <div class="card-body">
+
 
 
                 <div class="table-responsive">
@@ -136,7 +168,6 @@
 
                 </div>
 
-            </div>
         </form>
     </div>
 
@@ -191,19 +222,6 @@
             }
         });
 
-        // jQuery('#banner-dataTable').DataTable({
-
-
-        //   "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "All"] ],
-        //   buttons: [
-        //         'copyHtml5',
-        //         'excelHtml5',
-        //         'csvHtml5',
-        //         'pdfHtml5'
-        //     ],
-        // });
-
-
         $(document).ready(function(){
             $('#banner-dataTable').DataTable({
                 'processing': true,
@@ -230,36 +248,6 @@
                 ]
             });
         });
-
-        // $(document).ready(function() {
-        //     var data = [];
-        //     for (var i = 0; i < categories.length; i++) {
-        //         var chekbx = `<div class="custom-control custom-checkbox">
-        //                     <input type="checkbox" class="custom-control-input cust-checkbox" id="check` + categories[
-        //             i].id + `" value="` + categories[i].id + `" name="checked[]">
-        //                     <label class="custom-control-label" for="check` + categories[i].id + `"></label>
-        //                 </div>`
-
-        //         var brand = (categories[i].brand != null) ? categories[i].brand.title : ''
-        //         var model = categories[i].title
-        //         var frame_type = (categories[i].frame_type != null) ? categories[i].frame_type.name : ''
-        //         var status = (categories[i].status == 'active') ? '<span class="badge badge-success">' + categories[
-        //                 i].status + '</span>' : '<span class="badge badge-warning">' + categories[i].status +
-        //             '</span>'
-        //         var action = `<a href="{{ url('/admin/category') }}/` + categories[i].id + `/edit" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-        //                   <button class="btn btn-danger btn-sm dltBtn" data-id=` + categories[i].id +
-        //             ` style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>`
-        //         data.push([i, chekbx, brand, model, frame_type, status, action]);
-        //     }
-
-        //     $('#banner-dataTable').DataTable({
-        //         data: data,
-        //         deferRender: true,
-        //         scrollY: 430,
-        //         scrollCollapse: true,
-        //         scroller: true,
-        //     });
-        // });
 
         jQuery('#mainCheck').click(function() {
             // make all check box checked/unchecked.

@@ -128,10 +128,6 @@
             currency: symbol
         }).format(extraPrice($details, $col));
 
-        // return new Intl.NumberFormat('en-us', {
-        //     style: 'currency',
-        //     currency: symbol
-        // }).format(extraPrice($details, $col) * convertPriceVal);
     }
 
     function priceOnly($number) {
@@ -140,10 +136,6 @@
             currency: symbol
         }).format($number);
 
-        // return new Intl.NumberFormat('en-us', {
-        //     style: 'currency',
-        //     currency: symbol
-        // }).format($number * convertPriceVal);
     }
 
     function extraPrice($details, $col = null) {
@@ -184,16 +176,16 @@
         return $price;
     }
 
-    // function setCookie(key, value, expiry) {
-    //     var expires = new Date();
-    //     expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
-    //     document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
-    // }
+    function setCookie(key, value, expiry) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    }
 
 
-    // $.get("https://api.ipify.org/", function(e) {
-    //     $.get(`https://ipapi.co/${e}/country/`, function(data) {
-    //         localStorage.setItem('countryShortName',data)
-    //     })
-    // });
+    $.get("https://api.ipify.org/", function(e) {
+        $.get(`https://ipapi.co/${e}/country/`, function(data) {
+            localStorage.setItem('countryShortName',data)
+        })
+    });
 </script>

@@ -1,18 +1,20 @@
 @extends('backend.layouts.master')
 @section('title', 'Product List')
 @section('main-content')
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+
+    <div class="p-3 mb-4">
         <div class="row">
             <div class="col-md-12">
                 @include('backend.layouts.notification')
             </div>
         </div>
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary float-left">Product Lists</h6>
+
+        <h3 class="m-0 font-weight-bold text-dark">Product Lists</h3>
+
+        <div class="py-3">
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 text-end">
                     <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
                         data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Product</a>
                     <a href="{{ route('product.import.get') }}" class="btn btn-primary mx-1 btn-sm float-right"
@@ -27,7 +29,7 @@
                 </div>
                 <div class="col-md-12 custom-section mt-3" style="display:none">
 
-                    <div class="d-flex w-75 float-right">
+                    <div class="d-flex w-75" style="float:right">
                         <select name="is_featured" class="form-control mx-1 is_featured">
                             <option selected disabled>--Product top status--</option>
                             <option value="1">Show On Home</option>
@@ -46,58 +48,54 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-        {{-- <form method="POST" id="category-form" action="{{ route('product.update.on.check') }}">
-            @csrf
-            @method('post') --}}
-            <div class="card-body">
-                <div class="table-responsive">
-                    @if (count($products) > 0)
-                        <table class="table table-bordered" id="product" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>S.N.</th>
-                                    <th class="sortings">
 
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="mainCheck"
-                                                name="check">
-                                            <label class="custom-control-label" for="mainCheck"></label>
-                                        </div>
-                                    </th>
-                                    <th>Status</th>
-                                    <th>Photo</th>
-                                    <th>Frame Type</th>
-                                    <th style="width: 100%">Title</th>
-                                    <th>Brand</th>
-                                    <th>Category</th>
-                                    <th>Color Code</th>
-                                    <th>Ean Code</th>
-                                    <th>Discount</th>
-                                    <th>Stock</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        <div class="table-responsive">
+            @if (count($products) > 0)
+                <table class="table table-bordered table-striped" id="product" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>S.N.</th>
+                            <th class="sortings">
 
-                            </tbody>
-                        </table>
-                    @else
-                        <h6 class="text-center">No Products found!!! Please create Product</h6>
-                    @endif
-                </div>
-            </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="mainCheck"
+                                        name="check">
+                                    <label class="custom-control-label" for="mainCheck"></label>
+                                </div>
+                            </th>
+                            <th>Status</th>
+                            <th>Photo</th>
+                            <th>Frame Type</th>
+                            <th style="width: 100%">Title</th>
+                            <th>Brand</th>
+                            <th>Category</th>
+                            <th>Color Code</th>
+                            <th>Ean Code</th>
+                            <th>Discount</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            @else
+                <h6 class="text-center">No Products found!!! Please create Product</h6>
+            @endif
+        </div>
     </div>
 @endsection
 @push('styles')
+    <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
+
+    <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+
     <style>
-        /* div.dataTables_wrapper div.dataTables_paginate {
-            display: none;
-        } */
 
         .zoom {
             transition: transform .2s;

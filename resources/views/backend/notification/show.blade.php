@@ -4,14 +4,14 @@
         <!-- Counter - Alerts -->
         <span class="badge badge-danger badge-counter">
             @if(count(Auth::user()->unreadNotifications) >5 )<span data-count="5" class="count">5+</span>
-            @else 
+            @else
                 <span class="count" data-count="{{count(Auth::user()->unreadNotifications)}}">{{count(Auth::user()->unreadNotifications)}}</span>
             @endif
         </span>
       </a>
       <!-- Dropdown - Alerts -->
       <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-        <h6 class="dropdown-header">
+        <h6 class="dropdown-header bg-dark">
           Notifications Center
         </h6>
         @foreach(Auth::user()->unreadNotifications as $notification)
@@ -27,7 +27,7 @@
                 </div>
             </a>
             @if($loop->index+1==5)
-                @php 
+                @php
                     break;
                 @endphp
             @endif

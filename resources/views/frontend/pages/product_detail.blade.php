@@ -110,7 +110,6 @@
             color: black
         }
 
-
         @media screen and (max-width: 1200px) {
             .carousel-nav {
                 transform: rotate(90deg) translate(30px, -50%);
@@ -160,12 +159,27 @@
             .carousel-nav {
                 transform: rotate(90deg) translate(30px, -96%);
             }
+        }
 
+        /* Media query for mobile viewport */
+        @media screen and (max-width: 400px) {
+            #paypal-button-container {
+                width: 100%;
+            }
+        }
+
+        /* Media query for desktop viewport */
+        @media screen and (min-width: 400px) {
+            #paypal-button-container {
+                width: 235px;
+            }
         }
     </style>
 
 @endsection
+
 @section('title', ' PRODUCT DETAIL')
+
 @section('main-content')
     <!--new data section  start -->
     <section>
@@ -524,6 +538,21 @@
 
                                             </div>
                                         </div>
+
+                                        @if ($paypal = $availablePaymnMethod->where('method', 'paypal')->first())
+                                            <div id="paypal-button-container"></div>
+                                            <p id="result-message"></p>
+
+                                            @if ($paypal->type == 'live')
+                                                <script
+                                                    src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? '' }}&disable-funding=venmo&currency=USD"
+                                                    data-sdk-integration-source="integrationbuilder"></script>
+                                            @else
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{ $paypal->secret_key ?? 'sb' }}&currency=USD&intent=capture"
+                                                    data-sdk-integration-source="integrationbuilder"></script>
+                                            @endif
+                                        @endif
+
                                     </div>
 
                                     <div
@@ -548,7 +577,6 @@
                                             </form>
 
                                         </div>
-
 
                                     </div>
 
@@ -576,9 +604,6 @@
                                             </h6>
                                         </div>
 
-
-
-
                                         <div
                                             class="col-6 col-sm-2 product_bridge_div @if (empty($product_detail->product_bridge)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/2width.png') }}" alt="">
@@ -588,9 +613,6 @@
                                                 </span>
                                             </h6>
                                         </div>
-
-
-
 
                                         <div
                                             class="col-6 col-sm-2 product_arm_length_div @if (empty($product_detail->product_arm_length)) d-none @endif">
@@ -602,8 +624,6 @@
                                             </h6>
                                         </div>
 
-
-
                                         <div
                                             class="col-6 col-sm-2 product_lens_height_div @if (empty($product_detail->product_lens_height)) d-none @endif">
                                             <img src="{{ asset('assets/images/lens/4lens_height.png') }}" alt="">
@@ -612,8 +632,6 @@
                                                     class="product_lens_height">{{ $product_detail->product_lens_height }}</span>
                                             </h6>
                                         </div>
-
-
 
                                         <div
                                             class="col-6 col-sm-2 product_total_width_div @if (empty($product_detail->product_total_width)) d-none @endif">
@@ -630,7 +648,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="fg-border @if (!empty($product_detail->cat_info) && $product_detail->cat_info->size != null) proCard @endif">
                         <h4 class="detailTitle">Product Detail</h4>
@@ -745,7 +762,6 @@
                                 </div>
                             </div>
 
-
                         </div>
                     </div>
 
@@ -761,7 +777,6 @@
             </div>
         </div>
     </section>
-
 
     @if ($product_detail->rel_prods->count() > 1)
         <div class="product_detail pb-0">
@@ -899,6 +914,11 @@
                                                             class="btn btnDark_outline w-100 px-1">ADD TO WISHLIST</a>
 
                                                     </div>
+                                                    <div class="col">
+                                                        <div id="paypal-button-container"></div>
+                                                        <p id="result-message"></p>
+
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -907,7 +927,6 @@
                                 @endif
                             @endforeach
                             {{-- end card --}}
-
 
                         </div>
                     </div>
@@ -919,7 +938,6 @@
 @endsection
 
 @push('scripts')
-    {{-- <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script> --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
@@ -932,6 +950,8 @@
 
         var stock = {{ $product_detail->stock }}
         var current_prod_id = "{{ $product_detail->id }}";
+        var changed_prod_id = "{{ $product_detail->id }}";
+        var changed_prod_price = "{{ $product_detail->price }}";
 
         var allproducts = [@json($product_detail)]
 
@@ -961,12 +981,13 @@
 
             var root = window.location.origin;
             if (data != null) {
-
+                changed_prod_id = data.id
                 stock = data.stock
                 if (data.stock != 0) {
                     var exist_qty = $("#quantity").val();
                     if (exist_qty == 1) {
                         $(".productPrice").html('<b>' + price(data) + '</b>')
+                        changed_prod_price = Number(price(data).replace(/[^0-9.-]+/g, ""))
                     }
                     $("#current_product_price").val(Number(price(data).replace(/[^0-9.-]+/g, "")))
                     changePriceQty(exist_qty)
@@ -998,9 +1019,6 @@
                     +(data.product_total_width != null ? data.product_total_width + '-' : '') +
 
                     $(".dtlTextCol").text(size)
-
-                // frame_fragment_div
-                //Frame Fragment
 
 
                 if (data.frame_fragment != null) {
@@ -1131,7 +1149,6 @@
                 }
 
 
-                // $(".my-gallery").html('')
                 $(".swiper-wrapper").html('')
                 var imgs = data.all_imgs;
                 var gallery_thumb = ``;
@@ -1350,5 +1367,110 @@
         $.each(allproducts[0].rel_prods, function(index, value) {
             $("#men_sunglass_pro_price_" + value.id).html(price(value))
         });
+
+
+        //Paypal
+        const fundingSources = [
+            paypal.FUNDING.PAYPAL
+        ]
+
+        for (const fundingSource of fundingSources) {
+            const paypalButtonsComponent = paypal.Buttons({
+                fundingSource: fundingSource,
+
+                style: {
+                    layout: 'vertical',
+                    shape: 'rect',
+                    height: 48,
+                    color: (fundingSource == paypal.FUNDING.PAYPAL) ? 'gold' : '',
+                    label: 'checkout'
+                },
+
+
+                // set up the transaction
+                createOrder: (data, actions) => {
+                    const createOrderPayload = {
+                        purchase_units: [{
+                            amount: {
+                                value: changed_prod_price,
+                            },
+
+                        }, ],
+                    }
+
+
+                    return actions.order.create(createOrderPayload)
+                },
+
+                // finalize the transaction
+                onApprove: (data, actions) => {
+                    const captureOrderHandler = (details) => {
+                        const payerName = details.payer.name.given_name
+
+                        $.ajax({
+                            url: "{{ route('cart.order') }}",
+                            dataType: "json",
+                            type: "Post",
+                            async: true,
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                user_id: "{{ request()->ip() }}",
+                                coupon: session_coupon_value,
+                                shipping_id: "{{ $carts->shipping_id ?? 0 }}",
+                                payment_method: 'paypal',
+                                product_id: changed_prod_id,
+                                first_name: details.payer.name.given_name,
+                                last_name: details.payer.name.surname,
+                                email: details.payer.email_address,
+                            },
+                            success: function(data) {
+                                if (data.success == true) {
+                                    $("#thankyou").modal('show')
+                                    window.location = "{{ url('/user/order') }}"
+                                }
+                            },
+                            error: function(xhr, exception) {
+                                var msg = "";
+                                if (xhr.status === 0) {
+                                    msg = "Not connect.\n Verify Network." + xhr.responseText;
+                                } else if (xhr.status == 404) {
+                                    msg = "Requested page not found. [404]" + xhr.responseText;
+                                } else if (xhr.status == 500) {
+                                    msg = "Internal Server Error [500]." + xhr.responseText;
+                                } else if (exception === "parsererror") {
+                                    msg = "Requested JSON parse failed.";
+                                } else if (exception === "timeout") {
+                                    msg = "Time out error." + xhr.responseText;
+                                } else if (exception === "abort") {
+                                    msg = "Ajax request aborted.";
+                                } else {
+                                    msg = "Error:" + xhr.status + " " + xhr.responseText;
+                                }
+
+                            }
+                        });
+                    }
+
+                    return actions.order.capture().then(captureOrderHandler)
+                },
+
+                // handle unrecoverable errors
+                onError: (err) => {
+                    console.error(
+                        'An error prevented the buyer from checking out with PayPal',
+                    )
+                },
+            })
+
+            if (paypalButtonsComponent.isEligible()) {
+                paypalButtonsComponent
+                    .render('#paypal-button-container')
+                    .catch((err) => {
+                        console.error('PayPal Buttons failed to render')
+                    })
+            } else {
+                console.log('The funding source is ineligible')
+            }
+        }
     </script>
 @endpush

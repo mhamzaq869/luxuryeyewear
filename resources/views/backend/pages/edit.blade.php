@@ -8,8 +8,7 @@
 
     <div class="p-3">
 
-        <h5 class="card-header">Edit Page</h5>
-        {{-- <div class="card-body"> --}}
+        <h3 class="my-3">Edit Page</h3>
 
             <form method="post" action="{{ route('admin.page.update', $page->id) }}" enctype="multipart/form-data">
 
@@ -23,8 +22,6 @@
                 </div>
 
             </form>
-
-        {{-- </div> --}}
 
     </div>
 

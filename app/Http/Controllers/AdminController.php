@@ -29,8 +29,8 @@ class AdminController extends Controller
     }
 
     public function profile(){
-        $profile=Auth()->user();
-        // return $profile;
+        $profile = Auth()->user();
+
         return view('backend.users.profile')->with('profile',$profile);
     }
 
@@ -111,11 +111,7 @@ class AdminController extends Controller
      return view('backend.index')->with('course', json_encode($array));
     }
 
-    // public function activity(){
-    //     return Activity::all();
-    //     $activity= Activity::all();
-    //     return view('backend.layouts.activity')->with('activities',$activity);
-    // }
+
 
 
     public function paymentInteg()
@@ -136,14 +132,18 @@ class AdminController extends Controller
             $integration = Integration::find($request->id);
             $integration->update($request->except('id'));
 
-            return redirect()->back()->with('message',$integration->name.' Integration Updated Successfully!');
+            $response['status'] = true;
+            $response['code'] = 200;
+            $response['message'] = $integration->name.' Integration Updated Successfully!';
+
+            return response($response);
 
          }catch(Exception $e){
             $response['status'] = false;
             $response['code'] = 500;
             $response['message'] = $e->getMessage();
 
-            return redirect()->back()->withErrors($e->getMessage(),'error');
+            return response($response);
          }
     }
 

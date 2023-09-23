@@ -6,76 +6,72 @@
 
 
 
-    <div class="card">
+    <div class="p-3">
 
-        <h5 class="card-header">Add Brand</h5>
+        <h3>Add Brand</h3>
 
-        <div class="card-body">
+        <form method="post" action="{{ route('brand.store') }}" enctype="multipart/form-data">
 
-            <form method="post" action="{{ route('brand.store') }}" enctype="multipart/form-data">
+            {{ csrf_field() }}
 
-                {{ csrf_field() }}
+            <div class="form-group">
 
-                <div class="form-group">
+                <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
 
-                    <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
+                <input id="inputTitle" type="text" name="title" placeholder="Enter title"
+                    value="{{ old('title') }}" class="form-control">
 
-                    <input id="inputTitle" type="text" name="title" placeholder="Enter title"
-                        value="{{ old('title') }}" class="form-control">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
 
-                    @error('title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+            </div>
 
+
+            <!-------------- image ---------------------->
+
+            <div class="form-group">
+                <label for="image">Brand image</label>
+                <input type="hidden" name="brand_img">
+                {{-- <input name="brand_image" type="file" class="form-control" accept="image/*"  onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])"> --}}
+                <input name="brand_image" id="brand_img" type="file" class="form-control" accept="image/*" >
+                @error('brand_image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <div class="controls">
+                    <img src="{{ asset('images/no_image.jpg') }}" width="100" height="100" id="output">
                 </div>
+            </div>
 
+            <div class="form-group">
 
-                <!-------------- image ---------------------->
+                <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
 
-                <div class="form-group">
-                    <label for="image">Brand image</label>
-                    <input type="hidden" name="brand_img">
-                    {{-- <input name="brand_image" type="file" class="form-control" accept="image/*"  onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])"> --}}
-                    <input name="brand_image" id="brand_img" type="file" class="form-control" accept="image/*" >
-                    @error('brand_image')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <div class="controls">
-                        <img src="{{ asset('images/no_image.jpg') }}" width="100" height="100" id="output">
-                    </div>
-                </div>
+                <select name="status" class="form-control">
 
-                <div class="form-group">
+                    <option value="active">Active</option>
 
-                    <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+                    <option value="inactive">Inactive</option>
 
-                    <select name="status" class="form-control">
+                </select>
 
-                        <option value="active">Active</option>
+                @error('status')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
 
-                        <option value="inactive">Inactive</option>
+            </div>
 
-                    </select>
+            <div class="form-group my-3">
 
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                <button type="reset" class="btn btn-warning">Reset</button>
 
-                </div>
+                <button class="btn btn-success" type="submit">Submit</button>
 
-                <div class="form-group mb-3">
+            </div>
 
-                    <button type="reset" class="btn btn-warning">Reset</button>
-
-                    <button class="btn btn-success" type="submit">Submit</button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
 

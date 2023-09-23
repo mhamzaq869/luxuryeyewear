@@ -2,43 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\ColorImage;
 use App\Exports\ProductExport;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
-use App\Models\Attribute;
-use App\Models\ProductColor;
-use App\Models\PrescriptionData;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportProduct;
+use App\Models\Attribute;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\PrescriptionData;
+use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductNotify;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
     /**
-
      * Display a listing of the resource.
-
      *
-
      * @return \Illuminate\Http\Response
-
      */
-
     public function index()
     {
         $data['products'] = Product::getAllProduct();
 
-
-        // return $products;
         return view('backend.product.index', $data);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -59,25 +52,16 @@ class ProductController extends Controller
         $data['extras'] = Attribute::where('attribute_type', 'extra')->get();
         $data['leftSpheres'] = PrescriptionData::where('sph_left', '!=', '')->get();
         $data['leftcylinders'] = PrescriptionData::where('cyl_left', '!=', '')->get();
-        // return $category;
 
-        return view('backend.product.create', $data);
+        return view('backend.product.create ', $data);
     }
 
 
-
     /**
-
-     * Store a newly created resource in storage.
-
-     *
-
-     * @param  \Illuminate\Http\Request  $request
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of store
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|mixed
      */
-
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -221,8 +205,6 @@ class ProductController extends Controller
 
         $data['slug'] = $slug;
 
-
-
         $data['g_image'] = json_encode($images);
         $data['is_featured'] = $request->input('is_featured', 0);
 
@@ -235,11 +217,9 @@ class ProductController extends Controller
             $data['dispatch_from'] = implode(',', $data['dispatch_from']);
         }
 
-        $cat_frame_type = Category::find($data['cat_id'])->frame_type;
-
 
         try {
-            $status = Product::create($data);
+            Product::create($data);
             session()->flash('success', 'Product Successfully added');
         } catch (Exception $e) {
             $errorCode = $e->getCode();
@@ -254,26 +234,20 @@ class ProductController extends Controller
     }
 
 
-
     /**
-
-     * Display the specified resource.
-
-     *
-
-     * @param  int  $id
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of show
+     * @param mixed $id
+     * @return void
      */
-
     public function show($id)
     {
-
-        //
-
     }
 
+    /**
+     * Summary of showDatatableData
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function showDatatableData(Request $request)
     {
         ## Read value
@@ -291,11 +265,11 @@ class ProductController extends Controller
 
         if ($columnName_arr[$columnIndex]['data'] == 'color_code') {
             $columnName_arr[$columnIndex]['data'] = 'color';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code') {
             $columnName_arr[$columnIndex]['data'] = 'product_ean_code';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'brand') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'brand') {
             $columnName_arr[$columnIndex]['data'] = 'brand_id';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'category') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'category') {
             $columnName_arr[$columnIndex]['data'] = 'cat_id';
         }
 
@@ -313,7 +287,7 @@ class ProductController extends Controller
 
 
         $brand = DB::table('brands')->where(DB::raw('lower(title)'), 'like', '%' . strtolower($searchValue) . '%')->first();
-        // dd($brand);
+
         // Fetch records
         DB::enableQueryLog();
         $records = Product::orderBy($columnName, $columnSortOrder)
@@ -321,8 +295,6 @@ class ProductController extends Controller
             ->join('categories', 'categories.id', '=', 'products.cat_id')
             ->join('attributes', 'attributes.id', '=', 'categories.frame_type')
             ->where('products.title', 'like', '%' . $searchValue . '%')
-            // ->where('brands.brandTitle', 'like', '%' .$searchValue . '%')
-            // ->orWhere('products.brand_id', 'like', '%' . ($brand != null ? $brand->id : '') . '%')
             ->orWhere('attributes.name', 'like', '%' . $searchValue . '%')
             ->orWhere('products.product_ean_code', 'like', '%' . $searchValue . '%')
             ->orWhere('products.price', 'like', '%' . $searchValue . '%')
@@ -333,9 +305,7 @@ class ProductController extends Controller
             ->take($rowperpage)
             ->get();
 
-        // dd(DB::getQueryLog(),$records->count());
-
-        $data_arr = array();
+        $data_arr = [];
 
         foreach ($records as $i => $record) {
             if ($record->is_featured == 1) {
@@ -356,13 +326,13 @@ class ProductController extends Controller
             }
 
             if ($record->status == 'active') {
-                $status = '<span class="badge badge-success">' . $record->status . '</span>';
-            } else if ($record->status == 'outofstock') {
-                $status = '<span class="badge badge-danger">' . ucfirst($record->status) . '</span>';
+                $status = '<span class="text-success"><b>' . $record->status . '</b></span>';
+            } elseif ($record->status == 'outofstock') {
+                $status = '<span class="text-danger"><b>' . ucfirst($record->status) . '</b></span>';
             } else {
-                $status = '<span class="badge badge-warning">' . $record->status . '</span>';
+                $status = '<span class="text-warning"><b>' . $record->status . '</b></span>';
             }
-            // dd($record);
+
             $data_arr[] = array(
                 "id" => $i + 1 ?? '',
                 "checkbox" => '<div class="custom-control custom-checkbox">
@@ -398,12 +368,21 @@ class ProductController extends Controller
         return response($response);
     }
 
+    /**
+     * Summary of outOfStock
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function outOfStock()
     {
         $products = ProductNotify::all();
         return view('backend.product.outofstock', get_defined_vars());
     }
 
+    /**
+     * Summary of showOutOfStockTable
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function showOutOfStockTable(Request $request)
     {
         ## Read value
@@ -421,11 +400,11 @@ class ProductController extends Controller
 
         if ($columnName_arr[$columnIndex]['data'] == 'color_code') {
             $columnName_arr[$columnIndex]['data'] = 'color';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'ean_code' || $columnName_arr[$columnIndex]['data'] == 'item_code') {
             $columnName_arr[$columnIndex]['data'] = 'product_ean_code';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'brand') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'brand') {
             $columnName_arr[$columnIndex]['data'] = 'brand_id';
-        } else if ($columnName_arr[$columnIndex]['data'] == 'category') {
+        } elseif ($columnName_arr[$columnIndex]['data'] == 'category') {
             $columnName_arr[$columnIndex]['data'] = 'cat_id';
         }
 
@@ -457,8 +436,6 @@ class ProductController extends Controller
             ->take($rowperpage)
             ->get();
 
-        // dd($records);
-        // dd( $records);
         $data_arr = array();
 
         foreach ($records as $i => $record) {
@@ -481,12 +458,12 @@ class ProductController extends Controller
 
             if ($record->status == 'active') {
                 $status = '<span class="badge badge-success">' . $record->status . '</span>';
-            } else if ($record->status == 'outofstock') {
+            } elseif ($record->status == 'outofstock') {
                 $status = '<span class="badge badge-danger">' . ucfirst($record->status) . '</span>';
             } else {
                 $status = '<span class="badge badge-warning">' . $record->status . '</span>';
             }
-            // dd($record);
+
             $data_arr[] = array(
                 "id" => $i + 1 ?? '',
                 "photo" => $photo,
@@ -510,20 +487,13 @@ class ProductController extends Controller
 
         return response($response);
     }
+
     /**
-
-     * Show the form for editing the specified resource.
-
-     *
-
-     * @param  int  $id
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of edit
+     * @param mixed $id
+     * @return \Illuminate\Contracts\View\View
      */
-
     public function edit($id)
-
     {
 
         $brand = Brand::orderBy('title')->get();
@@ -546,7 +516,7 @@ class ProductController extends Controller
         $edit_data['leftSpheres'] = PrescriptionData::where('sph_left', '!=', '')->get();
         $edit_data['leftcylinders'] = PrescriptionData::where('cyl_left', '!=', '')->get();
         $edit_data['rightcylinders'] = PrescriptionData::where('cyl_right', '!=', '')->get();
-        // $edit_data['frame_types']=Attribute::where('attribute_type', 'frame_type')->get();
+
         $edit_data['countries'] = DB::table('countries')->get();
         $product->countries = explode(',', $product->countries);
         $product->dispatch_from = explode(',', $product->dispatch_from);
@@ -559,56 +529,20 @@ class ProductController extends Controller
     }
 
 
-
     /**
-
      * Update the specified resource in storage.
-
      *
-
      * @param  \Illuminate\Http\Request  $request
-
      * @param  int  $id
-
      * @return \Illuminate\Http\Response
-
      */
-
     public function update(Request $request, $id)
     {
 
         $product = Product::findOrFail($id);
 
         $this->validate($request, [
-
             'title' => 'string|required',
-
-            // 'short_description'=>'string|required',
-
-            // 'description'=>'string|nullable',
-
-            // 'photo'=>'string|required',
-
-            // 'size'=>'nullable',
-
-            // 'stock'=>"required|numeric",
-
-            // 'cat_id'=>'required|exists:categories,id',
-
-            // 'child_cat_id'=>'nullable|exists:categories,id',
-
-            // 'is_featured'=>'sometimes|in:1',
-
-            // 'brand_id'=>'nullable|exists:brands,id',
-
-            // 'status'=>'required|in:active,inactive',
-
-            // 'condition'=>'required|in:default,new,hot',
-
-            // 'price'=>'required|numeric',
-
-            // 'discount'=>'nullable|numeric'
-
         ]);
 
         $all_imgs = json_decode($product->g_image);
@@ -635,7 +569,6 @@ class ProductController extends Controller
 
                         $data['p_f'] = $fullpath;
                         $data['photo'] = $fullpath;
-                        // dd($moved->getRealPath());
                     }
                 }
             } else {
@@ -750,18 +683,15 @@ class ProductController extends Controller
 
         $data['is_featured'] = $request->input('is_featured', 0);
 
-        // dd($data,$request->all());
         unset($data['front_image']);
         unset($data['back_image']);
-
         unset($data['images']);
         unset($data['before_crop_image']);
 
         if (!empty($data['dispatch_from'])) {
             $data['dispatch_from'] = implode(',', $data['dispatch_from']);
         }
-        $cat_frame_type = Category::find($data['cat_id'])->frame_type;
-        // $data['frame_type'] = $cat_frame_type;
+
 
         try {
             $status = $product->fill($data)->save();
@@ -780,18 +710,12 @@ class ProductController extends Controller
 
 
 
+
     /**
-
-     * Remove the specified resource from storage.
-
-     *
-
-     * @param  int  $id
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of destroy
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse|mixed
      */
-
     public function destroy($id)
     {
 
@@ -809,6 +733,11 @@ class ProductController extends Controller
         return redirect()->route('product.index');
     }
 
+    /**
+     * Summary of destroyRequest
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
     public function destroyRequest($id)
     {
 
@@ -826,33 +755,23 @@ class ProductController extends Controller
         return redirect()->route('product.out.of.stock');
     }
 
+
     /**
-
-     * Show the form for import product.
-
-     *
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of getProductImport
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-
     public function getProductImport()
-
     {
 
         return view('backend.product.import');
     }
 
+
     /**
-
-     * Store import product.
-
-     *
-
-     * @return \Illuminate\Http\Response
-
+     * Summary of saveProductImport
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|mixed
      */
-
     public function saveProductImport(Request $request)
     {
         try {
@@ -862,7 +781,7 @@ class ProductController extends Controller
             $path = 'upload/import/files/';
             $moved = $request->file('file')->move($path, $fileName);
 
-            Excel::import(new ImportProduct, $moved->getRealPath());
+            Excel::import(new ImportProduct(), $moved->getRealPath());
 
             if (File::exists(public_path($path . $fileName))) {
                 File::delete(public_path($path . $fileName));
@@ -883,6 +802,11 @@ class ProductController extends Controller
     }
 
 
+    /**
+     * Summary of ProductExport
+     * @param mixed $type
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function ProductExport($type = null)
     {
         ini_set('max_execution_time', 0);
@@ -891,9 +815,14 @@ class ProductController extends Controller
         return Excel::download(new ProductExport($type), 'product.xlsx');
     }
 
+    /**
+     * Summary of productUpdate
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function productUpdate(Request $request)
     {
-        // dd($request->data);
+
         if ($request->type == 'delete') {
             foreach ($request->data as $id) {
                 $product = Product::findOrFail($id);
@@ -907,32 +836,18 @@ class ProductController extends Controller
 
         if ($request->type == 'dublicate') {
 
-            // try{
             foreach ($request->data as $id) {
                 $product = Product::findOrFail($id);
                 $new_data = $product->replicate();
                 $new_data->created_at = now();
-                $new_data->slug = $product->slug . '-' . date("H-i-s-Y-m-d");;
+                $new_data->slug = $product->slug . '-' . date("H-i-s-Y-m-d");
+                ;
                 $new_data->save();
             }
 
             $response['status'] = 200;
             $response['message'] = 'Product Dublicate Successfully';
             return response($response);
-
-            // }catch(Exception $e){
-            //         $errorCode = $e->errorInfo[1];
-            //         if($errorCode == '1062'){
-            //             $response['message'] = 'Duplicated Product EAN Code';
-            //         }
-            //         else{
-            //             $response['message'] =  $e->getMessage();
-            //         }
-
-            //         $response['status'] = 500;
-            //         return response($response);
-            // }
-
         }
 
 
@@ -947,8 +862,18 @@ class ProductController extends Controller
             $response['message'] = 'Product ' . ucfirst($request->key) . ' Updated Successfully';
             return response($response);
         }
+
+        $response['status'] = 400;
+        $response['message'] = 'Product Not Updated Successfully';
+
+        return response($response);
     }
 
+    /**
+     * Summary of deleteImage
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function deleteImage(Request $request)
     {
 
@@ -963,6 +888,10 @@ class ProductController extends Controller
 
 
 
+    /**
+     * Summary of productCronJob
+     * @return string
+     */
     public function productCronJob()
     {
         $products = Product::where('stock', 0)->orWhere('photo', null)->orWhere('price', 0)->get();

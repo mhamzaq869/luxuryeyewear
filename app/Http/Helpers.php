@@ -89,7 +89,7 @@ class Helper{
 
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
+            return Cart::where('user_id',$user_id)->where('withoutCheckout',0)->where('order_id',null)->sum('quantity');
         }
         else{
             return 0;
@@ -101,11 +101,10 @@ class Helper{
     }
 
     public static function getAllProductFromCart($user_id=''){
-        // if(Auth::check()){
             if($user_id=="") $user_id=request()->ip();
             $carts = DB::table('carts')->join('products','carts.product_id','=','products.id')
             ->select('carts.*','products.price as productPrice','products.photo','products.slug','products.title','products.dispatch_from','products.extra')
-            ->where('user_id',request()->ip())->where('order_id',null)->get();
+            ->where('user_id',request()->ip())->where('withoutCheckout',0)->where('order_id',null)->get();
 
             $location = Location::get(request()->ip());
              foreach($carts as $cart){
@@ -150,7 +149,7 @@ class Helper{
     {
 
         if($user_id=="") $user_id= request()->ip();
-        return number_format(DB::table('carts')->where('user_id',$user_id)->where('order_id',null)->sum('price'),2);
+        return number_format(DB::table('carts')->where('user_id',$user_id)->where('withoutCheckout',0)->where('order_id',null)->sum('price'),2);
 
     }
     // Wishlist Count

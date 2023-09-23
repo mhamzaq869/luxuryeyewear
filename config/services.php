@@ -32,17 +32,17 @@ return [
     'github' => [
         'client_id' => '24fbd0edd46019058da7', //Github API
         'client_secret' => '4500e6ab7a9bb70608600fbdee37969276bb0685', //Github Secret
-        // 'redirect' => request()->getSchemeAndHttpHost().'/login/github/callback',
+        'redirect' => '/login/github/callback',
      ],
      'google' => [
         'client_id' => '618617083788-gkau1aj095nv0e3eonr49firq02afje8.apps.googleusercontent.com', //Google API
         'client_secret' => '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', //Google Secret
-        'redirect' => request()->getSchemeAndHttpHost().'/login/google/',
+        'redirect' => '/login/google/',
      ],
      'facebook' => [
         'client_id' => '1494792524037846', //Facebook API
         'client_secret' => '1bf13c2faf680f4ae2b97bdafa92c7d2', //Facebook Secret
-        // 'redirect' => request()->getSchemeAndHttpHost().'/login/facebook/callback',
+        'redirect' => '/login/facebook/callback',
      ],
 
 ];

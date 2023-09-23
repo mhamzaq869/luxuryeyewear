@@ -3,84 +3,82 @@
 @section('main-content')
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="p-3 mb-4">
         <div class="row">
             <div class="col-md-12">
                 @include('backend.layouts.notification')
             </div>
         </div>
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary float-left">Order Lists</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                @if (count($orders) > 0)
-                    <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>S.N.</th>
-                                <th>Order No.</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Qty</th>
-                                <th>Charge</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            @foreach ($orders as $order)
-                                @php
-                                    $shipping_charge = DB::table('shippings')
-                                        ->where('id', $order->shipping_id)
-                                        ->pluck('price');
-                                @endphp
-                                <tr>
-                                    <td>{{ $order->id }}</td>
-                                    <td>{{ $order->order_number }}</td>
-                                    <td>{{ $order->first_name }} {{ $order->last_name }}</td>
-                                    <td>{{ $order->email }}</td>
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>${{ number_format($order->price, 2) }} </td>
-                                    <td>${{ number_format($order->total_amount, 2) }}</td>
-                                    <td>
-                                        <select class="form-control" onchange="orderStatus(this.value,{{$order->id}})">
-                                            @foreach ($attributes as $attribute)
-                                                <option value="{{ $attribute->name }}"
-                                                    {{ strtolower($order->status) === strtolower($attribute->name) ? 'selected' : '' }}>
-                                                    {{ $attribute->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('order.show', $order->id) }}"
-                                            class="btn btn-warning btn-sm float-left mr-1"
+        <h3 class="m-0 font-weight-bold text-dark float-left mb-3">Order Lists</h3>
+
+        <div class="table-responsive">
+            @if (count($orders) > 0)
+                <table class="table table-bordered table-striped" id="order-dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>S.N.</th>
+                            <th>Order No.</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Qty</th>
+                            <th>Charge</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($orders as $order)
+                            @php
+                                $shipping_charge = DB::table('shippings')
+                                    ->where('id', $order->shipping_id)
+                                    ->pluck('price');
+                            @endphp
+                            <tr>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->order_number }}</td>
+                                <td>{{ $order->first_name }} {{ $order->last_name }}</td>
+                                <td>{{ $order->email }}</td>
+                                <td>{{ $order->quantity }}</td>
+                                <td>${{ number_format($order->price, 2) }} </td>
+                                <td>${{ number_format($order->total_amount, 2) }}</td>
+                                <td>
+                                    <select class="form-control" onchange="orderStatus(this.value,{{$order->id}})">
+                                        @foreach ($attributes as $attribute)
+                                            <option value="{{ $attribute->name }}"
+                                                {{ strtolower($order->status) === strtolower($attribute->name) ? 'selected' : '' }}>
+                                                {{ $attribute->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="{{ route('order.show', $order->id) }}"
+                                        class="btn btn-warning btn-sm float-left mr-1"
+                                        style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                        title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('order.edit', $order->id) }}"
+                                        class="btn btn-primary btn-sm float-left mr-1"
+                                        style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                        title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                    <form method="POST" action="{{ route('order.destroy', [$order->id]) }}">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm dltBtn" data-id={{ $order->id }}
                                             style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                            title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ route('order.edit', $order->id) }}"
-                                            class="btn btn-primary btn-sm float-left mr-1"
-                                            style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                            title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                        <form method="POST" action="{{ route('order.destroy', [$order->id]) }}">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn btn-danger btn-sm dltBtn" data-id={{ $order->id }}
-                                                style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                data-placement="bottom" title="Delete"><i
-                                                    class="fas fa-trash-alt"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <span style="float:right">{{ $orders->links() }}</span>
-                @else
-                    <h6 class="text-center">No orders found!!! Please order some products</h6>
-                @endif
-            </div>
+                                            data-placement="bottom" title="Delete"><i
+                                                class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <span style="float:right">{{ $orders->links() }}</span>
+            @else
+                <h6 class="text-center">No orders found!!! Please order some products</h6>
+            @endif
         </div>
     </div>
 @endsection
@@ -153,7 +151,7 @@
             $('.dltBtn').click(function(e) {
                 var form = $(this).closest('form');
                 var dataID = $(this).data('id');
-                // alert(dataID);
+
                 e.preventDefault();
                 swal({
                         title: "Are you sure?",

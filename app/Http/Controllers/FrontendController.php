@@ -29,23 +29,16 @@ use function PHPUnit\Framework\isNull;
 
 class FrontendController extends Controller
 {
-
-    protected $gender_filter="";
-    protected $shape_filter="";
-    protected $frame_filter="";
-    protected $material_filter="";
-    protected $brand_filter="";
-    protected $color_filter="";
+    protected $gender_filter = "";
+    protected $shape_filter = "";
+    protected $frame_filter = "";
+    protected $material_filter = "";
+    protected $brand_filter = "";
+    protected $color_filter = "";
     protected $ip_country;
     protected $admin_data;
 
-    // public function __construct(){
-    //     $ip = \Request::ip();
-    //     // $ip = '1.32.239.255';
-    //     $location = Location::get('111.119.187.50');
-    //     $this->ip_country = $location->countryCode;
-    //     //$this->ip_country="India";
-    // }
+
 
 
     public function index(Request $request)
@@ -61,22 +54,17 @@ class FrontendController extends Controller
         $data['female_sunglasses'] = Product::femaleSunglasses();
         $data['male_eyeglasses'] = Product::maleEyeglasses();
 
-        // $data['featured'] = DB::table('products')->where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
 
         $data['posts'] = DB::table('posts')->where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
-        $data['banners'] = DB::table('banners')->join('brands','banners.brand_id','=','brands.id')
-                            ->select('banners.*','brands.slug as brandSlug','brands.title as brandTitle')
+        $data['banners'] = DB::table('banners')->join('brands', 'banners.brand_id', '=', 'brands.id')
+                            ->select('banners.*', 'brands.slug as brandSlug', 'brands.title as brandTitle')
                             ->where('banners.status', 'active')->limit(3)->orderBy('banners.id', 'DESC')->get();
-
-        // return $banner;
-
-        // $data['products'] = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
 
         $data['category'] = DB::table('categories')->where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
 
         // return $category;
-        $data['brand_img'] =  DB::table('brands')->where('status', 'active')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
+        $data['brand_img'] =  DB::table('brands')->where('status', 'active')->whereIn('id', Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
 
         $product_variant = DB::table('products')->where('status', 'active')->orderBy('id', 'DESC')->get(['id','slug','price','cat_id','title','photo','dispatch_from','extra','product_for']);
 
@@ -87,27 +75,27 @@ class FrontendController extends Controller
 
 
     // eyeglasses
-    public function frontend_eyeglass($type=null,$for=null)
+    public function frontend_eyeglass($type = null, $for = null)
     {
-        $eyeglasses = DB::table('products')->join('categories','products.cat_id','=','categories.id')
-                        ->join('brands','products.brand_id','=','brands.id')
-                        ->select('products.*','categories.frame_type','brands.title as brandName')
+        $eyeglasses = DB::table('products')->join('categories', 'products.cat_id', '=', 'categories.id')
+                        ->join('brands', 'products.brand_id', '=', 'brands.id')
+                        ->select('products.*', 'categories.frame_type', 'brands.title as brandName')
                         ->where('products.status', 'active')
                         ->where('categories.frame_type', 32);
 
-        if($type == 'women'){
-            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+        if($type == 'women') {
+            $womenId = DB::table('attributes')->where('name', 'LIKE', '%women%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%women%')->first()->id : 0;
 
             $eyeglasses->whereIn('products.product_for', [$womenId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
             }
-        }else if($type == 'men'){
-            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+        } elseif($type == 'men') {
+            $manId = DB::table('attributes')->where('name', 'LIKE', '%man%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%man%')->first()->id : 0;
             $eyeglasses->whereIn('products.product_for', [$manId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $eyeglasses->where('products.shape', $attribute);
             }
         }
@@ -117,7 +105,7 @@ class FrontendController extends Controller
 
         $data['products_count'] = $eyeglasses->count();
         $data['eyeglasses'] = $eyeglasses->simplePaginate(18);
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
 
 
@@ -140,66 +128,67 @@ class FrontendController extends Controller
     }
 
     //Load more eyeglass on scroll page
-    public function load_more_eyeglasses($frame=null,$type=null,$for=null){
-        $products = DB::table('products')->join('categories','products.cat_id','=','categories.id')
-                    ->join('brands','products.brand_id','=','brands.id')
-                    ->select('products.*','categories.frame_type','brands.title as brandName')
+    public function load_more_eyeglasses($frame = null, $type = null, $for = null)
+    {
+        $products = DB::table('products')->join('categories', 'products.cat_id', '=', 'categories.id')
+                    ->join('brands', 'products.brand_id', '=', 'brands.id')
+                    ->select('products.*', 'categories.frame_type', 'brands.title as brandName')
                     ->where('products.status', 'active')
                     ->where('categories.frame_type', 32);
 
 
-        if($type == 'women'){
-            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+        if($type == 'women') {
+            $womenId = DB::table('attributes')->where('name', 'LIKE', '%women%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%women%')->first()->id : 0;
 
             $products->whereIn('products.product_for', [$womenId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
-        }else if($type == 'men'){
-            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+        } elseif($type == 'men') {
+            $manId = DB::table('attributes')->where('name', 'LIKE', '%man%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%man%')->first()->id : 0;
             $products->whereIn('products.product_for', [$manId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
         }
 
         $products = $products->simplePaginate(18);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
 
-        $view = view('frontend.pages.section.load_more_products',$data)->render();
-        return response()->json(['status'=>1, 'more_data'=>$products->count(), 'html'=>$view]);
+        $view = view('frontend.pages.section.load_more_products', $data)->render();
+        return response()->json(['status' => 1, 'more_data' => $products->count(), 'html' => $view]);
     }
 
 
     // sunglasses
-    public function frontend_sunglass($type=null,$for=null)
+    public function frontend_sunglass($type = null, $for = null)
     {
-            $sunglasses = DB::table('products')->join('categories','products.cat_id','=','categories.id')
-            ->join('brands','products.brand_id','=','brands.id')
-            ->select('products.*','categories.frame_type','brands.title as brandName')
-            ->where('products.status', 'active')
-            ->where('categories.frame_type', 31);
+        $sunglasses = DB::table('products')->join('categories', 'products.cat_id', '=', 'categories.id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.*', 'categories.frame_type', 'brands.title as brandName')
+        ->where('products.status', 'active')
+        ->where('categories.frame_type', 31);
 
-        if($type == 'women'){
-            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+        if($type == 'women') {
+            $womenId = DB::table('attributes')->where('name', 'LIKE', '%women%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%women%')->first()->id : 0;
 
             $sunglasses->whereIn('products.product_for', [$womenId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $sunglasses->where('products.shape', $attribute);
             }
-        }else if($type == 'men'){
-            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+        } elseif($type == 'men') {
+            $manId = DB::table('attributes')->where('name', 'LIKE', '%man%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%man%')->first()->id : 0;
 
             $sunglasses->whereIn('products.product_for', [$manId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
 
                 $sunglasses->where('products.shape', $attribute);
             }
@@ -207,7 +196,7 @@ class FrontendController extends Controller
 
         $data['products_count'] = $sunglasses->count();
         $data['sunglasses'] = $sunglasses->simplePaginate(18);
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['type'] = 'sunglass_pro_price_';
 
@@ -230,27 +219,28 @@ class FrontendController extends Controller
 
 
     //Load more sunglass on scroll page
-    public function load_more_sunglass($frame=null,$type=null,$for=null){
-        $products = DB::table('products')->join('categories','products.cat_id','=','categories.id')
-                    ->join('brands','products.brand_id','=','brands.id')
-                    ->select('products.*','categories.frame_type','brands.title as brandName')
+    public function load_more_sunglass($frame = null, $type = null, $for = null)
+    {
+        $products = DB::table('products')->join('categories', 'products.cat_id', '=', 'categories.id')
+                    ->join('brands', 'products.brand_id', '=', 'brands.id')
+                    ->select('products.*', 'categories.frame_type', 'brands.title as brandName')
                     ->where('products.status', 'active')
                     ->where('categories.frame_type', 31);
 
-        if($type == 'women'){
-            $womenId = DB::table('attributes')->where('name','LIKE','%women%')->first() != null ? DB::table('attributes')->where('name','LIKE','%women%')->first()->id : 0;
+        if($type == 'women') {
+            $womenId = DB::table('attributes')->where('name', 'LIKE', '%women%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%women%')->first()->id : 0;
 
             $products->whereIn('products.product_for', [$womenId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
                 $products->where('products.shape', $attribute);
             }
-        }else if($type == 'men'){
-            $manId = DB::table('attributes')->where('name','LIKE','%man%')->first() != null ? DB::table('attributes')->where('name','LIKE','%man%')->first()->id : 0;
+        } elseif($type == 'men') {
+            $manId = DB::table('attributes')->where('name', 'LIKE', '%man%')->first() != null ? DB::table('attributes')->where('name', 'LIKE', '%man%')->first()->id : 0;
 
             $products->whereIn('products.product_for', [$manId,30]);
-            if($for != null){
-                $attribute = Attribute::where('name',$for)->first()->id ?? '';
+            if($for != null) {
+                $attribute = Attribute::where('name', $for)->first()->id ?? '';
 
                 $products->where('products.shape', $attribute);
             }
@@ -258,27 +248,27 @@ class FrontendController extends Controller
 
         $products = $products->simplePaginate(18);
         $ip_country = $this->ip_country ?? '';
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['products'] = $products;
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
 
-        $view = view('frontend.pages.section.load_more_products',$data)->render();
-        return response()->json(['status'=>1, 'more_data'=>$products->count(), 'html'=>$view]);
+        $view = view('frontend.pages.section.load_more_products', $data)->render();
+        return response()->json(['status' => 1, 'more_data' => $products->count(), 'html' => $view]);
     }
 
 
     public function productBrand(Request $request)
     {
 
-        $brand_id = DB::table('brands')->where('slug',$request->slug)->first()->id ?? 0;
-        $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
-        ->select('products.id','products.slug','products.dispatch_from','products.extra','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
+        $brand_id = DB::table('brands')->where('slug', $request->slug)->first()->id ?? 0;
+        $products = DB::table('products')->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.id', 'products.slug', 'products.dispatch_from', 'products.extra', 'products.price', 'products.title', 'products.cat_id', 'products.photo', 'products.product_for', 'brands.title as brandName')
         ->where('products.status', 'active')->where('products.brand_id', $brand_id)->simplePaginate(18);
 
         $data['products_count'] = 0;
         $data['products'] = $products;
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         $data['product_variant'] = $product_variant;
         $data['brand_id'] = $brand_id;
         $data['type'] = 'sunglass_pro_price_';
@@ -297,17 +287,17 @@ class FrontendController extends Controller
         $data['brand_array'] = "";
         $data['color_array'] = "";
 
-        return view('frontend.pages.product-brand',$data);
+        return view('frontend.pages.product-brand', $data);
     }
 
-     //Load more sunglass on scroll page
+    //Load more sunglass on scroll page
     public function load_more_brands($brand)
     {
-        $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
-        ->select('products.id','products.slug','products.price','products.title','products.cat_id','products.photo','products.product_for','brands.title as brandName')
+        $products = DB::table('products')->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.id', 'products.slug', 'products.price', 'products.title', 'products.cat_id', 'products.photo', 'products.product_for', 'brands.title as brandName')
         ->where('products.status', 'active')->where('products.brand_id', $brand)->simplePaginate(18);
 
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
 
         $products = $products;
         $ip_country = $this->ip_country ?? '';
@@ -315,8 +305,8 @@ class FrontendController extends Controller
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
 
-        $view = view('frontend.pages.section.load_more_products',$data)->render();
-        return response()->json(['status'=>1, 'more_data'=> $products->count(), 'html'=> $view]);
+        $view = view('frontend.pages.section.load_more_products', $data)->render();
+        return response()->json(['status' => 1, 'more_data' => $products->count(), 'html' => $view]);
     }
 
 
@@ -339,19 +329,34 @@ class FrontendController extends Controller
         $brand_array = "";
 
         $arr = DB::table('products')->where('products.status', 'Active')
-                        ->select('products.id','products.slug','products.title','products.photo','products.price',
-                        'products.product_for','products.shape','products.type', 'products.product_material','products.dispatch_from','products.extra',
-                        'products.brand_id','products.cat_id','products.status','products.created_at',
-                        'categories.frame_type','brands.title as brandName')
-                        ->join('categories','products.cat_id','=','categories.id')
-                        ->join('brands','products.brand_id','=','brands.id');
+                        ->select(
+                            'products.id',
+                            'products.slug',
+                            'products.title',
+                            'products.photo',
+                            'products.price',
+                            'products.product_for',
+                            'products.shape',
+                            'products.type',
+                            'products.product_material',
+                            'products.dispatch_from',
+                            'products.extra',
+                            'products.brand_id',
+                            'products.cat_id',
+                            'products.status',
+                            'products.created_at',
+                            'categories.frame_type',
+                            'brands.title as brandName'
+                        )
+                        ->join('categories', 'products.cat_id', '=', 'categories.id')
+                        ->join('brands', 'products.brand_id', '=', 'brands.id');
 
 
         $attribute = new Attribute();
 
 
         if (!empty($glass_type)) {
-            $glass_type_id = $attribute->where('name',$glass_type)->first()->id ?? 0;
+            $glass_type_id = $attribute->where('name', $glass_type)->first()->id ?? 0;
             $arr->where('frame_type', $glass_type_id);
         }
 
@@ -360,13 +365,13 @@ class FrontendController extends Controller
             $order_filter = $request->order_filter;
             if ($order_filter == "Latest") {
                 $arr->latest();
-            } else if ($order_filter == "Low") {
+            } elseif ($order_filter == "Low") {
                 $arr->orderBy('price', 'ASC');
-            } else if ($order_filter == "High") {
+            } elseif ($order_filter == "High") {
                 $arr->orderBy('price', 'DESC');
-            } else if ($order_filter == "Sort_ASC") {
+            } elseif ($order_filter == "Sort_ASC") {
                 $arr->orderBy('title', 'ASC');
-            } else if ($order_filter == "Sort_DESC") {
+            } elseif ($order_filter == "Sort_DESC") {
                 $arr->orderBy('title', 'DESC');
             }
         }
@@ -388,41 +393,41 @@ class FrontendController extends Controller
         if(!empty($request->gender_array)) {
             $gender_array = $request->gender_array;
             $this->gender_filter = explode(',', $request->gender_array);
-        }else{
+        } else {
             $this->gender_filter = "";
         }
 
 
         if (!empty($this->gender_filter)) {
-            $arr->where(function ($q) use($attribute) {
-                $attribute_gender_first =  $attribute->where('id',$this->gender_filter[0])->first()->id ?? 0;
+            $arr->where(function ($q) use ($attribute) {
+                $attribute_gender_first =  $attribute->where('id', $this->gender_filter[0])->first()->id ?? 0;
                 $q->where('product_for', $attribute_gender_first);
                 $q->orWhere('product_for', 30);
 
 
                 for ($i = 1; $i < count($this->gender_filter); $i++) {
-                    $attribute_gender_all =  $attribute->where('id',$this->gender_filter[$i])->first()->id ?? 0;
+                    $attribute_gender_all =  $attribute->where('id', $this->gender_filter[$i])->first()->id ?? 0;
                     $q->orWhere('product_for', $attribute_gender_all);
                 }
 
             });
         }
-         // Condition for Shape Filter
+        // Condition for Shape Filter
         if (!empty($request->shape_array)) {
             $shape_array = $request->shape_array;
             $this->shape_filter = explode(',', $request->shape_array);
-        }else{
+        } else {
             $this->shape_filter = "";
         }
 
         // dd($request->all(),$arr);
 
-        if(!empty($this->shape_filter)){
-            $arr->where(function ($q) use($attribute){
-                $attribute_shape_first =  $attribute->where('id',$this->shape_filter[0])->first()->id ?? 0;
+        if(!empty($this->shape_filter)) {
+            $arr->where(function ($q) use ($attribute) {
+                $attribute_shape_first =  $attribute->where('id', $this->shape_filter[0])->first()->id ?? 0;
                 $q->where('shape', $attribute_shape_first);
                 for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
-                    $attribute_shape_all =  $attribute->where('id',$this->shape_filter[$i])->first()->id ?? 0;
+                    $attribute_shape_all =  $attribute->where('id', $this->shape_filter[$i])->first()->id ?? 0;
                     $q->orWhere('shape', $attribute_shape_all);
                 }
             });
@@ -433,17 +438,17 @@ class FrontendController extends Controller
         if (!empty($request->frame_array)) {
             $frame_array = $request->frame_array;
             $this->frame_filter = explode(',', $request->frame_array);
-        }else{
+        } else {
             $this->frame_filter = "";
         }
 
 
         if (!empty($this->frame_filter)) {
-            $arr->where(function ($q) use($attribute) {
-                $frame_first =  $attribute->where('id',$this->frame_filter[0])->first()->id ?? 0;
+            $arr->where(function ($q) use ($attribute) {
+                $frame_first =  $attribute->where('id', $this->frame_filter[0])->first()->id ?? 0;
                 $q->where('type', $frame_first);
                 for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
-                    $frame_all =  $attribute->where('id',$this->frame_filter[$i])->first()->id ?? 0;
+                    $frame_all =  $attribute->where('id', $this->frame_filter[$i])->first()->id ?? 0;
                     $q->orWhere('type', $frame_all);
                 }
             });
@@ -453,17 +458,17 @@ class FrontendController extends Controller
         if (!empty($request->material_array)) {
             $material_array = $request->material_array;
             $this->material_filter = explode(',', $request->material_array);
-        }else{
+        } else {
             $this->material_filter = "";
         }
 
 
         if(!empty($this->material_filter)) {
-            $arr->where(function ($q) use($attribute) {
-                $material_first =  $attribute->where('id',$this->material_filter[0])->first()->id ?? 0;
+            $arr->where(function ($q) use ($attribute) {
+                $material_first =  $attribute->where('id', $this->material_filter[0])->first()->id ?? 0;
                 $q->where('product_material', $material_first);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $material_all =  $attribute->where('id',$this->material_filter[$i])->first()->id ?? 0;
+                    $material_all =  $attribute->where('id', $this->material_filter[$i])->first()->id ?? 0;
                     $q->orWhere('product_material', $material_all);
                 }
             });
@@ -474,19 +479,19 @@ class FrontendController extends Controller
         if (!empty($request->brand_array)) {
             $brand_array = $request->brand_array;
             $this->brand_filter = explode(',', $request->brand_array);
-        }else{
+        } else {
             $this->brand_filter = "";
         }
 
 
         if (!empty($this->brand_filter)) {
-            $arr->where(function ($q) use($attribute) {
+            $arr->where(function ($q) use ($attribute) {
                 $brands = DB::table('brands')->get();
-                $brand_first = $brands->where('id',$this->brand_filter[0])->first()->id ?? '';
+                $brand_first = $brands->where('id', $this->brand_filter[0])->first()->id ?? '';
 
                 $q->where('products.brand_id', $brand_first);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
-                    $brand_all = $brands->where('id',$this->brand_filter[$i])->first()->id ?? '';
+                    $brand_all = $brands->where('id', $this->brand_filter[$i])->first()->id ?? '';
                     $q->orWhere('products.brand_id', $brand_all);
                 }
             });
@@ -505,21 +510,21 @@ class FrontendController extends Controller
         // dd(DB::getQueryLog());
         //Get Frmae Type Filter
         // $query1 = DB::table('attributes')->leftJoin('products','products.product_for', '=','attributes.id');
-        $query1 = DB::table('attributes')->select('products.*','categories.frame_type')
-                    ->join('products','products.product_for', '=','attributes.id')
-                    ->join('categories','products.cat_id','=','categories.id');
+        $query1 = DB::table('attributes')->select('products.*', 'categories.frame_type')
+                    ->join('products', 'products.product_for', '=', 'attributes.id')
+                    ->join('categories', 'products.cat_id', '=', 'categories.id');
 
-        if(!empty($product_for)){
-                $all_product = $attribute->where('name',$product_for)->pluck('id') ?? '';
-                $cat_for = array_merge([[30], $all_product]);
-                $query1->whereIn('products.product_for', $cat_for);
+        if(!empty($product_for)) {
+            $all_product = $attribute->where('name', $product_for)->pluck('id') ?? '';
+            $cat_for = array_merge([[30], $all_product]);
+            $query1->whereIn('products.product_for', $cat_for);
         }
         if(!empty($request->search_product)) {
             $search_product = $request->search_product;
             $query1->where('products.title', 'LIKE', '%' . $search_product . '%');
         }
-        if(!empty($this->shape_filter)){
-            $query1->where(function ($q) use($attribute) {
+        if(!empty($this->shape_filter)) {
+            $query1->where(function ($q) use ($attribute) {
                 $q->where('products.shape', $this->shape_filter[0]);
                 for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
                     $q->orWhere('products.shape', $this->shape_filter[$i]);
@@ -527,7 +532,7 @@ class FrontendController extends Controller
             });
         }
         if(!empty($this->material_filter)) {
-            $query1->where(function ($q) use($attribute) {
+            $query1->where(function ($q) use ($attribute) {
                 $q->where('products.product_material', $this->material_filter[0]);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
                     $q->orWhere('products.product_material', $this->material_filter[$i]);
@@ -535,7 +540,7 @@ class FrontendController extends Controller
             });
         }
         if (!empty($this->brand_filter)) {
-            $query1->where(function ($q) use($attribute) {
+            $query1->where(function ($q) use ($attribute) {
                 $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
                     $q->orWhere('products.brand_id', $this->brand_filter[$i]);
@@ -544,26 +549,26 @@ class FrontendController extends Controller
         }
 
 
-        $glass_type_id = $attribute->where('name',$glass_type)->first()->id ?? 0;
-        $frame_types = $query1->where('products.status','active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
+        $glass_type_id = $attribute->where('name', $glass_type)->first()->id ?? 0;
+        $frame_types = $query1->where('products.status', 'active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
 
         //Get Frmae Shape Filter
-        $query2 = DB::table('attributes')->select('products.*','categories.frame_type')
-                ->join('products','products.product_for', '=','attributes.id')
-                ->join('categories','products.cat_id','=','categories.id');
+        $query2 = DB::table('attributes')->select('products.*', 'categories.frame_type')
+                ->join('products', 'products.product_for', '=', 'attributes.id')
+                ->join('categories', 'products.cat_id', '=', 'categories.id');
 
-        if(!empty($product_for)){
-                $all_product = $attribute->where('name',$product_for)->pluck('id') ?? '';
-                $cat_for = array_merge([[30], $all_product]);
-                 $query2->whereIn('products.category_for', $cat_for);
+        if(!empty($product_for)) {
+            $all_product = $attribute->where('name', $product_for)->pluck('id') ?? '';
+            $cat_for = array_merge([[30], $all_product]);
+            $query2->whereIn('products.category_for', $cat_for);
         }
         if(!empty($request->search_product)) {
             $search_product = $request->search_product;
             $query2->where('products.title', 'LIKE', '%' . $search_product . '%');
         }
         if (!empty($this->frame_filter)) {
-            $query2->where(function ($q) use($attribute) {
+            $query2->where(function ($q) use ($attribute) {
                 $q->where('products.type', $this->frame_filter[0]);
                 for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
                     $q->orWhere('products.type', $this->frame_filter[$i]);
@@ -571,7 +576,7 @@ class FrontendController extends Controller
             });
         }
         if(!empty($this->material_filter)) {
-            $query2->where(function ($q) use($attribute) {
+            $query2->where(function ($q) use ($attribute) {
                 $q->where('products.product_material', $this->material_filter[0]);
                 for ($i = 1; $i < COUNT($this->material_filter); $i++) {
                     $q->orWhere('products.product_material', $this->material_filter[$i]);
@@ -579,7 +584,7 @@ class FrontendController extends Controller
             });
         }
         if (!empty($this->brand_filter)) {
-            $query2->where(function ($q) use($attribute) {
+            $query2->where(function ($q) use ($attribute) {
                 $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
                     $q->orWhere('products.brand_id', $this->brand_filter[$i]);
@@ -588,23 +593,23 @@ class FrontendController extends Controller
         }
 
 
-        $frame_shapes = $query2->where('products.status','Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
+        $frame_shapes = $query2->where('products.status', 'Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
         // Get Frame Material Filter
-        $query3 = DB::table('attributes')->select('products.*','categories.frame_type')
-                ->join('products','products.product_for', '=','attributes.id')
-                ->join('categories','products.cat_id','=','categories.id');
+        $query3 = DB::table('attributes')->select('products.*', 'categories.frame_type')
+                ->join('products', 'products.product_for', '=', 'attributes.id')
+                ->join('categories', 'products.cat_id', '=', 'categories.id');
 
-        if(!empty($product_for)){
-                 $cat_for = ['Unisex', $product_for];
-                 $query3->whereIn('products.category_for', $cat_for);
+        if(!empty($product_for)) {
+            $cat_for = ['Unisex', $product_for];
+            $query3->whereIn('products.category_for', $cat_for);
         }
         if(!empty($request->search_product)) {
             $search_product = $request->search_product;
             $query3->where('products.title', 'LIKE', '%' . $search_product . '%');
         }
-        if(!empty($this->shape_filter)){
-            $query3->where(function ($q) use($attribute) {
+        if(!empty($this->shape_filter)) {
+            $query3->where(function ($q) use ($attribute) {
                 $q->where('products.shape', $this->shape_filter[0]);
                 for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
                     $q->orWhere('products.shape', $this->shape_filter[$i]);
@@ -612,7 +617,7 @@ class FrontendController extends Controller
             });
         }
         if (!empty($this->frame_filter)) {
-            $query3->where(function ($q) use($attribute) {
+            $query3->where(function ($q) use ($attribute) {
                 $q->where('products.type', $this->frame_filter[0]);
                 for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
                     $q->orWhere('products.type', $this->frame_filter[$i]);
@@ -620,44 +625,44 @@ class FrontendController extends Controller
             });
         }
         if (!empty($this->brand_filter)) {
-            $query3->where(function ($q) use($attribute) {
+            $query3->where(function ($q) use ($attribute) {
                 $q->where('products.brand_id', $this->brand_filter[0]);
                 for ($i = 1; $i < COUNT($this->brand_filter); $i++) {
                     $q->orWhere('products.brand_id', $this->brand_filter[$i]);
                 }
             });
         }
-        $frame_materials = $query3->where('products.status','Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
+        $frame_materials = $query3->where('products.status', 'Active')->where('categories.frame_type', $glass_type_id)->where('products.stock', '>', 0)->get();
 
 
         // Get Brands Filter
         $addWhere = '';
-        if(!empty($product_for)){
+        if(!empty($product_for)) {
             $addWhere .= ' and b.category_for in("Unisex","'.$product_for.'") ';
         }
         if(!empty($request->search_product)) {
             $search_product = $request->search_product;
             $addWhere .= " and b.title LIKE '%".$search_product."%' ";
         }
-        if(!empty($this->shape_filter)){
-                $addWhere .= ' and ( b.shape = "'.$this->shape_filter[0].'"';
-                for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
-                    $addWhere .= ' or b.shape = "'.$this->shape_filter[$i].'"';
-                }
-                $addWhere .= ') ';
+        if(!empty($this->shape_filter)) {
+            $addWhere .= ' and ( b.shape = "'.$this->shape_filter[0].'"';
+            for ($i = 1; $i < COUNT($this->shape_filter); $i++) {
+                $addWhere .= ' or b.shape = "'.$this->shape_filter[$i].'"';
+            }
+            $addWhere .= ') ';
         }
         if (!empty($this->frame_filter)) {
             $addWhere .= ' and ( b.type = "'.$this->frame_filter[0].'"';
-                for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
-                    $addWhere .= ' or b.type = "'.$this->frame_filter[$i].'"';
-                }
+            for ($i = 1; $i < COUNT($this->frame_filter); $i++) {
+                $addWhere .= ' or b.type = "'.$this->frame_filter[$i].'"';
+            }
             $addWhere .= ') ';
         }
         if(!empty($this->material_filter)) {
             $addWhere .= ' and ( b.product_material = "'.$this->material_filter[0].'"';
-                for ($i = 1; $i < COUNT($this->material_filter); $i++) {
-                    $addWhere .= ' or b.product_material = "'.$this->material_filter[$i].'"';
-                }
+            for ($i = 1; $i < COUNT($this->material_filter); $i++) {
+                $addWhere .= ' or b.product_material = "'.$this->material_filter[$i].'"';
+            }
             $addWhere .= ') ';
         }
 
@@ -665,13 +670,13 @@ class FrontendController extends Controller
 
 
         $all_brands = [];
-        $product_variant = DB::table('products')->select('id','slug','price','title','cat_id','photo','product_for','dispatch_from','extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
+        $product_variant = DB::table('products')->select('id', 'slug', 'price', 'title', 'cat_id', 'photo', 'product_for', 'dispatch_from', 'extra')->where('status', 'active')->orderBy('id', 'DESC')->get();
         //    dd($request->all()) ;
         if ($request->ajax()) {
             $view = view('frontend.pages.section.load_more_products', ['products' => $datas, 'product_variant' => $product_variant])->render();
-            return response()->json(['status' => 1, 'more_data'=> $datas->count(), 'html' => $view]);
-        }else{
-            return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant','all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'datas','allProductsCount', 'ip_country', 'glass_type'));
+            return response()->json(['status' => 1, 'more_data' => $datas->count(), 'html' => $view]);
+        } else {
+            return view('frontend.pages.product_for', compact('product_for', 'products', 'product_variant', 'all_brands', 'search', 'min_price', 'max_price', 'order_filter', 'gender_array', 'shape_array', 'frame_types', 'frame_array', 'material_array', 'frame_shapes', 'frame_materials', 'brand_array', 'datas', 'allProductsCount', 'ip_country', 'glass_type'));
         }
 
     }
@@ -681,7 +686,7 @@ class FrontendController extends Controller
 
     public function frontend_brands()
     {
-        $brand_data['brand_img'] =  Brand::where('status', 'active')->whereIn('id',Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
+        $brand_data['brand_img'] =  Brand::where('status', 'active')->whereIn('id', Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
         return view('frontend.pages.brands', $brand_data);
     }
     // product_detail
@@ -726,38 +731,38 @@ class FrontendController extends Controller
 
         $product_detail = Product::getProductBySlug($slug);
 
-        if($product_detail == null){
+        if($product_detail == null) {
             abort(404);
         }
 
 
-        if($product_detail != null && $product_detail->cat_info->size != null){
+        if($product_detail != null && $product_detail->cat_info->size != null) {
             $lensDetail = json_decode($product_detail->cat_info->size);
-            $product_detail->product_lens_width = $lensDetail->width;
-            $product_detail->product_bridge = $lensDetail->bridge;
-            $product_detail->product_arm_length = $lensDetail->arm_length;
-            $product_detail->product_lens_height = $lensDetail->lens_height;
-            $product_detail->product_total_width = $lensDetail->total_width;
-        }else{
+            $product_detail->product_lens_width = isset($lensDetail->width) ? $lensDetail->width : '';
+            $product_detail->product_bridge = isset($lensDetail->bridge) ? $lensDetail->bridge : '';
+            $product_detail->product_arm_length = isset($lensDetail->arm_length) ? $lensDetail->arm_length : '';
+            $product_detail->product_lens_height = isset($lensDetail->lens_height) ? $lensDetail->lens_height : '';
+            $product_detail->product_total_width = isset($lensDetail->total_width) ? $lensDetail->total_width : '';
+        } else {
             $product_detail->product_lens_width = '';
             $product_detail->product_bridge = '';
             $product_detail->product_arm_length = '';
             $product_detail->product_lens_height = '';
             $product_detail->product_total_width = '';
         }
+
         $attribute = Attribute::all();
-        $product_variant = DB::table('products')->join('brands','products.brand_id','=','brands.id')->join('categories','products.cat_id','=','categories.id')
-        ->select('products.*','categories.size as catSize','categories.title as catTitle','categories.frame_type','brands.title as brandName')->where('cat_id', $product_detail->cat_id)->where('products.status','active')->get();
+        $product_variant = DB::table('products')->join('brands', 'products.brand_id', '=', 'brands.id')->join('categories', 'products.cat_id', '=', 'categories.id')
+        ->select('products.*', 'categories.size as catSize', 'categories.title as catTitle', 'categories.frame_type', 'brands.title as brandName')->where('cat_id', $product_detail->cat_id)->where('products.status', 'active')->get();
 
-        foreach($product_variant as $detail){
+        foreach($product_variant as $detail) {
 
-            $detail->frame_type_name = $attribute->where('id',$detail->frame_type)->first() != null ? $attribute->where('id',$detail->frame_type)->first()->name : '';
-            $detail->shape_name = $attribute->where('id',$detail->shape)->first() != null ? $attribute->where('id',$detail->shape)->first()->name : '';
-            $detail->material_name = $attribute->where('id',$detail->product_material)->first() != null ? $attribute->where('id',$detail->product_material)->first()->name : '';
-            $detail->lens_name = $attribute->where('id',$detail->lense_type)->first() != null ? $attribute->where('id',$detail->lense_type)->first()->name : '';
-            // $detail->typename = $detail->type_name != null ? $detail->type_name->name : '';
-            // $detail->shapename = $detail->get_shape != null ? $detail->get_shape->name : '';
-            $detail->gender_name = $attribute->where('id',$detail->product_for)->first() != null ? $attribute->where('id',$detail->product_for)->first()->name : '';
+            $detail->frame_type_name = $attribute->where('id', $detail->frame_type)->first() != null ? $attribute->where('id', $detail->frame_type)->first()->name : '';
+            $detail->shape_name = $attribute->where('id', $detail->shape)->first() != null ? $attribute->where('id', $detail->shape)->first()->name : '';
+            $detail->material_name = $attribute->where('id', $detail->product_material)->first() != null ? $attribute->where('id', $detail->product_material)->first()->name : '';
+            $detail->lens_name = $attribute->where('id', $detail->lense_type)->first() != null ? $attribute->where('id', $detail->lense_type)->first()->name : '';
+
+            $detail->gender_name = $attribute->where('id', $detail->product_for)->first() != null ? $attribute->where('id', $detail->product_for)->first()->name : '';
             $detail->brand_name = $detail->brandName ?? '';
             $detail->cat_name = $detail->catTitle ?? '';
             $detail->frame_fragment = json_decode($detail->catSize) ?? '';
@@ -774,18 +779,18 @@ class FrontendController extends Controller
 
         }
 
-        if($location){
+        if($location) {
             $countryCode = $location->countryCode;
-            $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status','active')->first();
-            if($shipping != null && $shipping->count() > 0){
-                if(in_array($countryCode,explode(',',$product_detail->dispatch_from))){
+            $shipping = Shipping::whereRaw('FIND_IN_SET(?, countries)', [$countryCode])->where('status', 'active')->first();
+            if($shipping != null && $shipping->count() > 0) {
+                if(in_array($countryCode, explode(',', $product_detail->dispatch_from))) {
                     $product_detail->shipping_cost = $shipping->price ?? 0;
                     $product_detail->transit = $shipping->transit ?? 0;
-                }else{
+                } else {
                     $product_detail->shipping_cost = 0;
                     $product_detail->transit = 0;
                 }
-            }else{
+            } else {
                 $product_detail->shipping_cost = 0;
                 $product_detail->transit = 0;
             }
@@ -808,7 +813,7 @@ class FrontendController extends Controller
             'product_id' => $request->product_id,
         ]);
 
-        return redirect()->back()->with('success',"We have recieved your email and will notify you when this product available in our stock");
+        return redirect()->back()->with('success', "We have recieved your email and will notify you when this product available in our stock");
     }
 
     public function getProduct($id)
@@ -1094,11 +1099,11 @@ class FrontendController extends Controller
 
         $recent_products = DB::table('products')->whereIn('status', ['active','outofstock'])->orderBy('id', 'DESC')->limit(3)->get();
 
-        if($request->search != null){
-            $products = DB::table('products')->join('brands','products.brand_id','=','brands.id')
-            ->select('products.*','brands.title as brandName')
+        if($request->search != null) {
+            $products = DB::table('products')->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'brands.title as brandName')
             ->where('products.title', 'like', '%' . $request->search . '%')
-            ->where('products.status','active')
+            ->where('products.status', 'active')
             ->orWhere('products.product_ean_code', 'like', '%' . $request->search . '%')
             ->orWhere('products.price', 'like', '%' . $request->search . '%')
             ->orderBy('products.id', 'DESC')
@@ -1106,7 +1111,7 @@ class FrontendController extends Controller
 
             // $products = $products->where('status','active')->flatten();
 
-        }else{
+        } else {
             $products = [];
         }
 
@@ -1127,8 +1132,8 @@ class FrontendController extends Controller
     {
         // dd($request->all(),$search);
         $products = DB::table('products')
-            ->join('brands','products.brand_id','=','brands.id')
-            ->select('products.*','brands.title as brandName')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'brands.title as brandName')
             // ->orwhere('products.slug', 'like', '%' . $search . '%')
             ->orwhere('products.product_ean_code', 'like', '%' . $search . '%')
             ->orwhere('products.price', 'like', '%' . $search . '%')
@@ -1143,8 +1148,8 @@ class FrontendController extends Controller
         $data['product_variant'] = $product_variant;
         $data['ip_country'] = $ip_country;
 
-        $view = view('frontend.pages.section.load_more_products',$data)->render();
-        return response()->json(['status'=>1, 'more_data'=>$products->count(), 'html'=>$view]);
+        $view = view('frontend.pages.section.load_more_products', $data)->render();
+        return response()->json(['status' => 1, 'more_data' => $products->count(), 'html' => $view]);
     }
 
 
@@ -1378,16 +1383,16 @@ class FrontendController extends Controller
     {
 
         $data = $request->all();
-        $user = User::where('email',$data['email'])->where('role','user')->where('status','active')->first();
+        $user = User::where('email', $data['email'])->where('role', 'user')->where('status', 'active')->first();
 
-        if($user){
-            if(Hash::check($data['password'], $user->password)){
+        if($user) {
+            if(Hash::check($data['password'], $user->password)) {
                 Auth::login($user);
                 return redirect()->route('user_dashboard');
-            }else{
+            } else {
                 return redirect()->back()->with('error', 'Invalid Password pleas try again!');
             }
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Invalid email pleas try again!');
         }
 
@@ -1395,17 +1400,17 @@ class FrontendController extends Controller
 
 
 
-    public function logout($type=null)
+    public function logout($type = null)
     {
 
-        if($type == null){
+        if($type == null) {
             Session::forget('user');
             Auth::logout();
 
             request()->session()->flash('success', 'Logout successfully');
 
             return back();
-        }else{
+        } else {
             Session::forget('user');
             Auth::logout();
 

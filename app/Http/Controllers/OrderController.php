@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attribute;
+use App\Models\Product;
+use App\Models\Wishlist;
+use Hash;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Settings;
 use App\Models\Shipping;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use PDF;
 use Helper;
 use Illuminate\Support\Str;
@@ -49,61 +53,87 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty !');
 
-            $response['success'] = false;
-            $response['status'] = 404;
-            $response['message'] = 'Cart is Empty !';
+        if(isset($request->product_id)){
+            $cart = new Cart;
+            $product = Product::where('id', $request->product_id)->first();
+            $cart->user_id = request()->ip();
+            $cart->product_id = $product->id;
+            $cart->withoutCheckout = 1;
 
-            return response($response);
+            if($product->price != Null){
+                $cart->price = ($product->price-($product->price*$product->discount)/100);
+                $cart->quantity = 1;
+                $cart->price = $cart->price * $cart->quantity;
+
+                if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) {
+                    return response('Stock not sufficient!.');
+                }
+
+                $cart->save();
+                Wishlist::where('user_id',request()->ip())->where('cart_id',null)->update(['cart_id'=>$cart->id]);
+            }
+        }else{
+            if(empty(Cart::where('user_id',request()->ip())->where('order_id',null)->first())){
+                request()->session()->flash('error','Cart is Empty !');
+
+                $response['success'] = false;
+                $response['status'] = 404;
+                $response['message'] = 'Cart is Empty !';
+
+                return response($response);
+            }
         }
 
 
+
         try{
+            $password = uniqid();
             $createUser = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
+                'password' => Hash::make($password),
                 'name' => $request->first_name.' '.$request->last_name,
                 'email' => $request->email,
-                'address_1' => $request->address_1,
-                'address_2' => $request->address_2,
-                'city' => $request->city,
-                'state_id' => $request->state,
-                'country_id' => $request->country_id,
-                'zipcode' => $request->post_code,
-                'phone' => $request->phone,
+                'address_1' => $request->payment_method == 'paypal' ? $request->address_1 : '',
+                'address_2' => $request->payment_method == 'paypal' ? $request->address_2 : '',
+                'city' => $request->payment_method == 'paypal' ? $request->city : '',
+                'state_id' => $request->payment_method == 'paypal' ? $request->state : '',
+                'country_id' => $request->payment_method == 'paypal' ? $request->country_id : '',
+                'zipcode' => $request->payment_method == 'paypal' ? $request->post_code : '',
+                'phone' => $request->payment_method == 'paypal' ? $request->phone : '',
                 'role' => 'user',
             ]);
 
+            $mail = new MailController();
+            $mail->sendMail('hamzalc869@gmail.com', 'Your user has been created', view('frontend.mails.registration-mail-user',compact('createUser','password'))->render());
+
             Auth::login($createUser);
 
-            $order=new Order();
+            $order = new Order();
             $order_data = $request->all();
             $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
-            $order_data['user_id'] = $userId;
+            $order_data['user_id'] = $createUser->id;
             $order_data['shipping_id'] = $request->shipping;
             $shipping = $request->shipping;
 
             $order_data['sub_total'] = Helper::totalCartPrice();
 
             if(session('coupon')){
-                $order_data['coupon']=session('coupon')['value'];
+                $order_data['coupon'] = session('coupon')['value'];
             }
+
             if($request->shipping){
                 if(session('coupon')){
-                    $order_data['total_amount']= Helper::totalCartPrice()+$shipping->session('coupon')['value'];
+                    $order_data['total_amount'] = Helper::totalCartPrice() + $shipping->session('coupon')['value'];
+                }else{
+                    $order_data['total_amount'] = Helper::totalCartPrice() + $shipping;
                 }
-                else{
-                    $order_data['total_amount']= Helper::totalCartPrice()+$shipping;
-                }
-            }
-            else{
+            }else{
                 if(session('coupon')){
-                    $order_data['total_amount']= Helper::totalCartPrice()->session('coupon')['value'];
-                }
-                else{
-                    $order_data['total_amount']=Helper::totalCartPrice();
+                    $order_data['total_amount'] = Helper::totalCartPrice()->session('coupon')['value'];
+                }else{
+                    $order_data['total_amount'] = Helper::totalCartPrice();
                 }
             }
 
@@ -121,12 +151,12 @@ class OrderController extends Controller
             ];
 
             Notification::send($users, new StatusNotification($details));
-            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => $userId]);
+            Cart::where('user_id', request()->ip())->where('order_id', null)->update(['order_id' => $order->id,'user_id' => $createUser->id]);
 
             Order::find($order->id)->update([
                 'quantity' => Helper::cartCount()
             ]);
-            // dd($users);
+
            session()->flash('success','Your product successfully placed in order');
 
 
@@ -136,6 +166,7 @@ class OrderController extends Controller
 
             return response($response);
         }catch(Exception $e){
+
             $response['success'] = false;
             $response['status'] = 500;
             $response['message'] = $e->getMessage();
@@ -155,7 +186,6 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
-        // return $order;
         return view('backend.order.show')->with('order',$order);
     }
 
@@ -251,10 +281,19 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Summary of orderTrack
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function orderTrack(){
         return view('frontend.pages.order-track');
     }
 
+    /**
+     * Summary of productTrackOrder
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
     public function productTrackOrder(Request $request){
         // return $request->all();
         $order=Order::where('user_id',auth()->user()->id)->where('order_number',$request->order_number)->first();
@@ -286,7 +325,12 @@ class OrderController extends Controller
         }
     }
 
-    // PDF generate
+
+    /**
+     * Summary of pdf
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
         $setting = Settings::first();

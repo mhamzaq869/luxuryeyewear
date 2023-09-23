@@ -1,319 +1,241 @@
 @extends('backend.layouts.master')
 
-@section('title','Banner')
+@section('title', 'Banner')
 
 @section('main-content')
 
- <!-- DataTales Example -->
+    <!-- DataTales Example -->
 
- <div class="card shadow mb-4">
+    <div class="p-3 mb-4">
 
-     <div class="row">
+        <div class="row">
+            <div class="col-md-12">
+                @include('backend.layouts.notification')
+            </div>
+        </div>
 
-         <div class="col-md-12">
+        <div class="row my-3">
+            <div class="col-9">
+                <h3 class="m-0 font-weight-bold text-dark">Banners List</h3>
+            </div>
+            <div class="col-3 text-end">
+                <a href="{{ route('banner.create') }}" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Add User">
+                    <i class="fas fa-plus"></i> Add Banner
+                </a>
+            </div>
+        </div>
 
-            @include('backend.layouts.notification')
 
-         </div>
 
-     </div>
+        <div class="table-responsive">
 
-    <div class="card-header py-3">
+            @if (count($banners) > 0)
 
-      <h6 class="m-0 font-weight-bold text-primary float-left">Banners List</h6>
+                <table class="table table-bordered table-striped" id="banner-dataTable" width="100%" cellspacing="0">
 
-      <a href="{{route('banner.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Banner</a>
+                    <thead>
+
+                        <tr>
+
+                            <th>S.N.</th>
+                            <th>Title</th>
+                            <th>Slug</th>
+                            <th>Type</th>
+                            <th>Photo</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach ($banners as $i => $banner)
+                            <tr>
+
+                                <td>{{ $i + 1 }}</td>
+                                <td>{{ $banner->title }}</td>
+                                <td>{{ $banner->slug }}</td>
+                                <td>{{ $banner->type }}</td>
+
+                                <td>
+
+                                    @if ($banner->photo)
+                                        <img src="{{ asset($banner->photo) }}" class="img-fluid zoom" style="max-width:80px"
+                                            alt="{{ $banner->photo }}">
+                                    @else
+                                        <img src="{{ asset('backend/img/thumbnail-default.jpg') }}" class="img-fluid zoom"
+                                            style="max-width:100%" alt="avatar.png">
+                                    @endif
+
+                                </td>
+
+                                <td>
+
+                                    @if ($banner->status == 'active')
+                                        <span class="text-success badge badge-success"><b>{{ ucfirst($banner->status) }}</b></span>
+                                    @else
+                                        <span class="text-warning"><b>{{ ucfirst($banner->status) }}</b></span>
+                                    @endif
+
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ route('banner.edit', $banner->id) }}" class="btn btn-primary btn-sm " style="height:30px; width:30px;border-radius:50%; float:left">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <form method="POST" action="{{ route('banner.destroy', [$banner->id]) }}">
+                                        @csrf
+                                        @method('delete')
+
+                                        <button class="btn btn-danger btn-sm" data-id={{ $banner->id }}
+                                            style="height:30px; width:30px; border-radius:50%; float:left; margin-left:5px" data-toggle="tooltip"
+                                            data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i>
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+                <span style="float:right">{{ $banners->links() }}</span>
+            @else
+                <h6 class="text-center">No banners found!!! Please create banner</h6>
+
+            @endif
+
+        </div>
+
 
     </div>
-
-    <div class="card-body">
-
-      <div class="table-responsive">
-
-        @if(count($banners)>0)
-
-        <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
-
-          <thead>
-
-            <tr>
-
-              <th>S.N.</th>
-              <th>Title</th>
-              <th>Slug</th>
-              <th>Type</th>
-              <th>Photo</th>
-              <th>Status</th>
-              <th>Action</th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            @foreach($banners as $banner)
-
-                <tr>
-
-                    <td>{{$banner->id}}</td>
-                    <td>{{$banner->title}}</td>
-                    <td>{{$banner->slug}}</td>
-                    <td>{{$banner->type}}</td>
-
-                    <td>
-
-                        @if($banner->photo)
-
-                            <img src="{{asset($banner->photo)}}" class="img-fluid zoom" style="max-width:80px" alt="{{$banner->photo}}">
-
-                        @else
-
-                            <img src="{{asset('backend/img/thumbnail-default.jpg')}}" class="img-fluid zoom" style="max-width:100%" alt="avatar.png">
-
-                        @endif
-
-                    </td>
-
-                    <td>
-
-                        @if($banner->status=='active')
-
-                            <span class="badge badge-success">{{$banner->status}}</span>
-
-                        @else
-
-                            <span class="badge badge-warning">{{$banner->status}}</span>
-
-                        @endif
-
-                    </td>
-
-                    <td>
-
-                        <a href="{{route('banner.edit',$banner->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-
-                        <form method="POST" action="{{route('banner.destroy',[$banner->id])}}">
-
-                          @csrf
-
-                          @method('delete')
-
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$banner->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-
-                        </form>
-
-                    </td>
-
-                    {{-- Delete Modal --}}
-
-                    {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">
-
-                        <div class="modal-dialog" role="document">
-
-                          <div class="modal-content">
-
-                            <div class="modal-header">
-
-                              <h5 class="modal-title" id="#delModal{{$user->id}}Label">Delete user</h5>
-
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                                <span aria-hidden="true">&times;</span>
-
-                              </button>
-
-                            </div>
-
-                            <div class="modal-body">
-
-                              <form method="post" action="{{ route('banners.destroy',$user->id) }}">
-
-                                @csrf
-
-                                @method('delete')
-
-                                <button type="submit" class="btn btn-danger" style="margin:auto; text-align:center">Parmanent delete user</button>
-
-                              </form>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                    </div> --}}
-
-                </tr>
-
-            @endforeach
-
-          </tbody>
-
-        </table>
-
-        <span style="float:right">{{$banners->links()}}</span>
-
-        @else
-
-          <h6 class="text-center">No banners found!!! Please create banner</h6>
-
-        @endif
-
-      </div>
-
-    </div>
-
-</div>
 
 @endsection
 
 
 
 @push('styles')
+    <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
-  <link href="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <style>
+        div.dataTables_wrapper div.dataTables_paginate {
 
-  <style>
+            display: none;
 
-      div.dataTables_wrapper div.dataTables_paginate{
+        }
 
-          display: none;
+        .zoom {
 
-      }
+            transition: transform .2s;
+            /* Animation */
 
-      .zoom {
-
-        transition: transform .2s; /* Animation */
-
-      }
-
+        }
 
 
-      .zoom:hover {
 
-        transform: scale(3.2);
+        .zoom:hover {
 
-      }
+            transform: scale(3.2);
 
-  </style>
-
+        }
+    </style>
 @endpush
 
 
 
 @push('scripts')
+    <!-- Page level plugins -->
+
+    <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
 
-  <!-- Page level plugins -->
+    <!-- Page level custom scripts -->
 
-  <script src="{{asset('backend/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
 
-  <script src="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script>
+        $('#banner-dataTable').DataTable({
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
-
-
-  <!-- Page level custom scripts -->
-
-  <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
-
-  <script>
-
-
-
-      $('#banner-dataTable').DataTable( {
-
-            "columnDefs":[
-
+            "columnDefs": [
                 {
-
-                    "orderable":false,
-
-                    "targets":[3,4,5]
-
+                    "orderable": false,
+                    "targets": [3, 4, 5, 6]
                 }
-
             ]
-
-        } );
-
-
-
-        // Sweet alert
-
-
-
-        function deleteData(id){
-
-
-
-        }
-
-  </script>
-
-  <script>
-
-      $(document).ready(function(){
-
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
 
         });
 
-          $('.dltBtn').click(function(e){
+    </script>
 
-            var form=$(this).closest('form');
+    <script>
+        $(document).ready(function() {
 
-              var dataID=$(this).data('id');
+            $.ajaxSetup({
 
-              // alert(dataID);
+                headers: {
 
-              e.preventDefault();
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
-              swal({
+                }
 
-                    title: "Are you sure?",
+            });
 
-                    text: "Once deleted, you will not be able to recover this data!",
+            $('.dltBtn').click(function(e) {
 
-                    icon: "warning",
+                var form = $(this).closest('form');
 
-                    buttons: true,
+                var dataID = $(this).data('id');
 
-                    dangerMode: true,
+                // alert(dataID);
 
-                })
+                e.preventDefault();
 
-                .then((willDelete) => {
+                swal({
 
-                    if (willDelete) {
+                        title: "Are you sure?",
 
-                       form.submit();
+                        text: "Once deleted, you will not be able to recover this data!",
 
-                    } else {
+                        icon: "warning",
 
-                        swal("Your data is safe!");
+                        buttons: true,
 
-                    }
+                        dangerMode: true,
 
-                });
+                    })
 
-          })
+                    .then((willDelete) => {
 
-      })
+                        if (willDelete) {
 
-  </script>
+                            form.submit();
 
+                        } else {
+
+                            swal("Your data is safe!");
+
+                        }
+
+                    });
+
+            })
+
+        })
+    </script>
 @endpush

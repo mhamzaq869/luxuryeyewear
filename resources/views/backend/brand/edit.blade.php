@@ -6,79 +6,75 @@
 
 
 
-    <div class="card">
+    <div class="p-3">
 
-        <h5 class="card-header">Edit Brand</h5>
+        <h3>Edit Brand</h3>
 
-        <div class="card-body">
+        <form method="post" action="{{ route('brand.update', $brand->id) }}" enctype="multipart/form-data">
 
-            <form method="post" action="{{ route('brand.update', $brand->id) }}" enctype="multipart/form-data">
+            @csrf
 
-                @csrf
+            @method('PATCH')
 
-                @method('PATCH')
+            <div class="form-group">
 
-                <div class="form-group">
+                <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
 
-                    <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
+                <input id="inputTitle" type="text" name="title" placeholder="Enter title"
+                    value="{{ $brand->title }}" class="form-control">
 
-                    <input id="inputTitle" type="text" name="title" placeholder="Enter title"
-                        value="{{ $brand->title }}" class="form-control">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
 
-                    @error('title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+            </div>
+            <!-------------- image ---------------------->
+            <div class="form-group">
+                <label for="image">Brand image</label>
+                <input type="hidden" name="brand_img">
 
+                <input name="brand_image" id="brand_img" type="file" class="form-control" accept="image/*">
+                @error('brand_image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <div class="controls">
+                    @if ($brand->brand_image)
+                        <img src="{{ asset($brand->brand_image) }}" width="100" id="output">
+                    @else
+                        <img src="{{ asset('images/no_image.jpg') }}" width="100" height="100" id="output">
+                    @endif
                 </div>
-                <!-------------- image ---------------------->
-                <div class="form-group">
-                    <label for="image">Brand image</label>
-                    <input type="hidden" name="brand_img">
+            </div>
+            <!------------------- image -------------------->
 
-                    <input name="brand_image" id="brand_img" type="file" class="form-control" accept="image/*">
-                    @error('brand_image')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+            <div class="form-group">
 
-                <div class="form-group">
-                    <div class="controls">
-                        @if ($brand->brand_image)
-                            <img src="{{ asset($brand->brand_image) }}" width="100" id="output">
-                        @else
-                            <img src="{{ asset('images/no_image.jpg') }}" width="100" height="100" id="output">
-                        @endif
-                    </div>
-                </div>
-                <!------------------- image -------------------->
+                <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
 
-                <div class="form-group">
+                <select name="status" class="form-control">
 
-                    <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+                    <option value="active" {{ $brand->status == 'active' ? 'selected' : '' }}>Active</option>
 
-                    <select name="status" class="form-control">
+                    <option value="inactive" {{ $brand->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
 
-                        <option value="active" {{ $brand->status == 'active' ? 'selected' : '' }}>Active</option>
+                </select>
 
-                        <option value="inactive" {{ $brand->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                @error('status')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
 
-                    </select>
+            </div>
 
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+            <div class="form-group my-3">
 
-                </div>
+                <button class="btn btn-success" type="submit">Update</button>
 
-                <div class="form-group mb-3">
+            </div>
 
-                    <button class="btn btn-success" type="submit">Update</button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
 

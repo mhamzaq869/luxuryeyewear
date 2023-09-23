@@ -25,7 +25,7 @@ class MailController extends Controller
         $mail->Port = $integeration->port;                          // port - 587/465
 
         $mail->setFrom($reciever);
-        $mail->addAddress($integeration->username);
+        $mail->addAddress($integeration->username, env('APP_NAME'));
 
         $mail->isHTML(true);                // Set email content format to HTML
 

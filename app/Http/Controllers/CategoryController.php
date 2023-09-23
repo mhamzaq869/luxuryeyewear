@@ -66,11 +66,10 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        // echo "<pre>"; print_r($request->all()); die;
+
         $this->validate($request, [
             'title' => 'string|required',
             'summary' => 'string|nullable',
-            // 'photo'=>'string|nullable',
             'status' => 'required|in:active,inactive',
             'is_parent' => 'sometimes|in:1',
 

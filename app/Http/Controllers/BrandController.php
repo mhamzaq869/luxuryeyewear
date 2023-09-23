@@ -17,21 +17,15 @@ class BrandController extends Controller
 {
 
     /**
-
      * Display a listing of the resource.
-
      *
-
+     *
      * @return \Illuminate\Http\Response
-
      */
 
     public function index()
-
     {
-
         $brand = Brand::orderBy('title', 'DESC')->get();
-
         return view('backend.brand.index')->with('brands', $brand);
     }
 
@@ -73,16 +67,16 @@ class BrandController extends Controller
     {
 
         $this->validate($request, [
-
             'title' => 'string|required',
             'brand_image' => 'required ',
-            // $request->brand_image
         ]);
+
         $data = $request->all();
 
 
         $slug = Str::slug($request->title);
         $count = Brand::where('slug', $slug)->count();
+
         if ($count > 0) {
             $slug = $slug . '-' . date('ymdis') . '-' . rand(0, 999);
         }
@@ -192,11 +186,15 @@ class BrandController extends Controller
 
         $brand = Brand::find($id);
         $make_slug = strtolower(str_replace(' ', '-', $request->title));
-        $brand['slug'] = $make_slug;
+
+        if($brand->slug != $make_slug){
+            $brand['slug'] = $make_slug;
+        }else{
+            $brand['slug'] = $brand->slug;
+        }
 
 
         $data = $request->all();
-        // dd($data);
         if ($request->has('brand_img') && $request->brand_img != null) {
 
             $img = uploadImage($request->brand_img, '/upload/brand/crop/');

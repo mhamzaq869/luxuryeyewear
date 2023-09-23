@@ -1,37 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
 
 @include('backend.layouts.head')
 
-<body id="page-top">
+<body class="sb-nav-fixed">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+    @include('backend.layouts.header')
 
-    <!-- Sidebar -->
-    @include('backend.layouts.sidebar')
-    <!-- End of Sidebar -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        @include('backend.layouts.sidebar')
+        <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
-      <div id="content">
-        <div class="loader_bg d-none">
-            <div class="loader"></div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    @yield('main-content')
+                </div>
+            </main>
+            @include('backend.layouts.footer')
+
+            @stack('scripts')
         </div>
-        <!-- Topbar -->
-        @include('backend.layouts.header')
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        @yield('main-content')
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-      @include('backend.layouts.footer')
-
-      @stack('scripts')
+    </div>
 
 </body>
 

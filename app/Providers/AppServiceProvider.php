@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('genders',$data['gender']);
         });
 
-        View::composer(['frontend.pages.checkout'], function($view) use($permissions){
+        View::composer(['frontend.pages.checkout','frontend.pages.product_detail'], function($view) use($permissions){
             $view->with('availablePaymnMethod', Integration::all());
         });
 

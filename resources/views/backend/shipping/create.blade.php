@@ -2,87 +2,86 @@
 @section('title', 'Add Shipping ')
 @section('main-content')
 
-    <div class="card">
-        <h5 class="card-header">Add Shipping</h5>
-        <div class="card-body">
-            <form method="post" action="{{ route('shipping.store') }}">
-                {{ csrf_field() }}
+    <div class="p-3">
+        <h5 class="m-0 font-weight-bold text-dark mb-3">Add Shipping</h5>
+        <form method="post" action="{{ route('shipping.store') }}">
+            {{ csrf_field() }}
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputTitle" class="col-form-label">Type <span class="text-danger">*</span></label>
-                        <input id="inputTitle" type="text" name="type" placeholder="Enter title"  value="{{old('type')}}" class="form-control">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-form-label">Type <span class="text-danger">*</span></label>
+                    <input id="inputTitle" type="text" name="type" placeholder="Enter title"  value="{{old('type')}}" class="form-control">
+                    @error('type')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-form-label">Countries <span class="text-danger">*</span></label>
+                        <select class="select2 form-control " id="countries" name="countries[]" style="width: 100%; height:36px;">
+
+                            @foreach ($countries as $user)
+                                <option value="{{ $user->shortname }}">
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-form-label">Transit From<span class="text-danger">*</span></label>
+                        <input  type="date" name="transitfrom" placeholder="5-10"  value="{{ old('transit') }}" class="form-control">
                         @error('type')
-                        <span class="text-danger">{{$message}}</span>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputTitle" class="col-form-label">Countries <span class="text-danger">*</span></label>
-                            <select class="select2 form-control " id="countries" name="countries[]" style="width: 100%; height:36px;">
-
-                                @foreach ($countries as $user)
-                                    <option value="{{ $user->shortname }}">
-                                        {{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputTitle" class="col-form-label">Transit From<span class="text-danger">*</span></label>
-                            <input  type="date" name="transitfrom" placeholder="5-10"  value="{{ old('transit') }}" class="form-control">
-                            @error('type')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="inputTitle" class="col-form-label">Transit To<span class="text-danger">*</span></label>
-                            <input  type="date" name="transitto" placeholder="5-10"  value="{{ old('transit') }}" class="form-control">
-                            @error('type')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
-                            <input id="price" type="number" name="price" placeholder="Enter price"
-                                value="{{ old('price') }}" class="form-control">
-                            @error('price')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
-                            <select name="status" class="form-control">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                            @error('status')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </div>
                 </div>
-                <div class="form-group mb-3">
-                    <button type="reset" class="btn btn-warning">Reset</button>
-                    <button class="btn btn-success" type="submit">Submit</button>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-form-label">Transit To<span class="text-danger">*</span></label>
+                        <input  type="date" name="transitto" placeholder="5-10"  value="{{ old('transit') }}" class="form-control">
+                        @error('type')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
+                        <input id="price" type="number" name="price" placeholder="Enter price"
+                            value="{{ old('price') }}" class="form-control">
+                        @error('price')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
+                        <select name="status" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <button type="reset" class="btn btn-warning">Reset</button>
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </form>
+
     </div>
 
 @endsection
