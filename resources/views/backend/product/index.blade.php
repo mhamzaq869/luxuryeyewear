@@ -12,7 +12,6 @@
         <h3 class="m-0 font-weight-bold text-dark">Product Lists</h3>
 
         <div class="py-3">
-
             <div class="row">
                 <div class="col-md-12 text-end">
                     <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
@@ -78,9 +77,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
+                    <tbody> </tbody>
                 </table>
             @else
                 <h6 class="text-center">No Products found!!! Please create Product</h6>
@@ -107,8 +104,6 @@
         }
     </style>
 @endpush
-
-
 
 @push('scripts')
 

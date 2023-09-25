@@ -683,14 +683,12 @@ class FrontendController extends Controller
 
 
     // brands
-
     public function frontend_brands()
     {
         $brand_data['brand_img'] =  Brand::where('status', 'active')->whereIn('id', Product::with('cat_info')->pluck('brand_id')->unique()->flatten())->orderBy('title')->get();
         return view('frontend.pages.brands', $brand_data);
     }
     // product_detail
-
     public function product_detail()
     {
 
@@ -794,6 +792,7 @@ class FrontendController extends Controller
                 $product_detail->shipping_cost = 0;
                 $product_detail->transit = 0;
             }
+
         }
 
 

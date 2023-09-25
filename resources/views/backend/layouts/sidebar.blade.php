@@ -86,6 +86,30 @@
                     </nav>
                 </div>
 
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseattribute" aria-expanded="false" aria-controls="collapseattribute">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    Attributes
+                    <div class="sb-sidenav-collapse-arrow">
+                        <svg class="svg-inline--fa fa-angle-down"
+                            aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down"
+                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+                            data-fa-i2svg="">
+                            <path fill="currentColor"
+                                d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z">
+                            </path>
+                        </svg><!-- <i class="fas fa-angle-down"></i> Font Awesome fontawesome.com -->
+                    </div>
+                </a>
+                <div class="collapse" id="collapseattribute" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{{ route('attribute.index') }}">Attribute</a>
+                        <a class="nav-link" href="{{ route('attribute.create') }}">Add Attribute</a>
+                    </nav>
+                </div>
+
+
                 <!--Category -->
                 {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
                     <div class="sb-nav-link-icon">

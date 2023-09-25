@@ -392,7 +392,7 @@
                                             @endif
 
                                             @if ($product_detail->transit)
-                                                <span>Delivery {{ $product_detail->transit }}</span>
+                                                <span>Delivery: {{ $product_detail->transit }}</span>
                                             @endif
                                         </div>
                                         <div
