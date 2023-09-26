@@ -106,7 +106,6 @@
 
 @push('styles')
     <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 
     <style>
@@ -133,6 +132,7 @@
     <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
     <!-- Page level custom scripts -->
     <script>
         $('#brand-table').DataTable({

@@ -23,7 +23,7 @@
 
         <div class="table-responsive">
             @if (count($attributes) > 0)
-                <table class="table table-bordered" id="product-attribute" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="productattribute" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>S.N.</th>
@@ -38,7 +38,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $attribute->name }}</td>
                                 <td>{{ $attribute->attribute_type }}</td>
-                                <td>
+                                <td class="d-flex">
                                     <a href="{{ route('attribute.edit', $attribute->id) }}"
                                         class="btn btn-primary btn-sm float-left mr-1"
                                         style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
@@ -56,7 +56,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <span style="float:right">{{ $attributes->links() }}</span>
+
             @else
                 <h6 class="text-center">No Attribute found!!! Please create Attribute</h6>
             @endif
@@ -69,9 +69,7 @@
     <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
     <style>
-        div.dataTables_wrapper div.dataTables_paginate {
-            display: none;
-        }
+
 
         .zoom {
             transition: transform .2s;
@@ -85,14 +83,21 @@
 @endpush
 
 @push('scripts')
-    <!-- Page level plugins -->
     <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 
     <script>
-        $('#product-attribute').DataTable();
+        $('#productattribute').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            lengthMenu: [
+                [25, 50, 100, 150, 250, -1],
+                [25, 50, 100, 150, 250, 'All'],
+            ],
+        });
+
 
         $(document).ready(function() {
             $.ajaxSetup({
@@ -100,6 +105,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             $('.dltBtn').click(function(e) {
                 var form = $(this).closest('form');
                 var dataID = $(this).data('id');

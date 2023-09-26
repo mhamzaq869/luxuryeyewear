@@ -4,8 +4,6 @@
 
 @section('main-content')
 
-
-
     <div class="p-3">
 
         <h3>Edit Brand</h3>
@@ -20,8 +18,8 @@
 
                 <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
 
-                <input id="inputTitle" type="text" name="title" placeholder="Enter title"
-                    value="{{ $brand->title }}" class="form-control">
+                <input id="inputTitle" type="text" name="title" placeholder="Enter title" value="{{ $brand->title }}"
+                    class="form-control">
 
                 @error('title')
                     <span class="text-danger">{{ $message }}</span>
@@ -78,7 +76,6 @@
 
     </div>
 
-
     <div id="imageModel" class="modal fade bd-example-modal-lg" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -129,10 +126,7 @@
         </div>
     </div>
 
-
 @endsection
-
-
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('backend/summernote/summernote.min.css') }}">
@@ -172,75 +166,5 @@
 
             });
         });
-
-        var $modal = $('#imageModel');
-        var image = document.getElementById('image');
-        var _target = "";
-
-        var cropper;
-        $("body").on("change", "#brand_img", function(e) {
-            _target = jQuery(this).attr('id');
-            var files = e.target.files;
-            var done = function(url) {
-                image.src = url;
-                $modal.modal('show');
-            };
-            var reader;
-            var file;
-            var url;
-            if (files && files.length > 0) {
-                file = files[0];
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onload = function(e) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        });
-
-        $("body").on('click',"#brand_img",function(){
-            $(this).val(null);
-        });
-
-        $modal.on('shown.bs.modal', function() {
-            cropper = new Cropper(image, {
-                preview: '.preview',
-                movable: false,
-                zoomable: false,
-                rotatable: false,
-                scalable: false,
-                crop(event) {
-                    $("#dataWidth").val(parseInt(event.detail.width));
-                    $("#dataHeight").val(parseInt(event.detail.height));
-
-                },
-            });
-        }).on('hidden.bs.modal', function() {
-            cropper.destroy();
-            cropper = null;
-        })
-
-        $("#crop").click(function() {
-            canvas = cropper.getCroppedCanvas({
-                width: 160,
-                height: 160,
-            });
-            canvas.toBlob(function(blob) {
-                url = URL.createObjectURL(blob);
-                var reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = function() {
-                    var base64data = reader.result;
-                    console.log(_target)
-                    jQuery('input[name="' + _target + '"]').val(base64data)
-                    $modal.modal('hide');
-
-                }
-            });
-        })
     </script>
 @endpush
