@@ -21,13 +21,12 @@
             </div>
             <div class="col-6 text-end">
                 <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm" data-toggle="tooltip"
-                data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
+                    data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
 
                 <a href="{{ route('users.permissions') }}" class="btn btn-secondary mx-1 btn-sm" data-toggle="tooltip"
                     data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Manage Permissions</a>
             </div>
         </div>
-
 
         <div class="table-responsive">
 
@@ -95,8 +94,8 @@
                             <td>
 
                                 @if ($user->photo)
-                                    <img src="{{ $user->photo }}" class="img-fluid rounded-circle"
-                                        style="max-width:50px" alt="{{ $user->photo }}">
+                                    <img src="{{ $user->photo }}" class="img-fluid rounded-circle" style="max-width:50px"
+                                        alt="{{ $user->photo }}">
                                 @else
                                     <img src="{{ asset('backend/img/avatar.png') }}" class="img-fluid rounded-circle"
                                         style="max-width:50px" alt="avatar.png">
@@ -122,8 +121,8 @@
 
                                 <a href="{{ route('users.edit', $user->id) }}"
                                     class="btn btn-primary btn-sm float-left mr-1"
-                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                    title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit"
+                                    data-placement="bottom"><i class="fas fa-edit"></i></a>
 
                                 <form method="POST" action="{{ route('users.destroy', [$user->id]) }}">
 
@@ -194,8 +193,6 @@
 
 @endsection
 
-
-
 @push('styles')
     <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
@@ -203,29 +200,19 @@
 
     <style>
         div.dataTables_wrapper div.dataTables_paginate {
-
             display: none;
-
         }
 
         .zoom {
-
             transition: transform .2s;
             /* Animation */
-
         }
 
-
-
         .zoom:hover {
-
             transform: scale(3.2);
-
         }
     </style>
 @endpush
-
-
 
 @push('scripts')
     <!-- Page level plugins -->
@@ -235,8 +222,6 @@
     <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
-
 
     <!-- Page level custom scripts -->
 
@@ -286,12 +271,8 @@
             });
 
             $('.dltBtn').click(function(e) {
-
                 var form = $(this).closest('form');
-
                 var dataID = $(this).data('id');
-
-                // alert(dataID);
 
                 e.preventDefault();
 

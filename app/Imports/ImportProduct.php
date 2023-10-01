@@ -49,14 +49,16 @@ class ImportProduct implements ToCollection, WithHeadingRow
                 $brand->brand_image = '';
                 $brand->save();
 
-                $model = Category::firstOrNew(['slug' => Str::slug($row['model'] ?? '')]);
-                $model->title = $row['model'] ?? '';
-                $model->slug = Str::slug($row['model'] ?? '');
-                $model->is_parent = 1;
-                $model->brand_id = $brand->id;
-                $model->frame_type = $frameType ? $frameType->id : null;
-                $model->status = 'active';
-                $model->save();
+                $model = Category::where('slug', Str::slug($row['model'] ?? ''))->first();
+                if(empty($model)){
+                    $model->title = $row['model'] ?? '';
+                    $model->slug = Str::slug($row['model'] ?? '');
+                    $model->is_parent = 1;
+                    $model->brand_id = $brand->id;
+                    $model->frame_type = $frameType ? $frameType->id : null;
+                    $model->status = 'active';
+                    $model->save();
+                }
 
                 $array = [
                     'width' => $row['width'] ?? '',
