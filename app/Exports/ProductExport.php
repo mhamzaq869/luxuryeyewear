@@ -47,8 +47,9 @@ class ProductExport implements FromCollection, WithHeadings
                 $data[$i]['color'] = $product->color;
                 $data[$i]['color_description'] = $product->color_description;
                 $data[$i]['size'] = $product->size;
-                $data[$i]['unit_price'] = $product->unit_price ?? 0;
-                $data[$i]['price'] = $product->price != null ? $product->price : 0;
+                $data[$i]['b2b_price'] = $product->b2b_price != null ? $product->b2b_price : 0;
+                $data[$i]['mrp'] = $product->unit_price ?? 0;
+                $data[$i]['selling_price'] = $product->price != null ? $product->price : 0;
                 $data[$i]['stock'] = $product->stock ?? 0;
                 $data[$i]['shape'] = $attributes->where('id', $product->shape)->first()->name ?? '';
                 $data[$i]['type'] = $product->type != null ? $attributes->where('id', $product->type)->first()->name ?? '' : '';
@@ -86,8 +87,9 @@ class ProductExport implements FromCollection, WithHeadings
                 "Colour",
                 "Colour Description",
                 "Size",
-                "Unit Price",
+                "B2B Price",
                 "MRP",
+                "Selling Price",
                 "QTY",
                 "Shape",
                 "Product Type",

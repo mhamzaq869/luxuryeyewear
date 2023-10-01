@@ -15,17 +15,19 @@
             </div>
         </div>
 
-        <div class="py-3">
-
-            <h5 class="m-0 font-weight-bold text-dark float-left">Users List</h5>
-
-            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
+        <div class="row">
+            <div class="col-6">
+                <h3 class="m-0 font-weight-bold text-dark float-left">Users Lists</h3>
+            </div>
+            <div class="col-6 text-end">
+                <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm" data-toggle="tooltip"
                 data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
 
-            <a href="{{ route('users.permissions') }}" class="btn btn-secondary mx-1 btn-sm float-right mb-3" data-toggle="tooltip"
-                data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Manage Permissions</a>
-
+                <a href="{{ route('users.permissions') }}" class="btn btn-secondary mx-1 btn-sm" data-toggle="tooltip"
+                    data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Manage Permissions</a>
+            </div>
         </div>
+
 
         <div class="table-responsive">
 

@@ -10,17 +10,22 @@
             </div>
         </div>
 
-        <div class=" py-3">
-            <h5 class="m-0 font-weight-bold text-dark float-left">Coupon List</h5>
 
-            <a href="{{ route('coupon.create') }}" class="btn btn-primary btn-sm float-right  mb-3" data-toggle="tooltip"
-                data-placement="bottom" title="Add User">
-                <i class="fas fa-plus"></i> Add Coupon
-            </a>
+        <div class="row">
+            <div class="col-9">
+                <h3 class="m-0 font-weight-bold text-dark float-left">Coupon Lists</h3>
+            </div>
+            <div class="col-3 text-end">
+                <a href="{{ route('coupon.create') }}" class="btn btn-primary btn-sm float-right  mb-3" data-toggle="tooltip"
+                    data-placement="bottom" title="Add User">
+                    <i class="fas fa-plus"></i> Add Coupon
+                </a>
+            </div>
         </div>
+
         <div class="table-responsive">
             @if (count($coupons) > 0)
-                <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="banner-dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>S.N.</th>
@@ -31,16 +36,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>S.N.</th>
-                            <th>Coupon Code</th>
-                            <th>Type</th>
-                            <th>Value</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
+
                     <tbody>
                         @foreach ($coupons as $coupon)
                             <tr>
@@ -48,9 +44,9 @@
                                 <td>{{ $coupon->code }}</td>
                                 <td>
                                     @if ($coupon->type == 'fixed')
-                                        <span class="badge badge-primary">{{ $coupon->type }}</span>
+                                        <span class="text-primary">{{ $coupon->type }}</span>
                                     @else
-                                        <span class="badge badge-warning">{{ $coupon->type }}</span>
+                                        <span class="text-warning">{{ $coupon->type }}</span>
                                     @endif
                                 </td>
                                 <td>
@@ -62,12 +58,12 @@
                                 </td>
                                 <td>
                                     @if ($coupon->status == 'active')
-                                        <span class="badge badge-success">{{ $coupon->status }}</span>
+                                        <span class="text-success">{{ $coupon->status }}</span>
                                     @else
-                                        <span class="badge badge-warning">{{ $coupon->status }}</span>
+                                        <span class="text-warning">{{ $coupon->status }}</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="d-flex">
                                     <a href="{{ route('coupon.edit', $coupon->id) }}"
                                         class="btn btn-primary btn-sm float-left mr-1"
                                         style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"

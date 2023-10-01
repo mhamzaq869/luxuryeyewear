@@ -16,8 +16,8 @@ class ShippingController extends Controller
      */
     public function index()
     {
-        $shipping=Shipping::orderBy('id','DESC')->paginate(10);
-        return view('backend.shipping.index')->with('shippings',$shipping);
+        $shipping = Shipping::orderBy('id', 'DESC')->paginate(10);
+        return view('backend.shipping.index')->with('shippings', $shipping);
     }
 
     /**
@@ -28,7 +28,7 @@ class ShippingController extends Controller
     public function create()
     {
         $countries = DB::table('countries')->get();
-        return view('backend.shipping.create',get_defined_vars());
+        return view('backend.shipping.create', get_defined_vars());
     }
 
     /**
@@ -39,21 +39,23 @@ class ShippingController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'type'=>'string|required',
-            'price'=>'nullable|numeric',
-            'status'=>'required|in:active,inactive'
+        $this->validate($request, [
+            'type' => 'string|required',
+            'price' => 'nullable|numeric',
+            'status' => 'required|in:active,inactive'
         ]);
-        $data=$request->all();
+        $data = $request->all();
 
-        $data['countries'] = implode(',',$data['countries']);
-        $data['transit'] = $request->transitfrom .'-'.$request->transitto;
-        $status= Shipping::create($data);
-        if($status){
-           session()->flash('success','Shipping successfully created');
-        }
-        else{
-           session()->flash('error','Error, Please try again');
+        $data['countries'] = implode(',', $data['countries']);
+
+        $data['transitfrom'] = $request->transitfrom;
+        $data['transitto'] = $request->transitto;
+
+        $status = Shipping::create($data);
+        if($status) {
+            session()->flash('success', 'Shipping successfully created');
+        } else {
+            session()->flash('error', 'Error, Please try again');
         }
         return redirect()->route('shipping.index');
     }
@@ -77,19 +79,14 @@ class ShippingController extends Controller
      */
     public function edit($id)
     {
-        $shipping=Shipping::find($id);
-        if(!$shipping){
-            session()->flash('error','Shipping not found');
+        $shipping = Shipping::find($id);
+        if(!$shipping) {
+            session()->flash('error', 'Shipping not found');
         }
 
-        $transit = explode('-',$shipping->transit);
-
-        $shipping->transitfrom = $transit[0];
-        $shipping->transitto = $transit[1];
-
         $countries = DB::table('countries')->get();
-        $shipping->countries = explode(',',$shipping->countries);
-        return view('backend.shipping.edit',get_defined_vars());
+        $shipping->countries = explode(',', $shipping->countries);
+        return view('backend.shipping.edit', get_defined_vars());
     }
 
     /**
@@ -101,21 +98,20 @@ class ShippingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $shipping=Shipping::find($id);
-        $this->validate($request,[
-            'type'=>'string|required',
-            'price'=>'nullable|numeric',
-            'status'=>'required|in:active,inactive'
+        $shipping = Shipping::find($id);
+        $this->validate($request, [
+            'type' => 'string|required',
+            'price' => 'nullable|numeric',
+            'status' => 'required|in:active,inactive'
         ]);
-        $data=$request->all();
-        $data['countries'] = implode(',',$data['countries']);
+        $data = $request->all();
+        $data['countries'] = implode(',', $data['countries']);
         $data['transit'] = $request->transitfrom .' to '.$request->transitto;
-        $status=$shipping->fill($data)->save();
-        if($status){
-            session()->flash('success','Shipping successfully updated');
-        }
-        else{
-            session()->flash('error','Error, Please try again');
+        $status = $shipping->fill($data)->save();
+        if($status) {
+            session()->flash('success', 'Shipping successfully updated');
+        } else {
+            session()->flash('error', 'Error, Please try again');
         }
         return redirect()->route('shipping.index');
     }
@@ -128,19 +124,17 @@ class ShippingController extends Controller
      */
     public function destroy($id)
     {
-        $shipping=Shipping::find($id);
-        if($shipping){
-            $status=$shipping->delete();
-            if($status){
-               session()->flash('success','Shipping successfully deleted');
-            }
-            else{
-               session()->flash('error','Error, Please try again');
+        $shipping = Shipping::find($id);
+        if($shipping) {
+            $status = $shipping->delete();
+            if($status) {
+                session()->flash('success', 'Shipping successfully deleted');
+            } else {
+                session()->flash('error', 'Error, Please try again');
             }
             return redirect()->route('shipping.index');
-        }
-        else{
-           session()->flash('error','Shipping not found');
+        } else {
+            session()->flash('error', 'Shipping not found');
             return redirect()->back();
         }
     }

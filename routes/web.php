@@ -16,34 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Test Image Route
-Route::get('/test-image', function () {
-    return view('frontend.test_image');
-})->name('test_image');
-
-
-// Clear Config Cache
-Route::get('/clearconfig', function () {
-    Artisan::call('config:cache');
-    return "Config Cache is cleared";
-});
-
-// Clear Cache
-Route::get('/clearcache', function () {
-    Artisan::call('cache:clear');
-    return "Cache is cleared";
-});
-
-// Clear View
-Route::get('/clearview', function () {
-    Artisan::call('view:clear');
-    return "View is cleared";
-});
-
-// Clear Route Cache
-Route::get('/clearroute', function () {
-    Artisan::call('route:clear');
-    return "Route is cleared";
+Route::get('artisan/{commandFirst?}/{commandSecond?}', function($commandFirst,$commandSecond){
+    Artisan::call($commandFirst.':'.$commandSecond);
+    return $commandFirst.' is '.$commandSecond.' run successfully!';
 });
 
 Auth::routes(['register' => false]);

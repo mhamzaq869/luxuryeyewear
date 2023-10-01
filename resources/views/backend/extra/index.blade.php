@@ -9,15 +9,22 @@
             </div>
         </div>
 
-        <div class="py-3">
-            <h5 class="m-0 font-weight-bold text-dark float-left">Extra List</h5>
-            <a href="{{ route('extra.create') }}" class="btn btn-primary btn-sm float-right mb-3" data-toggle="tooltip"
+
+
+        <div class="row">
+            <div class="col-9">
+                <h3 class="m-0 font-weight-bold text-dark float-left">Extra Lists</h3>
+            </div>
+            <div class="col-3 text-end">
+                <a href="{{ route('extra.create') }}" class="btn btn-primary btn-sm float-right mb-3" data-toggle="tooltip"
                 data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Extra</a>
+            </div>
         </div>
+
 
         <div class="table-responsive">
             @if (count($extras) > 0)
-                <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="banner-dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>S.N.</th>
@@ -28,16 +35,6 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>S.N.</th>
-                            <th>Title</th>
-                            <th>Countries</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         @foreach ($extras as $shipping)
                             <tr>
@@ -47,12 +44,12 @@
                                 <td>${{ $shipping->price }}</td>
                                 <td>
                                     @if ($shipping->status == 'active')
-                                        <span class="badge badge-success">{{ $shipping->status }}</span>
+                                        <span class="text-success">{{ $shipping->status }}</span>
                                     @else
-                                        <span class="badge badge-warning">{{ $shipping->status }}</span>
+                                        <span class="text-warning">{{ $shipping->status }}</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="d-flex">
                                     <a href="{{ route('extra.edit', $shipping->id) }}"
                                         class="btn btn-primary btn-sm float-left mr-1"
                                         style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"

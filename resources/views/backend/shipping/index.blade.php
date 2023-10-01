@@ -36,24 +36,13 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>S.N.</th>
-                            <th>Title</th>
-                            <th>Countries</th>
-                            <th>Transit Days</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         @foreach ($shippings as $shipping)
                             <tr>
                                 <td>{{ $shipping->id }}</td>
                                 <td>{{ $shipping->type }}</td>
                                 <td>{{ $shipping->country_name ?? '' }}</td>
-                                <td>{{ $shipping->transit ?? '' }}</td>
+                                <td>{{ date('F j, Y',$shipping->transifrom) }}</td>
                                 <td>${{ $shipping->price }}</td>
                                 <td>
                                     @if ($shipping->status == 'active')

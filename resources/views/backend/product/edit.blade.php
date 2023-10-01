@@ -183,8 +183,15 @@
                                 <a href="{{ route('category.create') }}">Add New Model</a>
                             </div>
                         </div>
-                        <input type="text" name="model" id="model" class="form-control"
-                            value="{{ $product->model ?? '' }}">
+
+                            <select name="cat_id" id="cat_id" class="form-control select2">
+                                <option value="">--Select Any Model--</option>
+                                @foreach ($categories as $key => $cat_data)
+                                    <option value='{{ $cat_data->id }}' data-brand="{{ $cat_data->brand_id }}" data-size="{{ $cat_data->size }}"
+                                        {{ $product->cat_id == $cat_data->id ? 'selected' : '' }}>{{ $cat_data->title }}
+                                    </option>
+                                @endforeach
+                            </select>
 
                     </div>
                 </div>

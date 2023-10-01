@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Shipping extends Model
 {
-    protected $fillable=['type','countries','transit','price','status'];
+    protected $fillable=['type','countries','transitfrom','transitto','price','status'];
     protected $appends = ['country_name'];
 
 

@@ -35,9 +35,9 @@ return [
         'redirect' => '/login/github/callback',
      ],
      'google' => [
-        'client_id' => '618617083788-gkau1aj095nv0e3eonr49firq02afje8.apps.googleusercontent.com', //Google API
-        'client_secret' => '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', //Google Secret
-        'redirect' => '/login/google/',
+        'client_id' => '962215902557-21bn4968vb4r50ub8ao8grj5uhmaicrn.apps.googleusercontent.com', //Google API
+        'client_secret' => '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', //Google Secret
+        'redirect' => 'https://luxuriousonly.com/login/google',
      ],
      'facebook' => [
         'client_id' => '1494792524037846', //Facebook API
